@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>3x3 Grid Stimuli</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  .grid {
+    width: 40vmin;
+    max-width: 420px;
+    margin: 24px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .cell {
+    position: relative;
+    background: #f1f1f3;
+    border: 2px solid #cfcfd6;
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+  }
+  .dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 24%; height: 24%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #111;
+  }
+</style>
+</head>
+<body>
+
+<script>
+  // Function that returns an HTML string for the grid,
+  // with the dot placed at a given index (0..8)
+  function makeGridWithDot(index) {
+    let html = '<div class="grid">';
+    for (let i = 0; i < 9; i++) {
+      html += '<div class="cell">';
+      if (i === index) {
+        html += '<div class="dot"></div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  // Make 9 different stimuli
+  const stim0 = makeGridWithDot(0);
+  const stim1 = makeGridWithDot(1);
+  const stim2 = makeGridWithDot(2);
+  const stim3 = makeGridWithDot(3);
+  const stim4 = makeGridWithDot(4);
+  const stim5 = makeGridWithDot(5);
+  const stim6 = makeGridWithDot(6);
+  const stim7 = makeGridWithDot(7);
+  const stim8 = makeGridWithDot(8);
+
+  // Example: show one in the page just for testing
+  document.body.innerHTML += stim4; // dot in the center
+</script>
+
+</body>
+</html>
