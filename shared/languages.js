@@ -279,9 +279,31 @@ const en = {
             <p><i>When you're ready to begin, press any key to continue.</i></p>
         </div>`,
     },
+    overallTrainingIntro: {
+        title: "Full Training",
+        description: "Now you will practice how the real experiment works: alternating between the visual n-back task and the letter n-back task.",
+        structure: "You will start with 10 trials of the letter n-back, then do a sub-block: one visual n-back task (10 trials), followed by one letter n-back task.",
+        importance: "This training will help you understand the full structure of a sub-block and how the scoring system works.",
+        feedback: "At the end, you will see feedback on your performance and how your bonus would be calculated if this were a real sub-block.",
+        highlightEasy: "Pay particular attention to the letter immediately after the visual n-back — it is the most important for your bonus!",
+        highlightHard: "Pay particular attention to the first {level} letters immediately after the visual n-back — they are the most important for your bonus!",
+        ready: "When you are ready to begin the full training, press any key."
+    },
+    overallTrainingFeedback: {
+        title: "Training Complete - Scoring Demonstration",
+        performance: "Here's how your performance would be scored if this were a real sub-block:",
+        beforeVisual: "Letters before visual n-back: {accuracy}% accuracy ({correct}/{total} trials)",
+        visualNback: "Visual n-back: {accuracy}% accuracy ({correct}/{total} trials)", 
+        afterVisual: "Letters after visual n-back: {accuracy}% accuracy ({correct}/{total} trials)",
+        keyImportance: "💡 Key insight: The first {level} letters immediately after the visual n-back are worth 50% of your bonus!",
+        calculation: "Bonus calculation: €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
+        remember: "Remember: Always keep the last few letters in mind during the visual task!",
+        continue: "Press any key to continue to the main experiment."
+    }
 }
 
-// ...existing code for en...
+
+
 
 const fr = {
     welcomePage: {
@@ -557,6 +579,29 @@ const fr = {
     
             <p><i>Lorsque vous êtes prêt à commencer, appuyez sur n'importe quelle touche pour continuer.</i></p>
         </div>`,
+    },
+    overallTrainingIntro: {
+        title: "Entraînement Complet",
+        description: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de n-back visuel et de n-back lettres.",
+        structure: "Vous commencerez par 10 essais de n-back lettres, puis ferez un sous-bloc: une tâche de n-back visuel (10 essais), et une tâche de n-back lettres.",
+        importance: "Cet entraînement vous aidera à comprendre la structure complète d'un sous-bloc et le fonctionnement du système de notation.",
+        feedback: "À la fin, vous verrez un retour sur votre performance et comment votre bonus serait calculé si c'était un vrai sous-bloc.",
+        highlightEasy: "Portez une attention particulière à la lettre immédiatement après le n-back visuel - c'est la plus importante pour votre bonus !",
+        highlightHard: "Portez une attention particulière aux {level} premières lettres immédiatement après le n-back visuel - elles sont les plus importantes pour votre bonus !",
+        ready: "Quand vous êtes prêt à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
+    },
+    overallTrainingFeedback: {
+        title: "Entraînement Terminé - Démonstration du Système de Points",
+        performance: "Voici comment votre performance serait notée si c'était un vrai sous-bloc et qu'il serait sélectionné pour le paiement (au hasard) :",
+        nback: "N-back lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
+        visualNback: "N-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
+        afterVisual: "Lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
+        keyImportanceHard: "💡 Point clé : Les {level} premières lettres immédiatement après le n-back visuel valent 50% de votre bonus !",
+        keyImportanceEasy: "💡 Point clé : La dernière lettre immédiatement après le n-back visuel vaut 50% de votre bonus !",
+        calculation: "Calcul du bonus : €{payment} × (0,5 × {afterVisualAcc} + 0,25 × {visualAcc} + 0,25 × {letterAcc}) = €{totalBonus}",
+        rememberHard: "À retenir : Gardez toujours en mémoire les {level} dernières lettres pendant le n-back visuel!",
+        rememberEasy: "À retenir : Gardez toujours en mémoire la dernière lettre pendant le n-back visuel!",
+        continue: "Appuyez sur n'importe quelle touche pour continuer vers l'expérience principale."
     }
     
     

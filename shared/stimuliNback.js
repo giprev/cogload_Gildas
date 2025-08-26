@@ -20,6 +20,8 @@ function setArrays (){
     nbackStimuli.stimuliHard_nback = [];
     nbackStimuli.stimuliPracticeEasy_nback = [];
     nbackStimuli.stimuliPracticeHard_nback = [];
+    nbackStimuli.stimuliHardOverallTraining = [];
+    nbackStimuli.stimuliEasyOverallTraining = [];
     nbackStimuli.correctResponse;
     nbackStimuli.target;
   }
@@ -37,15 +39,8 @@ function setArrays (){
     nbackStimuli.stimuliListEasy_span = ['U', 'B', 'B', 'B', 'B', 'I', 'I', 'M', 'K', 'U', 'Y', 'U', 'K', 'B', 'O', 'P', 'P', 'P', 'P', 'A', 'P', 'E', 'E', 'B', 'B', 'P', 'P', 'P', 'M', 'U', 'M', 'B', 'B', 'B', 'B', 'O', 'E', 'Y', 'E', 'E', 'M', 'E', 'A', 'Y', 'G', 'Y', 'B', 'G', 'I', 'I', 'I', 'I', 'U', 'A', 'A', 'A', 'U', 'A', 'U', 'Y', 'K', 'Y', 'K'];
     nbackStimuli.practiceListEasy_nback = ['M', 'I', 'I', 'P', 'G', 'G', 'G', 'A', 'A', 'A', 'U', 'G', 'G', 'G', 'I', 'C', 'C', 'C', 'C', 'O'];
     nbackStimuli.stimuliListEasy_nback = ['C', 'C', 'G', 'G', 'G', 'I', 'A', 'E', 'A', 'E', 'A', 'O', 'O', 'P', 'P', 'E', 'P', 'O', 'G', 'O', 'G', 'C', 'B', 'A', 'C', 'C', 'I', 'I', 'I', 'G', 'Y', 'Y', 'Y', 'Y', 'C', 'Y', 'U', 'Y', 'U', 'K', 'I', 'K', 'U', 'Y', 'Y', 'Y', 'G', 'U', 'U', 'U', 'U', 'M', 'M', 'A', 'A', 'A', 'M', 'A', 'O', 'A', 'G', 'G', 'U'] // 20 1-back, 20 2-backs
-    
-    // Overall training stimuli: Full 20-letter sequence for 1-back training
-    // Visual n-back will be inserted after letter 10
-    // Letters 11-11 (first 1 after visual) count for incentives
-    nbackStimuli.practiceOverallListEasy_nback = [
-        'K', 'L', 'M', 'M', 'P', 'P', 'O', 'G', 'G', 'T',  // Letters 1-10 (before visual)
-        'T', 'A', 'U', 'Q', 'P', 'B', 'C', 'H', 'R', 'L'   // Letters 11-20 (after visual)
-    ]; // Letter 11 (T) matches letter 10 (T) for 1-back
-    nbackStimuli.practiceOverallListAfterVisual_nback = ['T', 'A', 'U', 'Q', 'P', 'B', 'C']; // keeping for compatibility
+    nbackStimuli.stimuliListEasyOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
+
   }
   
   function defineHard2Back() {
@@ -55,16 +50,7 @@ function setArrays (){
     nbackStimuli.stimuliListHard_span = ['U', 'U', 'Y', 'P', 'Y', 'P', 'Y', 'P', 'Y', 'I', 'B', 'I', 'I', 'I', 'C', 'K', 'K', 'I', 'Y', 'Y', 'G', 'A', 'G', 'G', 'G', 'Y', 'U', 'O', 'Y', 'K', 'O', 'K', 'K', 'Y', 'E', 'Y', 'E', 'Y', 'E', 'E', 'K', 'C', 'B', 'B', 'E', 'B', 'C', 'E', 'P', 'C', 'P', 'C', 'U', 'P', 'U', 'B', 'E', 'A', 'E', 'A', 'B', 'C', 'E'];
     nbackStimuli.practiceListHard_nback = ['A', 'A', 'Y', 'A', 'Y', 'G', 'G', 'G', 'O', 'G', 'O', 'G', 'O', 'K', 'O', 'K', 'I', 'O', 'I', 'I'];
     nbackStimuli.stimuliListHard_nback = ['M', 'P', 'M', 'M', 'P', 'U', 'C', 'C', 'U', 'K', 'P', 'G', 'P', 'G', 'K', 'U', 'G', 'O', 'O', 'G', 'G', 'G', 'O', 'C', 'M', 'C', 'B', 'B', 'C', 'B', 'I', 'O', 'I', 'O', 'I', 'O', 'I', 'O', 'O', 'A', 'I', 'O', 'I', 'A', 'I', 'A', 'E', 'A', 'E', 'B', 'U', 'B', 'U', 'I', 'I', 'U', 'U', 'U', 'B', 'A', 'I', 'E', 'U'];
-
-    // Overall training stimuli: Full 20-letter sequence for 2-back training
-    // Visual n-back will be inserted after letter 10
-    // Letters 11-12 (first 2 after visual) count for incentives
-    nbackStimuli.practiceOverallListHard_nback = [
-        'K', 'L', 'M', 'K', 'P', 'M', 'O', 'G', 'P', 'T',  // Letters 1-10 (before visual)
-        'O', 'G', 'U', 'Q', 'R', 'B', 'C', 'H', 'X', 'Y'   // Letters 11-20 (after visual)
-    ]; // Letter 11 (O) matches letter 9 (O), Letter 12 (G) matches letter 10 (G) for 2-back
-    nbackStimuli.practiceOverallListAfterVisual_nback = ['O', 'G', 'U', 'Q', 'P', 'B', 'C']; // keeping for compatibility
-
+    nbackStimuli.stimuliListHardOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
   }
   
   function defineHard3Back() {
@@ -75,16 +61,7 @@ function setArrays (){
     nbackStimuli.stimuliListHard_span = ['G', 'E', 'K', 'G', 'O', 'K', 'G', 'G', 'O', 'M', 'G', 'U', 'G', 'U', 'A', 'O', 'G', 'B', 'O', 'U', 'E', 'C', 'E', 'E', 'C', 'O', 'I', 'B', 'O', 'I', 'B', 'O', 'O', 'B', 'O', 'B', 'A', 'A', 'B', 'O', 'M', 'P', 'O', 'O', 'M', 'P', 'O', 'I', 'P', 'I', 'P', 'P', 'Y', 'Y', 'Y', 'O', 'P', 'U', 'O', 'P', 'O', 'Y', 'O'];
     nbackStimuli.practiceListHard_nback = ['G', 'M', 'G', 'G', 'M', 'G', 'G', 'M', 'A', 'G', 'G', 'A', 'G', 'G', 'A', 'M', 'M', 'M', 'I', 'G'];
     nbackStimuli.stimuliListHard_nback = ['K', 'P', 'G', 'E', 'K', 'G', 'E', 'O', 'C', 'G', 'O', 'O', 'P', 'O', 'A', 'C', 'C', 'A', 'Y', 'Y', 'A', 'Y', 'Y', 'B', 'A', 'P', 'I', 'B', 'E', 'O', 'B', 'Y', 'M', 'A', 'Y', 'M', 'M', 'Y', 'M', 'G', 'P', 'G', 'P', 'P', 'Y', 'M', 'A', 'M', 'B', 'M', 'P', 'B', 'M', 'M', 'B', 'M', 'E', 'M', 'M', 'I', 'G', 'I', 'I']
-
-    // Overall training stimuli: Full 20-letter sequence for 3-back training
-    // Visual n-back will be inserted after letter 10
-    // Letters 11-13 (first 3 after visual) count for incentives
-    nbackStimuli.practiceOverallListHard_nback = [
-        'K', 'L', 'M', 'K', 'P', 'M', 'K', 'G', 'P', 'T',  // Letters 1-10 (before visual)
-        'L', 'P', 'K', 'Q', 'U', 'B', 'C', 'H', 'X', 'Y'   // Letters 11-20 (after visual)
-    ]; // Letter 11 (L) matches letter 8 (L), Letter 12 (P) matches letter 9 (P), Letter 13 (K) matches letter 10 (T->K is wrong, but K matches letter 7) for 3-back
-    nbackStimuli.practiceOverallListAfterVisual_nback = ['K', 'G', 'P', 'Q', 'U', 'B', 'C']; // keeping for compatibility
-
+    nbackStimuli.stimuliListHardOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
   }
   
   /* 63 n-back stimuli: 10 before each target task (6 target tasks of 15 seconds each = 1min 30) + 3 at the end so participants are incentivized to keep the letters in mind for the last task. */

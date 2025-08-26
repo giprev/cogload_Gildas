@@ -13,6 +13,17 @@ function makeGridWithDot(index) {
     return html;
   }
 
+  function makeGridCache(index) {
+    let html = '<div class="grid">';
+    for (let i = 0; i < 9; i++) {
+      html += '<div class="cell">'; {
+        html += '<div class="dot"></div>';}
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
   // Make 9 different stimuli
   const st0 = makeGridWithDot(0);
   const st1 = makeGridWithDot(1);
@@ -23,6 +34,7 @@ function makeGridWithDot(index) {
   const st6 = makeGridWithDot(6);
   const st7 = makeGridWithDot(7);
   const st8 = makeGridWithDot(8);
+  const stCache = makeGridCache(0); // cache stimulus, no dot
 
 
 let  stimuliList_nbackVisual_practice = [st3, st3, st1, st5, st5, st4, st8, st4, st8, st8, st3, st7, st7, st5, st5, st4, st2, st4, st4, st1]; // 6 1-backs, 3 2-backs, no three consecutive letters(this line counted by myself)
@@ -43,6 +55,7 @@ let  stimuliList_nbackVisual_11 = [st6, st5, st5, st6, st6, st5, st6, st5, st6, 
 let  stimuliList_nbackVisual_12 = [st7, st3, st3, st5, st3, st3, st4, st3, st4, st4];
 
 let stimuli_nback_practice =[];
+let stimuli_nbackVisual_overall_training = [];
 let stimuli_nback_1 = [];
 let stimuli_nback_2 = [];
 let stimuli_nback_3 = [];

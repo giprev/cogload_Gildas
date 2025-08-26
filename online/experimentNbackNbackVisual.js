@@ -314,26 +314,13 @@ createBlocks(nbackStimuli.practiceListEasy_nback, nbackStimuli.stimuliPracticeEa
 createBlocks(nbackStimuli.stimuliListHard_nback, nbackStimuli.stimuliHard_nback, level)
 createBlocks(nbackStimuli.stimuliListEasy_nback, nbackStimuli.stimuliEasy_nback, 1)
 
-/* define timeline variables for overall training */
-let nbackStimuli_practiceOverallBefore = [];
-let nbackStimuli_practiceOverallAfter = [];
-let stimuli_nbackVisual_overallPractice = [];
+createBlocks(nbackStimuli.stimuliListHardOverallTraining, nbackStimuli.stimuliHardOverallTraining, level)
+createBlocks(nbackStimuli.stimuliListEasyOverallTraining, nbackStimuli.stimuliEasyOverallTraining, 1)
 
-if (level === 1) {
-    createBlocks(nbackStimuli.practiceOverallListEasy_nback, nbackStimuli_practiceOverallBefore, 1);
-    createBlocks(nbackStimuli.practiceOverallListAfterVisual_nback, nbackStimuli_practiceOverallAfter, 1);
-} else if (level === 2) {
-    createBlocks(nbackStimuli.practiceOverallListHard_nback, nbackStimuli_practiceOverallBefore, 2);
-    createBlocks(nbackStimuli.practiceOverallListAfterVisual_nback, nbackStimuli_practiceOverallAfter, 2);
-} else if (level === 3) {
-    createBlocks(nbackStimuli.practiceOverallListHard_nback, nbackStimuli_practiceOverallBefore, 3);
-    createBlocks(nbackStimuli.practiceOverallListAfterVisual_nback, nbackStimuli_practiceOverallAfter, 3);
-}
-
-createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overallPractice, 1);
 
 /* define timeline_variables for each visual nback (target task)*/
 console.log(stimuli_nback_1, "is stimuli_nback_1")
+createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overall_training, 1)
 createBlocksVisual(stimuliList_nbackVisual_practice, stimuli_nback_practice, 1)
 createBlocksVisual(stimuliList_nbackVisual_1, stimuli_nback_1, 1)
 createBlocksVisual(stimuliList_nbackVisual_2, stimuli_nback_2, 1)
@@ -369,18 +356,18 @@ var response_grid =
 
 const feedbackCorrect = {
   ... trialStructure,
-  stimulus: `<div style="font-size:40px; color: green; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.correct}</div>`,
+  stimulus: `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">+</div><div style="font-size:40px; color: green; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.correct}</div>`,
   choices: jsPsych.NO_KEYS,
   trial_duration: feedBackDuration,
   data: {test_part: 'feedback_nback'}
 }
 const feedbackWrong = { 
   ... feedbackCorrect, 
-  stimulus: `<div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.wrong}</div>` 
+  stimulus: `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">+</div><div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.wrong}</div>` 
 }
 const feedbackNo = { 
   ... feedbackCorrect, 
-  stimulus: `<div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.noResponse}</div>` 
+  stimulus: `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">+</div><div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.noResponse}</div>` 
 }
 
 /* define task trials for n-back*/
@@ -402,9 +389,9 @@ const testNback = {
   trial_duration: letterDuration,
   stimulus_duration: letterDuration,
   on_finish: function(data){
-    if (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard"){
+    if (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard" || data.block =='overall_training_hard' || data.block =='overall_training_easy'){
     nbackCounter ++};
-    // data.task = 'n-back';
+    // data.task = 'n-back';ffff
     if (data.correct_response == "f" && data.key_press == 70){
         data.correct_rejection = 1;
     } else {
@@ -431,6 +418,14 @@ const testNback = {
     console.log(nbackCounter, "is nbackCounter at the end of the nback trial")
   },
 }
+const visualCache = {
+  ... trialStructure,
+  stimulus: stCache,
+  choices: jsPsych.NO_KEYS,
+  response_ends_trial: false,
+  trial_duration: fixationDuration,
+  stimulus_duration: fixationDuration,
+}
 
 const afterBlock_nback = {
     ... trialStructure,
@@ -450,6 +445,17 @@ const nback_reset = {
     on_start: function () {
         console.log("nbackreset function starting, nbackCounter reset to 0")
         nbackCounter = 0;
+    }
+}
+
+const nback_and_subBlock_reset = {
+    ... trialStructure,
+    stimulus: "",
+    trial_duration:0,
+    on_start: function () {
+        console.log("nback_and_subBlock_reset function starting, nbackCounter reset to 0")
+        nbackCounter = 0;
+        subBlock = 0;
     }
 }
 
@@ -966,12 +972,13 @@ const flanker_12 = {
 
 
 const nbackVisual_practice = {
-    timeline: [fixation, testNback, feedBackC, feedBackN, feedBackW],
+    timeline: [visualCache, testNback, feedBackC, feedBackN, feedBackW],
     timeline_variables: stimuli_nback_practice,
 };
 
+
 const nbackVisual_1 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_1,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -985,7 +992,7 @@ const nbackVisual_1 = {
     }
 };
 const nbackVisual_2 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_2,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -998,7 +1005,7 @@ const nbackVisual_2 = {
     }
 };
 const nbackVisual_3 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_3,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1011,7 +1018,7 @@ const nbackVisual_3 = {
     }
 };
 const nbackVisual_4 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_4,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1024,7 +1031,7 @@ const nbackVisual_4 = {
     }
 };
 const nbackVisual_5 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_5,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1037,7 +1044,7 @@ const nbackVisual_5 = {
     }
 };
 const nbackVisual_6 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_6,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1050,7 +1057,7 @@ const nbackVisual_6 = {
     }
 };
 const nbackVisual_7 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_7,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1063,7 +1070,7 @@ const nbackVisual_7 = {
     }
 };
 const nbackVisual_8 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_8,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1076,7 +1083,7 @@ const nbackVisual_8 = {
     }
 };
 const nbackVisual_9 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_9,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1089,7 +1096,7 @@ const nbackVisual_9 = {
     }
 };
 const nbackVisual_10 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_10,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1102,7 +1109,7 @@ const nbackVisual_10 = {
     }
 };
 const nbackVisual_11 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_11,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1115,7 +1122,7 @@ const nbackVisual_11 = {
     }
 };
 const nbackVisual_12 = {
-    timeline: [fixation, testNback],
+    timeline: [visualCache, testNback],
     timeline_variables: stimuli_nback_12,
     conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
@@ -1132,6 +1139,204 @@ const nbackVisual_12 = {
 // const firstBlock = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliFirstBlock, timeline: [fixation, test, everyTenT] }
 // const secondBlock = { ... firstBlock, timeline_variables: nbackStimuli.stimuliSecondBlock }
 
+// const overallTrainingExplanation = {
+//     type: 'html-keyboard-response',
+//     stimulus: "hshs",
+    // function() { // to improve lisibility why not style="text-align: left;
+    //     return `<div style="max-width: 1200px">
+    //         <h2>${language.overallTrainingIntro.title}</h2>
+    //         <p>${language.overallTrainingIntro.description}</p>
+    //         <p>${language.overallTrainingIntro.structure}<br>
+    //     </div>`;
+    // }
+// };
+const overallTrainingExplanationEasy = {... trialStructure, stimulus: 
+    `<div style="max-width: 1200px">
+        <h2>${language.overallTrainingIntro.title}</h2>
+        <p>${language.overallTrainingIntro.description}</p>
+        <p>${language.overallTrainingIntro.structure}</p>
+        <p>${language.overallTrainingIntro.importance}</p>
+        <p>${language.overallTrainingIntro.feedback}</p>
+        <p>${language.overallTrainingIntro.highlightEasy}</p>
+        <p>${language.overallTrainingIntro.ready}</p><br>
+    </div>`,
+    on_start: function () {
+        subBlock = -1;
+    }
+}
+const overallTrainingExplanationHard = {... trialStructure, stimulus: 
+    `<div style="max-width: 1200px">
+        <h2>${language.overallTrainingIntro.title}</h2>
+        <p>${language.overallTrainingIntro.description}</p>
+        <p>${language.overallTrainingIntro.structure}</p>
+        <p>${language.overallTrainingIntro.importance}</p>
+        <p>${language.overallTrainingIntro.feedback}</p>
+        <p>${language.overallTrainingIntro.highlightHard.replace('{level}', level)}</p>
+        <p>${language.overallTrainingIntro.ready}</p><br>
+    </div>`,
+    on_start: function () {
+        subBlock = -1;
+    }
+}
+
+
+const overallTrainingHardFeedback = {
+    ...trialStructure,
+    type: "html-keyboard-response",
+    stimulus: function() {
+        // Get n-back level for the selected subBlock
+        let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock === -1;
+        }).select('level').values[0];
+        
+        // Get all trials and correct trials for visual nback
+        let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock == -1 && trial.task == "nbackVisual";
+        }).count();
+        
+        let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock == -1 && 
+                   (trial.hit === 1 || trial.correct_rejection === 1) && 
+                   trial.task == "nbackVisual" &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        let totalTrialsN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10;
+        }).count();
+
+        let corTrialsN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10 &&
+                   (trial.hit === 1 || trial.correct_rejection === 1) &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        let postVisualTrials = jsPsych.data.get()
+        .filterCustom(function(trial) {
+            console.log(trial.trial_number, "is trial.trial_number")
+            console.log(11 + nbackLevel, "is 11 + nbackLevel")
+            return trial.subBlock === -1 && 
+                   trial.task === "nback" &&
+                   trial.trial_number >= 11 && // 11 is the first letter nback trial after the visual one
+                   trial.trial_number < (11 + nbackLevel);
+        });
+
+        let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
+            console.log(postVisualTrials, "is postVisualTrials")
+            return (trial.hit === 1 || trial.correct_rejection === 1) &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        // Calculate accuracies as decimals (0-1 range instead of percentages)
+        let accuracyVN = corTrialsVN / totalTrialsVN;
+        let accuracyN = corTrialsN / totalTrialsN;
+        let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+
+        // Calculate total payment - weighted sum of accuracies
+        let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
+        // Round to 2 decimal places
+        totalPayment = Math.round(totalPayment * 100) / 100;
+
+        // Convert to percentages for display
+        let accuracyVNPercent = Math.round(accuracyVN * 100);
+        let accuracyNPercent = Math.round(accuracyN * 100);
+        let accuracyPostVisualPercent = Math.round(accuracyPostVisual * 100);
+
+        // Create stimulus with calculated values
+        return `<div style="max-width: 1200px">
+            <h2>${language.overallTrainingFeedback.title}</h2>
+            <p>${language.overallTrainingFeedback.performance}</p>
+            <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
+            <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVisualTrials).replace('{total}', postVisualTrials.count())}</p>
+            <p>${language.overallTrainingFeedback.keyImportanceHard.replace('{level}', nbackLevel)}</p>
+            <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
+            <p>${language.overallTrainingFeedback.rememberHard.replace('{level}', nbackLevel)}</p>
+            <p>${language.overallTrainingFeedback.continue}</p>
+        </div>`;
+    }
+};
+const overallTrainingEasyFeedback = {
+    ...trialStructure,
+    type: "html-keyboard-response",
+    stimulus: function() {
+        // Get n-back level for the selected subBlock
+        let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock === -1;
+        }).select('level').values[0];
+        
+        // Get all trials and correct trials for visual nback
+        let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock == -1 && trial.task == "nbackVisual";
+        }).count();
+        
+        let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.subBlock == -1 && 
+                   (trial.hit === 1 || trial.correct_rejection === 1) && 
+                   trial.task == "nbackVisual" &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        let totalTrialsN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10;
+        }).count();
+
+        let corTrialsN = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10 &&
+                   (trial.hit === 1 || trial.correct_rejection === 1) &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        let postVisualTrials = jsPsych.data.get()
+        .filterCustom(function(trial) {
+            console.log(trial.trial_number, "is trial.trial_number")
+            console.log(11 + nbackLevel, "is 11 + nbackLevel")
+            return trial.subBlock === -1 && 
+                   trial.task === "nback" &&
+                   trial.trial_number >= 11 && // 11 is the first letter nback trial after the visual one
+                   trial.trial_number < (11 + nbackLevel);
+        });
+
+        let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
+            console.log(postVisualTrials, "is postVisualTrials")
+            return (trial.hit === 1 || trial.correct_rejection === 1) &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        }).count();
+
+        // Calculate accuracies as decimals (0-1 range instead of percentages)
+        let accuracyVN = corTrialsVN / totalTrialsVN;
+        let accuracyN = corTrialsN / totalTrialsN;
+        let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+
+        // Calculate total payment - weighted sum of accuracies
+        let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
+        // Round to 2 decimal places
+        totalPayment = Math.round(totalPayment * 100) / 100;
+
+        // Convert to percentages for display
+        let accuracyVNPercent = Math.round(accuracyVN * 100);
+        let accuracyNPercent = Math.round(accuracyN * 100);
+        let accuracyPostVisualPercent = Math.round(accuracyPostVisual * 100);
+
+        // Create stimulus with calculated values
+        return `<div style="max-width: 1200px">
+            <h2>${language.overallTrainingFeedback.title}</h2>
+            <p>${language.overallTrainingFeedback.performance}</p>
+            <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
+            <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVisualTrials).replace('{total}', postVisualTrials.count())}</p>
+            <p>${language.overallTrainingFeedback.keyImportanceEasy}</p>
+            <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
+            <p>${language.overallTrainingFeedback.rememberEasy}</p>
+            <p>${language.overallTrainingFeedback.continue}</p>
+        </div>`;
+    }
+};
+
+
+
+
+
 
 const easyBlock_nbackVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_nback, timeline: [fixation, testNback, nbackVisual_1, nbackVisual_2, nbackVisual_3, nbackVisual_4, nbackVisual_5, nbackVisual_6] }
 const hardBlock_nbackVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHard_nback, timeline: [fixation, testNback, nbackVisual_7, nbackVisual_8, nbackVisual_9, nbackVisual_10, nbackVisual_11, nbackVisual_12] }
@@ -1140,15 +1345,29 @@ const practiceEasyBlock_nback_nback = { ... timelineElementStructure, timeline_v
 const practiceHardBlock_nback_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeHard_nback, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
 
 /* Overall training blocks */
-const overallTrainingBeforeVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli_practiceOverallBefore, timeline: [fixation, testNback] }
-const overallTrainingVisual = { timeline: [fixation, testNback], timeline_variables: stimuli_nbackVisual_overallPractice }
-const overallTrainingAfterVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli_practiceOverallAfter, timeline: [fixation, testNback] }
+const overallTrainingNbackVisual = { timeline: [visualCache, testNback], timeline_variables: stimuli_nbackVisual_overall_training, conditional_function: function() {
+        if (nbackCounter > 0 && nbackCounter % 10 === 0) {
+            timeout = 0;
+        }
+        return nbackCounter === 10;
+    } }
+const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual] }
+const overallTrainingEasy_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasyOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual] }
+
+const hardBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingHard_nback, overallTrainingNbackVisual] }
+const easyBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingEasy_nback, overallTrainingNbackVisual] }
+
+const overallTrainingHard = { ...timelineElementStructure, timeline: [overallTrainingExplanationHard, hardBlock_overallTraining, overallTrainingHardFeedback, nback_and_subBlock_reset] }
+const overallTrainingEasy = { ...timelineElementStructure, timeline: [overallTrainingExplanationEasy, easyBlock_overallTraining, overallTrainingEasyFeedback, nback_and_subBlock_reset] }
+
 
 const practiceEasyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeEasy_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
 const practiceHardBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeHard_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW] }
 
 const easyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_flanker, timeline: [fixation, testNback, flanker_1, flanker_2, flanker_3, flanker_4, flanker_5, flanker_6] }
 const hardBlock_nback_flanker = { ... easyBlock_nback_flanker, timeline_variables: nbackStimuli.stimuliHard_flanker,timeline: [fixation, testNback, flanker_7, flanker_8, flanker_9, flanker_10, flanker_11, flanker_12] }
+
+
 
 const paymentExplanationEasyTrialFirst = {
     type: "html-keyboard-response",
@@ -1191,74 +1410,7 @@ const paymentExplanationHardTrialSecond = {
     }
 };
 
-/* Overall training instructions and feedback */
-const overallTrainingInstructions = {
-    type: "html-keyboard-response",
-    stimulus: function() {
-        let instructionLevel = level === 1 ? "1-back" : level === 2 ? "2-back" : "3-back";
-        return `<div style="max-width: 1200px">
-            <h2>${language.overallTraining.title}</h2>
-            <p>${language.overallTraining.description}</p>
-            <p>${language.overallTraining.structure}</p>
-            <p>You will be practicing the <strong>${instructionLevel}</strong> task, which is the same level as your first block.</p>
-            <p>${language.overallTraining.importance}</p>
-            <p>${language.overallTraining.feedback}</p>
-            <p style="color: red; font-weight: bold;">${language.overallTraining.highlight}</p>
-            <p>${language.overallTraining.ready}</p>
-        </div>`;
-    },
-    choices: jsPsych.ALL_KEYS
-};
 
-const overallTrainingFeedback = {
-    type: "html-keyboard-response",
-    stimulus: function() {
-        // Calculate performance for each segment
-        let beforeVisualDataEasy = jsPsych.data.get().filter({block: 'practice_overall_easy'});
-        let beforeVisualDataHard = jsPsych.data.get().filter({block: 'practice_overall_hard'});
-        let visualData = jsPsych.data.get().filter({block: 'nbackVisual_overall_practice'});
-        let afterVisualData = jsPsych.data.get().filter({block: 'practice_overall_after_visual'});
-        
-        // Calculate accuracies
-        let beforeVisualEasyAcc = beforeVisualDataEasy.count() > 0 ? 
-            (beforeVisualDataEasy.filter({hit: 1}).count() + beforeVisualDataEasy.filter({correct_rejection: 1}).count()) / beforeVisualDataEasy.count() : 0;
-        let beforeVisualHardAcc = beforeVisualDataHard.count() > 0 ? 
-            (beforeVisualDataHard.filter({hit: 1}).count() + beforeVisualDataHard.filter({correct_rejection: 1}).count()) / beforeVisualDataHard.count() : 0;
-        let beforeVisualTotalCount = beforeVisualDataEasy.count() + beforeVisualDataHard.count();
-        let beforeVisualCorrectCount = beforeVisualDataEasy.filter({hit: 1}).count() + beforeVisualDataEasy.filter({correct_rejection: 1}).count() + 
-                                     beforeVisualDataHard.filter({hit: 1}).count() + beforeVisualDataHard.filter({correct_rejection: 1}).count();
-        let beforeVisualAcc = beforeVisualTotalCount > 0 ? Math.round(beforeVisualCorrectCount / beforeVisualTotalCount * 100) : 0;
-        let visualAcc = visualData.count() > 0 ? 
-            Math.round((visualData.filter({hit: 1}).count() + visualData.filter({correct_rejection: 1}).count()) / visualData.count() * 100) : 0;
-        let afterVisualAcc = afterVisualData.count() > 0 ? 
-            Math.round((afterVisualData.filter({hit: 1}).count() + afterVisualData.filter({correct_rejection: 1}).count()) / afterVisualData.count() * 100) : 0;
-        
-        // Calculate hypothetical bonus
-        let bonusCalc = payment * (0.5 * (afterVisualAcc/100) + 0.25 * (visualAcc/100) + 0.25 * (beforeVisualAcc/100));
-        
-        return `<div style="max-width: 1200px">
-            <h2>${language.overallTrainingFeedback.title}</h2>
-            <p>${language.overallTrainingFeedback.performance}</p>
-            <ul>
-                <li>${language.overallTrainingFeedback.beforeVisual.replace('{accuracy}', beforeVisualAcc).replace('{correct}', beforeVisualCorrectCount).replace('{total}', beforeVisualTotalCount)}</li>
-                <li>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', visualAcc).replace('{correct}', visualData.filter({hit: 1}).count() + visualData.filter({correct_rejection: 1}).count()).replace('{total}', visualData.count())}</li>
-                <li>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', afterVisualAcc).replace('{correct}', afterVisualData.filter({hit: 1}).count() + afterVisualData.filter({correct_rejection: 1}).count()).replace('{total}', afterVisualData.count())}</li>
-            </ul>
-            <p style="color: red; font-weight: bold;">${language.overallTrainingFeedback.keyImportance}</p>
-            <p style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
-                ${language.overallTrainingFeedback.calculation
-                    .replace('{payment}', payment)
-                    .replace('{afterVisualAcc}', (afterVisualAcc/100).toFixed(2))
-                    .replace('{visualAcc}', (visualAcc/100).toFixed(2))
-                    .replace('{letterAcc}', (beforeVisualAcc/100).toFixed(2))
-                    .replace('{totalBonus}', bonusCalc.toFixed(2))}
-            </p>
-            <p style="color: blue; font-weight: bold;">${language.overallTrainingFeedback.remember}</p>
-            <p>${language.overallTrainingFeedback.continue}</p>
-        </div>`;
-    },
-    choices: jsPsych.ALL_KEYS
-};
 
 
 let experimentBlocks_nback_nback = [];
@@ -1308,184 +1460,22 @@ if (Math.random() < 0.5) {
     // Insert overall training after payment explanation (hard first)
     // Hard level can be 2-back or 3-back - use the global level variable
     const trainingLevel = level || 2; // Use global level or default to 2
-    practiceAndTestHard_nback_nback.timeline.splice(5, 0, createOverallTraining(trainingLevel));
+    practiceAndTestHard_nback_nback.timeline.splice(5, 0, overallTrainingHard);
 } else {
     experimentBlocks_nback_nback = [practiceAndTestEasy_nback_nback, practiceAndTestHard_nback_nback];
     practiceAndTestEasy_nback_nback.timeline.splice(4, 0, paymentExplanationEasyTrialFirst);
     practiceAndTestHard_nback_nback.timeline.splice(4, 0, paymentExplanationHardTrialSecond);
     // Insert overall training after payment explanation (easy first, so level 1)
     const trainingLevel = 1; // Easy level is always 1-back
-    practiceAndTestEasy_nback_nback.timeline.splice(5, 0, createOverallTraining(trainingLevel));
+    practiceAndTestEasy_nback_nback.timeline.splice(5, 0, overallTrainingEasy);
 }
-
-/* Dynamic Overall Training Function */
-function createOverallTraining(level) {
-    // Determine which stimuli to use based on level
-    let stimuliArray;
-    let blockName;
-    if (level === 1) {
-        stimuliArray = nbackStimuli.practiceOverallListEasy_nback;
-        blockName = 'practice_overall_easy';
-    } else {
-        stimuliArray = nbackStimuli.practiceOverallListHard_nback;
-        blockName = 'practice_overall_hard';
-    }
-    
-    // Use the full 20-letter sequence from stimuli
-    let fullSequence = [...stimuliArray]; // Full 20-letter sequence
-    
-    // Split into before (letters 1-10) and after (letters 11-20) visual segments
-    let beforeVisual = fullSequence.slice(0, 10);
-    let afterVisual = fullSequence.slice(10, 20);
-    
-    // Create timeline variables for before visual (letters 1-10)
-    let beforeVisualVars = beforeVisual.map((stimulus, index) => ({
-        stimulus: stimulus,
-        data: {
-            block: blockName,
-            trial_type: 'nback',
-            trial_index: index,
-            stimulus: stimulus,
-            correct_response: getCorrectResponse(stimulus, fullSequence, index, level),
-            block_type: 'practice_overall_before'
-        }
-    }));
-    
-    // Create timeline variables for after visual (letters 11-20)
-    // The first `level` letters after visual count for incentives
-    let afterVisualVars = afterVisual.map((stimulus, index) => ({
-        stimulus: stimulus,
-        data: {
-            block: index < level ? 'practice_overall_after_visual' : 'practice_overall_after_filler',
-            trial_type: 'nback',
-            trial_index: index + 10, // Continue counting from before visual
-            stimulus: stimulus,
-            correct_response: getCorrectResponse(stimulus, fullSequence, index + 10, level),
-            block_type: index < level ? 'practice_overall_after' : 'practice_overall_filler'
-        }
-    }));
-    
-    // Training timeline components
-    const trainingBeforeVisual = { 
-        ...timelineElementStructure, 
-        timeline_variables: beforeVisualVars, 
-        timeline: [fixation, testNback] 
-    };
-    
-    const trainingVisual = { 
-        timeline: [fixation, testNback], 
-        timeline_variables: stimuli_nbackVisual_overallPractice 
-    };
-    
-    const trainingAfterVisual = { 
-        ...timelineElementStructure, 
-        timeline_variables: afterVisualVars, 
-        timeline: [fixation, testNback] 
-    };
-    
-    const trainingInstructions = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            return `<div style="max-width: 1200px">
-                <h2>${language.overallTraining.title}</h2>
-                <p>${language.overallTraining.description}</p>
-                <p>${language.overallTraining.structure}</p>
-                <p><strong>Level: ${level}-back</strong></p>
-                <p>${language.overallTraining.importance}</p>
-                <p>${language.overallTraining.feedback}</p>
-                <p style="color: red; font-weight: bold;">${language.overallTraining.highlight.replace('{level}', level)}</p>
-                <p>${language.overallTraining.ready}</p>
-            </div>`;
-        },
-        choices: [' ']
-    };
-    
-    const trainingFeedback = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            // Calculate performance for each segment
-            let beforeVisualData = jsPsych.data.get().filter({block_type: 'practice_overall_before'});
-            let visualData = jsPsych.data.get().filter({block: 'nbackVisual_overall_practice'});
-            let afterVisualData = jsPsych.data.get().filter({block_type: 'practice_overall_after'});
-            
-            // Calculate accuracies
-            let beforeVisualAcc = beforeVisualData.count() > 0 ? 
-                Math.round((beforeVisualData.filter({hit: 1}).count() + beforeVisualData.filter({correct_rejection: 1}).count()) / beforeVisualData.count() * 100) : 0;
-            let visualAcc = visualData.count() > 0 ? 
-                Math.round((visualData.filter({hit: 1}).count() + visualData.filter({correct_rejection: 1}).count()) / visualData.count() * 100) : 0;
-            let afterVisualAcc = afterVisualData.count() > 0 ? 
-                Math.round((afterVisualData.filter({hit: 1}).count() + afterVisualData.filter({correct_rejection: 1}).count()) / afterVisualData.count() * 100) : 0;
-            
-            // Calculate hypothetical bonus
-            let bonusCalc = payment * (0.5 * (afterVisualAcc/100) + 0.25 * (visualAcc/100) + 0.25 * (beforeVisualAcc/100));
-            
-            return `<div style="max-width: 1200px">
-                <h2>${language.overallTrainingFeedback.title}</h2>
-                <p>${language.overallTrainingFeedback.performance}</p>
-                <ul>
-                    <li>${language.overallTrainingFeedback.beforeVisual.replace('{accuracy}', beforeVisualAcc).replace('{correct}', beforeVisualData.filter({hit: 1}).count() + beforeVisualData.filter({correct_rejection: 1}).count()).replace('{total}', beforeVisualData.count())}</li>
-                    <li>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', visualAcc).replace('{correct}', visualData.filter({hit: 1}).count() + visualData.filter({correct_rejection: 1}).count()).replace('{total}', visualData.count())}</li>
-                    <li>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', afterVisualAcc).replace('{correct}', afterVisualData.filter({hit: 1}).count() + afterVisualData.filter({correct_rejection: 1}).count()).replace('{total}', afterVisualData.count())}</li>
-                </ul>
-                <p style="color: red; font-weight: bold;">${language.overallTrainingFeedback.keyImportance.replace('{level}', level)}</p>
-                <p style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
-                    ${language.overallTrainingFeedback.calculation
-                        .replace('{payment}', payment)
-                        .replace('{afterVisualAcc}', (afterVisualAcc/100).toFixed(2))
-                        .replace('{visualAcc}', (visualAcc/100).toFixed(2))
-                        .replace('{letterAcc}', (beforeVisualAcc/100).toFixed(2))
-                        .replace('{totalBonus}', bonusCalc.toFixed(2))}
-                </p>
-                <p style="color: blue; font-weight: bold;">${language.overallTrainingFeedback.remember}</p>
-                <p>${language.overallTrainingFeedback.continue}</p>
-            </div>`;
-        },
-        choices: [' ']
-    };
-    
-    return {
-        timeline: [
-            trainingInstructions,
-            trainingBeforeVisual,
-            betweenBlockRest,
-            trainingVisual,
-            betweenBlockRest,
-            trainingAfterVisual,
-            trainingFeedback
-        ],
-        repetitions: 1,
-        randomize_order: false
-    };
-}
-
-// Helper function to determine correct response based on n-back level
-function getCorrectResponse(currentStimulus, fullSequence, currentIndex, level) {
-    if (currentIndex < level) {
-        return 'no'; // Can't have n-back match if index is less than n
-    }
-    let targetStimulus = fullSequence[currentIndex - level];
-    return currentStimulus === targetStimulus ? 'yes' : 'no';
-}
-
-/* Original Overall training (will be replaced by dynamic version) */
-const overallTraining = {
-    timeline: [
-        overallTrainingInstructions,
-        overallTrainingBeforeVisual,
-        betweenBlockRest,
-        overallTrainingVisual,
-        betweenBlockRest,
-        overallTrainingAfterVisual,
-        overallTrainingFeedback
-    ],
-    repetitions: 1,
-    randomize_order: false
-};
 
 const experiment_nback_nback = {
-    timeline: experimentBlocks_nback_nback,  
+    timeline: experimentBlocks_nback_nback,
     randomize_order: true,
-};
+}
+
+
 
 
 /* timelines flanker */
@@ -1527,7 +1517,8 @@ const debriefBlock = {
       return (trial.block === 1 || trial.block === 2) && trial.test_part === "test";
   }); 
     let correct_trials = trials.filterCustom(function(trial){
-      return trial.hit === 1 || trial.correct_rejection === 1;
+      return (trial.hit === 1 || trial.correct_rejection === 1) &&
+             trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
   })
     let accuracy = Math.round(correct_trials.count()/trials.count() * 100);
     let rt = Math.round(correct_trials.select('rt').mean());
@@ -1572,7 +1563,8 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
             return trial.subBlock == subBlockInteger && 
                    (trial.hit === 1 || trial.correct_rejection === 1) && 
-                   trial.task == "nbackVisual";
+                   trial.task == "nbackVisual" &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
 
         // Get all trials and correct trials for classic nback
@@ -1592,7 +1584,8 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
                     (subBlockInteger === totSubBlocks && trial.subBlock === (lastSubBlockOfFirstBlock +1)) ||
                     (subBlockInteger === lastSubBlockOfFirstBlock && trial.subBlock === 0 && (trial.block === main_easy || trial.block === main_hard))
                 ) &&
-                (trial.hit === 1 || trial.correct_rejection === 1);
+                (trial.hit === 1 || trial.correct_rejection === 1) &&
+                trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
 
 
@@ -1614,7 +1607,8 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         });
 
         let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
-            return (trial.hit === 1 || trial.correct_rejection === 1);
+            return (trial.hit === 1 || trial.correct_rejection === 1) &&
+                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
 
         // Calculate accuracies as decimals (0-1 range instead of percentages)
@@ -1741,7 +1735,7 @@ randomize_order: true,
 /* main timeline */ 
 
 jsPsych.data.addProperties({subject: subjectId});
-timeline.push(welcome, /*overviewPage, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice,*/ experiment_nback_nback,/* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker,*/ debriefBlock, incentives, {type: "fullscreen", fullscreen_mode: false});
+timeline.push( {type: "fullscreen", fullscreen_mode: false}, welcome, overviewPage, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock, incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
