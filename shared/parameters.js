@@ -1,7 +1,7 @@
 const level = 2; //available levels: 0, 1, 2, 3
 const fixationDuration = 500;
 const letterDuration = 1500;
-const feedBackDuration = 200; // 1000
+const feedBackDuration = 1000; // 1000
 const payment = 10; // Payment amount
 
 // Change default language to French

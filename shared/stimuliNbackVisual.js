@@ -26,6 +26,9 @@ function makeGridWithDot(index) {
 
 
 let  stimuliList_nbackVisual_practice = [st3, st3, st1, st5, st5, st4, st8, st4, st8, st8, st3, st7, st7, st5, st5, st4, st2, st4, st4, st1]; // 6 1-backs, 3 2-backs, no three consecutive letters(this line counted by myself)
+
+let stimuliList_nbackVisualOverallPractice= [st6, st6, st2, st6, st2, st6, st6, st8, st3, st3]; // Overall training visual stimuli: 3 1-backs, 2 2-backs
+
 let  stimuliList_nbackVisual_1 = [st5, st5, st1, st5, st1, st5, st4, st4, st1, st1]; // 3 1-backs, 3 2-backs, no three consecutive letters
 let  stimuliList_nbackVisual_2 = [st6, st6, st4, st6, st4, st4, st2, st2, st6, st2];
 let  stimuliList_nbackVisual_3 = [st2, st2, st8, st2, st8, st2, st3, st3, st5, st5]; 

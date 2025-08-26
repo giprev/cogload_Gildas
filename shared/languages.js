@@ -31,7 +31,7 @@ const en = {
     instructions1back: {
         letter: "In this task, <strong>letters</strong> will appear on the screen consecutively.",
         changeN: "Now you will switch to a different n-back level.",
-        grid: "In this task, <strong> dots on a grid </strong> will appear on the screen consecutively.",
+        grid: "In this task, <strong>a dot appears in one of the squares of a grid</strong> on each presentation.",
         yourTask1: "Your task will be <strong>to press the key 'J' if the letter on the screen is the same as the <strong style='color:red'>previous</strong> one</strong>.",
         yourTask1Grid: "Your task will be <strong>to press the key 'J' if the location of the dot on the screen is the same as the <strong style='color:red'>previous</strong> one</strong>.",
         yourTask2: "Otherwise, press the <strong>key 'F'</strong>.",
@@ -314,7 +314,7 @@ const fr = {
     instructions1back: {
         letter: "Dans cette tâche, des <strong>lettres</strong> apparaîtront à l'écran consécutivement.",
         changeN: "Maintenant, vous allez passer à un niveau n-back différent.",
-        grid: "Dans cette tâche, des <strong>points sur une grille</strong> apparaîtront à l'écran consécutivement.",
+        grid: "Dans cette tâche, un <strong>point apparaît dans l'une des cases d'une grille</strong> à chaque présentation.",
         yourTask1: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si la lettre à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
         yourTask1Grid: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si la position du point à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
         yourTask2: "Sinon, appuyez sur la <strong>touche 'F'</strong>.",

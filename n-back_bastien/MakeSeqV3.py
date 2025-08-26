@@ -16,7 +16,6 @@ def MakeSeqV3(nback, lseq):
             temp = random.randint(1, 12)
             if temp not in index:
                 index.append(temp)
-
         # Étape 2: Ajouter deux fois les mêmes cibles pour en avoir 3 fois
         temp2 = random.sample(range(1, 13), 12)  # permutation aléatoire des 12 items
         index = index + index + index + temp2[:lseq % 3] # répétition des 12 items et remplissages avec des lettres au hasard si besoin

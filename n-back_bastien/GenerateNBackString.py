@@ -1,12 +1,12 @@
 import random
 
 def generate_nback_string(nback, block_triples=False):
-    lseq = 10
-    ntarget = 3
-    nplus1 = 3
-    # nminus1 = 2
-    letters = ['st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
-    # letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
+    lseq = 20
+    ntarget = 7
+    nplus1 = 5
+    # nminus1 = 0
+    # letters = ['st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
+    letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
 
     while True:
         seq = [random.choice(letters) for _ in range(lseq)]
@@ -24,7 +24,7 @@ def generate_nback_string(nback, block_triples=False):
         for pos in plus1_positions:
             seq[pos] = seq[pos - (nback + 1)]
 
-        # # Place N-1-back targets (avoid overlap with n-back and N+1-back targets)
+        # Place N-1-back targets (avoid overlap with n-back and N+1-back targets)
         # available_minus1 = [i for i in range(nback-1, lseq) if i not in positions and i not in plus1_positions and (i-nback+1) >= 0]
         # if len(available_minus1) < nminus1:
         #     continue
@@ -47,32 +47,35 @@ def generate_nback_string(nback, block_triples=False):
             return seq
 
 def analyze_nback(seq, nback):
-    one_back_positions = []
+    nback_positions = []
     nplus1_positions = []
     nminus1_positions = []
 
     # n-back
     for i in range(nback, len(seq)):
         if seq[i] == seq[i-nback]:
-            one_back_positions.append(i)
+            nback_positions.append(i)
     # N+1-back
     for i in range(nback+1, len(seq)):
         if seq[i] == seq[i-(nback+1)]:
             nplus1_positions.append(i)
-    # N-1-back
-    for i in range(nback-1, len(seq)):
-        if seq[i] == seq[i-(nback-1)]:
-            nminus1_positions.append(i)
+    # N-1-back (only if nback > 1)
+    if nback > 1:
+        for i in range(nback-1, len(seq)):
+            if seq[i] == seq[i-(nback-1)]:
+                nminus1_positions.append(i)
 
     print(f"Sequence: {''.join(seq)}")
-    print(f"\n{nback}-back targets: {len(one_back_positions)} at positions {one_back_positions}")
+    print(f"\n{nback}-back targets: {len(nback_positions)} at positions {nback_positions}")
     print(f"{nback+1}-back matches: {len(nplus1_positions)} at positions {nplus1_positions}")
-    print(f"{nback-1}-back matches: {len(nminus1_positions)} at positions {nminus1_positions}")
+    if nback > 1:
+        print(f"{nback-1}-back matches: {len(nminus1_positions)} at positions {nminus1_positions}")
 
-    return one_back_positions, nplus1_positions, nminus1_positions
+    return nback_positions, nplus1_positions, nminus1_positions
 
 ex = generate_nback_string(1, block_triples=True)
+
 print(ex)
-print(analyze_nback(ex, 2))
+print(analyze_nback(ex, 1))  # Changed from 2 to 1
 
 

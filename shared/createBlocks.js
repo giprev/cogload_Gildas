@@ -30,6 +30,12 @@ function createBlocks(list, stimuli, level){
       block = "practice_easy"
     } else if (list === nbackStimuli.practiceListHard_flanker || list === nbackStimuli.practiceListHard_span || list === nbackStimuli.practiceListHard_nback) {
       block = "practice_hard"
+    } else if (list === nbackStimuli.practiceOverallListEasy_nback) {
+      block = "practice_overall_easy"
+    } else if (list === nbackStimuli.practiceOverallListHard_nback) {
+      block = "practice_overall_hard"
+    } else if (list === nbackStimuli.practiceOverallListAfterVisual_nback) {
+      block = "practice_overall_after_visual"
     } else {
       block = "practice or error for letter nback"
       console.log("Block assignment error for list:", list)
@@ -87,6 +93,8 @@ function createBlocksVisual(list, stimuli, level){
       block = "nbackVisual_hard11"}
     else if (list == stimuliList_nbackVisual_12){
       block = "nbackVisual_hard12"}
+    else if (list == stimuliList_nbackVisualOverallPractice){
+      block = "nbackVisual_overall_practice"}
     else {block = "practice or error for visual nback"}
 
     // console.log(list[i], "is list[i]")
