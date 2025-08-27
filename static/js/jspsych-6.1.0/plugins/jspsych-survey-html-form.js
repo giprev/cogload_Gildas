@@ -13,7 +13,7 @@ jsPsych.plugins['survey-html-form'] = (function() {
   var plugin = {};
 
   plugin.info = {
-    name: 'survey-html-form',
+    name: 'survey-multi-choice',
     description: '',
     parameters: {
       html: {

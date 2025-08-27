@@ -34,6 +34,7 @@ const en = {
         grid: "In this task, <strong>a dot appears in one of the squares of a grid</strong> on each presentation.",
         yourTask1: "Your task will be <strong>to press the key 'J' if the letter on the screen is the same as the <strong style='color:red'>previous</strong> one</strong>.",
         yourTask1Grid: "Your task will be <strong>to press the key 'J' if the location of the dot on the screen is the same as the <strong style='color:red'>previous</strong> one</strong>.",
+        firstGrids: "At the first point of a series of presentations, you must press 'F'.",
         yourTask2: "Otherwise, press the <strong>key 'F'</strong>.",
         image: "<img src='static/images/instruction_1back_en.gif' />",
         liveDemo: nbackDemoHTML('nback-demo'),
@@ -299,6 +300,57 @@ const en = {
         calculation: "Bonus calculation: €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
         remember: "Remember: Always keep the last few letters in mind during the visual task!",
         continue: "Press any key to continue to the main experiment."
+    },
+
+    // New: comprehension check (English)
+    comprehensionIntro: "Before starting the experiment, you must answer a few comprehension questions correctly.",
+    comprehension: {
+        q1: {
+            prompt: "Question 1: Please select the correct answer:",
+            options: [
+                "I am paid based on the average of my accuracy across all trials (100% of the bonus).",
+                "I am paid independently of my accuracy (100% of the bonus).",
+                "I am paid based on the letter n-back only for one sub-block of the experiment.",
+                "I am paid based on my accuracy on the visual n-back (25% of the bonus), my accuracy on the following letter n-back (25% of the bonus) and my accuracy on the first three letters of the letter n-back in particular (50% of the bonus), for one sub-block randomly selected among the 12 sub-blocks of the experiment."
+            ]
+        },
+        q2: {
+            prompt: "Question 2: I start a visual n-back. The dot is in the same position as the last dot of the previous visual n-back. Which key should I press?",
+            options: [
+                "The 'F' key.",
+                "The 'J' key.",
+                "The Space key."
+            ]
+        },
+        q3Hard: {
+            prompt: "Question 3: I have just finished a visual n-back. Before it, the last three letters I saw were A O I. The letter A appears. Which key should I press?",
+            options: [
+                "The 'F' key.",
+                "The 'J' key.",
+                "The Space key."
+            ]
+        },
+        q3Easy: {
+            prompt: "Question 3: I have just finished a visual n-back. Before it, the last letter I saw was A. The letter A appears. Which key should I press?",
+            options: [
+                "The 'F' key.",
+                "The 'J' key.",
+                "The Space key."
+            ]
+        },
+        // correct answers as option strings (used for checking)
+        correct_answers: {
+            q1: "I am paid based on the letter n-back only for one sub-block of the experiment.",
+            q2: "The 'F' key.",
+            q3: "The 'J' key."
+        },
+        tryAgain: "One or more answers are incorrect. Please review the instructions and try again.",
+        success: "All answers are correct. Press any key to continue."
+    },
+    loopAgain: {
+        failed: "You have responded incorrectly to at least one of the questions.",
+        viewInstructions: "Next you are going to view the instructions again.",
+        surveyAgain: "Then you will take the survey again.",
     }
 }
 
@@ -339,6 +391,7 @@ const fr = {
         grid: "Dans cette tâche, un <strong>point apparaît dans l'une des cases d'une grille</strong> à chaque présentation.",
         yourTask1: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si la lettre à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
         yourTask1Grid: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si la position du point à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
+        firstGrids: "Pour le premier point d'une série de présentations, vous devez appuyer sur 'F'.",
         yourTask2: "Sinon, appuyez sur la <strong>touche 'F'</strong>.",
         image: "<img src='static/images/instruction_1back_en.gif' />",
         liveDemo: nbackDemoHTML('nback-demo'),
@@ -401,19 +454,19 @@ const fr = {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
         remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
-        press: "Appuyez sur n'importe quelle touche pour commencer la tâche !",
+        press: "Appuyez sur n'importe quelle touche pour continuer.",
     },
     task2back: {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
         remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>deux</strong> lettres.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
-        press: "Appuyez sur n'importe quelle touche pour commencer la tâche !",
+        press: "Appuyez sur n'importe quelle touche pour pour continuer.",
     },
     task3back: {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
         remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>trois</strong> lettres.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
-        press: "Appuyez sur n'importe quelle touche pour commencer la tâche !",
+        press: "Appuyez sur n'importe quelle touche pour pour continuer.",
     },
     parameters: {
         subject: "Numéro du Sujet :",
@@ -434,7 +487,7 @@ const fr = {
         paymentExplanation: "Votre paiement est basé sur votre performance :\n- 50% sur les essais après le n-back visuel (${accuracyPostVisual})\n- 25% sur le n-back visuel (${accuracyVN})\n- 25% sur le n-back lettres (${accuracyN})",
         totalPayment: "Votre bonus total sera de : ${totalPayment}€",
         thankYou: "Merci de votre participation à cette expérience !",
-        redirect: "Nous allons maintenant vous rediriger vers la page de fin.",
+        redirect: "",
         continue: "Appuyez sur Entrée pour continuer"
     },
     paymentExplanation1Back: {
@@ -598,14 +651,72 @@ const fr = {
         afterVisual: "Lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
         keyImportanceHard: "💡 Point clé : Les {level} premières lettres immédiatement après le n-back visuel valent 50% de votre bonus !",
         keyImportanceEasy: "💡 Point clé : La dernière lettre immédiatement après le n-back visuel vaut 50% de votre bonus !",
-        calculation: "Calcul du bonus : €{payment} × (0,5 × {afterVisualAcc} + 0,25 × {visualAcc} + 0,25 × {letterAcc}) = €{totalBonus}",
+        calculation: "Calcul du bonus : €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
         rememberHard: "À retenir : Gardez toujours en mémoire les {level} dernières lettres pendant le n-back visuel!",
         rememberEasy: "À retenir : Gardez toujours en mémoire la dernière lettre pendant le n-back visuel!",
         continue: "Appuyez sur n'importe quelle touche pour continuer vers l'expérience principale."
+    },
+
+    // New: comprehension check (French)
+    comprehensionIntro: "Avant de commencer l’expérience, vous devez répondre correctement à quelques questions de compréhension.",
+    comprehension: {
+        q1Hard: {
+            prompt: "Veuillez sélectionner la bonne réponse:",
+            options: [
+                "Je suis payé en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
+                "Je suis payé indépendamment de ma précision (100% du bonus).",
+                "Je suis payé en fonction du n-back lettres uniquement pour un sous-bloc sélectionné au hasard parmi les 12 de l’expérience.",
+                "Je suis payé en fonction de ma précision sur le n-back visuel (25% du bonus), ma précision sur le n-back lettres suivant (25% du bonus) et ma précision sur les trois premières lettres du n-back lettres en particulier (50% du bonus ), pour un sous-bloc sélectionné au hasard parmi les 12 de l’expérience."
+            ]
+        },
+        q1Easy: {
+            prompt: "Veuillez sélectionner la bonne réponse:",
+            options: [
+                "Je suis payé en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
+                "Je suis payé indépendamment de ma précision (100% du bonus).",
+                "Je suis payé en fonction du n-back lettres uniquement pour un sous-bloc sélectionné au hasard parmi les 12 de l’expérience.",
+                "Je suis payé en fonction de ma précision sur le n-back visuel (25% du bonus), ma précision sur le n-back lettres suivant (25% du bonus) et ma précision sur la première lettre du n-back lettres (50% du bonus ), pour un sous-bloc sélectionné au hasard parmi les 12 de l’expérience."
+            ]
+        },
+        q2: {
+            prompt: "Je commence un n-back visuel. Le point est à la même position que le dernier point du dernier n-back visuel. Sur quelle touche dois-je appuyer ?",
+            options: [
+                "La touche “F”.",
+                "La touche “J”.",
+                "La touche “espace”."
+            ]
+        },
+        q3Hard: {
+            prompt: "Je viens de terminer un n-back visuel. Avant lui, les trois dernières lettres que j’ai vues étaient A O I. La lettre A apparaît. Sur quelle touche dois-je appuyer ?",
+            options: [
+                "La touche “F”.",
+                "La touche “J”.",
+                "La touche “espace”."
+            ]
+        },
+        q3Easy: {
+            prompt: "Je viens de terminer un n-back visuel. Avant lui, la dernière lettre que j’ai vue était I. La lettre I apparaît. Sur quelle touche dois-je appuyer ?",
+            options: [
+                "La touche “F”.",
+                "La touche “J”.",
+                "La touche “espace”."
+            ]
+        },
+        correct_answers: {
+            q1: "Je suis payé en fonction du n-back lettres uniquement pour un sous-bloc de l’expérience.",
+            q2: "La touche “F”.",
+            q3: "La touche “J”."
+        },
+        tryAgain: "Une ou plusieurs réponses sont incorrectes. Veuillez relire les consignes et réessayer.",
+        success: "Toutes les réponses sont correctes. Appuyez sur une touche pour continuer."
+    },
+    loopAgain: {
+        failed: "Vous avez répondu incorrectement à au moins une des questions.",
+        viewInstructions: "Vous allez revoir les instructions.",
+        surveyAgain: "Puis vous allez de nouveau répondre aux questions.",
+        press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
     }
-    
-    
 };
 
 
-let language = fr; 
+let language = fr;

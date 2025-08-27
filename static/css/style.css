@@ -14,6 +14,10 @@ body {
     font-size: 60px
 }
 
+.jspsych-content {
+  max-width: 1200px;
+}
+
 .formDiv {
     text-align: center;
     position: fixed;
@@ -165,7 +169,7 @@ table.mpl td.choice, table.mpl td.mirror { cursor: pointer; }
 table.mpl td.choice:hover, table.mpl td.mirror:hover{ background-color: #eef; }
 table.mpl td.choice.hovered, table.mpl td.mirror.hovered{ background-color: #eef; }
 
-input[type=radio] { display: none; }
+/* input[type=radio] { display: none; } */
 
 .selected { background-color: #cce !important; }
 

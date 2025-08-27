@@ -195,7 +195,7 @@ const instructions_NbackVisual= {
   type: "instructions",
   pages: [
       `<div style="max-width: 1200px"> <p>${language.instructions1back.firstGameVisual}</p><p>${language.instructions1back.grid}</p><p>${language.instructions1back.yourTask1Grid}</p><p>${language.instructions1back.yourTask2}</p>
-      <p>${language.generalInstruction.fastAndAccurate}</p>${language.instructions1back.liveDemo}<p><br>${language.instructions1back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
+      <p>${language.generalInstruction.fastAndAccurate}</p>${language.instructions1back.liveDemo}<p><br><p>${language.instructions1back.firstGrids}</p><p>${language.instructions1back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
   ],
   show_clickable_nav: true,
   button_label_next: language.button.next,
@@ -226,6 +226,19 @@ const instructions_NbackVisual= {
   }
 };
 
+const loopAgain = {
+    type: "instructions",
+    pages: [
+        `<div style="max-width: 1200px"> <p>${language.loopAgain.failed}</p>
+        <p>${language.loopAgain.viewInstructions}</p>
+        <p>${language.loopAgain.surveyAgain}</p>
+        <p>${language.loopAgain.press}</p>
+        </div>`
+    ],
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
 
 
 const instructions_flanker_1 = {
@@ -263,9 +276,9 @@ const instructions_flanker_1 = {
 
 const betweenBlockRest = {... trialStructure, stimulus: `<p>${language.betweenBlocks.rest}</p><p>${language.betweenBlocks.pressKey}</p>` };
 const ready = {... trialStructure, stimulus: `<p>${language.betweenBlocks.continue}</p>` };
-const startPractice = {... trialStructure, stimulus: `<p>${language.practice.practice}</p><p>${language.practice.startPractice}<p>`};
-const afterPracticeEasy = {... trialStructure, stimulus: `<h2>${language.practice.end}</h2><p>${taskEasy.start}</p><p>${taskEasy.remember1}</p><p>${taskEasy.remember2}</p><p>${taskEasy.press}<p>` };
-const afterPracticeHard = {... trialStructure, stimulus: `<h2>${language.practice.end}</h2><p>${taskHard.start}</p><p>${taskHard.remember1}</p><p>${taskHard.remember2}</p><p>${taskHard.press}<p>` };
+const startPractice = {... trialStructure, stimulus: `<p>${language.practice.practice}</p><p>${language.practice.startPractice}<p>` };
+const afterPracticeEasy = {... trialStructure, stimulus: `<h2>${language.practice.end}</h2><p>${taskEasy.remember1}</p><p>${taskEasy.remember2}</p><p>${taskEasy.press}<p>` };
+const afterPracticeHard = {... trialStructure, stimulus: `<h2>${language.practice.end}</h2><p>${taskHard.remember1}</p><p>${taskHard.remember2}</p><p>${taskHard.press}<p>` };
 
 
 
@@ -448,31 +461,158 @@ const nback_reset = {
     }
 }
 
-const nback_and_subBlock_reset = {
+
+const nback_and_subBlock_reset_to_0 = {
     ... trialStructure,
-    stimulus: "",
-    trial_duration:0,
+    stimulus: `<p>L'expérience commence maintenant.</p>`,
+    trial_duration:2000,
     on_start: function () {
         console.log("nback_and_subBlock_reset function starting, nbackCounter reset to 0")
         nbackCounter = 0;
         subBlock = 0;
     }
 }
+const nback_and_subBlock_reset_to_6 = {
+    ... trialStructure,
+    stimulus: `<p>L'expérience commence maintenant.</p>`,
+    trial_duration:2000,
+    on_start: function () {
+        console.log("nback_and_subBlock_reset function starting, nbackCounter reset to 0")
+        nbackCounter = 0;
+        subBlock = 6;
+    }
+}
+const comprehensionSurveyHard = {
+    type: "survey-multi-choice",
+    // Add a top-level array with the correct answers (1-based indices as requested)
+    data: {task: 'comprehensionSurveyHard'},
+    questions: [
+        {
+            prompt: language.comprehension.q1Hard.prompt,
+            options: [
+                language.comprehension.q1Hard.options[0],
+                language.comprehension.q1Hard.options[1],
+                language.comprehension.q1Hard.options[2],
+                language.comprehension.q1Hard.options[3]
+            ],
+            required: true,
+            // good answer for question 1 (1-based index as specified)
+            correct_response: 4
+        },
+        {
+            prompt: language.comprehension.q2.prompt,
+            options: [
+                language.comprehension.q2.options[0],
+                language.comprehension.q2.options[1],
+                language.comprehension.q2.options[2]
+            ],
+            required: true,
+            // good answer for question 2 (1-based index as specified)
+            correct_response: 1
+        },
+        {
+            prompt: language.comprehension.q3Hard.prompt,
+            options: [
+                language.comprehension.q3Hard.options[0],
+                language.comprehension.q3Hard.options[1],
+                language.comprehension.q3Hard.options[2]
+            ],
+            required: true,
+            // good answer for question 3 (1-based index as specified)
+            correct_response: 2
+        },
+    ],
+    button_label: language.button.next,
+    randomize_question_order : false,
+    preamble: `<h2>${language.comprehensionIntro}</h2>`,
+    on_finish: function (data) {
+    // jsPsych stores answers as { Q0: "chosen option text", Q1: "...", ... }
+    const responses = JSON.parse(data.responses);
 
-/* define the trials specific for the target nback (nbackVisual) */
+    let all_correct = true;
 
-// const feedback_nbackVisual ={
+    comprehensionSurveyHard.questions.forEach((q, i) => {
+      const given_answer = responses["Q" + i];    // the text chosen
+      console.log(given_answer, "is given answer")
+      const correct_text = q.options[q.correct_response -1]; // correct text -1
+      console.log(correct_text, "is correct text")
+      if (given_answer !== correct_text) {
+        all_correct = false;
+        console.log(all_correct, "is all_correct")
+      }
+    });
 
-// }
+    // Save result to trial data
+    data.all_correct = all_correct;
+    console.log(all_correct, "is all_correct at the end of the survey")
+  }
+};
 
-// const feedBackC = {
-//     timeline: [feedbackCorrect],
-//     timeline_variables: feedbackCorrect.data,
-//       conditional_function: function () {
-//           let data = jsPsych.data.get().last(1).values()[0];
-//           return data.hit == 1 || data.correct_rejection == 1
-//       }
-//   }
+const comprehensionSurveyEasy = {
+    type: "survey-multi-choice",
+    data: {task: 'comprehensionSurveyEasy'},
+    // Add a top-level array with the correct answers (1-based indices as requested)
+    questions: [
+        {
+            prompt: language.comprehension.q1Easy.prompt,
+            options: [
+                language.comprehension.q1Easy.options[0],
+                language.comprehension.q1Easy.options[1],
+                language.comprehension.q1Easy.options[2],
+                language.comprehension.q1Easy.options[3]
+            ],
+            required: true,
+            // good answer for question 1 (1-based index as specified)
+            correct_response: 4
+        },
+        {
+            prompt: language.comprehension.q2.prompt,
+            options: [
+                language.comprehension.q2.options[0],
+                language.comprehension.q2.options[1],
+                language.comprehension.q2.options[2]
+            ],
+            required: true,
+            // good answer for question 2 (1-based index as specified)
+            correct_response: 1
+        },
+        {
+            prompt: language.comprehension.q3Easy.prompt,
+            options: [
+                language.comprehension.q3Easy.options[0],
+                language.comprehension.q3Easy.options[1],
+                language.comprehension.q3Easy.options[2]
+            ],
+            required: true,
+            // good answer for question 3 (1-based index as specified)
+            correct_response: 2
+        },
+    ],
+    button_label: language.button.next,    
+    randomize_question_order : true,
+    preamble: `<h2>${language.comprehensionIntro}</h2>`,
+        on_finish: function (data) {
+    // jsPsych stores answers as { Q0: "chosen option text", Q1: "...", ... }
+    const responses = JSON.parse(data.responses);
+
+    let all_correct = true;
+
+    comprehensionSurveyEasy.questions.forEach((q, i) => {
+      const given_answer = responses["Q" + i];    // the text chosen
+      console.log(given_answer, "is given answer")
+      const correct_text = q.options[q.correct_response -1]; // correct text -1
+      console.log(correct_text, "is correct text")
+      if (given_answer !== correct_text) {
+        all_correct = false;
+        console.log(all_correct, "is all_correct")
+      }
+    });
+
+    // Save result to trial data
+    data.all_correct = all_correct;
+    console.log(all_correct, "is all_correct at the end of the survey")
+  }
+}
 
 
 /* define the functions for flanker */
@@ -650,6 +790,7 @@ const afterFlankerPractice = {
 
 
 /* define the span trials */
+
 
 const instructions_span = {
     type: "html-button-response",
@@ -1135,21 +1276,47 @@ const nbackVisual_12 = {
     }
 };
 
-// const practiceBlock = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPractice, timeline: [fixation, test, feedBackN, feedBackC, feedBackW] }
-// const firstBlock = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliFirstBlock, timeline: [fixation, test, everyTenT] }
-// const secondBlock = { ... firstBlock, timeline_variables: nbackStimuli.stimuliSecondBlock }
+const paymentExplanationEasyTrialFirst = {
+    type: "html-keyboard-response",
+    stimulus: function() { // to improve lisibility why not style="text-align: left;
+        return `<div style="max-width: 1200px">
+            <h2>${paymentExplanationEasy.title}</h2>
+            <p>${paymentExplanationEasy.mainText.replace(/\$\{payment\}/g, payment)}</p>
+            <p>${paymentExplanationEasy.score.replace(/__PAYMENT__/g, payment)}<br>
+        </div>`;
+    }
+};
+const paymentExplanationEasyTrialSecond = {
+    type: "html-keyboard-response",
+    stimulus: function() { // to improve lisibility why not style="text-align: left;
+        return `<div style="max-width: 1200px">
+            <h2>${paymentExplanationEasy.title}</h2>
+            <p>${paymentExplanationEasy.changeScore}</p>
+            <p>${paymentExplanationEasy.score.replace(/__PAYMENT__/g, payment)}<br>
+        </div>`;
+    }
+};
+const paymentExplanationHardTrialFirst = {
+    type: "html-keyboard-response",
+    stimulus: function() { // to improve lisibility why not style="text-align: left;
+        return `<div style="max-width: 1200px">
+            <h2>${paymentExplanationHard.title}</h2>
+            <p>${paymentExplanationHard.mainText.replace(/\$\{payment\}/g, payment)}</p>
+            <p>${paymentExplanationHard.score.replace(/__PAYMENT__/g, payment)}<br>
+        </div>`;
+    }
+};
+const paymentExplanationHardTrialSecond = {
+    type: "html-keyboard-response",
+    stimulus: function() { // to improve lisibility why not style="text-align: left;
+        return `<div style="max-width: 1200px">
+            <h2>${paymentExplanationHard.title}</h2>
+            <p>${paymentExplanationHard.changeScore}</p>
+            <p>${paymentExplanationHard.score.replace(/__PAYMENT__/g, payment)}<br>
+        </div>`;
+    }
+};
 
-// const overallTrainingExplanation = {
-//     type: 'html-keyboard-response',
-//     stimulus: "hshs",
-    // function() { // to improve lisibility why not style="text-align: left;
-    //     return `<div style="max-width: 1200px">
-    //         <h2>${language.overallTrainingIntro.title}</h2>
-    //         <p>${language.overallTrainingIntro.description}</p>
-    //         <p>${language.overallTrainingIntro.structure}<br>
-    //     </div>`;
-    // }
-// };
 const overallTrainingExplanationEasy = {... trialStructure, stimulus: 
     `<div style="max-width: 1200px">
         <h2>${language.overallTrainingIntro.title}</h2>
@@ -1334,10 +1501,6 @@ const overallTrainingEasyFeedback = {
 };
 
 
-
-
-
-
 const easyBlock_nbackVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_nback, timeline: [fixation, testNback, nbackVisual_1, nbackVisual_2, nbackVisual_3, nbackVisual_4, nbackVisual_5, nbackVisual_6] }
 const hardBlock_nbackVisual = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHard_nback, timeline: [fixation, testNback, nbackVisual_7, nbackVisual_8, nbackVisual_9, nbackVisual_10, nbackVisual_11, nbackVisual_12] }
 
@@ -1357,8 +1520,48 @@ const overallTrainingEasy_nback = { ... timelineElementStructure, timeline_varia
 const hardBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingHard_nback, overallTrainingNbackVisual] }
 const easyBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingEasy_nback, overallTrainingNbackVisual] }
 
-const overallTrainingHard = { ...timelineElementStructure, timeline: [overallTrainingExplanationHard, hardBlock_overallTraining, overallTrainingHardFeedback, nback_and_subBlock_reset] }
-const overallTrainingEasy = { ...timelineElementStructure, timeline: [overallTrainingExplanationEasy, easyBlock_overallTraining, overallTrainingEasyFeedback, nback_and_subBlock_reset] }
+const loopComprehensionSurveyHard = {
+    timeline: [
+        comprehensionSurveyHard,
+        {
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyHard'}).last(1).values()[0];
+                console.log(last, "is last")
+                return last && last.all_correct === false;
+            },
+            timeline: [loopAgain, instructions_NbackVisual, instructions_hard, paymentExplanationHardTrialFirst]
+        }
+    ],
+    loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyHard'}).last(1).values()[0];
+        console.log("exited the loopComprehensionSurveyHard")
+        return !(last && last.all_correct === true);
+    }
+};
+const loopComprehensionSurveyEasy = {
+    timeline: [
+        comprehensionSurveyEasy,
+        {
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyEasy'}).last(1).values()[0];
+                console.log(last, "is last")
+                return last && last.all_correct === false;
+            },
+            timeline: [loopAgain, instructions_NbackVisual, instructions_easy, paymentExplanationEasyTrialFirst]
+        }
+    ],
+    loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyEasy'}).last(1).values()[0];
+        // if no survey data found, repeat; otherwise repeat while not all_correct
+        console.log("exited the loopComprehensionSurveyEasy")
+        return !(last && last.all_correct === true);
+    }
+};
+
+const overallTrainingHard = { ...timelineElementStructure, timeline: [nback_reset, overallTrainingExplanationHard, hardBlock_overallTraining, overallTrainingHardFeedback, loopComprehensionSurveyHard, nback_and_subBlock_reset_to_6] }
+const overallTrainingEasy = { ...timelineElementStructure, timeline: [nback_reset, overallTrainingExplanationEasy, easyBlock_overallTraining, overallTrainingEasyFeedback, loopComprehensionSurveyEasy, nback_and_subBlock_reset_to_0] }
+
+
 
 
 const practiceEasyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeEasy_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
@@ -1369,46 +1572,7 @@ const hardBlock_nback_flanker = { ... easyBlock_nback_flanker, timeline_variable
 
 
 
-const paymentExplanationEasyTrialFirst = {
-    type: "html-keyboard-response",
-    stimulus: function() { // to improve lisibility why not style="text-align: left;
-        return `<div style="max-width: 1200px">
-            <h2>${paymentExplanationEasy.title}</h2>
-            <p>${paymentExplanationEasy.mainText.replace(/\$\{payment\}/g, payment)}</p>
-            <p>${paymentExplanationEasy.score.replace(/__PAYMENT__/g, payment)}<br>
-        </div>`;
-    }
-};
-const paymentExplanationEasyTrialSecond = {
-    type: "html-keyboard-response",
-    stimulus: function() { // to improve lisibility why not style="text-align: left;
-        return `<div style="max-width: 1200px">
-            <h2>${paymentExplanationEasy.title}</h2>
-            <p>${paymentExplanationEasy.changeScore}</p>
-            <p>${paymentExplanationEasy.score.replace(/__PAYMENT__/g, payment)}<br>
-        </div>`;
-    }
-};
-const paymentExplanationHardTrialFirst = {
-    type: "html-keyboard-response",
-    stimulus: function() { // to improve lisibility why not style="text-align: left;
-        return `<div style="max-width: 1200px">
-            <h2>${paymentExplanationHard.title}</h2>
-            <p>${paymentExplanationHard.mainText.replace(/\$\{payment\}/g, payment)}</p>
-            <p>${paymentExplanationHard.score.replace(/__PAYMENT__/g, payment)}<br>
-        </div>`;
-    }
-};
-const paymentExplanationHardTrialSecond = {
-    type: "html-keyboard-response",
-    stimulus: function() { // to improve lisibility why not style="text-align: left;
-        return `<div style="max-width: 1200px">
-            <h2>${paymentExplanationHard.title}</h2>
-            <p>${paymentExplanationHard.changeScore}</p>
-            <p>${paymentExplanationHard.score.replace(/__PAYMENT__/g, payment)}<br>
-        </div>`;
-    }
-};
+
 
 
 
@@ -1538,7 +1702,8 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   // Generate a random integer between 2 and 11
-const subBlockInteger = getRandomInt(1, totSubBlocks);
+const subBlockInteger = 12;
+//getRandomInt(1, totSubBlocks);
 console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
   
 
@@ -1735,7 +1900,7 @@ randomize_order: true,
 /* main timeline */ 
 
 jsPsych.data.addProperties({subject: subjectId});
-timeline.push( {type: "fullscreen", fullscreen_mode: false}, welcome, overviewPage, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock, incentives);
+timeline.push( {type: "fullscreen", fullscreen_mode: false}, welcome, overviewPage, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

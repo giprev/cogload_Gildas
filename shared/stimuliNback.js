@@ -37,9 +37,9 @@ function setArrays (){
     nbackStimuli.stimuliListEasy_flanker = ['C', 'C', 'C', 'C', 'K', 'Y', 'P', 'I', 'O', 'O', 'C', 'O', 'C', 'B', 'B', 'B', 'O', 'O', 'O', 'E', 'B', 'B', 'B', 'B', 'Y', 'B', 'B', 'Y', 'B', 'Y', 'B', 'C', 'C', 'B', 'U', 'U', 'M', 'C', 'O', 'U', 'I', 'U', 'O', 'O', 'O', 'I', 'O', 'A', 'I', 'A', 'I', 'M', 'U', 'U', 'U', 'Y', 'C', 'K', 'C', 'M', 'O', 'O', 'O'];
     nbackStimuli.practiceListEasy_span =  ['B', 'B', 'B', 'Y', 'Y', 'Y', 'U', 'U', 'B', 'B', 'C', 'E', 'G', 'E', 'E', 'C', 'C', 'C', 'C', 'Y'];
     nbackStimuli.stimuliListEasy_span = ['U', 'B', 'B', 'B', 'B', 'I', 'I', 'M', 'K', 'U', 'Y', 'U', 'K', 'B', 'O', 'P', 'P', 'P', 'P', 'A', 'P', 'E', 'E', 'B', 'B', 'P', 'P', 'P', 'M', 'U', 'M', 'B', 'B', 'B', 'B', 'O', 'E', 'Y', 'E', 'E', 'M', 'E', 'A', 'Y', 'G', 'Y', 'B', 'G', 'I', 'I', 'I', 'I', 'U', 'A', 'A', 'A', 'U', 'A', 'U', 'Y', 'K', 'Y', 'K'];
-    nbackStimuli.practiceListEasy_nback = ['M', 'I', 'I', 'P', 'G', 'G', 'G', 'A', 'A', 'A', 'U', 'G', 'G', 'G', 'I', 'C', 'C', 'C', 'C', 'O'];
+    nbackStimuli.practiceListEasy_nback = ['C', 'C', 'A', 'C', 'A', 'A', 'M', 'M', 'G', 'G', 'K', 'G', 'Y', 'C', 'C', 'K', 'K', 'M', 'M', 'O', 'M', 'M', 'P', 'P', 'K', 'K', 'I', 'P', 'I', 'I', 'Y', 'I', 'G', 'P', 'P', 'A', 'A', 'B', 'A', 'A']; // 14 1-backs, 7 2-backs 
     nbackStimuli.stimuliListEasy_nback = ['C', 'C', 'G', 'G', 'G', 'I', 'A', 'E', 'A', 'E', 'A', 'O', 'O', 'P', 'P', 'E', 'P', 'O', 'G', 'O', 'G', 'C', 'B', 'A', 'C', 'C', 'I', 'I', 'I', 'G', 'Y', 'Y', 'Y', 'Y', 'C', 'Y', 'U', 'Y', 'U', 'K', 'I', 'K', 'U', 'Y', 'Y', 'Y', 'G', 'U', 'U', 'U', 'U', 'M', 'M', 'A', 'A', 'A', 'M', 'A', 'O', 'A', 'G', 'G', 'U'] // 20 1-back, 20 2-backs
-    nbackStimuli.stimuliListEasyOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
+    nbackStimuli.stimuliListEasyOverallTraining =['B', 'E', 'E', 'C', 'C', 'I', 'I', 'C', 'C', 'K', 'C', 'K', 'K', 'U', 'U', 'Y', 'U', 'Y', 'U', 'U'] // 7 1-backs, 5 2-backs
 
   }
   
@@ -48,9 +48,9 @@ function setArrays (){
     nbackStimuli.stimuliListHard_flanker = ['G', 'C', 'G', 'C', 'P', 'C', 'P', 'G', 'C', 'E', 'M', 'C', 'M', 'E', 'M', 'E', 'O', 'U', 'O', 'U', 'O', 'O', 'U', 'U', 'U', 'K', 'Y', 'P', 'O', 'P', 'P', 'O', 'A', 'I', 'I', 'Y', 'B', 'B', 'K', 'B', 'K', 'A', 'K', 'K', 'K', 'I', 'U', 'E', 'U', 'C', 'C', 'U', 'P', 'P', 'B', 'P', 'C', 'P', 'I', 'P']; // 20 2 backs, 10 1 backs and 10 3-backs
     nbackStimuli.practiceListHard_span = ['C', 'C', 'M', 'C', 'M', 'C', 'C', 'C', 'P', 'C', 'U', 'A', 'E', 'K', 'E', 'K', 'E', 'K', 'E', 'E'];
     nbackStimuli.stimuliListHard_span = ['U', 'U', 'Y', 'P', 'Y', 'P', 'Y', 'P', 'Y', 'I', 'B', 'I', 'I', 'I', 'C', 'K', 'K', 'I', 'Y', 'Y', 'G', 'A', 'G', 'G', 'G', 'Y', 'U', 'O', 'Y', 'K', 'O', 'K', 'K', 'Y', 'E', 'Y', 'E', 'Y', 'E', 'E', 'K', 'C', 'B', 'B', 'E', 'B', 'C', 'E', 'P', 'C', 'P', 'C', 'U', 'P', 'U', 'B', 'E', 'A', 'E', 'A', 'B', 'C', 'E'];
-    nbackStimuli.practiceListHard_nback = ['A', 'A', 'Y', 'A', 'Y', 'G', 'G', 'G', 'O', 'G', 'O', 'G', 'O', 'K', 'O', 'K', 'I', 'O', 'I', 'I'];
+    nbackStimuli.practiceListHard_nback = ['A', 'A', 'K', 'A', 'K', 'K', 'M', 'P', 'P', 'K', 'P', 'A', 'E', 'E', 'M', 'E', 'M', 'C', 'E', 'C', 'M', 'C', 'M', 'B', 'M', 'B', 'B', 'Y', 'P', 'Y', 'P', 'P', 'C', 'E', 'C', 'G', 'C', 'K', 'K', 'P']; // 14 2-backs, 7 3-backs and 7 1-backs
     nbackStimuli.stimuliListHard_nback = ['M', 'P', 'M', 'M', 'P', 'U', 'C', 'C', 'U', 'K', 'P', 'G', 'P', 'G', 'K', 'U', 'G', 'O', 'O', 'G', 'G', 'G', 'O', 'C', 'M', 'C', 'B', 'B', 'C', 'B', 'I', 'O', 'I', 'O', 'I', 'O', 'I', 'O', 'O', 'A', 'I', 'O', 'I', 'A', 'I', 'A', 'E', 'A', 'E', 'B', 'U', 'B', 'U', 'I', 'I', 'U', 'U', 'U', 'B', 'A', 'I', 'E', 'U'];
-    nbackStimuli.stimuliListHardOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
+    nbackStimuli.stimuliListHardOverallTraining = ['P', 'A', 'P', 'A', 'P', 'A', 'A', 'P', 'A', 'P', 'P', 'K', 'B', 'B', 'C', 'C', 'P', 'C', 'G', 'G'] // 7 2-backs, 5 1-backs, 5 3-backs
   }
   
   function defineHard3Back() {
@@ -59,9 +59,9 @@ function setArrays (){
     nbackStimuli.stimuliListHard_flanker = ['G', 'Y', 'G', 'G', 'P', 'I', 'U', 'G', 'I', 'A', 'I', 'M', 'C', 'A', 'A', 'A', 'A', 'B', 'A', 'C', 'P', 'E', 'A', 'B', 'E', 'C', 'B', 'E', 'C', 'B', 'C', 'E', 'B', 'M', 'G', 'C', 'M', 'Y', 'E', 'M', 'E', 'Y', 'E', 'M', 'Y', 'M', 'I', 'A', 'G', 'I', 'E', 'G', 'E', 'E', 'B', 'G', 'O', 'B', 'M', 'G', 'B', 'M', 'G']; // 20 3-backs, 10 2-backs and 10 4-backs
     nbackStimuli.practiceListHard_span = ['P', 'C', 'P', 'P', 'C', 'P', 'P', 'C', 'E', 'E', 'P', 'E', 'E', 'P', 'P', 'G', 'C', 'C', 'G', 'C'];
     nbackStimuli.stimuliListHard_span = ['G', 'E', 'K', 'G', 'O', 'K', 'G', 'G', 'O', 'M', 'G', 'U', 'G', 'U', 'A', 'O', 'G', 'B', 'O', 'U', 'E', 'C', 'E', 'E', 'C', 'O', 'I', 'B', 'O', 'I', 'B', 'O', 'O', 'B', 'O', 'B', 'A', 'A', 'B', 'O', 'M', 'P', 'O', 'O', 'M', 'P', 'O', 'I', 'P', 'I', 'P', 'P', 'Y', 'Y', 'Y', 'O', 'P', 'U', 'O', 'P', 'O', 'Y', 'O'];
-    nbackStimuli.practiceListHard_nback = ['G', 'M', 'G', 'G', 'M', 'G', 'G', 'M', 'A', 'G', 'G', 'A', 'G', 'G', 'A', 'M', 'M', 'M', 'I', 'G'];
+    nbackStimuli.practiceListHard_nback = ['K', 'B', 'I', 'K', 'B', 'Y', 'U', 'B', 'Y', 'Y', 'B', 'Y', 'Y', 'U', 'Y', 'I', 'O', 'Y', 'O', 'O', 'E', 'O', 'Y', 'I', 'E', 'O', 'I', 'I', 'Y', 'I', 'I', 'A', 'Y', 'E', 'E', 'G', 'I', 'A', 'I', 'A'];// 14 3-backs, 7 2-backs and 7 3-backs
     nbackStimuli.stimuliListHard_nback = ['K', 'P', 'G', 'E', 'K', 'G', 'E', 'O', 'C', 'G', 'O', 'O', 'P', 'O', 'A', 'C', 'C', 'A', 'Y', 'Y', 'A', 'Y', 'Y', 'B', 'A', 'P', 'I', 'B', 'E', 'O', 'B', 'Y', 'M', 'A', 'Y', 'M', 'M', 'Y', 'M', 'G', 'P', 'G', 'P', 'P', 'Y', 'M', 'A', 'M', 'B', 'M', 'P', 'B', 'M', 'M', 'B', 'M', 'E', 'M', 'M', 'I', 'G', 'I', 'I']
-    nbackStimuli.stimuliListHardOverallTraining =['T', 'A', 'U', 'Q', 'P', 'B', 'C', 'T', 'A', 'U', 'Q', 'P', 'B', 'C']
+    nbackStimuli.stimuliListHardOverallTraining = ['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'] // 7 3-backs, 5 2-backs, 5 4-backs
   }
   
   /* 63 n-back stimuli: 10 before each target task (6 target tasks of 15 seconds each = 1min 30) + 3 at the end so participants are incentivized to keep the letters in mind for the last task. */
