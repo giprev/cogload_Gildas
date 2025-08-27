@@ -1,10 +1,10 @@
 import random
 
-def generate_nback_string(nback, block_triples=False):
-    lseq = 20
-    ntarget = 7
-    nplus1 = 5
-    # nminus1 = 0
+def generate_nback_string(nback, block_triples):
+    lseq = 40
+    ntarget = 13
+    nplus1 = 7
+    # nminus1 = 14
     # letters = ['st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
     letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
 
@@ -73,9 +73,6 @@ def analyze_nback(seq, nback):
 
     return nback_positions, nplus1_positions, nminus1_positions
 
-ex = generate_nback_string(1, block_triples=True)
-
+ex = generate_nback_string(1, True)
 print(ex)
-print(analyze_nback(ex, 1))  # Changed from 2 to 1
-
-
+analyze_nback(ex, 1)
