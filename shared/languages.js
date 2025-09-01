@@ -181,7 +181,7 @@ const en = {
                 </div>
             </div>
             
-            <p><i>When you're ready to begin, press any key to continue.</i></p>
+            <p><i>Press any key to continue.</i></p>
         </div>`,
     },
     paymentExplanation2Back: {
@@ -232,7 +232,7 @@ const en = {
                 </div>
             </div>
             
-            <p><i>When you're ready to begin, press any key to continue.</i></p>
+            <p><i>Press any key to continue.</i></p>
         </div>`,
     },
     paymentExplanation3Back: {
@@ -283,7 +283,7 @@ const en = {
                 </div>
             </div>
             
-            <p><i>When you're ready to begin, press any key to continue.</i></p>
+            <p><i>Press any key to continue.</i></p>
         </div>`,
     },
     overallTrainingIntro: {
@@ -357,10 +357,86 @@ const en = {
         failed: "You have responded incorrectly to at least one of the questions.",
         viewInstructions: "Next you are going to view the instructions again.",
         surveyAgain: "Then you will take the survey again.",
+    },
+    demographics : {
+    preamble: "<strong>Demographics</strong>",
+    questions: [
+        "How old are you?",
+        "Gender:",
+        "Education level: (if you are a student, please choose the degree your are currently enrolled in)",
+        "Work status:",
+        "What is the range of your monthly income?",
+        "Overall, how satisfied are you with your life nowadays?"
+    ],
+    options: {
+        age: [
+            "Under 18",
+            "18-24",
+            "25-34",
+            "35-44",
+            "45-54",
+            "55-64",
+            "65 or older",
+            "Prefer not to say"
+        ],
+        gender: [
+            "Male",
+            "Female",
+            "Other",
+            "Prefer not to say"
+        ],
+        education: [
+            "Less than a high school diploma",
+            "High school degree or equivalent (e.g. GED)",
+            "Some college, no degree",
+            "Associate degree (e.g. AA, AS)",
+            "Bachelor’s degree (e.g. BA, BS)",
+            "Master’s degree (e.g. MA, MS, MEd)",
+            "Professional degree (e.g. MD, DDS, DVM)",
+            "Doctorate (e.g. PhD, EdD)",
+            "Prefer not to say"
+        ],
+        work: [
+            "Full-time employee (40 or more hours per week)",
+            "Part-time employee (up to 39 hours per week)",
+            "Unemployed - currently looking for work",
+            "Unemployed - currently not looking for work",
+            "Furlough",
+            "Student",
+            "Retired",
+            "Homemaker",
+            "Self-employed",
+            "Unable to work",
+            "Prefer not to say"
+        ],
+        income: [
+            "Less than €500",
+            "Between €500 and €1000",
+            "Between €1000 and €1500",
+            "Between €1500 and €2000",
+            "Between €2000 and €3000",
+            "Between €3000 and €5000",
+            "More than €5000",
+            "Not applicable",
+            "Prefer not to say"
+        ],
+        life: [
+            "0 (not at all)",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 (very)",
+            "Prefer not to say"
+        ]
     }
+    },
 }
-
-
 
 
 const fr = {
@@ -542,7 +618,7 @@ const fr = {
                 </div>
             </div>
             
-            <p><i>Lorsque vous êtes prêt à commencer, appuyez sur n’importe quelle touche pour continuer.</i></p>
+            <p><i>Appuyez sur n’importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     paymentExplanation2Back: {
@@ -592,7 +668,7 @@ const fr = {
                 </div>
             </div>
     
-            <p><i>Lorsque vous êtes prêt à commencer, appuyez sur n'importe quelle touche pour continuer.</i></p>
+            <p><i>Appuyez sur n'importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     paymentExplanation3Back: {
@@ -643,7 +719,7 @@ const fr = {
                 </div>
             </div>
     
-            <p><i>Lorsque vous êtes prêt à commencer, appuyez sur n'importe quelle touche pour continuer.</i></p>
+            <p><i>Appuyez sur n'importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     overallTrainingIntro: {
@@ -728,8 +804,85 @@ const fr = {
         viewInstructions: "Vous allez revoir les instructions.",
         surveyAgain: "Puis vous allez de nouveau répondre aux questions.",
         press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
-    }
-};
-
+    },
+    demographics: {
+        preamble: "<strong>Données démographiques</strong>",
+        questions: [
+            "Quel âge avez-vous?",
+            "Quel est votre genre?",
+            "Quel est votre niveau d'études : (si vous êtes étudiant·e, choisissez le diplôme en cours)?",
+            "Quelle est votre situation professionnelle?",
+            "Quelle est la fourchette de votre revenu mensuel?",
+            "Globalement, à quel point êtes-vous satisfait·e de votre vie de nos jours?"
+        ],
+        options: {
+            age: [
+                "Moins de 18 ans",
+                "18-24",
+                "25-34",
+                "35-44",
+                "45-54",
+                "55-64",
+                "65 ans ou plus",
+                "Préfère ne pas répondre"
+            ],
+            gender: [
+                "Homme",
+                "Femme",
+                "Autre",
+                "Préfère ne pas répondre"
+            ],
+            education: [
+                "Moins qu'un diplôme d'études secondaires",
+                "Diplôme d'études secondaires ou équivalent (ex. : BEP/CAP)",
+                "Quelques études supérieures, sans diplôme",
+                "Diplôme d'études tertiaires (ex. : BTS, DUT)",
+                "Licence",
+                "Master",
+                "Diplôme d'ingénieur / diplôme professionnel",
+                "Doctorat (ex. : Thèse / PhD)",
+                "Préfère ne pas répondre"
+            ],
+            work: [
+                "Employé·e à temps plein (35h ou plus par semaine)",
+                "Employé·e à temps partiel (jusqu'à 34h par semaine)",
+                "Chômeur·se - actuellement en recherche d'emploi",
+                "Chômeur·se - ne recherche pas d'emploi",
+                "Mise en chômage partiel",
+                "Étudiant·e",
+                "Retraité·e",
+                "Personne au foyer",
+                "Travailleur·se indépendant·e",
+                "Ne peut pas travailler",
+                "Préfère ne pas répondre"
+            ],
+            income: [
+                "Moins de 500 €",
+                "Entre 500 € et 1000 €",
+                "Entre 1000 € et 1500 €",
+                "Entre 1500 € et 2000 €",
+                "Entre 2000 € et 3000 €",
+                "Entre 3000 € et 5000 €",
+                "Plus de 5000 €",
+                "Non applicable",
+                "Préfère ne pas répondre"
+            ],
+            life: [
+                "0 (pas du tout)",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10 (très)",
+                "Préfère ne pas répondre"
+            ]
+        },
+        },
+}
 
 let language = fr;

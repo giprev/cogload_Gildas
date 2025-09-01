@@ -615,6 +615,114 @@ const comprehensionSurveyEasy = {
 }
 
 
+// Demographics: separate age text-entry (numeric) + multi-choice rest
+// Age as a text input so participants can type their exact age
+const demographics_age = {
+    type: "survey-text",
+    data: {task: 'demographics_age'},
+    questions: [
+        {
+            prompt: language.demographics.questions[0],
+            required: true,
+            name: 'age'
+        }
+    ],
+    preamble: `<p>${language.demographics.preamble}</p>`,
+    button_label: language.button.next,
+    on_finish: function(data) {
+        const responses = JSON.parse(data.responses);
+        const ageStr = responses.Q0 || responses.age || '';
+        const ageNum = parseInt(ageStr, 10);
+        // Validate age: enforce 9..100 (inclusive)
+        if (!Number.isInteger(ageNum) || ageNum < 9 || ageNum > 100) {
+            data.age = null;
+            data.age_valid = false;
+            console.log('Invalid age entry:', ageStr);
+            // Show a blocking localized alert so the participant immediately knows what's wrong
+            try {
+                if (language === fr) {
+                    window.alert('Entrée invalide. Veuillez indiquer votre âge en années (entre 9 et 100).');
+                } else {
+                    window.alert('Invalid entry. Please enter your age in years (between 9 and 100).');
+                }
+            } catch (e) {
+                // fallback to console log if alerts are disabled
+                console.log('Alert failed, invalid age entered:', ageStr);
+            }
+        } else {
+            data.age = ageNum;
+            data.age_valid = true;
+        }
+    }
+};
+
+// Loop the age entry until a valid numeric age (9-100) is provided.
+const demographics_age_loop = {
+    timeline: [
+        demographics_age
+    ],
+    loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'demographics_age'}).last(1).values()[0];
+        // repeat while last.age_valid is not true
+        return !(last && last.age_valid === true);
+    }
+};
+
+const demographics = (function(){
+    const qs = [];
+    // question 1: gender
+    qs.push({
+        prompt: language.demographics.questions[1],
+        options: language.demographics.options.gender.slice(),
+        required: true
+    });
+    // question 2: education
+    qs.push({
+        prompt: language.demographics.questions[2],
+        options: language.demographics.options.education.slice(),
+        required: true
+    });
+    // question 3: work
+    qs.push({
+        prompt: language.demographics.questions[3],
+        options: language.demographics.options.work.slice(),
+        required: true
+    });
+    // question 4: income
+    qs.push({
+        prompt: language.demographics.questions[4],
+        options: language.demographics.options.income.slice(),
+        required: true
+    });
+    // question 5: life satisfaction
+    qs.push({
+        prompt: language.demographics.questions[5],
+        options: language.demographics.options.life.slice(),
+        required: true
+    });
+
+    return {
+        type: "survey-multi-choice",
+        data: {task: 'demographics'},
+        on_start: function(trial) {
+            // copy the last validated age into this trial's data so it is saved with the rest
+            const last = jsPsych.data.get().filter({task: 'demographics_age', age_valid: true}).last(1).values()[0];
+            if (last && typeof last.age !== 'undefined') {
+                trial.data = trial.data || {};
+                trial.data.age = last.age;
+            }
+        },
+        preamble: `<p>${language.demographics.preamble}</p>`,
+        questions: qs,
+        button_label: language.button.next,
+        randomize_question_order: false,
+        on_finish: function(data) {
+            // nothing special for now, responses are saved in data.responses
+            console.log('demographics finished', JSON.parse(data.responses));
+        }
+    };
+})();
+
 /* define the functions for flanker */
 
 function countdown(start, timelimit) {
@@ -1181,7 +1289,7 @@ const nbackVisual_5 = {
         if (nbackCounter === 50) {
             subBlock = 5;
         }
-        return nbackCounter === 60;
+        return nbackCounter === 50;
     }
 };
 const nbackVisual_6 = {
@@ -1386,7 +1494,7 @@ const overallTrainingHardFeedback = {
         // Calculate accuracies as decimals (0-1 range instead of percentages)
         let accuracyVN = corTrialsVN / totalTrialsVN;
         let accuracyN = corTrialsN / totalTrialsN;
-        let accuracyPostVisual = corPostVT / postVT.count();
+        let accuracyPostVisual = corPostVT / postVT;
 
         // Calculate total payment - weighted sum of accuracies
         let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
@@ -1404,7 +1512,7 @@ const overallTrainingHardFeedback = {
             <p>${language.overallTrainingFeedback.performance}</p>
             <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
             <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
-            <p>${language.overallTrainingFeedback.afterVisual.replace('{Lettres}', "Lettres").replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT.count())}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{Lettres}', "Lettres").replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT)}</p>
             <p>${language.overallTrainingFeedback.keyImportanceHard.replace('{level}', nbackLevel)}</p>
             <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
             <p>${language.overallTrainingFeedback.rememberHard.replace('{level}', nbackLevel)}</p>
@@ -1683,8 +1791,8 @@ const debriefBlock = {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  // Generate a random integer between 2 and 11
-const subBlockInteger = 12;
+  // Generate a random integer between 1 and 11
+const subBlockInteger = getRandomInt(1, 12);
 //getRandomInt(1, totSubBlocks);
 console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
   
@@ -1889,25 +1997,51 @@ randomize_order: true,
 /* main timeline */ 
 
 jsPsych.data.addProperties({subject: subjectId});
-timeline.push( {type: "fullscreen", fullscreen_mode: false}, welcome, overviewPage, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+
+timeline.push( {type: "fullscreen", fullscreen_mode: true}, hardBlock_nbackVisual/*welcome, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback,*/, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
 
-jsPsych.init({
-  timeline: timeline,
-  on_data_update: function() {
-    let interactionData = jsPsych.data.getInteractionData()
-    const interactionDataOfLastTrial = interactionData.filter({'trial': jsPsych.data.get().last(1).values()[0].trial_index}).values();
-    if (interactionDataOfLastTrial) {
-        jsPsych.data.get().last(1).values()[0].browser_events = JSON.stringify(interactionDataOfLastTrial)
-    }
-  },
-  on_close: function() {
-    jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_quitted_output.csv`);
-  },
-  on_finish: function() {
-    jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-  }
+// jsPsych.init({
+//   timeline: timeline,
+//   on_data_update: function() {
+//     let interactionData = jsPsych.data.getInteractionData()
+//     const interactionDataOfLastTrial = interactionData.filter({'trial': jsPsych.data.get().last(1).values()[0].trial_index}).values();
+//     if (interactionDataOfLastTrial) {
+//         jsPsych.data.get().last(1).values()[0].browser_events = JSON.stringify(interactionDataOfLastTrial)
+//     }
+//   },
+//   on_close: function() {
+//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_quitted_output.csv`);
+//   },
+//   on_finish: function() {
+//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+//   }
+// });
+
+//  /* initialize jsPsych */
+//  const jsPsyche = jsPsych.init({
+//         timeline: timeline,
+//         on_finish: function() {
+//             jatos.endStudy(jsPsych.data.get().json());
+//         }
+//     });
+
+// /* start the experiment */
+//     jatos.onLoad(() => {
+//         jsPsyche.run(timeline);
+//     });
+
+/* initialize jsPsych via jatos onLoad (do not call .run on an undefined return) */
+jatos.onLoad(() => {
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+            jatos.endStudy(jsPsych.data.get().json());
+            jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+        }
+    });
 });
 
