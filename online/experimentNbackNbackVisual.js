@@ -11,7 +11,7 @@ let block_order = 0;
 let subBlock = 0;  // the counter of target + source task block (used for incentives)
 let totSubBlocks = 12; // 6 easy and 6 hard for the nback only experiment
 let lastSubBlockOfFirstBlock = 6 // the last sub-block of the first block (used for incentives), if it is selected, the first trials before the first visual nback are taken into account for the incentives
-
+let nbackLevel = 0; // store the level of the n-back task selected for the incentives payment
 
 
 /*************** VARIABLES span ***************/
@@ -402,7 +402,7 @@ const testNback = {
   trial_duration: letterDuration,
   stimulus_duration: letterDuration,
   on_finish: function(data){
-    if (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard" || data.block =='overall_training_hard' || data.block =='overall_training_easy'){
+    if (data.task == "nback" && (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard" || data.block =='overall_training_hard' || data.block =='overall_training_easy')){
     nbackCounter ++};
     // data.task = 'n-back';ffff
     if (data.correct_response == "f" && data.key_press == 70){
@@ -1181,7 +1181,7 @@ const nbackVisual_5 = {
         if (nbackCounter === 50) {
             subBlock = 5;
         }
-        return nbackCounter === 50;
+        return nbackCounter === 60;
     }
 };
 const nbackVisual_6 = {
@@ -1352,43 +1352,32 @@ const overallTrainingHardFeedback = {
     type: "html-keyboard-response",
     stimulus: function() {
         // Get n-back level for the selected subBlock
-        let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock === -1;
-        }).select('level').values[0];
-        
+        let nbackLevel = level;
+
         // Get all trials and correct trials for visual nback
-        let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock == -1 && trial.task == "nbackVisual";
-        }).count();
-        
-        let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock == -1 && 
-                   (trial.hit === 1 || trial.correct_rejection === 1) && 
-                   trial.task == "nbackVisual" &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-        }).count();
-
-        let totalTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10;
-        }).count();
-
-        let corTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10 &&
-                   (trial.hit === 1 || trial.correct_rejection === 1) &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-        }).count();
-
-        let postVisualTrials = jsPsych.data.get()
-        .filterCustom(function(trial) {
-            console.log(trial.trial_number, "is trial.trial_number")
-            console.log(11 + nbackLevel, "is 11 + nbackLevel")
-            return trial.subBlock === -1 && 
-                   trial.task === "nback" &&
-                   trial.trial_number >= 11 && // 11 is the first letter nback trial after the visual one
-                   trial.trial_number < (11 + nbackLevel);
+        let totalTrialsVisualNback = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.block === "nbackVisual_overall_practice" && trial.task === "nbackVisual";
         });
+        let totalTrialsVN = totalTrialsVisualNback.count();
+        let corTrialsVN = totalTrialsVisualNback.filterCustom(function(trial) {
+            return (trial.hit === 1 || trial.correct_rejection === 1) && trial.key_press !== null && trial.key_press !== -1;
+        }).count();
 
-        let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
+        let totalTrialsNback = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.block === "overall_training_hard" && trial.trial_number > 10;
+        });
+        let totalTrialsN = totalTrialsNback.count();
+        let corTrialsN = totalTrialsNback.filterCustom(function(trial) {
+            return  (trial.hit === 1 || trial.correct_rejection === 1) &&
+                        trial.key_press !== null && trial.key_press !== -1;
+        }).count();
+
+        let postVisualTrials = totalTrialsNback.filterCustom(function(trial){
+            return trial.trial_number >10 && trial.trial_number < (11 + nbackLevel);
+        })
+        let postVT = postVisualTrials.count();
+
+        let corPostVT = postVisualTrials.filterCustom(function(trial) {
             console.log(postVisualTrials, "is postVisualTrials")
             return (trial.hit === 1 || trial.correct_rejection === 1) &&
                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
@@ -1397,7 +1386,7 @@ const overallTrainingHardFeedback = {
         // Calculate accuracies as decimals (0-1 range instead of percentages)
         let accuracyVN = corTrialsVN / totalTrialsVN;
         let accuracyN = corTrialsN / totalTrialsN;
-        let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+        let accuracyPostVisual = corPostVT / postVT.count();
 
         // Calculate total payment - weighted sum of accuracies
         let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
@@ -1415,7 +1404,7 @@ const overallTrainingHardFeedback = {
             <p>${language.overallTrainingFeedback.performance}</p>
             <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
             <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
-            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVisualTrials).replace('{total}', postVisualTrials.count())}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{Lettres}', "Lettres").replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT.count())}</p>
             <p>${language.overallTrainingFeedback.keyImportanceHard.replace('{level}', nbackLevel)}</p>
             <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
             <p>${language.overallTrainingFeedback.rememberHard.replace('{level}', nbackLevel)}</p>
@@ -1427,44 +1416,33 @@ const overallTrainingEasyFeedback = {
     ...trialStructure,
     type: "html-keyboard-response",
     stimulus: function() {
+
         // Get n-back level for the selected subBlock
-        let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock === -1;
-        }).select('level').values[0];
-        
-        // Get all trials and correct trials for visual nback
-        let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock == -1 && trial.task == "nbackVisual";
-        }).count();
-        
-        let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock == -1 && 
-                   (trial.hit === 1 || trial.correct_rejection === 1) && 
-                   trial.task == "nbackVisual" &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-        }).count();
+        let nbackLevel = 1;
 
-        let totalTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10;
-        }).count();
-
-        let corTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" && trial.subBlock === -1 && trial.trial_number > 10 &&
-                   (trial.hit === 1 || trial.correct_rejection === 1) &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-        }).count();
-
-        let postVisualTrials = jsPsych.data.get()
-        .filterCustom(function(trial) {
-            console.log(trial.trial_number, "is trial.trial_number")
-            console.log(11 + nbackLevel, "is 11 + nbackLevel")
-            return trial.subBlock === -1 && 
-                   trial.task === "nback" &&
-                   trial.trial_number >= 11 && // 11 is the first letter nback trial after the visual one
-                   trial.trial_number < (11 + nbackLevel);
+        let totalTrialsVisualNback = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.block === "nbackVisual_overall_practice" && trial.task === "nbackVisual";
         });
+        let totalTrialsVN = totalTrialsVisualNback.count();
+        let corTrialsVN = totalTrialsVisualNback.filterCustom(function(trial) {
+            return (trial.hit === 1 || trial.correct_rejection === 1) && trial.key_press !== null && trial.key_press !== -1;
+        }).count();
 
-        let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
+        let totalTrialsNback = jsPsych.data.get().filterCustom(function(trial) {
+            return trial.task === "nback" && trial.block === "overall_training_easy" && trial.trial_number > 10;
+        });
+        let totalTrialsN = totalTrialsNback.count();
+        let corTrialsN = totalTrialsNback.filterCustom(function(trial) {
+            return  (trial.hit === 1 || trial.correct_rejection === 1) &&
+                        trial.key_press !== null && trial.key_press !== -1;
+        }).count();
+        
+        let postVisualTrials = totalTrialsNback.filterCustom(function(trial){
+            return trial.trial_number == 11;
+        });
+        let postVT = postVisualTrials.count();
+
+        let corPostVT = postVisualTrials.filterCustom(function(trial) {
             console.log(postVisualTrials, "is postVisualTrials")
             return (trial.hit === 1 || trial.correct_rejection === 1) &&
                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
@@ -1473,7 +1451,7 @@ const overallTrainingEasyFeedback = {
         // Calculate accuracies as decimals (0-1 range instead of percentages)
         let accuracyVN = corTrialsVN / totalTrialsVN;
         let accuracyN = corTrialsN / totalTrialsN;
-        let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+        let accuracyPostVisual = corPostVT / postVT;
 
         // Calculate total payment - weighted sum of accuracies
         let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
@@ -1491,7 +1469,7 @@ const overallTrainingEasyFeedback = {
             <p>${language.overallTrainingFeedback.performance}</p>
             <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
             <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
-            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVisualTrials).replace('{total}', postVisualTrials.count())}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT).replace('{Lettres}', "Lettre")}</p>
             <p>${language.overallTrainingFeedback.keyImportanceEasy}</p>
             <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
             <p>${language.overallTrainingFeedback.rememberEasy}</p>
@@ -1617,8 +1595,11 @@ practiceAndTestHard_nback_nback = {
     }
 };
 
+let block_order_indicator;
+
 if (Math.random() < 0.5) {
     experimentBlocks_nback_nback = [practiceAndTestHard_nback_nback, practiceAndTestEasy_nback_nback];
+    block_order_indicator = "hard_first";
     practiceAndTestHard_nback_nback.timeline.splice(4, 0, paymentExplanationHardTrialFirst);
     practiceAndTestEasy_nback_nback.timeline.splice(4, 0, paymentExplanationEasyTrialSecond);
     // Insert overall training after payment explanation (hard first)
@@ -1627,6 +1608,7 @@ if (Math.random() < 0.5) {
     practiceAndTestHard_nback_nback.timeline.splice(5, 0, overallTrainingHard);
 } else {
     experimentBlocks_nback_nback = [practiceAndTestEasy_nback_nback, practiceAndTestHard_nback_nback];
+    block_order_indicator = "easy_first";
     practiceAndTestEasy_nback_nback.timeline.splice(4, 0, paymentExplanationEasyTrialFirst);
     practiceAndTestHard_nback_nback.timeline.splice(4, 0, paymentExplanationHardTrialSecond);
     // Insert overall training after payment explanation (easy first, so level 1)
@@ -1713,17 +1695,26 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
     choices: ['Enter'],
     stimulus: function() {
 
-        // Get n-back level for the selected subBlock
-        let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.subBlock == subBlockInteger && trial.level;
-        }).select('level').values[0];
-        console.log(nbackLevel, "is the nback level for the selected subBlock"
-        )
+        // Get n-back level for the selected subBlock // could also be determined by the subBlock number : if <=6 it is 1; if >= 7, it is level
+        if (subBlockInteger <= 6) {
+            nbackLevel = 1;
+        } else {
+            nbackLevel = level;
+        }
+        console.log(nbackLevel, "is the nback level for the subBlock selected for payment")
+        // let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
+        //     return trial.subBlock == subBlockInteger && trial.level;
+        // }).select('level').values[0];
+        // console.log(nbackLevel, "is the nback level for the selected subBlock"
+        // )
 
         // Get all trials and correct trials for visual nback
         let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+            console.log(trial.task, "is trial.task inside the incentives filter, when subBlockInteger == 6")
+            console.log(trial.subBlock, "is trial.subBlock inside the incentives filter, when subBlockInteger == 6")
             return trial.subBlock == subBlockInteger && trial.task == "nbackVisual";
         }).count();
+        console.log(totalTrialsVN, "is totalTrialsVN inside the incentives filter, when subBlockInteger == 6")
         
         let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
             return trial.subBlock == subBlockInteger && 
@@ -1731,26 +1722,23 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
                    trial.task == "nbackVisual" &&
                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
+        console.log(corTrialsVN, "is corTrialsVN inside the incentives filter, when subBlockInteger == 6")
 
         // Get all trials and correct trials for classic nback
-        let totalTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" &&
-                (
-                    trial.subBlock === subBlockInteger ||
-                    (subBlockInteger === totSubBlocks && trial.subBlock === (lastSubBlockOfFirstBlock +1)) ||
-                    (subBlockInteger === lastSubBlockOfFirstBlock && trial.subBlock === 0 && (trial.block === main_easy || trial.block === main_hard))
-                );
-        }).count();
+        let totalTrialsNback = jsPsych.data.get().filterCustom(function(trial) {
+            if (subBlockInteger == 6) {
+                console.log(trial.block, "is trial.block inside the incentives filter, when subBlockInteger == 6")
+                return trial.task === "nback" && trial.block === "main_easy" && (trial.subBlock === 6 || (trial.trial_number >= 1 && trial.trial_number <= 10));
+            }
+            else if (subBlockInteger == 12) {
+                return trial.task === "nback" && trial.block === "main_hard" && (trial.subBlock === 12 || (trial.trial_number >= 1 && trial.trial_number <= 10));
+            }
+            else return trial.task === "nback" && trial.subBlock === subBlockInteger
+        });
 
-        let corTrialsN = jsPsych.data.get().filterCustom(function(trial) {
-            return trial.task === "nback" &&
-                (
-                    trial.subBlock === subBlockInteger ||
-                    (subBlockInteger === totSubBlocks && trial.subBlock === (lastSubBlockOfFirstBlock +1)) ||
-                    (subBlockInteger === lastSubBlockOfFirstBlock && trial.subBlock === 0 && (trial.block === main_easy || trial.block === main_hard))
-                ) &&
-                (trial.hit === 1 || trial.correct_rejection === 1) &&
-                trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+        let totalTrialsN = totalTrialsNback.count();
+        let corTrialsN = totalTrialsNback.filterCustom(function(trial) {
+            return (trial.hit === 1 || trial.correct_rejection === 1) && trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
 
 
@@ -1770,6 +1758,7 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
                    trial.trial_number >= minTrialNumber &&
                    trial.trial_number < (minTrialNumber + nbackLevel);
         });
+        console.log(postVisualTrials, "is postVisualTrials inside the incentives filter, when subBlockInteger == 6")
 
         let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
             return (trial.hit === 1 || trial.correct_rejection === 1) &&

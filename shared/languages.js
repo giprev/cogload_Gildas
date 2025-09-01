@@ -173,7 +173,9 @@ const en = {
                 - 50% accuracy in visual n-back<br>
                 - 50% accuracy in letter n-back<br>
                 Your bonus would be: __PAYMENT__€ × (0.5 × 1.0 + 0.25 × 0.5 + 0.25 × 0.5) = __PAYMENT__€ × 0.75</p>
-                
+                <br>
+                <p> The letter n-back of the last sub-block is only three letters long. If the last sub-block is selected for payment, the 25% of the bonus depending on the n-back trials are calculated based on this sequence and the ten first letters before the visual n-back. </p>
+
                 <div class="important-note">
                     💡 Remember: The most important part for maximizing your bonus is to correctly identify matches immediately after the visual n-back section!
                 </div>
@@ -222,6 +224,8 @@ const en = {
                 - 50% accuracy in visual n-back<br>
                 - 50% accuracy in letter n-back<br>
                 Your bonus would be: __PAYMENT__€ × (0.5 × 1.0 + 0.25 × 0.5 + 0.25 × 0.5) = __PAYMENT__€ × 0.75</p>
+                <br>
+                <p> The letter n-back of the last sub-block is only three letters long. If the last sub-bloc is selected for payment, the 25% of the bonus depending on the n-back trials are calculated based on this sequence and the ten first letters before the visual n-back. </p>
                 
                 <div class="important-note">
                 💡 Remember: The most important thing to maximize your bonus is to identify, after each visual n-back, whether the first letter of the letter n-back matches the last letter you saw before the visual n-back!
@@ -271,7 +275,9 @@ const en = {
                 - 50% accuracy in visual n-back<br>
                 - 50% accuracy in letter n-back<br>
                 Your bonus would be: __PAYMENT__€ × (0.5 × 1.0 + 0.25 × 0.5 + 0.25 × 0.5) = __PAYMENT__€ × 0.75</p>
-                
+                <br>
+                <p> The letter n-back of the last sub-block is only three letters long. If the last sub-bloc is selected for payment, the 25% of the bonus depending on the n-back trials are calculated based on this sequence and the ten first letters before the visual n-back. </p>
+
                 <div class="important-note">
                 💡 Remember: The most important thing to maximize your bonus is to identify, after each visual n-back, whether the first three letters of the letter n-back respectively match the last three letters you saw before the visual n-back!
                 </div>
@@ -528,7 +534,9 @@ const fr = {
                 - 50 % de précision dans le N-back visuel<br>
                 - 50 % de précision dans le N-back de lettres<br>
                 Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
-                
+                <br>
+                <p> Le n-back lettres du dernier sous-bloc est seulement long de trois lettres. Si le dernier sous-bloc est sélectionné pour le paiement, les 25% du bonus dépendant des essais au n-back lettres sont calculés sur la base de cette séquence et des dix premières lettres avant le premier sous-bloc. </p>
+
                 <div class="important-note">
                     💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque n-back visuel, si la première lettre du n-back lettres correspond à la dernière lettre que vous avez vue avant le n-back visuel !
                 </div>
@@ -576,6 +584,8 @@ const fr = {
                 - 50 % de précision dans le N-back visuel<br>
                 - 50 % de précision dans le N-back de lettres<br>
                 Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
+                <br>
+                <p> Le n-back lettres du dernier sous-bloc est seulement long de trois lettres. Si le dernier sous-bloc est sélectionné pour le paiement, les 25% du bonus dépendant des essais au n-back lettres sont calculés sur la base de cette séquence et des dix premières lettres avant le premier sous-bloc. </p>
     
                 <div class="important-note">
                     💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque n-back visuel, si les deux premières lettres du n-back lettres correspondent respectivement aux deux dernières lettres que vous avez vues avant le n-back visuel !
@@ -624,6 +634,9 @@ const fr = {
                 - 50 % de précision dans le N-back visuel<br>
                 - 50 % de précision dans le N-back de lettres<br>
                 Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
+
+                <br>
+                <p> Le n-back lettres du dernier sous-bloc est seulement long de trois lettres. Si le dernier sous-bloc est sélectionné pour le paiement, les 25% du bonus dépendant des essais au n-back lettres sont calculés sur la base de cette séquence et des dix premières lettres avant le premier sous-bloc. </p>
     
                 <div class="important-note">
                     💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque n-back visuel, si les trois premières lettre du n-back lettres correspondent respectivement aux trois dernières lettres que vous avez vues avant le n-back visuel !
@@ -644,11 +657,11 @@ const fr = {
         ready: "Quand vous êtes prêt à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
     },
     overallTrainingFeedback: {
-        title: "Entraînement Terminé - Démonstration du Système de Points",
+        title: "Entraînement Terminé - Démonstration du système de points",
         performance: "Voici comment votre performance serait notée si c'était un vrai sous-bloc et qu'il serait sélectionné pour le paiement (au hasard) :",
         nback: "N-back lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
         visualNback: "N-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
-        afterVisual: "Lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
+        afterVisual: "{Lettres} après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
         keyImportanceHard: "💡 Point clé : Les {level} premières lettres immédiatement après le n-back visuel valent 50% de votre bonus !",
         keyImportanceEasy: "💡 Point clé : La dernière lettre immédiatement après le n-back visuel vaut 50% de votre bonus !",
         calculation: "Calcul du bonus : €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",

@@ -68,32 +68,35 @@ function createBlocksVisual(list, stimuli, level){
     }
     
     if (list == stimuliList_nbackVisual_1){
-      block = "nbackVisual_easy1"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_2){
-      block = "nbackVisual_easy2"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_3){
-      block = "nbackVisual_easy3"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_4){
-      block = "nbackVisual_easy4"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_5){
-      block = "nbackVisual_easy5"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_6){
-      block = "nbackVisual_easy6"}
+      block = "main_easy"}
     else if (list == stimuliList_nbackVisual_7){
-      block = "nbackVisual_hard7"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisual_8){
-      block = "nbackVisual_hard8"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisual_9){
-      block = "nbackVisual_hard9"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisual_10){
-      block = "nbackVisual_hard10"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisual_11){
-      block = "nbackVisual_hard11"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisual_12){
-      block = "nbackVisual_hard12"}
+      block = "main_hard"}
     else if (list == stimuliList_nbackVisualOverallPractice){
       block = "nbackVisual_overall_practice"}
-    else {block = "practice or error for visual nback"}
+    else if (list == stimuliList_nbackVisual_practice){
+      block = "nbackVisual_practice"
+    }
+    else {block = "error for visual nback"}
 
     // console.log(list[i], "is list[i]")
     let newElement = { stimulus: list[i] /*+ "<br></br><p class='comment'> Press either the key f or the key j. </p>"*/, data: { test_part: 'test_nbackVisual', level: level, correct_response: correctResponse, block: block, trial_nback_number: i+1, target: target, point_location: i, task: "nbackVisual" } }
