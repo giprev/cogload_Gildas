@@ -1906,7 +1906,8 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
     <p>${language.incentives.thankYou}</p>
     <p>${language.incentives.redirect}</p>
     <p>${language.incentives.continue}</p>`;
-    }
+    },
+    on_finish: function(trial) { statCalculation(trial)},
 };
 
 
@@ -1998,7 +1999,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( {type: "fullscreen", fullscreen_mode: true}, hardBlock_nbackVisual/*welcome, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback,*/, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

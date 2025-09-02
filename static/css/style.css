@@ -14,9 +14,12 @@ body {
     font-size: 60px
 }
 
-.jspsych-content {
-  max-width: 1000px;
-}
+.jspsych-content,
+.jspsych-survey-multi-choice .jspsych-survey-question .jspsych-survey-multi-choice-form {
+  max-width: 1000px !important;
+  margin-left: auto;
+  margin-right: auto;
+} 
 
 .formDiv {
     text-align: center;

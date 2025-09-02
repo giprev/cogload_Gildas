@@ -695,7 +695,7 @@ const fr = {
                 <p>À la fin de l'expérience, un sous-bloc sera sélectionné aléatoirement pour le calcul de votre bonus.</p>
                 <p>Votre bonus sera calculé en fonction de votre précision en trois parties :</p>
     
-                <ol>j
+                <ol>
                     <li><strong>50 % de votre bonus</strong> dépend de votre précision dans les trois essais juste après le n-back visuel.
                     <br>Dans l'exemple ci-dessus, cela signifie identifier correctement que le <span class="highlight">M</span> mais pas le <span class="highlight">B</span> ni le <span class="highlight">Q</span> correspond au <span class="highlight">M</span> avant la tâche visuelle.</li>
                     <li><strong>25 % de votre bonus</strong> dépend de votre précision dans les essais du n-back visuel.</li>

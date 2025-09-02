@@ -1,13 +1,13 @@
 const level = 3; //available levels: 0, 1, 2, 3
-const fixationDuration = 500;
-const letterDuration = 1500;
-const feedBackDuration = 1000; // 1000
+const fixationDuration = 100; //500
+const letterDuration = 150; //1500
+const feedBackDuration = 100; // 1000
 const payment = 10; // Payment amount
 
 // Change default language to French
 
-const practice_duration = 30000; // duration of practice
-const main_duration = 15000; // duration of main task
+const practice_duration = 30000; // duration of practice flanker
+const main_duration = 15000; // duration of main task flanker
 let total_flanker = 0;
 let total_flanker_easy = 0;
 let total_flanker_hard = 0;
