@@ -12,6 +12,7 @@ let subBlock = 0;  // the counter of target + source task block (used for incent
 let totSubBlocks = 12; // 6 easy and 6 hard for the nback only experiment
 let lastSubBlockOfFirstBlock = 6 // the last sub-block of the first block (used for incentives), if it is selected, the first trials before the first visual nback are taken into account for the incentives
 let nbackLevel = 0; // store the level of the n-back task selected for the incentives payment
+let remindDuration = 6000;
 
 
 /*************** VARIABLES span ***************/
@@ -67,12 +68,13 @@ if (level == 0) {
   instruction_hard = language.instructions2back
   taskHard = language.task2back
   paymentExplanationHard = language.paymentExplanation2Back
+  remindHard = language.overallTrainingFeedback.remind2Back
 } else if (level == 3) {
   instruction_hard = language.instructions3back
   taskHard= language.task3back
   paymentExplanationHard = language.paymentExplanation3Back
+  remindHard = language.overallTrainingFeedback.remind3Back
 }
-console.log(taskHard, "is taskHard")
 
 /*************** Instructions nback source task ***************/
 
@@ -311,12 +313,17 @@ setArrays() /* defines  nbackStimuli = {};
 
 
 defineEasyBack()
+assignRandomStimuli1back()
 
 if (level === 2) {
     defineHard2Back(); 
+    assignRandomStimuli2back();
 } else if (level === 3) {
     defineHard3Back();
-} // these functions define nbackStimuli.practiceListHard and nbackStimuli.stimuliListHard
+    assignRandomStimuli2back();
+} // these functions define nbackStimuli.practiceListHard and nbackStimuli.stimuliListHard and nbackStimuli.stimuliListHardOverallTraining etc.
+console.log(nbackStimuli.stimuliHard_nback, "is nbackStimuli.stimuliHard_nback")
+console.log(nbackStimuli.stimuliEasy_nback, "is nbackStimuli.stimuliEasy_nback")
 
 
 /* define timeline variables for the (source task) nback, for each block (hard and easy) and for each target task*/
@@ -340,6 +347,9 @@ createBlocks(nbackStimuli.stimuliListEasyOverallTraining, nbackStimuli.stimuliEa
 
 
 /* define timeline_variables for each visual nback (target task)*/
+assignRandomStimuliVisual();
+console.log(stimuliList_nbackVisual_1, "is stimuliList_nbackVisual_1")
+
 console.log(stimuli_nback_1, "is stimuli_nback_1")
 createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overall_training, 2)
 createBlocksVisual(stimuliList_nbackVisual_practice, stimuli_nback_practice, 2)
@@ -389,6 +399,17 @@ const feedbackWrong = {
 const feedbackNo = { 
   ... feedbackCorrect, 
   stimulus: `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">+</div><div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.noResponse}</div>` 
+}
+
+const feedbackRemindHard = { 
+  ... feedbackCorrect,
+  trial_duration: remindDuration,
+  stimulus: `<p>${remindHard}</p>` 
+}
+const feedbackRemindEasy = { 
+  ... feedbackCorrect,
+  trial_duration: remindDuration,
+  stimulus: `<p>${language.overallTrainingFeedback.remind1Back}</p>` 
 }
 
 /* define task trials for n-back*/
@@ -471,25 +492,28 @@ const nback_reset = {
 
 
 const nback_and_subBlock_reset_to_0 = {
-    ... trialStructure,
-    stimulus: `<p>L'expérience commence maintenant.</p>`,
-    trial_duration:2000,
+    type: "html-keyboard-response",
+    stimulus: `<p>L'expérience commence maintenant.</p><br>
+    <p> Appuyez sur la touche 'F' ou la touche 'J' pour débuter.</p>`,
     on_start: function () {
         console.log("nback_and_subBlock_reset function starting, nbackCounter reset to 0")
         nbackCounter = 0;
         subBlock = 0;
-    }
+    },
+    choices: buttonToPressForTarget
 }
 const nback_and_subBlock_reset_to_6 = {
-    ... trialStructure,
-    stimulus: `<p>L'expérience commence maintenant.</p>`,
-    trial_duration:2000,
+    type: "html-keyboard-response",
+    stimulus: `<p>L'expérience commence maintenant.</p><br>
+    <p> Appuyez sur la touche 'F' ou la touche 'J' pour débuter.</p>`,
     on_start: function () {
         console.log("nback_and_subBlock_reset function starting, nbackCounter reset to 0")
         nbackCounter = 0;
         subBlock = 6;
-    }
+    },
+    choices: buttonToPressForTarget
 }
+
 const comprehensionSurveyHard = {
     type: "survey-multi-choice",
     // Add a top-level array with the correct answers (1-based indices as requested)
@@ -1073,6 +1097,8 @@ const feedBackN = {
       }
   }
 
+
+
 const block_indicator = {
     ...trialStructure,
     stimulus: function () {
@@ -1602,14 +1628,30 @@ const practiceEasyBlock_nback_nback = { ... timelineElementStructure, timeline_v
 const practiceHardBlock_nback_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeHard_nback, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
 
 /* Overall training blocks */
-const overallTrainingNbackVisual = { timeline: [visualCache, testNback], timeline_variables: stimuli_nbackVisual_overall_training, conditional_function: function() {
+
+const overallTrainingNbackVisual = { timeline: [visualCache, testNback], timeline_variables: stimuli_nbackVisual_overall_training, 
+    conditional_function: function() {
         if (nbackCounter > 0 && nbackCounter % 10 === 0) {
             timeout = 0;
         }
         return nbackCounter === 10;
     } }
-const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual] }
-const overallTrainingEasy_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasyOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual] }
+const feedbackREasy = {
+    timeline: [feedbackRemindEasy],
+    timeline_variables: feedbackNo.data,
+        conditional_function: function () {
+            return nbackCounter === 10;
+        }
+}
+const feedbackRHard = {
+    timeline: [feedbackRemindHard],
+    timeline_variables: feedbackNo.data,
+        conditional_function: function () {
+            return nbackCounter === 10 || nbackCounter === 11 || nbackCounter === 13;
+        }
+}
+const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackRHard] }
+const overallTrainingEasy_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasyOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackREasy] }
 
 const hardBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingHard_nback, overallTrainingNbackVisual] }
 const easyBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingEasy_nback, overallTrainingNbackVisual] }
@@ -1716,6 +1758,7 @@ let block_order_indicator;
 if (Math.random() < 0.5) {
     experimentBlocks_nback_nback = [practiceAndTestHard_nback_nback, practiceAndTestEasy_nback_nback];
     block_order_indicator = "hard_first";
+    console.log("practiceAndTestHard_nback_nback first");
     practiceAndTestHard_nback_nback.timeline.splice(4, 0, paymentExplanationHardTrialFirst);
     practiceAndTestEasy_nback_nback.timeline.splice(4, 0, paymentExplanationEasyTrialSecond);
     // Insert overall training after payment explanation (hard first)
@@ -1725,6 +1768,7 @@ if (Math.random() < 0.5) {
 } else {
     experimentBlocks_nback_nback = [practiceAndTestEasy_nback_nback, practiceAndTestHard_nback_nback];
     block_order_indicator = "easy_first";
+    console.log("practiceAndTestEasy_nback_nback first");
     practiceAndTestEasy_nback_nback.timeline.splice(4, 0, paymentExplanationEasyTrialFirst);
     practiceAndTestHard_nback_nback.timeline.splice(4, 0, paymentExplanationHardTrialSecond);
     // Insert overall training after payment explanation (easy first, so level 1)
@@ -1994,8 +2038,12 @@ const practiceAndTestHard_nback_span = {
   }
 };
 
-if (Math.random() < 0.5) { experimentBlocks_nback_span = [practiceAndTestHard_nback_span, practiceAndTestEasy_nback_span];} 
-else { experimentBlocks_nback_span = [practiceAndTestEasy_nback_span, practiceAndTestHard_nback_span]; }
+if (Math.random() < 0.5) { experimentBlocks_nback_span = [practiceAndTestHard_nback_span, practiceAndTestEasy_nback_span];
+
+} 
+else { experimentBlocks_nback_span = [practiceAndTestEasy_nback_span, practiceAndTestHard_nback_span]; 
+}
+
 
 const experiment_nback_span = {
 timeline: experimentBlocks_nback_span,

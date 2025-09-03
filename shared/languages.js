@@ -186,8 +186,8 @@ const en = {
                     💡 Remember: The most important part for maximizing your bonus is to correctly identify matches immediately after the visual n-back section!
                 </div>
             </div>
-            
-            <p><i>Press any key to continue.</i></p>
+
+            <p><i>When you have understood, press any key to continue.</i></p>
         </div>`,
     },
     paymentExplanation2Back: {
@@ -237,8 +237,8 @@ const en = {
                 💡 Remember: The most important thing to maximize your bonus is to identify, after each visual n-back, whether the first letter of the letter n-back matches the last letter you saw before the visual n-back!
                 </div>
             </div>
-            
-            <p><i>Press any key to continue.</i></p>
+
+            <p><i>When you have understood, press any key to continue.</i></p>
         </div>`,
     },
     paymentExplanation3Back: {
@@ -288,8 +288,8 @@ const en = {
                 💡 Remember: The most important thing to maximize your bonus is to identify, after each visual n-back, whether the first three letters of the letter n-back respectively match the last three letters you saw before the visual n-back!
                 </div>
             </div>
-            
-            <p><i>Press any key to continue.</i></p>
+
+            <p><i>When you have understood, press any key to continue.</i></p>
         </div>`,
     },
     overallTrainingIntro: {
@@ -311,8 +311,12 @@ const en = {
         keyImportance: "💡 Key insight: The first {level} letters immediately after the visual n-back are worth 50% of your bonus!",
         calculation: "Bonus calculation: €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
         remember: "Remember: Always keep the last few letters in mind during the visual task!",
-        continue: "Press any key to continue to the main experiment."
+        continue: "Press any key to continue to the main experiment.",
+        remind3Back: " To answer correctly to the next letter, you should think about the letters three positions back, <strong style='color:red;'>before the visual n-back</strong>.",
+        remind2Back: " To answer correctly to the next letter, you should think about the letters two positions back, <strong style='color:red;'>before the visual n-back</strong>.",
+        remind1Back: " To answer correctly to the next letter, you should think about the letters one position back, <strong style='color:red;'>before the visual n-back</strong>."
     },
+
 
     // New: comprehension check (English)
     comprehensionIntro: "Before starting the experiment, you must answer a few comprehension questions correctly.",
@@ -636,8 +640,8 @@ const fr = {
                     💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque n-back visuel, si la première lettre du n-back lettres correspond à la dernière lettre que vous avez vue avant le n-back visuel !
                 </div>
             </div>
-            
-            <p><i>Appuyez sur n’importe quelle touche pour continuer.</i></p>
+
+            <p><i>Quand vous avez compris, appuyez sur n’importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     paymentExplanation2Back: {
@@ -691,7 +695,7 @@ const fr = {
                 </div>
             </div>
     
-            <p><i>Appuyez sur n'importe quelle touche pour continuer.</i></p>
+            <p><i>Quand vous avez compris, appuyez sur n’importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     paymentExplanation3Back: {
@@ -746,7 +750,7 @@ const fr = {
                 </div>
             </div>
     
-            <p><i>Appuyez sur n'importe quelle touche pour continuer.</i></p>
+            <p><i>Quand vous avez compris, appuyez sur n’importe quelle touche pour continuer.</i></p>
         </div>`,
     },
     overallTrainingIntro: {
@@ -754,14 +758,14 @@ const fr = {
         description: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de n-back visuel et de n-back lettres.",
         structure: "Vous commencerez par 10 essais de n-back lettres, puis ferez un sous-bloc: une tâche de n-back visuel (10 essais), et une tâche de n-back lettres.",
         importance: "Cet entraînement vous aidera à comprendre la structure complète d'un sous-bloc et le fonctionnement du système de notation.",
-        feedback: "À la fin, vous verrez un retour sur votre performance et comment votre bonus serait calculé si c'était un vrai sous-bloc.",
+        feedback: "À la fin, vous verrez un retour sur votre performance et comment votre bonus était calculé si c'était un vrai sous-bloc.",
         highlightEasy: "Portez une attention particulière à la lettre immédiatement après le n-back visuel - c'est la plus importante pour votre bonus !",
         highlightHard: "Portez une attention particulière aux {level} premières lettres immédiatement après le n-back visuel - elles sont les plus importantes pour votre bonus !",
         ready: "Quand vous êtes prêt à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
     },
     overallTrainingFeedback: {
         title: "Entraînement Terminé - Démonstration du système de points",
-        performance: "Voici comment votre performance serait notée si c'était un vrai sous-bloc et qu'il serait sélectionné pour le paiement (au hasard) :",
+        performance: "Voici comment votre performance serait notée si c'était un vrai sous-bloc et qu'il était sélectionné pour le paiement (au hasard) :",
         nback: "N-back lettres après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
         visualNback: "N-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
         afterVisual: "{Lettres} après le n-back visuel : {accuracy}% de précision ({correct}/{total} essais)",
@@ -770,7 +774,10 @@ const fr = {
         calculation: "Calcul du bonus : €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
         rememberHard: "À retenir : Gardez toujours en mémoire les {level} dernières lettres pendant le n-back visuel!",
         rememberEasy: "À retenir : Gardez toujours en mémoire la dernière lettre pendant le n-back visuel!",
-        continue: "Appuyez sur n'importe quelle touche pour continuer vers l'expérience principale."
+        continue: "Appuyez sur n'importe quelle touche pour continuer vers l'expérience principale.",
+        remind3Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre trois positions en arrière, <strong style='color:red;'>avant le n-back visuel</strong>.",
+        remind2Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre deux positions en arrière, <strong style='color:red;'>avant le n-back visuel</strong>.",
+        remind1Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre une position en arrière, <strong style='color:red;'>avant le n-back visuel</strong>."
     },
 
     // New: comprehension check (French)
@@ -795,7 +802,7 @@ const fr = {
             ]
         },
         q2: {
-            prompt: "Je commence un n-back visuel. Le point est à la même position que le dernier point du dernier n-back visuel. Sur quelle touche dois-je appuyer ?",
+            prompt: "Je commence un n-back visuel. Le point est à la même position que l'avant-dernier point du dernier n-back visuel. Sur quelle touche dois-je appuyer ?",
             options: [
                 "La touche “F”.",
                 "La touche “J”.",
