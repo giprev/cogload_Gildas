@@ -45,10 +45,16 @@ const en = {
     instructions2back: {
         changeN: "Now you will switch to a different n-back level.",
         letter: "In this task, <strong>letters</strong> will appear on the screen consecutively.",
+        grid: "In this task, <strong>a dot appears in one of the squares of a grid</strong> on each presentation.",
+        yourTask1Grid: "Your task will be <strong>to press the key 'J' if the location of the dot on the screen is the same as <strong style='color:red'>two</strong> grids before</strong>.",
+        firstGrids: "For the first two points of a series of presentations, you must press 'F'.",
         yourTask1: "Your task will be <strong>to press the key 'J' if the letter on the screen is the same as <strong style='color:red'>two</strong> letters earlier</strong>.",
         yourTask2: "Otherwise, press the <strong>key 'F'</strong>.",
+        liveDemo: nbackDemoHTML('nback-demo'),
         image: "<img src='static/images/instruction_2back_en.gif' />",
-        firstGameLetter: "Let's explain the letter n-back task."
+        firstGameLetter: "Let's explain the letter n-back task.",
+        firstGameVisual: "Let's explain the visual n-back.",
+        allGame: "These instructions apply to the entire experiment."
     },
     instructions3back: {
         changeN: "Now you will switch to a different n-back level.",
@@ -484,10 +490,17 @@ const fr = {
     instructions2back: {
         changeN: "Maintenant, vous allez passer à un niveau n-back différent.",
         letter: "Dans cette tâche, des <strong>lettres</strong> apparaîtront à l'écran consécutivement.",
+        grid: "Dans cette tâche, un <strong>point apparaît dans l'une des cases d'une grille</strong> à chaque présentation.",
         yourTask1: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>deux</strong> lettres</strong>.",
         yourTask2: "Sinon, appuyez sur la <strong>touche 'F'</strong>.",
+        yourTask1Grid: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si le point à l’écran est à la même position que celui d’il y a  <strong style='color:red'>deux</strong> présentations </strong>(c’est-à-dire le point avant le dernier).",
+        firstGrids: "Pour les deux premiers points d'une série de présentations, vous devez appuyer sur 'F' (il n'y a pas de points immédiatement précédents).",
+        liveDemo: nbackDemoHTML('nback-demo'),
         image: "<img src='static/images/instruction_2back_en.gif' />",
-        firstGameLetter: "Expliquons la tâche de n-back lettres."
+        firstGameLetter: "Expliquons la tâche de n-back lettres.",
+        firstGameVisual: "Expliquons le n-back visuel.",
+        allGame: "Ces instructions s'appliquent à toute l'expérience."
+
     },
     instructions3back: {
         changeN: "Maintenant, vous allez passer à un niveau n-back différent.",
@@ -578,16 +591,22 @@ const fr = {
         changeScore: `Attention ! À partir de maintenant, les 50% de votre bonus dépendront de votre résultat à la <span style="color:red;"><strong>première lettre</strong></span> après le n-back visuel du sous-bloc choisi pour le paiement.`,
         score: `
         <div class="payment-info">
+             <div class="payment-illustration">
+                <h3>Fonctionnement :</h3>
                 <div class="nback-sequence" style="position: relative;">
-                    <div class="nback-box">... K L <span class="highlight">M</span></div>
-                    <div class="nback-box visual-nback-box" id="visual-nback-box">n-back visuel<br>(10 trials)</div>
-                    <div class="nback-box" id="letter-nback-box"><span class="highlight">M</span> A U Q P B ...</div>
+                    <div class="nback-box"><span style="float: right;">... A Q L K L <span class="highlight">M</span></span><br><span style="font-size:0.9em;">(n-back lettres)</span></div>
+                    <div class="nback-box visual-nback-box" id="visual-nback-box">
+                    <img src="static/images/grids_explanation.png" alt="n-back visuel" style="max-width:220px;max-height:140px;display:block;margin:auto;">
+                    <span style="display:block; font-size:0.9em; margin-top:0px; vertical-align:top;">(n-back visuel)</span>
+                    </div>
+                    <div class="nback-box" id="letter-nback-box"><span class="highlight">M</span> A U Q P B ...
+                    <br><span style="font-size:0.9em;">(n-back lettres)</span></div>
                     <!-- Horizontal accolade below visual n-back and letter n-back -->
-                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 75px; width: 400px; pointer-events: none;">
+                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 140px; width: 400px; pointer-events: none;">
                 <svg width="400" height="70"> <!-- Hauteur augmentée pour accommoder le décalage -->
                     <path d="M20,30 Q20,55 60,55 L350,55 Q390,55 390,30" stroke="#333" fill="transparent" stroke-width="3"/>
                 </svg>
-                    <div style="text-align:center; font-size:1em; margin-top:5px;">un sous-bloc</div>
+                    <div style="text-align:center; font-size:1em; margin-top:-5px;">un sous-bloc</div>
                 </div>
                 </div>
                 <br><br>
@@ -630,15 +649,19 @@ const fr = {
             <div class="payment-illustration">
                 <h3>Fonctionnement :</h3>
                 <div class="nback-sequence" style="position: relative;">
-                    <div class="nback-box">... K <span class="highlight">M P</span></div>
-                    <div class="nback-box visual-nback-box" id="visual-nback-box">n-back visuel<br>(10 essais)</div>
-                    <div class="nback-box" id="letter-nback-box"><span class="highlight">M B</span> U Q P B ...</div>
-                    <!-- Accolade horizontale sous les n-back -->
-                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 75px; width: 400px; pointer-events: none;">
+                    <div class="nback-box"><span style="float: right;">... A Q M K<span class="highlight">M L</span></span><br><span style="font-size:0.9em;">(n-back lettres)</span></div>
+                    <div class="nback-box visual-nback-box" id="visual-nback-box">
+                    <img src="static/images/grids_explanation.png" alt="n-back visuel" style="max-width:220px;max-height:140px;display:block;margin:auto;">
+                    <span style="display:block; font-size:0.9em; margin-top:0px; vertical-align:top;">(n-back visuel)</span>
+                    </div>
+                    <div class="nback-box" id="letter-nback-box"><span class="highlight">M B</span> Q A U Q ...
+                    <br><span style="font-size:0.9em;">(n-back lettres)</span></div>
+                    <!-- Horizontal accolade below visual n-back and letter n-back -->
+                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 140px; width: 400px; pointer-events: none;">
                 <svg width="400" height="70"> <!-- Hauteur augmentée pour accommoder le décalage -->
                     <path d="M20,30 Q20,55 60,55 L350,55 Q390,55 390,30" stroke="#333" fill="transparent" stroke-width="3"/>
                 </svg>
-                    <div style="text-align:center; font-size:1em; margin-top:5px;">un sous-bloc</div>
+                    <div style="text-align:center; font-size:1em; margin-top:-5px;">un sous-bloc</div>
                 </div>
                 </div>
                 <br><br>
@@ -680,15 +703,19 @@ const fr = {
             <div class="payment-illustration">
                 <h3>Fonctionnement :</h3>
                 <div class="nback-sequence" style="position: relative;">
-                    <div class="nback-box">... A <span class="highlight">K M P</span></div>
-                    <div class="nback-box visual-nback-box" id="visual-nback-box">n-back visuel<br>(10 essais)</div>
-                    <div class="nback-box" id="letter-nback-box"><span class="highlight">Q M B</span> U P B Q...</div>
-                    <!-- Accolade horizontale sous les n-back -->
-                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 75px; width: 400px; pointer-events: none;">
+                    <div class="nback-box"><span style="float: right;">... A Q M <span class="highlight">M K L</span></span><br><span style="font-size:0.9em;">(n-back lettres)</span></div>
+                    <div class="nback-box visual-nback-box" id="visual-nback-box">
+                    <img src="static/images/grids_explanation.png" alt="n-back visuel" style="max-width:220px;max-height:140px;display:block;margin:auto;">
+                    <span style="display:block; font-size:0.9em; margin-top:0px; vertical-align:top;">(n-back visuel)</span>
+                    </div>
+                    <div class="nback-box" id="letter-nback-box"><span class="highlight">M B Q</span> A U Q ...
+                    <br><span style="font-size:0.9em;">(n-back lettres)</span></div>
+                    <!-- Horizontal accolade below visual n-back and letter n-back -->
+                <div style="position: absolute; left: 50%; transform: translateX(-30%); top: 140px; width: 400px; pointer-events: none;">
                 <svg width="400" height="70"> <!-- Hauteur augmentée pour accommoder le décalage -->
                     <path d="M20,30 Q20,55 60,55 L350,55 Q390,55 390,30" stroke="#333" fill="transparent" stroke-width="3"/>
                 </svg>
-                    <div style="text-align:center; font-size:1em; margin-top:5px;">un sous-bloc</div>
+                    <div style="text-align:center; font-size:1em; margin-top:-5px;">un sous-bloc</div>
                 </div>
                 </div>
                 <br><br>

@@ -56,10 +56,12 @@
     // Example sequence
     const sequence = opts.sequence || [
       {pos: 0, text: '<span style="color:red;">PRESS</span> F'},
+      {pos: 1, text: '<span style="color:red;">PRESS</span> F'},
       {pos: 0, text: '<span style="color:red;">PRESS</span> J'},
       {pos: 4, text: '<span style="color:red;">PRESS</span> F'},
-      {pos: 7, text: '<span style="color:red;">PRESS</span> F'},
-      {pos: 7, text: '<span style="color:red;">PRESS</span> J'}
+      {pos: 0, text: '<span style="color:red;">PRESS</span> J'},
+      {pos: 4, text: '<span style="color:red;">PRESS</span> J'},
+      {pos: 2, text: '<span style="color:red;">PRESS</span> F'},
     ];
   
     let t = 0;
@@ -83,7 +85,7 @@
   
     // Start
     step();
-    setInterval(step, opts.stim_ms || 1000);
+    setInterval(step, opts.stim_ms || 1500);
   }
   
 

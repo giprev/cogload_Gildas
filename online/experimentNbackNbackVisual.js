@@ -175,27 +175,35 @@ const instructions_hard = {
 
 let sequence1 = [];
 if (language == en) {
-    sequence1 =  [{pos: 0, text: '<span style="color:red;">PRESS</span> F'},
-    {pos: 0, text: '<span style="color:red;">PRESS</span> J'},
-    {pos: 4, text: '<span style="color:red;">PRESS</span> F'},
-    {pos: 7, text: '<span style="color:red;">PRESS</span> F'},
-    {pos: 7, text: '<span style="color:red;">PRESS</span> J'}]
-    }
+    sequence1 =  [
+      {pos: 0, text: '<span style="color:red;">PRESS</span> F'},
+      {pos: 1, text: '<span style="color:red;">PRESS</span> F'},
+      {pos: 0, text: '<span style="color:red;">PRESS</span> J'},
+      {pos: 4, text: '<span style="color:red;">PRESS</span> F'},
+      {pos: 0, text: '<span style="color:red;">PRESS</span> J'},
+      {pos: 4, text: '<span style="color:red;">PRESS</span> J'},
+      {pos: 2, text: '<span style="color:red;">PRESS</span> F'},
+    ];
+}
 
 else if (language == fr) {
-    sequence1 = [{pos: 0, text: '<span style="color:red;">APPUYER SUR</span> F'},
-        {pos: 0, text: '<span style="color:red;">APPUYER SUR</span> J'},
-        {pos: 4, text: '<span style="color:red;">APPUYER SUR</span> F'},
-        {pos: 7, text: '<span style="color:red;">APPUYER SUR</span> F'},
-        {pos: 7, text: '<span style="color:red;">APPUYER SUR</span> J'}]
+    sequence1 = [
+      {pos: 0, text: '<span style="color:red;">APPUYEZ SUR</span> F'},
+      {pos: 1, text: '<span style="color:red;">APPUYEZ SUR</span> F'},
+      {pos: 0, text: '<span style="color:red;">APPUYEZ SUR</span> J'},
+      {pos: 4, text: '<span style="color:red;">APPUYEZ SUR</span> F'},
+      {pos: 0, text: '<span style="color:red;">APPUYEZ SUR</span> J'},
+      {pos: 4, text: '<span style="color:red;">APPUYEZ SUR</span> J'},
+      {pos: 2, text: '<span style="color:red;">APPUYEZ SUR</span> F'},
+    ];
 }
 
 
 const instructions_NbackVisual= {
   type: "instructions",
   pages: [
-      `<div style="max-width: 1200px"> <p>${language.instructions1back.firstGameVisual}</p><p>${language.instructions1back.grid}</p><p>${language.instructions1back.yourTask1Grid}</p><p>${language.instructions1back.yourTask2}</p>
-      <p>${language.generalInstruction.fastAndAccurate}</p>${language.instructions1back.liveDemo}<p><br><p>${language.instructions1back.firstGrids}</p><p>${language.instructions1back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
+      `<div style="max-width: 1200px"> <p>${language.instructions2back.firstGameVisual}</p><p>${language.instructions2back.grid}</p><p>${language.instructions2back.yourTask1Grid}</p><p>${language.instructions2back.yourTask2}</p>
+      <p>${language.generalInstruction.fastAndAccurate}</p>${language.instructions2back.liveDemo}<p><br><p>${language.instructions2back.firstGrids}</p><p>${language.instructions2back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
   ],
   show_clickable_nav: true,
   button_label_next: language.button.next,
@@ -212,7 +220,7 @@ const instructions_NbackVisual= {
   // }
   on_load: function () {
     startNbackDemo('nback-demo', {
-      stim_ms: 1000,
+      stim_ms: 1500,
       fix_ms: 1000,
       sequence: sequence1
     //   : [
@@ -333,20 +341,20 @@ createBlocks(nbackStimuli.stimuliListEasyOverallTraining, nbackStimuli.stimuliEa
 
 /* define timeline_variables for each visual nback (target task)*/
 console.log(stimuli_nback_1, "is stimuli_nback_1")
-createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overall_training, 1)
-createBlocksVisual(stimuliList_nbackVisual_practice, stimuli_nback_practice, 1)
-createBlocksVisual(stimuliList_nbackVisual_1, stimuli_nback_1, 1)
-createBlocksVisual(stimuliList_nbackVisual_2, stimuli_nback_2, 1)
-createBlocksVisual(stimuliList_nbackVisual_3, stimuli_nback_3, 1)
-createBlocksVisual(stimuliList_nbackVisual_4, stimuli_nback_4, 1)
-createBlocksVisual(stimuliList_nbackVisual_5, stimuli_nback_5, 1)
-createBlocksVisual(stimuliList_nbackVisual_6, stimuli_nback_6, 1)
-createBlocksVisual(stimuliList_nbackVisual_7, stimuli_nback_7, 1)
-createBlocksVisual(stimuliList_nbackVisual_8, stimuli_nback_8, 1)
-createBlocksVisual(stimuliList_nbackVisual_9, stimuli_nback_9, 1)
-createBlocksVisual(stimuliList_nbackVisual_10, stimuli_nback_10, 1)
-createBlocksVisual(stimuliList_nbackVisual_11, stimuli_nback_11, 1)
-createBlocksVisual(stimuliList_nbackVisual_12, stimuli_nback_12, 1)
+createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overall_training, 2)
+createBlocksVisual(stimuliList_nbackVisual_practice, stimuli_nback_practice, 2)
+createBlocksVisual(stimuliList_nbackVisual_1, stimuli_nback_1, 2)
+createBlocksVisual(stimuliList_nbackVisual_2, stimuli_nback_2, 2)
+createBlocksVisual(stimuliList_nbackVisual_3, stimuli_nback_3, 2)
+createBlocksVisual(stimuliList_nbackVisual_4, stimuli_nback_4, 2)
+createBlocksVisual(stimuliList_nbackVisual_5, stimuli_nback_5, 2)
+createBlocksVisual(stimuliList_nbackVisual_6, stimuli_nback_6, 2)
+createBlocksVisual(stimuliList_nbackVisual_7, stimuli_nback_7, 2)
+createBlocksVisual(stimuliList_nbackVisual_8, stimuli_nback_8, 2)
+createBlocksVisual(stimuliList_nbackVisual_9, stimuli_nback_9, 2)
+createBlocksVisual(stimuliList_nbackVisual_10, stimuli_nback_10, 2)
+createBlocksVisual(stimuliList_nbackVisual_11, stimuli_nback_11, 2)
+createBlocksVisual(stimuliList_nbackVisual_12, stimuli_nback_12, 2)
 
 
 var response_grid =
