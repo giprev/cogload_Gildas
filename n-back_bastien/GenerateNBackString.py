@@ -2,11 +2,11 @@ import random
 
 def generate_nback_string(nback, block_triples):
     lseq = 40
-    ntarget = 13
+    ntarget = 14
     nplus1 = 7
-    # nminus1 = 14
-    # letters = ['st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
-    letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
+    nminus1 = 7
+    letters = ['st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
+    # letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
 
     while True:
         seq = [random.choice(letters) for _ in range(lseq)]
@@ -25,17 +25,17 @@ def generate_nback_string(nback, block_triples):
             seq[pos] = seq[pos - (nback + 1)]
 
         # Place N-1-back targets (avoid overlap with n-back and N+1-back targets)
-        # available_minus1 = [i for i in range(nback-1, lseq) if i not in positions and i not in plus1_positions and (i-nback+1) >= 0]
-        # if len(available_minus1) < nminus1:
-        #     continue
-        # minus1_positions = random.sample(available_minus1, nminus1)
-        # for pos in minus1_positions:
-        #     seq[pos] = seq[pos - (nback - 1)]
+        available_minus1 = [i for i in range(nback-1, lseq) if i not in positions and i not in plus1_positions and (i-nback+1) >= 0]
+        if len(available_minus1) < nminus1:
+            continue
+        minus1_positions = random.sample(available_minus1, nminus1)
+        for pos in minus1_positions:
+            seq[pos] = seq[pos - (nback - 1)]
 
         # Analyze the sequence to check if the counts are exact
         nback_count = sum(seq[i] == seq[i-nback] for i in range(nback, lseq))
         nplus1_count = sum(seq[i] == seq[i-(nback+1)] for i in range(nback+1, lseq))
-        # nminus1_count = sum(seq[i] == seq[i-(nback-1)] for i in range(nback-1, lseq))
+        nminus1_count = sum(seq[i] == seq[i-(nback-1)] for i in range(nback-1, lseq))
 
         # Block three consecutive identical letters if requested
         if block_triples:
@@ -43,7 +43,7 @@ def generate_nback_string(nback, block_triples):
             if has_triple:
                 continue
 
-        if nback_count == ntarget and nplus1_count == nplus1: # and nminus1_count == nminus1:
+        if nback_count == ntarget and nplus1_count == nplus1 and nminus1_count == nminus1:
             return seq
 
 def analyze_nback(seq, nback):
@@ -73,6 +73,6 @@ def analyze_nback(seq, nback):
 
     return nback_positions, nplus1_positions, nminus1_positions
 
-ex = generate_nback_string(1, True)
+ex = generate_nback_string(2, True)
 print(ex)
-analyze_nback(ex, 1)
+analyze_nback(ex, 2)
