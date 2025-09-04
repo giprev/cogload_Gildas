@@ -64,16 +64,19 @@ if (level == 0) {
   instruction_hard = language.instructions1back
   taskHard = language.task1back
   paymentExplanationHard = language.paymentExplanation1Back
+  explainHard = language.overallTrainingFeedback.explain1Back
 } else if (level == 2) {
   instruction_hard = language.instructions2back
   taskHard = language.task2back
   paymentExplanationHard = language.paymentExplanation2Back
   remindHard = language.overallTrainingFeedback.remind2Back
+  explainHard = language.overallTrainingFeedback.explain2Back
 } else if (level == 3) {
   instruction_hard = language.instructions3back
   taskHard= language.task3back
   paymentExplanationHard = language.paymentExplanation3Back
   remindHard = language.overallTrainingFeedback.remind3Back
+  explainHard = language.overallTrainingFeedback.explain3Back
 }
 
 /*************** Instructions nback source task ***************/
@@ -205,7 +208,7 @@ const instructions_NbackVisual= {
   type: "instructions",
   pages: [
       `<div style="max-width: 1200px"> <p>${language.instructions2back.firstGameVisual}</p><p>${language.instructions2back.grid}</p><p>${language.instructions2back.yourTask1Grid}</p><p>${language.instructions2back.yourTask2}</p>
-      <p>${language.generalInstruction.fastAndAccurate}</p>${language.instructions2back.liveDemo}<p><br><p>${language.instructions2back.firstGrids}</p><p>${language.instructions2back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
+      <p>${language.generalInstruction.fastAndAccurate}</p><br>${language.instructions2back.liveDemo}<p><br><p>${language.instructions2back.firstGrids}</p><p>${language.instructions2back.allGame}</p><p>${language.generalInstruction.clickNext}</p></div>`
   ],
   show_clickable_nav: true,
   button_label_next: language.button.next,
@@ -1546,7 +1549,7 @@ const overallTrainingHardFeedback = {
             <p>${language.overallTrainingFeedback.performance}</p>
             <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
             <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
-            <p>${language.overallTrainingFeedback.afterVisual.replace('{Lettres}', "Lettres").replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT)}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{Lettres}', "Lettres").replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT)}. ${explainHard}</p>
             <p>${language.overallTrainingFeedback.keyImportanceHard.replace('{level}', nbackLevel)}</p>
             <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
             <p>${language.overallTrainingFeedback.rememberHard.replace('{level}', nbackLevel)}</p>
@@ -1611,7 +1614,7 @@ const overallTrainingEasyFeedback = {
             <p>${language.overallTrainingFeedback.performance}</p>
             <p>${language.overallTrainingFeedback.nback.replace('{accuracy}', accuracyNPercent).replace('{correct}', corTrialsN).replace('{total}', totalTrialsN)}</p>
             <p>${language.overallTrainingFeedback.visualNback.replace('{accuracy}', accuracyVNPercent).replace('{correct}', corTrialsVN).replace('{total}', totalTrialsVN)}</p>
-            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT).replace('{Lettres}', "Lettre")}</p>
+            <p>${language.overallTrainingFeedback.afterVisual.replace('{accuracy}', accuracyPostVisualPercent).replace('{correct}', corPostVT).replace('{total}', postVT).replace('{Lettres}', "Lettre")}. ${language.overallTrainingFeedback.explain1Back}</p>
             <p>${language.overallTrainingFeedback.keyImportanceEasy}</p>
             <p>${language.overallTrainingFeedback.calculation.replace('{payment}', payment).replace('{afterVisualAcc}', accuracyPostVisual.toFixed(2)).replace('{visualAcc}', accuracyVN.toFixed(2)).replace('{letterAcc}', accuracyN.toFixed(2)).replace('{totalBonus}', totalPayment.toFixed(2))}</p>
             <p>${language.overallTrainingFeedback.rememberEasy}</p>
@@ -1647,7 +1650,7 @@ const feedbackRHard = {
     timeline: [feedbackRemindHard],
     timeline_variables: feedbackNo.data,
         conditional_function: function () {
-            return nbackCounter === 10 || nbackCounter === 11 || nbackCounter === 13;
+            return nbackCounter === 10 || nbackCounter === 11 || nbackCounter === 12;
         }
 }
 const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackRHard] }
@@ -1847,7 +1850,8 @@ function getRandomInt(min, max) {
 const subBlockInteger = getRandomInt(1, 12);
 //getRandomInt(1, totSubBlocks);
 console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
-  
+
+
 
 // Incentives screen after n-back tasks
   const incentives = {
@@ -1959,7 +1963,12 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
     <p>${language.incentives.redirect}</p>
     <p>${language.incentives.continue}</p>`;
     },
-    on_finish: function(trial) { statCalculation(trial)},
+    on_finish: function(trial) { 
+        trial.selected_subblock = subBlockInteger;
+        trial.block_order_indicator = block_order_indicator;
+
+        statCalculation(trial);
+    },
 };
 
 
@@ -2097,7 +2106,7 @@ jatos.onLoad(() => {
         timeline: timeline,
         on_finish: function() {
             jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+            // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });

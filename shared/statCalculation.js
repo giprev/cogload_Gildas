@@ -110,7 +110,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nback = stats_nback.crCount;
 	trial.STAT_nr_response_nback = trials_nback.count();
 	trial.STAT_nr_no_response_nback = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_hard" || t.block == "main_easy") && t.task == "nback" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nback = ((stats_nback.hitCount + stats_nback.crCount) / (trials_nback.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nback = ((stats_nback.hitCount + stats_nback.crCount) / (trials_nback.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nback = ((stats_nback.hitCount + stats_nback.crCount) / (trials_nback.count() + trial.STAT_nr_response_nback || 1)) * 100;
 	trial.STAT_rt_mean_nback = trials_nback.count() > 0 ? (trials_nback.select('rt').mean()) : null;
 	trial.STAT_rt_median_nback = trials_nback.count() > 0 ? (trials_nback.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nback = hit_nback.count() > 0 ? (hit_nback.select('rt').mean()) : null;
@@ -130,7 +131,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nbackVisual = stats_nbackVisual.crCount;
 	trial.STAT_nr_response_nbackVisual = trials_nbackVisual.count();
 	trial.STAT_nr_no_response_nbackVisual = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_hard" || t.block == "main_easy") && t.task == "nbackVisual" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nbackVisual = ((stats_nbackVisual.hitCount + stats_nbackVisual.crCount) / (trials_nbackVisual.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nbackVisual = ((stats_nbackVisual.hitCount + stats_nbackVisual.crCount) / (trials_nbackVisual.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nbackVisual = ((stats_nbackVisual.hitCount + stats_nbackVisual.crCount) / (trials_nbackVisual.count() + trial.STAT_nr_no_response_nbackVisual || 1)) * 100;
 	trial.STAT_rt_mean_nbackVisual = trials_nbackVisual.count() > 0 ? (trials_nbackVisual.select('rt').mean()) : null;
 	trial.STAT_rt_median_nbackVisual = trials_nbackVisual.count() > 0 ? (trials_nbackVisual.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nbackVisual = hit_nbackVisual.count() > 0 ? (hit_nbackVisual.select('rt').mean()) : null;
@@ -150,7 +152,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nback_hard = stats_nback_hard.crCount;
 	trial.STAT_nr_response_nback_hard = trials_nback_hard.count();
 	trial.STAT_nr_no_response_nback_hard = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_hard") && t.task == "nback" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nback_hard = ((stats_nback_hard.hitCount + stats_nback_hard.crCount) / (trials_nback_hard.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nback_hard = ((stats_nback_hard.hitCount + stats_nback_hard.crCount) / (trials_nback_hard.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nback_hard = ((stats_nback_hard.hitCount + stats_nback_hard.crCount) / (trials_nback_hard.count() + trial.STAT_nr_no_response_nback_hard || 1)) * 100;
 	trial.STAT_rt_mean_nback_hard = trials_nback_hard.count() > 0 ? (trials_nback_hard.select('rt').mean()) : null;
 	trial.STAT_rt_median_nback_hard = trials_nback_hard.count() > 0 ? (trials_nback_hard.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nback_hard = hit_nback_hard.count() > 0 ? (hit_nback_hard.select('rt').mean()) : null;
@@ -169,7 +172,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nback_easy = stats_nback_easy.crCount;
 	trial.STAT_nr_response_nback_easy = trials_nback_easy.count();
 	trial.STAT_nr_no_response_nback_easy = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_easy") && t.task == "nback" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nback_easy = ((stats_nback_easy.hitCount + stats_nback_easy.crCount) / (trials_nback_easy.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nback_easy = ((stats_nback_easy.hitCount + stats_nback_easy.crCount) / (trials_nback_easy.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nback_easy = ((stats_nback_easy.hitCount + stats_nback_easy.crCount) / (trials_nback_easy.count() + trial.STAT_nr_no_response_nback_easy || 1)) * 100;
 	trial.STAT_rt_mean_nback_easy = trials_nback_easy.count() > 0 ? (trials_nback_easy.select('rt').mean()) : null;
 	trial.STAT_rt_median_nback_easy = trials_nback_easy.count() > 0 ? (trials_nback_easy.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nback_easy = hit_nback_easy.count() > 0 ? (hit_nback_easy.select('rt').mean()) : null;
@@ -188,7 +192,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nbackVisual_hard = stats_nbackVisual_hard.crCount;
 	trial.STAT_nr_response_nbackVisual_hard = trials_nbackVisual_hard.count();
 	trial.STAT_nr_no_response_nbackVisual_hard = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_hard") && t.task == "nbackVisual_hard" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nbackVisual_hard = ((stats_nbackVisual_hard.hitCount + stats_nbackVisual_hard.crCount) / (trials_nbackVisual_hard.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nbackVisual_hard = ((stats_nbackVisual_hard.hitCount + stats_nbackVisual_hard.crCount) / (trials_nbackVisual_hard.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nbackVisual_hard = ((stats_nbackVisual_hard.hitCount + stats_nbackVisual_hard.crCount) / (trials_nbackVisual_hard.count() + trial.STAT_nr_no_response_nbackVisual_hard || 1)) * 100;
 	trial.STAT_rt_mean_nbackVisual_hard = trials_nbackVisual_hard.count() > 0 ? (trials_nbackVisual_hard.select('rt').mean()) : null;
 	trial.STAT_rt_median_nbackVisual_hard = trials_nbackVisual_hard.count() > 0 ? (trials_nbackVisual_hard.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nbackVisual_hard = hit_nbackVisual_hard.count() > 0 ? (hit_nbackVisual_hard.select('rt').mean()) : null;
@@ -207,7 +212,8 @@ function statCalculation (trial) {
 	trial.STAT_nr_correct_rejection_nbackVisual_easy = stats_nbackVisual_easy.crCount;
 	trial.STAT_nr_response_nbackVisual_easy = trials_nbackVisual_easy.count();
 	trial.STAT_nr_no_response_nbackVisual_easy = jsPsych.data.get().filterCustom(function(t){ return ( (t.block == "main_easy") && t.task == "nbackVisual_easy" && t.key_press == null) }).count();
-	trial.STAT_accuracy_nbackVisual_easy = ((stats_nbackVisual_easy.hitCount + stats_nbackVisual_easy.crCount) / (trials_nbackVisual_easy.count() || 1)) * 100;
+	trial.STAT_accuracyExcluding_nbackVisual_easy = ((stats_nbackVisual_easy.hitCount + stats_nbackVisual_easy.crCount) / (trials_nbackVisual_easy.count() || 1)) * 100;
+	trial.STAT_accuracyIncluding_nbackVisual_easy = ((stats_nbackVisual_easy.hitCount + stats_nbackVisual_easy.crCount) / (trials_nbackVisual_easy.count() + trial.STAT_nr_no_response_nbackVisual_easy || 1)) * 100;
 	trial.STAT_rt_mean_nbackVisual_easy = trials_nbackVisual_easy.count() > 0 ? (trials_nbackVisual_easy.select('rt').mean()) : null;
 	trial.STAT_rt_median_nbackVisual_easy = trials_nbackVisual_easy.count() > 0 ? (trials_nbackVisual_easy.select('rt').median()) : null;
 	trial.STAT_hit_rt_mean_nbackVisual_easy = hit_nbackVisual_easy.count() > 0 ? (hit_nbackVisual_easy.select('rt').mean()) : null;
