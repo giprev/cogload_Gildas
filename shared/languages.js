@@ -447,8 +447,10 @@ const en = {
             "10 (very)",
             "Prefer not to say"
         ]
-    }
     },
+    },
+    prolificID: "Please enter your Prolific ID:",
+    redirectProlific: "You will be automatically redirected to Prolific in 3 seconds..."
 }
 
 
@@ -922,7 +924,9 @@ const fr = {
                 "Préfère ne pas répondre"
             ]
         },
-        },
+    },
+    prolificID: "Veuillez saisir votre identifiant Prolific:",
+    redirectProlific: "Vous allez être dirigé automatiquement sur Prolific dans 3 secondes..."
 }
 
 let language = fr;

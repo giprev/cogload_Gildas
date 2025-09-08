@@ -44,6 +44,8 @@ const arrSum = arr => arr.reduce((a,b) => a + b, 0) //simple variable for calcul
 /*************** VARIABLES nback-visual ***************/
 
 var point_location = [];
+let mainNbackCounter = 0; // the counter for each n-back trial (visual included) in the main task
+let nbackVisualCounter = 0; // the counter for each visual n-back trial
 
 
 /*************** VARIABLES span ***************/
@@ -434,8 +436,22 @@ const testNback = {
   trial_duration: letterDuration,
   stimulus_duration: letterDuration,
   on_finish: function(data){
-    if (data.task == "nback" && (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard" || data.block =='overall_training_hard' || data.block =='overall_training_easy')){
+    if ((data.task == "nback") && (data.block == "main_easy" || data.block == "main_hard" || data.block == "practice_easy" || data.block == "practice_hard" || data.block =='overall_training_hard' || data.block =='overall_training_easy')){
     nbackCounter ++};
+
+    if ((data.task == "nback" || data.task =="nbackVisual") && (data.block == "main_easy" || data.block == "main_hard")){
+    mainNbackCounter ++ ;
+    data.mainNbackCounter = mainNbackCounter;
+    console.log(mainNbackCounter, "is mainNbackCounter")
+    };
+
+
+    if (data.task == "nbackVisual" && (data.block == "main_easy" || data.block == "main_hard")){
+    nbackVisualCounter ++ ;
+    data.nbackVisualCounter = nbackVisualCounter;
+    console.log(nbackVisualCounter, "is nbackVisualCounter")
+    };
+
     // data.task = 'n-back';ffff
     if (data.correct_response == "f" && data.key_press == 70){
         data.correct_rejection = 1;
@@ -650,7 +666,61 @@ const comprehensionSurveyEasy = {
 }
 
 
-// Demographics: separate age text-entry (numeric) + multi-choice rest
+// Demographics adn prolific id: separate age text-entry (numeric) + multi-choice rest
+const prolificID = {
+    type: "survey-text",
+    data: {task: 'prolificID'},
+    questions: [
+        {
+            prompt: language.prolificID,
+            required: true,
+            name: 'prolificID'
+        }
+    ],
+    preamble: ``,
+    button_label: language.button.next,
+    on_finish: function(data) {
+        const responses = JSON.parse(data.responses);
+        const prolific_id = responses.prolificID;
+        console.log('Prolific ID entered (responses.prolificID):', prolific_id);
+        console.log('responses are', responses);
+        // Validate age: enforce 9..100 (inclusive)
+        if (prolific_id.length != 24) {
+            data.prolific_id = null;
+            data.prolific_id_valid = false;
+            console.log('Invalid prolific id entry:', prolific_id);
+            // Show a blocking localized alert so the participant immediately knows what's wrong
+            try {
+                if (language === fr) {
+                    window.alert('Entrée invalide. Veuillez indiquer votre identifiant Prolific (24 caractères).');
+                } else {
+                    window.alert('Invalid entry. Please enter your Prolific ID (24 characters).');
+                }
+            } catch (e) {
+                // fallback to console log if alerts are disabled
+                console.log('Alert failed, invalid prolific id entered:', prolific_id);
+            }
+        } else {
+            data.prolific_id = prolific_id;
+            data.prolific_id_valid = true;
+        }
+    }
+};
+
+// Loop the prolific ID entry until a valid ID (15 characters) is provided.
+const prolific_id_loop = {
+    timeline: [
+        prolificID
+    ],
+    loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'prolificID'}).last(1).values()[0];
+        // repeat while last.prolific_id_valid is not true
+        return !(last && last.prolific_id_valid === true);
+    }
+};
+
+
+
 // Age as a text input so participants can type their exact age
 const demographics_age = {
     type: "survey-text",
@@ -757,6 +827,26 @@ const demographics = (function(){
         }
     };
 })();
+
+let prolific_url = "https://www.prolific.com/participants";
+
+const prolific_redirect = {
+    type: "html-button-response",
+    stimulus: function() {
+        return `<p>${language.end.thankYou}</p><p>${language.redirectProlific}</p>`;
+    },
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 3000,
+    data: {task: 'prolific_redirect'},
+    on_finish: function() {
+        // // Redirect to Prolific
+        // window.location.href = prolific_url;
+        // End the JATOS study first, then redirect
+        // jatos.endStudy(jsPsych.data.get().json(), true);
+        jatos.endStudyAndRedirect("https://www.prolific.com/participants", jsPsych.data.get().json());
+    }
+    };
+
 
 /* define the functions for flanker */
 
@@ -1854,10 +1944,12 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
 
 
 // Incentives screen after n-back tasks
+
   const incentives = {
     type: "html-keyboard-response",
     choices: ['Enter'],
-    stimulus: function() {
+    stimulus: "",
+    on_start: function(trial) {
 
         // Get n-back level for the selected subBlock // could also be determined by the subBlock number : if <=6 it is 1; if >= 7, it is level
         if (subBlockInteger <= 6) {
@@ -1939,37 +2031,164 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         // Round to 2 decimal places
         totalPayment = Math.round(totalPayment * 100) / 100;
 
-        return `
-    <p>${language.incentives.selectedBlock.replace('${subBlockInteger}', subBlockInteger)}</p>
-    <p>${language.incentives.accuracies
-        .replace('${percentPostVisual}', Math.round(accuracyPostVisual * 100))
-        .replace('${percentVN}', Math.round(accuracyVN * 100))
-        .replace('${percentN}', Math.round(accuracyN * 100))}</p>
-    <p>${language.incentives.visualDetails
-        .replace('${totalTrialsVN}', totalTrialsVN)
-        .replace('${corTrialsVN}', corTrialsVN)}</p>
-    <p>${language.incentives.letterDetails
-        .replace('${totalTrialsN}', totalTrialsN)
-        .replace('${corTrialsN}', corTrialsN)}</p>
-    <p>${language.incentives.postVisualDetails
-        .replace('${postVisualTrials}', postVisualTrials.count())
-        .replace('${corPostVisualTrials}', corPostVisualTrials)}</p>
-    <p>${language.incentives.paymentExplanation
-        .replace('${accuracyPostVisual}', Math.round(accuracyPostVisual * 100) + '%')
-        .replace('${accuracyVN}', Math.round(accuracyVN * 100) + '%')
-        .replace('${accuracyN}', Math.round(accuracyN * 100) + '%')}</p>
-    <p><b>${language.incentives.totalPayment.replace('${totalPayment}', totalPayment)}</b></p>
-    <p>${language.incentives.thankYou}</p>
-    <p>${language.incentives.redirect}</p>
-    <p>${language.incentives.continue}</p>`;
+        trial.totalPayment = totalPayment;
+        trial.accuracy_post_visual = accuracyPostVisual;
+        trial.accuracy_visual = accuracyVN;
+        trial.accuracy_letter = accuracyN;
+        trial.nback_level_payment = nbackLevel;
+
+        const html =  `
+            <p>${language.incentives.selectedBlock.replace('${subBlockInteger}', subBlockInteger)}</p>
+            <p>${language.incentives.accuracies
+                .replace('${percentPostVisual}', Math.round(accuracyPostVisual * 100))
+                .replace('${percentVN}', Math.round(accuracyVN * 100))
+                .replace('${percentN}', Math.round(accuracyN * 100))}</p>
+            <p>${language.incentives.visualDetails
+                .replace('${totalTrialsVN}', totalTrialsVN)
+                .replace('${corTrialsVN}', corTrialsVN)}</p>
+            <p>${language.incentives.letterDetails
+                .replace('${totalTrialsN}', totalTrialsN)
+                .replace('${corTrialsN}', corTrialsN)}</p>
+            <p>${language.incentives.postVisualDetails
+                .replace('${postVisualTrials}', postVisualTrials.count())
+                .replace('${corPostVisualTrials}', corPostVisualTrials)}</p>
+            <p>${language.incentives.paymentExplanation
+                .replace('${accuracyPostVisual}', Math.round(accuracyPostVisual * 100) + '%')
+                .replace('${accuracyVN}', Math.round(accuracyVN * 100) + '%')
+                .replace('${accuracyN}', Math.round(accuracyN * 100) + '%')}</p>
+            <p><b>${language.incentives.totalPayment.replace('${totalPayment}', totalPayment)}</b></p>
+            <p>${language.incentives.thankYou}</p>
+            <p>${language.incentives.redirect}</p>
+            <p>${language.incentives.continue}</p>`;
+
+            trial.stimulus = html; // set final display
+
     },
     on_finish: function(trial) { 
         trial.selected_subblock = subBlockInteger;
         trial.block_order_indicator = block_order_indicator;
+        trial.totalPayment = trial.totalPayment;
 
         statCalculation(trial);
     },
 };
+
+//   const incentives_originals = {
+//     type: "html-keyboard-response",
+//     choices: ['Enter'],
+//     stimulus: function() {
+
+//         // Get n-back level for the selected subBlock // could also be determined by the subBlock number : if <=6 it is 1; if >= 7, it is level
+//         if (subBlockInteger <= 6) {
+//             nbackLevel = 1;
+//         } else {
+//             nbackLevel = level;
+//         }
+//         console.log(nbackLevel, "is the nback level for the subBlock selected for payment")
+//         // let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
+//         //     return trial.subBlock == subBlockInteger && trial.level;
+//         // }).select('level').values[0];
+//         // console.log(nbackLevel, "is the nback level for the selected subBlock"
+//         // )
+
+//         // Get all trials and correct trials for visual nback
+//         let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+//             console.log(trial.task, "is trial.task inside the incentives filter, when subBlockInteger == 6")
+//             console.log(trial.subBlock, "is trial.subBlock inside the incentives filter, when subBlockInteger == 6")
+//             return trial.subBlock == subBlockInteger && trial.task == "nbackVisual";
+//         }).count();
+//         console.log(totalTrialsVN, "is totalTrialsVN inside the incentives filter, when subBlockInteger == 6")
+        
+//         let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
+//             return trial.subBlock == subBlockInteger && 
+//                    (trial.hit === 1 || trial.correct_rejection === 1) && 
+//                    trial.task == "nbackVisual" &&
+//                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+//         }).count();
+//         console.log(corTrialsVN, "is corTrialsVN inside the incentives filter, when subBlockInteger == 6")
+
+//         // Get all trials and correct trials for classic nback
+//         let totalTrialsNback = jsPsych.data.get().filterCustom(function(trial) {
+//             if (subBlockInteger == 6) {
+//                 console.log(trial.block, "is trial.block inside the incentives filter, when subBlockInteger == 6")
+//                 return trial.task === "nback" && trial.block === "main_easy" && (trial.subBlock === 6 || (trial.trial_number >= 1 && trial.trial_number <= 10));
+//             }
+//             else if (subBlockInteger == 12) {
+//                 return trial.task === "nback" && trial.block === "main_hard" && (trial.subBlock === 12 || (trial.trial_number >= 1 && trial.trial_number <= 10));
+//             }
+//             else return trial.task === "nback" && trial.subBlock === subBlockInteger
+//         });
+
+//         let totalTrialsN = totalTrialsNback.count();
+//         let corTrialsN = totalTrialsNback.filterCustom(function(trial) {
+//             return (trial.hit === 1 || trial.correct_rejection === 1) && trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+//         }).count();
+
+
+//         // Get trials immediately following visual n-back
+//         let minTrialNumber = jsPsych.data.get()
+//         .filterCustom(function(trial) {
+//             return trial.subBlock == subBlockInteger && 
+//                 trial.task == "nback";
+//         })
+//         .select('trial_number')
+//         .min();
+
+//         let postVisualTrials = jsPsych.data.get()
+//         .filterCustom(function(trial) {
+//             return trial.subBlock == subBlockInteger && 
+//                    trial.task == "nback" &&
+//                    trial.trial_number >= minTrialNumber &&
+//                    trial.trial_number < (minTrialNumber + nbackLevel);
+//         });
+//         console.log(postVisualTrials, "is postVisualTrials inside the incentives filter, when subBlockInteger == 6")
+
+//         let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
+//             return (trial.hit === 1 || trial.correct_rejection === 1) &&
+//                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+//         }).count();
+
+//         // Calculate accuracies as decimals (0-1 range instead of percentages)
+//         let accuracyVN = corTrialsVN / totalTrialsVN;
+//         let accuracyN = corTrialsN / totalTrialsN;
+//         let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+
+//         // Calculate total payment - weighted sum of accuracies
+//         let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
+//         // Round to 2 decimal places
+//         totalPayment = Math.round(totalPayment * 100) / 100;
+
+//         return `
+//     <p>${language.incentives.selectedBlock.replace('${subBlockInteger}', subBlockInteger)}</p>
+//     <p>${language.incentives.accuracies
+//         .replace('${percentPostVisual}', Math.round(accuracyPostVisual * 100))
+//         .replace('${percentVN}', Math.round(accuracyVN * 100))
+//         .replace('${percentN}', Math.round(accuracyN * 100))}</p>
+//     <p>${language.incentives.visualDetails
+//         .replace('${totalTrialsVN}', totalTrialsVN)
+//         .replace('${corTrialsVN}', corTrialsVN)}</p>
+//     <p>${language.incentives.letterDetails
+//         .replace('${totalTrialsN}', totalTrialsN)
+//         .replace('${corTrialsN}', corTrialsN)}</p>
+//     <p>${language.incentives.postVisualDetails
+//         .replace('${postVisualTrials}', postVisualTrials.count())
+//         .replace('${corPostVisualTrials}', corPostVisualTrials)}</p>
+//     <p>${language.incentives.paymentExplanation
+//         .replace('${accuracyPostVisual}', Math.round(accuracyPostVisual * 100) + '%')
+//         .replace('${accuracyVN}', Math.round(accuracyVN * 100) + '%')
+//         .replace('${accuracyN}', Math.round(accuracyN * 100) + '%')}</p>
+//     <p><b>${language.incentives.totalPayment.replace('${totalPayment}', totalPayment)}</b></p>
+//     <p>${language.incentives.thankYou}</p>
+//     <p>${language.incentives.redirect}</p>
+//     <p>${language.incentives.continue}</p>`;
+//     },
+//     on_finish: function(trial) { 
+//         trial.selected_subblock = subBlockInteger;
+//         trial.block_order_indicator = block_order_indicator;
+
+//         statCalculation(trial);
+//     },
+// };
 
 
 var letter_proc = {
@@ -2064,7 +2283,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives, prolific_redirect);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
@@ -2104,10 +2323,10 @@ timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, overviewPag
 jatos.onLoad(() => {
     jsPsych.init({
         timeline: timeline,
-        on_finish: function() {
-            jatos.endStudy(jsPsych.data.get().json());
+        // on_finish: function() {
+        //     jatos.endStudy(jsPsych.data.get().json());
             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-        }
+        // }
     });
 });
 

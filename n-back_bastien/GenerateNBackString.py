@@ -74,9 +74,9 @@ def analyze_nback(seq, nback):
 
     return nback_positions, nplus1_positions, nminus1_positions
 
-ex = generate_nback_string(1)
-print(ex)
-analyze_nback(ex, 1)
+# ex = generate_nback_string(1)
+# print(ex)
+# analyze_nback(ex, 1)
 
 def make40():
     """
@@ -96,7 +96,7 @@ def make40():
 # all_sequences = make40()
 # print(all_sequences)
 
-# print(analyze_nback(['C', 'O', 'U', 'E', 'A', 'O', 'U', 'U', 'E', 'A', 'Y', 'Y', 'Y', 'E', 'K', 'A', 'Y', 'Y', 'E', 'K', 'G', 'Y', 'Y', 'K', 'O', 'G', 'E', 'P', 'P', 'B', 'G', 'M', 'P', 'B', 'B', 'Y', 'I', 'I', 'P', 'P', 'I', 'C', 'O', 'A', 'Y', 'I', 'C', 'A', 'O', 'Y', 'I', 'G', 'C', 'A', 'E', 'G', 'I', 'E', 'K', 'E', 'O', 'G', 'E'], 2))
+print(analyze_nback(['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'], 2))
 
 # print(len(['Y', 'O', 'Y', 'O', 'Y', 'O', 'C', 'G', 'C', 'K', 'G', 'C', 'E', 'E', 'E', 'U', 'A', 'O', 'E', 'O', 'Y', 'O', 'I', 'Y', 'I', 'P', 'P', 'M', 'Y', 'M', 'M', 'P', 'K', 'P', 'K', 'K', 'P', 'P', 'P', 'K', 'O', 'U', 'K', 'U', 'G', 'U', 'M', 'K', 'M', 'B', 'M', 'U', 'M', 'M', 'B', 'M', 'B', 'B', 'E', 'I', 'O', 'G', 'G']))
 

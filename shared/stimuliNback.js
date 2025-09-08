@@ -98,8 +98,12 @@ function setArrays (){
 
  function assignRandomStimuli1back (){
     // Create array of indices for random selection
-    let availableIndices = Array.from({length: possibleStimuliList3_nback.length}, (_, i) => i);
-    
+    let availableIndices = Array.from({length: possibleStimuliList1_nback.length}, (_, i) => i);
+    console.log(possibleStimuliList1_nback.length,"is possibleStimuliList1_nback.length");
+    console.log(availableIndices.length,"is availableIndices.length in assignRandomStimuli1back");
+    console.log(possibleStimuliList2_nback.length,"is possibleStimuliList2_nback.length");
+    console.log(possibleStimuliList3_nback.length,"is possibleStimuliList3_nback.length");
+
     // Shuffle the indices array
     for (let i = availableIndices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -117,7 +121,7 @@ function setArrays (){
   /* 63 n-back stimuli: 10 before each target task (6 target tasks of 15 seconds each = 1min 30) + 3 at the end so participants are incentivized to keep the letters in mind for the last task. */
 let possibleStimuliList3_nback = 
   [
-  ['B', 'P', 'C', 'Y', 'P', 'K', 'Y', 'Y', 'B', 'E', 'Y', 'E', 'O', 'U', 'O', 'O', 'I', 'I', 'I', 'M', 'M', 'I', 'M', 'Y', 'C', 'I', 'C', 'Y', 'B', 'O', 'M', 'A', 'P', 'B', 'A', 'P', 'B', 'B', 'U', 'E', 'B', 'U', 'B', 'B', 'U', 'C', 'C', 'U', 'C', 'C', 'A', 'U', 'O', 'I', 'P', 'O', 'I', 'Y', 'E', 'Y', 'Y', 'Y', 'Y'], ['E', 'M', 'E', 'A', 'M', 'B', 'A', 'O', 'B', 'A', 'O', 'P', 'P', 'O', 'P', 'P', 'M', 'P', 'O', 'I', 'M', 'I', 'M', 'G', 'O', 'B', 'G', 'K', 'B', 'B', 'A', 'B', 'U', 'A', 'U', 'U', 'M', 'P', 'K', 'G', 'M', 'P', 'M', 'G', 'O', 'P', 'P', 'B', 'P', 'P', 'B', 'U', 'B', 'K', 'U', 'U', 'P', 'M', 'U', 'G', 'B', 'B', 'G'], 
+  ['B', 'P', 'C', 'Y', 'P', 'K', 'Y', 'Y', 'B', 'E', 'Y', 'E', 'O', 'U', 'O', 'O', 'I', 'I', 'I', 'M', 'M', 'I', 'M', 'Y', 'C', 'I', 'C', 'Y', 'B', 'O', 'M', 'A', 'P', 'B', 'A', 'P', 'B', 'B', 'U', 'E', 'B', 'U', 'B', 'B', 'U', 'C', 'C', 'U', 'C', 'C', 'A', 'U', 'O', 'I', 'P', 'O', 'I', 'Y', 'E', 'Y', 'Y', 'Y', 'Y'],
   ['Y', 'M', 'P', 'A', 'M', 'G', 'U', 'I', 'M', 'U', 'C', 'A', 'B', 'Y', 'A', 'Y', 'Y', 'O', 'P', 'Y', 'M', 'P', 'Y', 'M', 'C', 'Y', 'K', 'Y', 'C', 'K', 'C', 'I', 'I', 'I', 'I', 'I', 'C', 'C', 'P', 'G', 'C', 'G', 'M', 'A', 'C', 'Y', 'A', 'A', 'G', 'A', 'G', 'G', 'K', 'K', 'G', 'G', 'K', 'A', 'C', 'O', 'C', 'C', 'O'], 
   ['I', 'P', 'P', 'B', 'Y', 'P', 'I', 'Y', 'B', 'E', 'I', 'E', 'E', 'E', 'K', 'U', 'E', 'U', 'C', 'M', 'I', 'Y', 'I', 'Y', 'Y', 'I', 'A', 'O', 'A', 'U', 'O', 'O', 'U', 'O', 'O', 'P', 'O', 'Y', 'Y', 'O', 'M', 'C', 'M', 'U', 'C', 'M', 'E', 'C', 'C', 'M', 'K', 'C', 'U', 'K', 'I', 'M', 'K', 'K', 'M', 'K', 'O', 'U', 'P'], 
   ['G', 'E', 'U', 'G', 'U', 'O', 'A', 'A', 'G', 'G', 'A', 'G', 'I', 'K', 'G', 'M', 'K', 'G', 'P', 'M', 'C', 'P', 'M', 'M', 'C', 'P', 'I', 'C', 'O', 'C', 'O', 'B', 'G', 'G', 'B', 'G', 'G', 'P', 'G', 'G', 'P', 'P', 'O', 'P', 'C', 'C', 'O', 'G', 'O', 'G', 'I', 'M', 'U', 'I', 'U', 'M', 'I', 'O', 'K', 'A', 'P', 'K', 'A'],

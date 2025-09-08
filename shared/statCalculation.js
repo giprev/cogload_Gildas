@@ -206,7 +206,7 @@ function statCalculation (trial) {
 	trial.STAT_miss_rt_median_nbackVisual_hard = miss_nbackVisual_hard.count() > 0 ? (miss_nbackVisual_hard.select('rt').median()) : null;
 	trial.STAT_dprime_nbackVisual_hard = stats_nbackVisual_hard.dprime;
 
-  trial.STAT_nr_hit_nbackVisual_easy = stats_nbackVisual_easy.hitCount;
+  	trial.STAT_nr_hit_nbackVisual_easy = stats_nbackVisual_easy.hitCount;
 	trial.STAT_nr_miss_nbackVisual_easy = stats_nbackVisual_easy.missCount;
 	trial.STAT_nr_false_alarm_nbackVisual_easy = stats_nbackVisual_easy.faCount;
 	trial.STAT_nr_correct_rejection_nbackVisual_easy = stats_nbackVisual_easy.crCount;
