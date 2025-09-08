@@ -2,7 +2,7 @@ const level = 3; //available levels: 0, 1, 2, 3
 const fixationDuration = 500; //500
 const letterDuration = 1500; //1500
 const feedBackDuration = 1000;// 1000
-const payment = 1.15; // Payment amount: = 1 (1.1528) pound on the 8th of September 2025
+const payment = 1; // Payment amount: = 1 (1.1528) pound on the 8th of September 2025
 
 // Change default language to French
 

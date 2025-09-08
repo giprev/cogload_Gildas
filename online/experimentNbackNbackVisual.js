@@ -828,12 +828,11 @@ const demographics = (function(){
     };
 })();
 
-let prolific_url = "https://www.prolific.com/participants";
 
 const prolific_redirect = {
-    type: "html-button-response",
+    type: "html-keyboard-response",
     stimulus: function() {
-        return `<p>${language.end.thankYou}</p><p>${language.redirectProlific}</p>`;
+        return `<p>${language.redirectProlific}</p>`;
     },
     choices: jsPsych.NO_KEYS,
     trial_duration: 3000,
