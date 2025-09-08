@@ -14,9 +14,9 @@ rm(list = ls())
 #------------- Data formatting -----------#
 
 # Path to your file
-file_path <- "/Users/domitilleprevost/Downloads/jatos_results_data_20250903131954(1).txt"
-
-text <- readLines("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/jatos_results_data_20250903131954(1).txt")
+file_path <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/jatos_results_data_20250903131954(1).txt"
+file_path1 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/jatos_results_data_20250903131954(1).txt"
+text <- readLines(file_path1)
 
 #Loop through each part of the text file and write it to a separate text file
 for(i in 1:length(text)) {
@@ -84,7 +84,7 @@ for(iSub in 1:nSub) {
                    values_to = "value") %>%
       unite("column_name", trial_id, measure, sep = "_") %>%
       select(column_name, value) %>%
-      group_by(column_name) %>%
+      # group_by(column_name) %>%
       pivot_wider(names_from = column_name, values_from = value)
     
     block_data_wide <- nback_trials %>%
@@ -92,7 +92,7 @@ for(iSub in 1:nSub) {
       # Create unique identifier for block columns
       mutate(trial_id = paste0("trial_", task, "_", unified_trial_number, "_block")) %>%
       select(trial_id, block) %>%
-      group_by(trial_id) %>%
+      # group_by(trial_id) %>%
       pivot_wider(names_from = trial_id, values_from = block)
     
     # Create the final row for this participant

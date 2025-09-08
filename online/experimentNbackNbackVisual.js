@@ -829,24 +829,6 @@ const demographics = (function(){
 })();
 
 
-const prolific_redirect = {
-    type: "html-keyboard-response",
-    stimulus: function() {
-        return `<p>${language.redirectProlific}</p>`;
-    },
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 3000,
-    data: {task: 'prolific_redirect'},
-    on_finish: function() {
-        // // Redirect to Prolific
-        // window.location.href = prolific_url;
-        // End the JATOS study first, then redirect
-        // jatos.endStudy(jsPsych.data.get().json(), true);
-        jatos.endStudyAndRedirect("https://www.prolific.com/participants", jsPsych.data.get().json());
-    }
-    };
-
-
 /* define the functions for flanker */
 
 function countdown(start, timelimit) {
@@ -2282,7 +2264,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives, prolific_redirect);
+timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, nbackVisual_practice, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
@@ -2322,10 +2304,10 @@ timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id
 jatos.onLoad(() => {
     jsPsych.init({
         timeline: timeline,
-        // on_finish: function() {
-        //     jatos.endStudy(jsPsych.data.get().json());
+        on_finish: function() {
+            jatos.endStudy(jsPsych.data.get().json());
             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-        // }
+        }
     });
 });
 
