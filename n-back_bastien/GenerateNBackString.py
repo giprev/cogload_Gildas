@@ -78,32 +78,42 @@ def analyze_nback(seq, nback):
 # print(ex)
 # analyze_nback(ex, 1)
 
-def make40():
+def make41():
     """
-    Generate 40 sequences using generate_nback_string function.
+    Generate 41 sequences using generate_nback_string function.
     Returns an array of 40 sequence objects.
     """
     sequences = []
 
-    for i in range(2):
+    for i in range(41):
         sequence = generate_nback_string(1) 
         sequence_array = [f'{letter}' for letter in sequence]
         sequences.append(sequence_array)
     
     return sequences
 
+# example = make40()
+# print(example)
+# analyze_nback(example[0], 1)
+
 # Usage example:
 # all_sequences = make40()
 # print(all_sequences)
 
-print(analyze_nback(['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'], 2))
+# print(analyze_nback(['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'], 2))
 
 # print(len(['Y', 'O', 'Y', 'O', 'Y', 'O', 'C', 'G', 'C', 'K', 'G', 'C', 'E', 'E', 'E', 'U', 'A', 'O', 'E', 'O', 'Y', 'O', 'I', 'Y', 'I', 'P', 'P', 'M', 'Y', 'M', 'M', 'P', 'K', 'P', 'K', 'K', 'P', 'P', 'P', 'K', 'O', 'U', 'K', 'U', 'G', 'U', 'M', 'K', 'M', 'B', 'M', 'U', 'M', 'M', 'B', 'M', 'B', 'B', 'E', 'I', 'O', 'G', 'G']))
 
+# print(analyze_nback(['O', 'Y', 'M', 'O', 'O', 'M', 'M', 'C', 'M', 'A', 'C', 'M', 'M', 'C', 'I', 'M', 'M', 'A', 'I', 'M', 'Y', 'I', 'E', 'K', 'A', 'I', 'E', 'C', 'C', 'A', 'E', 'O', 'C', 'A', 'M', 'Y', 'Y', 'A', 'E', 'Y', 'C', 'E', 'I', 'C', 'A', 'I', 'P', 'A', 'A', 'I', 'I', 'A', 'C', 'I', 'I', 'C', 'E', 'Y', 'K', 'E', 'E', 'K', 'E'], 1))
+
+# print(analyze_nback(,1))
+#print(analyze_nback(['C', 'B', 'Y', 'P', 'P', 'O', 'K', 'O', 'M', 'O', 'O', 'B', 'O', 'B', 'I', 'B', 'I', 'I', 'I', 'I', 'E', 'I', 'O', 'G', 'C', 'G', 'C', 'C', 'C', 'C', 'O', 'O', 'I', 'I', 'O', 'O', 'P', 'E', 'E', 'B', 'M', 'K', 'M', 'I', 'A', 'I', 'E', 'K', 'E', 'G', 'G', 'O', 'E', 'E', 'U', 'U', 'B', 'B', 'B', 'B', 'B', 'B', 'P'],1))
 
 
 
-
+# ex = generate_nback_string(1)
+# print(ex)
+# print(analyze_nback(ex, 1))
 
 
 
@@ -363,4 +373,15 @@ print(analyze_nback(['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A',
 
 
 # print("analyze_nback function:")
-# print(analyze_nback(seq, 2))
+st0 = 'st0'
+st1 = 'st1'
+st2 = 'st2'
+st3 = 'st3'
+st4 = 'st4'
+st5 = 'st5'
+st6 = 'st6'
+st7 = 'st7'
+st8 = 'st8'
+st9 = 'st9'
+seq = ['G', 'O', 'G', 'P', 'P', 'G', 'M', 'C', 'C', 'B', 'A', 'M', 'B', 'M', 'B', 'M', 'M', 'C', 'M', 'B', 'C', 'B', 'O', 'O', 'A', 'U', 'A', 'U', 'A', 'I', 'A', 'I', 'A', 'A', 'G', 'G', 'O', 'A', 'O', 'U', 'C', 'U', 'C', 'C', 'P', 'Y', 'C', 'Y', 'O', 'E', 'Y', 'E', 'P', 'O', 'M', 'O', 'K', 'O', 'O', 'U', 'U', 'U', 'G']
+print(analyze_nback(seq, 2))
