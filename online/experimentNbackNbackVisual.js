@@ -1,3 +1,5 @@
+
+
 /*************** VARIABLES nback ***************/
 
 let nbackStimuli = {};
@@ -355,7 +357,6 @@ createBlocks(nbackStimuli.stimuliListEasyOverallTraining, nbackStimuli.stimuliEa
 assignRandomStimuliVisual();
 console.log(stimuliList_nbackVisual_1, "is stimuliList_nbackVisual_1")
 
-console.log(stimuli_nback_1, "is stimuli_nback_1")
 createBlocksVisual(stimuliList_nbackVisualOverallPractice, stimuli_nbackVisual_overall_training, 2)
 createBlocksVisual(stimuliList_nbackVisual_practice, stimuli_nback_practice, 2)
 createBlocksVisual(stimuliList_nbackVisual_1, stimuli_nback_1, 2)
@@ -370,6 +371,8 @@ createBlocksVisual(stimuliList_nbackVisual_9, stimuli_nback_9, 2)
 createBlocksVisual(stimuliList_nbackVisual_10, stimuli_nback_10, 2)
 createBlocksVisual(stimuliList_nbackVisual_11, stimuli_nback_11, 2)
 createBlocksVisual(stimuliList_nbackVisual_12, stimuli_nback_12, 2)
+console.log(stimuli_nback_1, "is stimuli_nback_1")
+
 
 
 var response_grid =
@@ -2260,6 +2263,23 @@ randomize_order: true,
 };
 
 
+
+
+// const prolific_redirect = {
+//     type: "html-keyboard-response",
+//     stimulus: function() {
+//         return `<p>${language.redirectProlific}</p>`;
+//     },
+//     choices: jsPsych.NO_KEYS,
+//     trial_duration: 3000,
+//     data: {task: 'prolific_redirect'},
+//     on_finish: function() {
+//         // End the JATOS study first, then redirect
+//         // jatos.endStudy(jsPsych.data.get().json(), true);
+//         jatos.endStudyAndRedirect("https://www.prolific.com/participants", jsPsych.data.get().json());
+//     }
+//     };
+
 /* main timeline */ 
 
 jsPsych.data.addProperties({subject: subjectId});
@@ -2287,20 +2307,49 @@ timeline.push( {type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id
 //   }
 // });
 
-//  /* initialize jsPsych */
-//  const jsPsyche = jsPsych.init({
+
+
+/* initialize jsPsych via jatos onLoad (do not call .run on an undefined return) */
+// jatos.onLoad(() => {
+//     jsPsych.init({
+//         timeline: timeline,
+//         // on_finish: function() {
+//         //     jatos.endStudy(jsPsych.data.get().json());
+//             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+//         // }
+//     });
+// });
+
+// jsPsych.init({
+//     timeline: timeline
+// });
+
+  /* initialize jsPsych */
+//  const jsPsych = jsPsych.init({
 //         timeline: timeline,
 //         on_finish: function() {
 //             jatos.endStudy(jsPsych.data.get().json());
 //         }
 //     });
 
-// /* start the experiment */
+//  /* start the experiment */
 //     jatos.onLoad(() => {
-//         jsPsyche.run(timeline);
+//         jsPsych.run(timeline);
+//         console.log("jatos.onLoad works")
 //     });
 
-/* initialize jsPsych via jatos onLoad (do not call .run on an undefined return) */
+// jatos.onLoad(() => {
+//     jsPsych.init({
+//         timeline: timeline,
+//         on_finish: function() {
+//             //jatos.endStudy(jsPsych.data.get().json());
+//             jatos.endStudyAndRedirect("https://www.prolific.com/participants", jsPsych.data.get().json());
+//             // jatos.submitResultData(resultJson, jatos.endStudyAndRedirect("https://www.prolific.com/participants");
+//             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+//         }
+//     });
+// });
+
 jatos.onLoad(() => {
     jsPsych.init({
         timeline: timeline,
@@ -2310,4 +2359,3 @@ jatos.onLoad(() => {
         }
     });
 });
-
