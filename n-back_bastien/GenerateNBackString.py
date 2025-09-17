@@ -1,13 +1,13 @@
 import random
 
-lseq = 63
-ntarget = 20
-nplus1 = 20
-# nminus1 = 10
+lseq = 15
+ntarget = 5
+nplus1 = 2
+nminus1 = 2
 
-def generate_nback_string(nback):#, block_triples):
-    # letters = ['st0', 'st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
-    letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
+def generate_nback_string(nback, has_fourples):
+    letters = ['st0', 'st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
+    # letters = ['A', 'E', 'I', 'O', 'U', 'Y', 'B', 'C', 'G', 'K', 'M', 'P']
 
     while True:
         seq = [random.choice(letters) for _ in range(lseq)]
@@ -26,25 +26,36 @@ def generate_nback_string(nback):#, block_triples):
             seq[pos] = seq[pos - (nback + 1)]
 
         # Place N-1-back targets (avoid overlap with n-back and N+1-back targets)
-        # available_minus1 = [i for i in range(nback-1, lseq) if i not in positions and i not in plus1_positions and (i-nback+1) >= 0]
-        # if len(available_minus1) < nminus1:
-        #     continue
-        # minus1_positions = random.sample(available_minus1, nminus1)
-        # for pos in minus1_positions:
-        #     seq[pos] = seq[pos - (nback - 1)]
+        available_minus1 = [i for i in range(nback-1, lseq) if i not in positions and i not in plus1_positions and (i-nback+1) >= 0]
+        if len(available_minus1) < nminus1:
+            continue
+        minus1_positions = random.sample(available_minus1, nminus1)
+        for pos in minus1_positions:
+            seq[pos] = seq[pos - (nback - 1)]
 
         # Analyze the sequence to check if the counts are exact
         nback_count = sum(seq[i] == seq[i-nback] for i in range(nback, lseq))
         nplus1_count = sum(seq[i] == seq[i-(nback+1)] for i in range(nback+1, lseq))
-        # nminus1_count = sum(seq[i] == seq[i-(nback-1)] for i in range(nback-1, lseq))
+        nminus1_count = sum(seq[i] == seq[i-(nback-1)] for i in range(nback-1, lseq))
 
-        # Block three consecutive identical letters if requested
-        # if block_triples:
-        #     has_triple = any(seq[i] == seq[i-1] == seq[i-2] for i in range(2, lseq))
-        #     if has_triple:
-        #         continue
+         # Check for four consecutive identical letters
+        has_four_consecutive = any(seq[i] == seq[i-1] == seq[i-2] == seq[i-3] for i in range(3, lseq))
+        
+        # If we don't want fourples and we found them, skip this sequence
+        if not has_fourples and has_four_consecutive:
+            continue
+        
+        # Check for three consecutive identical letters and count them
+        three_consecutive_count = 0
+        for i in range(2, lseq):
+            if seq[i] == seq[i-1] == seq[i-2]:
+                three_consecutive_count += 1
 
-        if nback_count == ntarget and nplus1_count == nplus1: # and nminus1_count == nminus1:
+        # Allow maximum 1 occurrence of three consecutive letters
+        if three_consecutive_count > 1:
+            continue
+
+        if nback_count == ntarget and nplus1_count == nplus1 and nminus1_count == nminus1:
             return seq
 
 def analyze_nback(seq, nback):
@@ -81,23 +92,23 @@ def analyze_nback(seq, nback):
 def make41():
     """
     Generate 41 sequences using generate_nback_string function.
-    Returns an array of 40 sequence objects.
+    Returns an array of 41 sequence objects.
     """
     sequences = []
 
     for i in range(41):
-        sequence = generate_nback_string(1) 
+        sequence = generate_nback_string(2, has_fourples=False) 
         sequence_array = [f'{letter}' for letter in sequence]
         sequences.append(sequence_array)
     
     return sequences
 
-# example = make40()
+# example = make41()
 # print(example)
-# analyze_nback(example[0], 1)
+# analyze_nback(example[0], 2)
 
 # Usage example:
-# all_sequences = make40()
+# all_sequences = make41()
 # print(all_sequences)
 
 # print(analyze_nback(['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'], 2))
@@ -107,7 +118,7 @@ def make41():
 # print(analyze_nback(['O', 'Y', 'M', 'O', 'O', 'M', 'M', 'C', 'M', 'A', 'C', 'M', 'M', 'C', 'I', 'M', 'M', 'A', 'I', 'M', 'Y', 'I', 'E', 'K', 'A', 'I', 'E', 'C', 'C', 'A', 'E', 'O', 'C', 'A', 'M', 'Y', 'Y', 'A', 'E', 'Y', 'C', 'E', 'I', 'C', 'A', 'I', 'P', 'A', 'A', 'I', 'I', 'A', 'C', 'I', 'I', 'C', 'E', 'Y', 'K', 'E', 'E', 'K', 'E'], 1))
 
 # print(analyze_nback(,1))
-#print(analyze_nback(['C', 'B', 'Y', 'P', 'P', 'O', 'K', 'O', 'M', 'O', 'O', 'B', 'O', 'B', 'I', 'B', 'I', 'I', 'I', 'I', 'E', 'I', 'O', 'G', 'C', 'G', 'C', 'C', 'C', 'C', 'O', 'O', 'I', 'I', 'O', 'O', 'P', 'E', 'E', 'B', 'M', 'K', 'M', 'I', 'A', 'I', 'E', 'K', 'E', 'G', 'G', 'O', 'E', 'E', 'U', 'U', 'B', 'B', 'B', 'B', 'B', 'B', 'P'],1))
+print(analyze_nback(['M', 'A', 'M', 'C', 'C', 'G', 'U', 'U', 'G', 'A', 'G', 'K', 'K', 'K', 'U', 'G', 'O', 'O', 'P', 'O', 'G', 'G', 'G', 'M', 'P', 'P', 'P', 'P', 'P', 'E', 'P', 'E', 'G', 'E', 'G', 'E', 'P', 'G', 'G', 'G', 'U', 'P', 'U', 'K', 'K', 'A', 'A', 'A', 'M', 'M', 'M', 'I', 'I', 'I', 'O', 'G', 'O', 'E', 'O', 'M', 'E', 'K', 'Y'], 2))
 
 
 
@@ -373,15 +384,15 @@ def make41():
 
 
 # print("analyze_nback function:")
-st0 = 'st0'
-st1 = 'st1'
-st2 = 'st2'
-st3 = 'st3'
-st4 = 'st4'
-st5 = 'st5'
-st6 = 'st6'
-st7 = 'st7'
-st8 = 'st8'
-st9 = 'st9'
-seq = ['G', 'O', 'G', 'P', 'P', 'G', 'M', 'C', 'C', 'B', 'A', 'M', 'B', 'M', 'B', 'M', 'M', 'C', 'M', 'B', 'C', 'B', 'O', 'O', 'A', 'U', 'A', 'U', 'A', 'I', 'A', 'I', 'A', 'A', 'G', 'G', 'O', 'A', 'O', 'U', 'C', 'U', 'C', 'C', 'P', 'Y', 'C', 'Y', 'O', 'E', 'Y', 'E', 'P', 'O', 'M', 'O', 'K', 'O', 'O', 'U', 'U', 'U', 'G']
-print(analyze_nback(seq, 2))
+# st0 = 'st0'
+# st1 = 'st1'
+# st2 = 'st2'
+# st3 = 'st3'
+# st4 = 'st4'
+# st5 = 'st5'
+# st6 = 'st6'
+# st7 = 'st7'
+# st8 = 'st8'
+# st9 = 'st9'
+# seq = ['G', 'O', 'G', 'P', 'P', 'G', 'M', 'C', 'C', 'B', 'A', 'M', 'B', 'M', 'B', 'M', 'M', 'C', 'M', 'B', 'C', 'B', 'O', 'O', 'A', 'U', 'A', 'U', 'A', 'I', 'A', 'I', 'A', 'A', 'G', 'G', 'O', 'A', 'O', 'U', 'C', 'U', 'C', 'C', 'P', 'Y', 'C', 'Y', 'O', 'E', 'Y', 'E', 'P', 'O', 'M', 'O', 'K', 'O', 'O', 'U', 'U', 'U', 'G']
+# print(analyze_nback(seq, 2))

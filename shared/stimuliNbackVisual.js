@@ -50,10 +50,11 @@ let stimuliList_nbackVisual_10 = [];
 let stimuliList_nbackVisual_11 = [];
 let stimuliList_nbackVisual_12 = [];
 
-let stimuliList_nbackVisual_practice = [st5, st5, st5, st5, st5, st4, st4, st0, st4, st8, st5, st4, st5, st4, st4, st1, st1, st2, st6, st2, st6, st2, st2, st5, st2, st6, st5, st6, st1, st5, st5, st4, st5, st8, st8, st5, st7, st7, st5, st5] // 12 2-backs, 12 1-backs and 12 3-backs
+let stimuliList_nbackVisual_practice = [];
+// let stimuliList_nbackVisual_practice = [st5, st5, st5, st5, st5, st4, st4, st0, st4, st8, st5, st4, st5, st4, st4, st1, st1, st2, st6, st2, st6, st2, st2, st5, st2, st6, st5, st6, st1, st5, st5, st4, st5, st8, st8, st5, st7, st7, st5, st5] // 12 2-backs, 12 1-backs and 12 3-backs
 let stimuliList_nbackVisualOverallPractice= [st2, st7, st2, st7, st2, st2, st1, st2, st5, st5] // 4 2-backs, 2 1-backs and 2 3-backs
 
-let stimuli_nback_practice =[];
+let stimuli_nbackVisual_practice =[];
 let stimuli_nbackVisual_overall_training = [];
 let stimuli_nback_1 = [];
 let stimuli_nback_2 = [];
@@ -177,21 +178,14 @@ let possibleStimuliList2_nbackVisual =
 function assignRandomStimuliVisual() {
     // Create a copy of the possible stimuli list to avoid modifying the original
     let availableStimuli = [...possibleStimuliList2_nbackVisual];
-    
-    // Array to store the 12 stimuli lists
-    let stimuliLists = [];
-    
     // Randomly select 12 unique sequences from the available stimuli
     for (let i = 1; i <= 12; i++) {
         // Get a random index from remaining available stimuli
         let randomIndex = Math.floor(Math.random() * availableStimuli.length);
-        
         // Assign the selected stimulus to the corresponding variable
         let selectedStimulus = availableStimuli[randomIndex];
-        
         // Remove the selected stimulus from available options
         availableStimuli.splice(randomIndex, 1);
-        
         // Assign to the appropriate global variable
         switch(i) {
             case 1: stimuliList_nbackVisual_1 = selectedStimulus; break;
@@ -208,6 +202,60 @@ function assignRandomStimuliVisual() {
             case 12: stimuliList_nbackVisual_12 = selectedStimulus; break;
         }
     }
-    
-    console.log("Stimuli lists have been randomly assigned!");
+
+    let availableIndices = Array.from({length: possibleStimuliList_visualNback_practice.length}, (_, i) => i);
+
+    // Shuffle the indices array
+    for (let i = availableIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
+    }
+    for (let j=0; j<possibleStimuliList_visualNback_practice.length; j++){
+      stimuliList_nbackVisual_practice[j] = possibleStimuliList_visualNback_practice[availableIndices[j]];
+    }
+    console.log(stimuliList_nbackVisual_practice, "is the practice stimuli list")
 }
+
+let possibleStimuliList_visualNback_practice = [ // 5 2-backs, 2 3-backs, 2 1-backs, one triple maximum, no four consecutives letters
+  [st0, st3, st0, st3, st5, st3, st1, st5, st1, st0, st0, st2, st2, st1, st2],
+  [st2, st7, st2, st7, st4, st3, st4, st3, st3, st8, st3, st1, st1, st6, st7],
+  [st8, st0, st8, st0, st4, st5, st0, st5, st8, st8, st7, st8, st7, st4, st4],
+  [st1, st7, st1, st7, st1, st7, st6, st4, st4, st6, st6, st3, st6, st5, st8],
+  [st7, st7, st6, st0, st6, st0, st6, st4, st1, st7, st7, st1, st7, st6, st7],
+  [st5, st1, st5, st1, st6, st2, st6, st7, st1, st1, st7, st7, st8, st7, st8],
+  [st2, st5, st5, st2, st4, st1, st1, st5, st1, st5, st4, st5, st4, st5, st2],
+  [st6, st6, st5, st7, st5, st7, st7, st5, st1, st0, st1, st6, st7, st6, st7],
+  [st7, st7, st7, st6, st4, st6, st5, st3, st6, st3, st6, st1, st3, st1, st5],
+  [st0, st7, st7, st0, st2, st5, st2, st7, st2, st7, st1, st1, st6, st1, st6],
+  [st3, st4, st3, st4, st5, st5, st6, st5, st3, st4, st3, st1, st3, st3, st2],
+  [st7, st7, st1, st2, st6, st2, st3, st2, st3, st2, st2, st3, st8, st1, st8],
+  [st4, st8, st8, st5, st2, st6, st2, st7, st2, st4, st2, st4, st4, st3, st4],
+  [st0, st0, st3, st2, st3, st2, st0, st3, st2, st6, st2, st6, st2, st1, st1],
+  [st2, st8, st2, st6, st8, st7, st6, st6, st6, st2, st8, st4, st8, st4, st8],
+  [st2, st7, st2, st7, st2, st5, st1, st2, st0, st8, st8, st8, st3, st8, st4],
+  [st2, st2, st4, st2, st4, st1, st3, st7, st0, st7, st0, st0, st6, st5, st6],
+  [st5, st7, st2, st2, st7, st7, st4, st2, st7, st2, st7, st2, st0, st2, st0],
+  [st3, st0, st5, st0, st5, st1, st0, st5, st5, st5, st8, st6, st8, st1, st8],
+  [st3, st4, st4, st3, st3, st8, st6, st2, st8, st2, st3, st2, st3, st2, st3],
+  [st0, st0, st4, st3, st4, st4, st1, st5, st8, st1, st8, st5, st8, st5, st8],
+  [st0, st4, st0, st4, st0, st7, st5, st7, st4, st4, st0, st3, st3, st0, st3],
+  [st7, st0, st7, st7, st7, st8, st1, st8, st3, st4, st2, st4, st2, st1, st4],
+  [st6, st0, st6, st0, st6, st5, st4, st5, st6, st4, st6, st6, st3, st3, st0],
+  [st0, st5, st0, st7, st0, st6, st2, st6, st6, st0, st0, st8, st0, st5, st0],
+  [st1, st1, st7, st8, st7, st0, st8, st0, st0, st5, st6, st3, st6, st3, st6],
+  [st3, st6, st3, st6, st1, st3, st3, st1, st1, st7, st0, st7, st0, st6, st0],
+  [st0, st0, st7, st0, st4, st0, st4, st2, st0, st2, st3, st5, st3, st2, st2],
+  [st0, st8, st3, st3, st8, st8, st5, st8, st3, st1, st3, st1, st3, st5, st3],
+  [st8, st8, st0, st6, st0, st6, st3, st2, st3, st2, st2, st3, st1, st5, st1],
+  [st3, st3, st0, st2, st0, st0, st7, st0, st2, st8, st2, st8, st5, st4, st5],
+  [st3, st2, st2, st6, st4, st6, st4, st6, st4, st4, st6, st3, st8, st4, st8],
+  [st3, st4, st8, st4, st8, st3, st2, st3, st2, st5, st3, st2, st2, st2, st3],
+  [st7, st7, st5, st7, st6, st5, st1, st5, st1, st4, st1, st4, st8, st5, st5],
+  [st5, st5, st4, st5, st2, st3, st3, st8, st3, st8, st3, st8, st2, st4, st7],
+  [st6, st7, st1, st7, st1, st4, st1, st1, st6, st3, st8, st8, st7, st8, st7],
+  [st6, st6, st0, st7, st7, st0, st7, st2, st6, st2, st6, st2, st6, st0, st3],
+  [st8, st7, st8, st7, st3, st7, st3, st0, st0, st3, st7, st1, st7, st7, st8],
+  [st0, st4, st8, st4, st8, st8, st4, st4, st5, st0, st3, st7, st3, st7, st3],
+  [st1, st7, st1, st0, st1, st8, st0, st1, st1, st1, st6, st8, st6, st7, st6],
+  [st2, st3, st3, st2, st8, st1, st8, st3, st8, st3, st8, st5, st5, st2, st5]
+]

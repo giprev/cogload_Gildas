@@ -24,7 +24,10 @@ function setArrays (){
     nbackStimuli.stimuliEasyOverallTraining = [];
     nbackStimuli.correctResponse;
     nbackStimuli.target;
+    nbackStimuli.practiceListEasy_nback = [];
+    nbackStimuli.practiceListHard_nback = [];
   }
+
   
   function defineNullBack() {
     nbackStimuli.practiceList = ["B", "P", "X", "K", "H", "M", "Q", "X", "N","T"];
@@ -37,7 +40,7 @@ function setArrays (){
     // nbackStimuli.stimuliListEasy_flanker = ['C', 'C', 'C', 'C', 'K', 'Y', 'P', 'I', 'O', 'O', 'C', 'O', 'C', 'B', 'B', 'B', 'O', 'O', 'O', 'E', 'B', 'B', 'B', 'B', 'Y', 'B', 'B', 'Y', 'B', 'Y', 'B', 'C', 'C', 'B', 'U', 'U', 'M', 'C', 'O', 'U', 'I', 'U', 'O', 'O', 'O', 'I', 'O', 'A', 'I', 'A', 'I', 'M', 'U', 'U', 'U', 'Y', 'C', 'K', 'C', 'M', 'O', 'O', 'O'];
     nbackStimuli.practiceListEasy_span =  ['B', 'B', 'B', 'Y', 'Y', 'Y', 'U', 'U', 'B', 'B', 'C', 'E', 'G', 'E', 'E', 'C', 'C', 'C', 'C', 'Y'];
     // nbackStimuli.stimuliListEasy_span = ['U', 'B', 'B', 'B', 'B', 'I', 'I', 'M', 'K', 'U', 'Y', 'U', 'K', 'B', 'O', 'P', 'P', 'P', 'P', 'A', 'P', 'E', 'E', 'B', 'B', 'P', 'P', 'P', 'M', 'U', 'M', 'B', 'B', 'B', 'B', 'O', 'E', 'Y', 'E', 'E', 'M', 'E', 'A', 'Y', 'G', 'Y', 'B', 'G', 'I', 'I', 'I', 'I', 'U', 'A', 'A', 'A', 'U', 'A', 'U', 'Y', 'K', 'Y', 'K'];
-    nbackStimuli.practiceListEasy_nback = ['C', 'C', 'A', 'C', 'A', 'A', 'M', 'M', 'G', 'G', 'K', 'G', 'Y', 'C', 'C', 'K', 'K', 'M', 'M', 'O', 'M', 'M', 'P', 'P', 'K', 'K', 'I', 'P', 'I', 'I', 'Y', 'I', 'G', 'P', 'P', 'A', 'A', 'B', 'A', 'A']; // 14 1-backs, 7 2-backs 
+    // nbackStimuli.practiceListEasy_nback = ['C', 'C', 'A', 'C', 'A', 'A', 'M', 'M', 'G', 'G', 'K', 'G', 'Y', 'C', 'C', 'K', 'K', 'M', 'M', 'O', 'M', 'M', 'P', 'P', 'K', 'K', 'I', 'P', 'I', 'I', 'Y', 'I', 'G', 'P', 'P', 'A', 'A', 'B', 'A', 'A']; // 14 1-backs, 7 2-backs 
     // nbackStimuli.stimuliListEasy_nback = ['C', 'C', 'G', 'G', 'G', 'I', 'A', 'E', 'A', 'E', 'A', 'O', 'O', 'P', 'P', 'E', 'P', 'O', 'G', 'O', 'G', 'C', 'B', 'A', 'C', 'C', 'I', 'I', 'I', 'G', 'Y', 'Y', 'Y', 'Y', 'C', 'Y', 'U', 'Y', 'U', 'K', 'I', 'K', 'U', 'Y', 'Y', 'Y', 'G', 'U', 'U', 'U', 'U', 'M', 'M', 'A', 'A', 'A', 'M', 'A', 'O', 'A', 'G', 'G', 'U'] // 20 1-back, 20 2-backs
     nbackStimuli.stimuliListEasyOverallTraining =['B', 'E', 'E', 'C', 'C', 'I', 'I', 'C', 'C', 'K', 'C', 'K', 'K', 'U', 'U', 'Y', 'U', 'Y', 'U', 'U'] // 7 1-backs, 5 2-backs
 
@@ -48,18 +51,17 @@ function setArrays (){
     // nbackStimuli.stimuliListHard_flanker = ['G', 'C', 'G', 'C', 'P', 'C', 'P', 'G', 'C', 'E', 'M', 'C', 'M', 'E', 'M', 'E', 'O', 'U', 'O', 'U', 'O', 'O', 'U', 'U', 'U', 'K', 'Y', 'P', 'O', 'P', 'P', 'O', 'A', 'I', 'I', 'Y', 'B', 'B', 'K', 'B', 'K', 'A', 'K', 'K', 'K', 'I', 'U', 'E', 'U', 'C', 'C', 'U', 'P', 'P', 'B', 'P', 'C', 'P', 'I', 'P']; // 20 2 backs, 10 1 backs and 10 3-backs
     nbackStimuli.practiceListHard_span = ['C', 'C', 'M', 'C', 'M', 'C', 'C', 'C', 'P', 'C', 'U', 'A', 'E', 'K', 'E', 'K', 'E', 'K', 'E', 'E'];
     // nbackStimuli.stimuliListHard_span = ['U', 'U', 'Y', 'P', 'Y', 'P', 'Y', 'P', 'Y', 'I', 'B', 'I', 'I', 'I', 'C', 'K', 'K', 'I', 'Y', 'Y', 'G', 'A', 'G', 'G', 'G', 'Y', 'U', 'O', 'Y', 'K', 'O', 'K', 'K', 'Y', 'E', 'Y', 'E', 'Y', 'E', 'E', 'K', 'C', 'B', 'B', 'E', 'B', 'C', 'E', 'P', 'C', 'P', 'C', 'U', 'P', 'U', 'B', 'E', 'A', 'E', 'A', 'B', 'C', 'E'];
-    nbackStimuli.practiceListHard_nback = ['A', 'A', 'K', 'A', 'K', 'K', 'M', 'P', 'P', 'K', 'P', 'A', 'E', 'E', 'M', 'E', 'M', 'C', 'E', 'C', 'M', 'C', 'M', 'B', 'M', 'B', 'B', 'Y', 'P', 'Y', 'P', 'P', 'C', 'E', 'C', 'G', 'C', 'K', 'K', 'P']; // 14 2-backs, 7 3-backs and 7 1-backs
+    // nbackStimuli.practiceListHard_nback = ['A', 'A', 'K', 'A', 'K', 'K', 'M', 'P', 'P', 'K', 'P', 'A', 'E', 'E', 'M', 'E', 'M', 'C', 'E', 'C', 'M', 'C', 'M', 'B', 'M', 'B', 'B', 'Y', 'P', 'Y', 'P', 'P', 'C', 'E', 'C', 'G', 'C', 'K', 'K', 'P']; // 14 2-backs, 7 3-backs and 7 1-backs
     // nbackStimuli.stimuliListHard_nback = ['M', 'P', 'M', 'M', 'P', 'U', 'C', 'C', 'U', 'K', 'P', 'G', 'P', 'G', 'K', 'U', 'G', 'O', 'O', 'G', 'G', 'G', 'O', 'C', 'M', 'C', 'B', 'B', 'C', 'B', 'I', 'O', 'I', 'O', 'I', 'O', 'I', 'O', 'O', 'A', 'I', 'O', 'I', 'A', 'I', 'A', 'E', 'A', 'E', 'B', 'U', 'B', 'U', 'I', 'I', 'U', 'U', 'U', 'B', 'A', 'I', 'E', 'U'];
     nbackStimuli.stimuliListHardOverallTraining = ['P', 'A', 'P', 'A', 'P', 'A', 'A', 'P', 'A', 'P', 'P', 'K', 'B', 'B', 'C', 'C', 'P', 'C', 'G', 'G'] // 7 2-backs, 5 1-backs, 5 3-backs
   }
   
   function defineHard3Back() {
-    console.log("function defineHard3Back runs")
     nbackStimuli.practiceListHard_flanker =  ['K', 'A', 'K', 'A', 'A', 'C', 'A', 'A', 'C', 'K', 'K', 'M', 'P', 'K', 'M', 'P', 'P', 'M', 'P', 'P']; // 10 3-backs, 4 2-backs and 4 4-backs
     // nbackStimuli.stimuliListHard_flanker = ['G', 'Y', 'G', 'G', 'P', 'I', 'U', 'G', 'I', 'A', 'I', 'M', 'C', 'A', 'A', 'A', 'A', 'B', 'A', 'C', 'P', 'E', 'A', 'B', 'E', 'C', 'B', 'E', 'C', 'B', 'C', 'E', 'B', 'M', 'G', 'C', 'M', 'Y', 'E', 'M', 'E', 'Y', 'E', 'M', 'Y', 'M', 'I', 'A', 'G', 'I', 'E', 'G', 'E', 'E', 'B', 'G', 'O', 'B', 'M', 'G', 'B', 'M', 'G']; // 20 3-backs, 10 2-backs and 10 4-backs
     nbackStimuli.practiceListHard_span = ['P', 'C', 'P', 'P', 'C', 'P', 'P', 'C', 'E', 'E', 'P', 'E', 'E', 'P', 'P', 'G', 'C', 'C', 'G', 'C'];
     // nbackStimuli.stimuliListHard_span = ['G', 'E', 'K', 'G', 'O', 'K', 'G', 'G', 'O', 'M', 'G', 'U', 'G', 'U', 'A', 'O', 'G', 'B', 'O', 'U', 'E', 'C', 'E', 'E', 'C', 'O', 'I', 'B', 'O', 'I', 'B', 'O', 'O', 'B', 'O', 'B', 'A', 'A', 'B', 'O', 'M', 'P', 'O', 'O', 'M', 'P', 'O', 'I', 'P', 'I', 'P', 'P', 'Y', 'Y', 'Y', 'O', 'P', 'U', 'O', 'P', 'O', 'Y', 'O'];
-    nbackStimuli.practiceListHard_nback = ['K', 'B', 'I', 'K', 'B', 'Y', 'U', 'B', 'Y', 'Y', 'B', 'Y', 'Y', 'U', 'Y', 'I', 'O', 'Y', 'O', 'O', 'E', 'O', 'Y', 'I', 'E', 'O', 'I', 'I', 'Y', 'I', 'I', 'A', 'Y', 'E', 'E', 'G', 'I', 'A', 'I', 'A'];// 14 3-backs, 7 2-backs and 7 3-backs
+    // nbackStimuli.practiceListHard_nback = ['K', 'B', 'I', 'K', 'B', 'Y', 'U', 'B', 'Y', 'Y', 'B', 'Y', 'Y', 'U', 'Y', 'I', 'O', 'Y', 'O', 'O', 'E', 'O', 'Y', 'I', 'E', 'O', 'I', 'I', 'Y', 'I', 'I', 'A', 'Y', 'E', 'E', 'G', 'I', 'A', 'I', 'A'];// 14 3-backs, 7 2-backs and 7 3-backs
     // nbackStimuli.stimuliListHard_nback = ['K', 'P', 'G', 'E', 'K', 'G', 'E', 'O', 'C', 'G', 'O', 'O', 'P', 'O', 'A', 'C', 'C', 'A', 'Y', 'Y', 'A', 'Y', 'Y', 'B', 'A', 'P', 'I', 'B', 'E', 'O', 'B', 'Y', 'M', 'A', 'Y', 'M', 'M', 'Y', 'M', 'G', 'P', 'G', 'P', 'P', 'Y', 'M', 'A', 'M', 'B', 'M', 'P', 'B', 'M', 'M', 'B', 'M', 'E', 'M', 'M', 'I', 'G', 'I', 'I']
     nbackStimuli.stimuliListHardOverallTraining = ['E', 'B', 'E', 'B', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'P', 'A', 'B', 'I', 'A', 'E', 'B', 'P'] // 7 3-backs, 5 2-backs, 5 4-backs
   }
@@ -78,6 +80,12 @@ function setArrays (){
     nbackStimuli.stimuliListHard_flanker = [...possibleStimuliList3_nback[availableIndices[0]]];
     nbackStimuli.stimuliListHard_span = [...possibleStimuliList3_nback[availableIndices[1]]];
     nbackStimuli.stimuliListHard_nback = [...possibleStimuliList3_nback[availableIndices[2]]];
+
+    for (let j=0; j<possibleStimuliList_practice3back.length; j++){
+      nbackStimuli.practiceListHard_nback[j] = possibleStimuliList_practice3back[availableIndices[j]];
+    }
+
+    console.log(nbackStimuli.practiceListHard_nback, "is the practiceListHard_nback");
 }
 
  function assignRandomStimuli2back (){
@@ -89,13 +97,16 @@ function setArrays (){
         const j = Math.floor(Math.random() * (i + 1));
         [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
     }
-    
     // Assign three different random arrays
     nbackStimuli.stimuliListHard_flanker = [...possibleStimuliList2_nback[availableIndices[0]]];
     nbackStimuli.stimuliListHard_span = [...possibleStimuliList2_nback[availableIndices[1]]];
     nbackStimuli.stimuliListHard_nback = [...possibleStimuliList2_nback[availableIndices[2]]];
-    console.log(availableIndices[0], availableIndices[1], availableIndices[2],"are the available indices in assignRandomStimuli1back");
+    console.log(availableIndices[0], availableIndices[1], availableIndices[2],"are the available indices in assignRandomStimuli2back");
 
+    for (let j=0; j<possibleStimuliList_practice2back.length; j++){
+      nbackStimuli.practiceListHard_nback[j] = possibleStimuliList_practice2back[availableIndices[j]];
+    }
+    console.log(nbackStimuli.practiceListHard_nback, "is the practiceListHard_nback");
 }
 
  function assignRandomStimuli1back (){
@@ -117,7 +128,12 @@ function setArrays (){
     nbackStimuli.stimuliListEasy_span = [...possibleStimuliList1_nback[availableIndices[1]]];
     nbackStimuli.stimuliListEasy_nback = [...possibleStimuliList1_nback[availableIndices[2]]];
     console.log(availableIndices[0], availableIndices[1], availableIndices[2],"are the available indices in assignRandomStimuli1back");
-}
+
+    for (let j=0; j<possibleStimuliList_practice1back.length; j++){
+      nbackStimuli.practiceListEasy_nback[j] = possibleStimuliList_practice1back[availableIndices[j]];
+    }
+    console.log(nbackStimuli.practiceListEasy_nback, "is the practiceListEasy_nback");
+  }
 
 
   
@@ -305,3 +321,136 @@ let possibleStimuliList2_nback =
   ['P', 'B', 'P', 'B', 'C', 'E', 'E', 'B', 'I', 'I', 'I', 'U', 'O', 'U', 'O', 'M', 'G', 'M', 'G', 'E', 'P', 'E', 'P', 'E', 'E', 'C', 'C', 'A', 'C', 'Y', 'C', 'G', 'Y', 'G', 'O', 'Y', 'G', 'G', 'U', 'A', 'E', 'B', 'U', 'O', 'O', 'Y', 'O', 'Y', 'G', 'Y', 'K', 'K', 'Y', 'K', 'A', 'C', 'Y', 'O', 'Y', 'Y', 'Y', 'B', 'Y'],
   ['P', 'P', 'C', 'P', 'C', 'G', 'B', 'G', 'B', 'U', 'Y', 'A', 'Y', 'A', 'B', 'A', 'B', 'G', 'M', 'G', 'M', 'O', 'M', 'M', 'C', 'M', 'C', 'M', 'I', 'C', 'C', 'C', 'Y', 'Y', 'M', 'M', 'G', 'I', 'I', 'C', 'I', 'K', 'A', 'K', 'O', 'O', 'O', 'B', 'E', 'A', 'K', 'E', 'E', 'A', 'Y', 'P', 'A', 'Y', 'P', 'A', 'P', 'I', 'P']
 ];
+
+let possibleStimuliList_practice2back = [ // 5 2-backs, 2 3-backs, 2 1-backs
+  ['I', 'P', 'I', 'P', 'I', 'M', 'P', 'M', 'A', 'A', 'M', 'M', 'O', 'A', 'O'],
+  ['P', 'U', 'P', 'U', 'P', 'U', 'P', 'B', 'B', 'P', 'P', 'I', 'K', 'P', 'M'],
+  ['A', 'B', 'A', 'I', 'A', 'I', 'I', 'I', 'B', 'M', 'C', 'G', 'M', 'G', 'A'],
+  ['I', 'U', 'U', 'Y', 'C', 'Y', 'C', 'Y', 'E', 'C', 'E', 'E', 'M', 'I', 'M'],
+  ['K', 'Y', 'K', 'K', 'I', 'K', 'I', 'P', 'B', 'P', 'B', 'A', 'O', 'O', 'Y'],
+  ['I', 'M', 'I', 'M', 'I', 'E', 'Y', 'E', 'E', 'C', 'P', 'P', 'Y', 'P', 'M'],
+  ['A', 'O', 'A', 'I', 'A', 'I', 'B', 'A', 'A', 'P', 'A', 'I', 'A', 'B', 'B'],
+  ['P', 'P', 'I', 'P', 'U', 'P', 'C', 'C', 'P', 'U', 'P', 'U', 'P', 'O', 'E'],
+  ['M', 'M', 'B', 'M', 'B', 'E', 'Y', 'I', 'Y', 'I', 'G', 'K', 'K', 'E', 'K'],
+  ['I', 'K', 'I', 'K', 'I', 'I', 'M', 'G', 'K', 'G', 'G', 'E', 'A', 'O', 'A'],
+  ['M', 'Y', 'O', 'Y', 'O', 'O', 'P', 'O', 'P', 'C', 'C', 'I', 'U', 'B', 'U'],
+  ['Y', 'C', 'Y', 'C', 'Y', 'C', 'C', 'Y', 'Y', 'P', 'G', 'C', 'K', 'M', 'K'],
+  ['A', 'I', 'A', 'I', 'A', 'I', 'A', 'A', 'B', 'O', 'M', 'K', 'O', 'Y', 'Y'],
+  ['A', 'A', 'Y', 'K', 'P', 'K', 'P', 'P', 'M', 'P', 'C', 'O', 'B', 'O', 'B'],
+  ['M', 'M', 'K', 'E', 'K', 'E', 'E', 'Y', 'E', 'A', 'M', 'O', 'M', 'O', 'A'],
+  ['K', 'B', 'B', 'Y', 'B', 'Y', 'A', 'A', 'I', 'A', 'I', 'K', 'I', 'O', 'M'],
+  ['G', 'G', 'B', 'I', 'B', 'I', 'G', 'I', 'E', 'I', 'E', 'E', 'I', 'M', 'A'],
+  ['E', 'K', 'E', 'K', 'E', 'E', 'E', 'P', 'C', 'A', 'P', 'A', 'Y', 'K', 'M'],
+  ['C', 'M', 'C', 'M', 'B', 'K', 'B', 'U', 'U', 'B', 'O', 'O', 'M', 'O', 'M'],
+  ['M', 'I', 'M', 'I', 'M', 'I', 'I', 'I', 'Y', 'K', 'A', 'G', 'K', 'C', 'P'],
+  ['O', 'O', 'M', 'O', 'M', 'M', 'Y', 'A', 'Y', 'E', 'Y', 'E', 'A', 'K', 'G'],
+  ['E', 'E', 'U', 'E', 'O', 'I', 'O', 'I', 'O', 'M', 'A', 'M', 'E', 'A', 'A'],
+  ['U', 'G', 'U', 'G', 'U', 'G', 'I', 'G', 'G', 'I', 'P', 'P', 'Y', 'A', 'O'],
+  ['K', 'K', 'C', 'K', 'C', 'Y', 'A', 'B', 'A', 'B', 'A', 'E', 'Y', 'A', 'A'],
+  ['G', 'O', 'G', 'O', 'P', 'O', 'P', 'P', 'C', 'G', 'U', 'U', 'G', 'O', 'G'],
+  ['B', 'K', 'B', 'K', 'K', 'B', 'B', 'M', 'I', 'P', 'I', 'P', 'M', 'P', 'K'],
+  ['I', 'O', 'I', 'O', 'M', 'M', 'A', 'M', 'A', 'K', 'A', 'A', 'M', 'P', 'E'],
+  ['E', 'O', 'C', 'O', 'C', 'O', 'C', 'C', 'M', 'C', 'A', 'A', 'P', 'Y', 'B'],
+  ['Y', 'I', 'Y', 'I', 'M', 'I', 'B', 'B', 'E', 'U', 'E', 'A', 'A', 'E', 'A'],
+  ['C', 'A', 'C', 'B', 'M', 'B', 'C', 'M', 'M', 'M', 'A', 'M', 'Y', 'M', 'U'],
+  ['K', 'M', 'M', 'C', 'C', 'A', 'C', 'A', 'G', 'A', 'C', 'G', 'C', 'G', 'I'],
+  ['B', 'A', 'B', 'E', 'E', 'E', 'U', 'P', 'B', 'U', 'P', 'U', 'E', 'U', 'E'],
+  ['E', 'P', 'E', 'P', 'K', 'P', 'K', 'B', 'P', 'B', 'B', 'A', 'Y', 'O', 'O'],
+  ['G', 'U', 'P', 'U', 'P', 'U', 'U', 'I', 'U', 'I', 'O', 'P', 'P', 'C', 'B'],
+  ['E', 'I', 'E', 'Y', 'E', 'E', 'P', 'P', 'M', 'P', 'U', 'B', 'U', 'B', 'O'],
+  ['E', 'E', 'A', 'E', 'C', 'C', 'E', 'I', 'G', 'I', 'Y', 'I', 'Y', 'I', 'M'],
+  ['P', 'B', 'B', 'P', 'B', 'P', 'G', 'P', 'K', 'M', 'M', 'G', 'B', 'G', 'B'],
+  ['O', 'O', 'C', 'O', 'M', 'C', 'M', 'E', 'E', 'C', 'Y', 'C', 'Y', 'C', 'P'],
+  ['U', 'I', 'U', 'I', 'U', 'M', 'K', 'U', 'U', 'P', 'A', 'P', 'A', 'A', 'O'],
+  ['B', 'B', 'B', 'A', 'U', 'M', 'A', 'U', 'A', 'E', 'A', 'B', 'C', 'B', 'C'],
+  ['M', 'K', 'K', 'M', 'I', 'U', 'I', 'A', 'I', 'A', 'K', 'A', 'K', 'K', 'B']
+];
+
+let possibleStimuliList_practice3back = [ // 5 3-backs, 2 2-backs, 2 4-backs
+  ['E', 'B', 'A', 'E', 'A', 'A', 'E', 'E', 'K', 'A', 'O', 'K', 'G', 'K', 'K'],
+  ['Y', 'M', 'Y', 'G', 'M', 'O', 'G', 'M', 'O', 'G', 'G', 'M', 'U', 'M', 'O'],
+  ['G', 'K', 'M', 'G', 'G', 'G', 'I', 'U', 'M', 'I', 'I', 'M', 'I', 'C', 'M'],
+  ['C', 'G', 'C', 'C', 'G', 'B', 'O', 'P', 'B', 'O', 'Y', 'O', 'B', 'Y', 'Y'],
+  ['B', 'U', 'B', 'Y', 'U', 'B', 'G', 'C', 'B', 'B', 'C', 'B', 'M', 'U', 'C'],
+  ['O', 'C', 'K', 'O', 'C', 'C', 'O', 'K', 'O', 'O', 'K', 'K', 'C', 'E', 'C'],
+  ['U', 'P', 'I', 'P', 'G', 'I', 'P', 'E', 'G', 'P', 'E', 'Y', 'P', 'Y', 'E'],
+  ['I', 'P', 'I', 'C', 'P', 'E', 'C', 'M', 'C', 'C', 'M', 'M', 'C', 'P', 'K'],
+  ['P', 'G', 'P', 'B', 'G', 'G', 'B', 'G', 'C', 'P', 'O', 'O', 'P', 'Y', 'O'],
+  ['G', 'O', 'E', 'O', 'O', 'E', 'O', 'P', 'C', 'K', 'P', 'C', 'Y', 'K', 'P'],
+  ['B', 'E', 'B', 'B', 'E', 'B', 'M', 'I', 'E', 'M', 'M', 'E', 'P', 'K', 'C'],
+  ['B', 'P', 'B', 'I', 'P', 'E', 'I', 'I', 'E', 'I', 'K', 'A', 'I', 'G', 'K'],
+  ['G', 'G', 'Y', 'G', 'G', 'Y', 'G', 'O', 'B', 'P', 'U', 'O', 'P', 'A', 'M'],
+  ['Y', 'U', 'Y', 'A', 'U', 'U', 'A', 'U', 'P', 'Y', 'C', 'E', 'Y', 'Y', 'E'],
+  ['P', 'E', 'A', 'O', 'P', 'A', 'O', 'C', 'I', 'O', 'A', 'I', 'I', 'I', 'I'],
+  ['O', 'E', 'K', 'E', 'E', 'U', 'E', 'P', 'U', 'I', 'P', 'C', 'U', 'I', 'C'],
+  ['A', 'M', 'C', 'A', 'C', 'O', 'I', 'Y', 'O', 'I', 'Y', 'Y', 'O', 'Y', 'G'],
+  ['B', 'G', 'K', 'B', 'G', 'G', 'K', 'G', 'Y', 'O', 'P', 'C', 'P', 'P', 'C'],
+  ['A', 'M', 'A', 'A', 'M', 'I', 'K', 'E', 'M', 'I', 'E', 'M', 'A', 'E', 'A'],
+  ['A', 'G', 'M', 'G', 'M', 'M', 'P', 'P', 'M', 'G', 'B', 'M', 'G', 'B', 'B'],
+  ['O', 'A', 'O', 'O', 'A', 'A', 'U', 'O', 'M', 'U', 'I', 'M', 'O', 'I', 'O'],
+  ['A', 'I', 'G', 'A', 'I', 'K', 'Y', 'I', 'K', 'I', 'Y', 'E', 'K', 'E', 'E'],
+  ['U', 'P', 'K', 'U', 'Y', 'K', 'O', 'K', 'K', 'O', 'O', 'Y', 'K', 'Y', 'Y'],
+  ['K', 'A', 'B', 'K', 'A', 'I', 'K', 'K', 'I', 'I', 'I', 'I', 'G', 'C', 'C'],
+  ['E', 'C', 'K', 'K', 'C', 'K', 'K', 'M', 'K', 'C', 'I', 'B', 'B', 'I', 'I'],
+  ['Y', 'A', 'U', 'M', 'A', 'U', 'A', 'M', 'U', 'O', 'U', 'I', 'O', 'O', 'I'],
+  ['I', 'C', 'A', 'I', 'C', 'A', 'A', 'A', 'A', 'U', 'K', 'O', 'A', 'A', 'O'],
+  ['I', 'M', 'I', 'U', 'M', 'K', 'C', 'G', 'M', 'C', 'G', 'M', 'G', 'C', 'M'],
+  ['A', 'M', 'B', 'A', 'M', 'A', 'G', 'P', 'M', 'G', 'Y', 'G', 'G', 'Y', 'Y'],
+  ['A', 'B', 'Y', 'A', 'B', 'O', 'B', 'O', 'O', 'G', 'G', 'O', 'C', 'G', 'P'],
+  ['K', 'B', 'K', 'U', 'U', 'M', 'U', 'O', 'M', 'U', 'U', 'M', 'E', 'U', 'A'],
+  ['K', 'U', 'I', 'K', 'U', 'I', 'A', 'U', 'U', 'I', 'U', 'I', 'M', 'B', 'Y'],
+  ['C', 'M', 'K', 'U', 'K', 'K', 'U', 'B', 'Y', 'Y', 'B', 'Y', 'Y', 'K', 'B'],
+  ['O', 'E', 'P', 'O', 'E', 'I', 'O', 'U', 'I', 'O', 'I', 'U', 'Y', 'O', 'Y'],
+  ['A', 'G', 'K', 'U', 'A', 'K', 'U', 'E', 'K', 'P', 'E', 'E', 'Y', 'E', 'Y'],
+  ['U', 'A', 'K', 'A', 'U', 'Y', 'B', 'U', 'Y', 'B', 'U', 'C', 'U', 'B', 'C'],
+  ['Y', 'O', 'K', 'O', 'O', 'K', 'B', 'B', 'Y', 'B', 'B', 'U', 'Y', 'M', 'U'],
+  ['Y', 'U', 'Y', 'Y', 'U', 'Y', 'M', 'U', 'U', 'G', 'I', 'B', 'E', 'I', 'I'],
+  ['C', 'Y', 'C', 'C', 'K', 'Y', 'A', 'Y', 'K', 'A', 'Y', 'M', 'O', 'Y', 'M'],
+  ['E', 'P', 'B', 'A', 'G', 'B', 'G', 'G', 'O', 'B', 'A', 'O', 'O', 'A', 'O'],
+  ['P', 'K', 'A', 'P', 'P', 'Y', 'G', 'Y', 'Y', 'G', 'K', 'Y', 'E', 'Y', 'Y']
+];
+
+let possibleStimuliList_practice1back = [ // 5 1-backs, 5 2-backs, one triple maximum, no four consecutives letters
+  ['Y', 'Y', 'I', 'Y', 'U', 'U', 'U', 'I', 'I', 'U', 'I', 'U', 'I', 'Y', 'Y'],
+  ['B', 'B', 'O', 'B', 'O', 'U', 'U', 'K', 'K', 'K', 'Y', 'E', 'Y', 'E', 'E'],
+  ['G', 'G', 'C', 'C', 'G', 'G', 'G', 'I', 'I', 'B', 'I', 'B', 'I', 'B', 'A'],
+  ['C', 'C', 'U', 'U', 'U', 'G', 'A', 'G', 'A', 'A', 'C', 'C', 'M', 'C', 'M'],
+  ['P', 'P', 'I', 'P', 'K', 'P', 'P', 'O', 'P', 'O', 'C', 'C', 'Y', 'Y', 'Y'],
+  ['Y', 'Y', 'K', 'K', 'M', 'K', 'K', 'I', 'K', 'I', 'A', 'I', 'U', 'U', 'U'],
+  ['U', 'A', 'A', 'A', 'O', 'O', 'U', 'O', 'U', 'A', 'U', 'A', 'A', 'O', 'O'],
+  ['Y', 'P', 'P', 'C', 'C', 'C', 'K', 'C', 'K', 'K', 'B', 'K', 'K', 'I', 'K'],
+  ['M', 'P', 'C', 'C', 'C', 'G', 'C', 'G', 'G', 'B', 'G', 'B', 'B', 'K', 'K'],
+  ['Y', 'I', 'I', 'I', 'Y', 'Y', 'G', 'Y', 'G', 'Y', 'G', 'I', 'I', 'Y', 'Y'],
+  ['A', 'K', 'K', 'G', 'K', 'G', 'K', 'G', 'P', 'P', 'Y', 'Y', 'Y', 'P', 'P'],
+  ['O', 'O', 'O', 'C', 'O', 'C', 'C', 'I', 'C', 'I', 'M', 'M', 'I', 'I', 'O'],
+  ['K', 'C', 'K', 'C', 'K', 'C', 'B', 'B', 'B', 'G', 'G', 'K', 'K', 'Y', 'Y'],
+  ['U', 'O', 'U', 'O', 'O', 'O', 'G', 'G', 'C', 'B', 'C', 'B', 'B', 'M', 'M'],
+  ['E', 'O', 'O', 'O', 'Y', 'O', 'G', 'G', 'A', 'A', 'B', 'A', 'B', 'A', 'A'],
+  ['G', 'G', 'Y', 'Y', 'Y', 'I', 'Y', 'I', 'I', 'K', 'K', 'I', 'K', 'I', 'E'],
+  ['I', 'I', 'I', 'B', 'B', 'G', 'I', 'G', 'I', 'G', 'E', 'E', 'B', 'E', 'E'],
+  ['U', 'E', 'E', 'O', 'E', 'O', 'O', 'O', 'P', 'O', 'P', 'E', 'E', 'C', 'C'],
+  ['C', 'C', 'E', 'C', 'E', 'C', 'Y', 'C', 'C', 'M', 'M', 'M', 'B', 'B', 'O'],
+  ['K', 'K', 'K', 'Y', 'Y', 'M', 'Y', 'M', 'Y', 'Y', 'B', 'B', 'G', 'B', 'A'],
+  ['K', 'K', 'K', 'A', 'A', 'P', 'A', 'P', 'A', 'A', 'C', 'E', 'E', 'P', 'E'],
+  ['A', 'A', 'A', 'M', 'A', 'A', 'O', 'A', 'O', 'Y', 'Y', 'K', 'Y', 'P', 'P'],
+  ['E', 'E', 'I', 'I', 'I', 'M', 'I', 'M', 'B', 'B', 'O', 'B', 'O', 'I', 'I'],
+  ['E', 'E', 'B', 'B', 'I', 'B', 'B', 'I', 'B', 'I', 'K', 'I', 'G', 'G', 'G'],
+  ['P', 'P', 'P', 'O', 'O', 'A', 'A', 'P', 'A', 'P', 'A', 'B', 'M', 'B', 'B'],
+  ['K', 'K', 'M', 'M', 'E', 'M', 'E', 'M', 'M', 'M', 'U', 'U', 'I', 'U', 'E'],
+  ['B', 'B', 'Y', 'B', 'Y', 'Y', 'Y', 'E', 'Y', 'U', 'Y', 'I', 'I', 'E', 'E'],
+  ['I', 'O', 'I', 'I', 'M', 'I', 'M', 'I', 'A', 'A', 'I', 'I', 'I', 'O', 'O'],
+  ['K', 'K', 'I', 'K', 'I', 'K', 'O', 'O', 'P', 'O', 'O', 'P', 'B', 'B', 'B'],
+  ['Y', 'Y', 'Y', 'O', 'B', 'B', 'Y', 'Y', 'O', 'Y', 'O', 'Y', 'O', 'K', 'K'],
+  ['E', 'G', 'G', 'E', 'G', 'K', 'K', 'E', 'K', 'E', 'K', 'K', 'P', 'P', 'P'],
+  ['P', 'A', 'P', 'A', 'P', 'P', 'B', 'P', 'M', 'M', 'I', 'I', 'I', 'C', 'C'],
+  ['M', 'M', 'B', 'B', 'M', 'B', 'M', 'U', 'U', 'P', 'U', 'P', 'A', 'A', 'A'],
+  ['B', 'B', 'K', 'B', 'G', 'G', 'B', 'G', 'B', 'G', 'G', 'B', 'A', 'A', 'A'],
+  ['I', 'I', 'P', 'I', 'I', 'P', 'I', 'P', 'Y', 'Y', 'C', 'Y', 'G', 'G', 'G'],
+  ['O', 'O', 'B', 'O', 'B', 'O', 'G', 'G', 'E', 'E', 'E', 'K', 'K', 'U', 'K'],
+  ['Y', 'Y', 'U', 'U', 'M', 'U', 'M', 'U', 'M', 'K', 'P', 'P', 'P', 'G', 'G'],
+  ['P', 'P', 'M', 'M', 'U', 'M', 'U', 'U', 'B', 'M', 'I', 'M', 'I', 'I', 'I'],
+  ['A', 'A', 'M', 'A', 'M', 'M', 'C', 'C', 'C', 'O', 'U', 'U', 'I', 'U', 'I'],
+  ['Y', 'Y', 'Y', 'I', 'I', 'E', 'I', 'O', 'I', 'O', 'M', 'M', 'I', 'M', 'M'],
+  ['B', 'B', 'P', 'B', 'P', 'G', 'G', 'U', 'U', 'U', 'M', 'U', 'M', 'E', 'E']
+];
+

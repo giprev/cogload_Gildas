@@ -26,9 +26,9 @@ function createBlocks(list, stimuli, level){
       block = "main_easy"
     } else if (list === nbackStimuli.stimuliListHard_flanker || list === nbackStimuli.stimuliListHard_span || list === nbackStimuli.stimuliListHard_nback){
       block = "main_hard"
-    } else if (list === nbackStimuli.practiceListEasy_flanker || list === nbackStimuli.practiceListEasy_span || list === nbackStimuli.practiceListEasy_nback) {
+    } else if (list === nbackStimuli.practiceListEasy_flanker || list === nbackStimuli.practiceListEasy_span || nbackStimuli.practiceListEasy_nback.includes(list)) {
       block = "practice_easy"
-    } else if (list === nbackStimuli.practiceListHard_flanker || list === nbackStimuli.practiceListHard_span || list === nbackStimuli.practiceListHard_nback) {
+    } else if (list === nbackStimuli.practiceListHard_flanker || list === nbackStimuli.practiceListHard_span || nbackStimuli.practiceListHard_nback.includes(list)) {
       block = "practice_hard"
     } else if (list === nbackStimuli.stimuliListEasyOverallTraining) {
       block = "overall_training_easy"
@@ -93,7 +93,7 @@ function createBlocksVisual(list, stimuli, level){
       block = "main_hard"}
     else if (list == stimuliList_nbackVisualOverallPractice){
       block = "nbackVisual_overall_practice"}
-    else if (list == stimuliList_nbackVisual_practice){
+    else if (stimuliList_nbackVisual_practice.includes(list)){
       block = "nbackVisual_practice"
     }
     else {block = "error for visual nback"}
