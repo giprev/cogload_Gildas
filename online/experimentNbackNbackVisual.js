@@ -531,37 +531,39 @@ const testNback = {
     data: jsPsych.timelineVariable('data'),
 //   stimulus: jsPsych.timelineVariable('stimulus'),
   stimulus: function() {
-    const baseStimulus = jsPsych.timelineVariable('stimulus', true);
-    let data = jsPsych.timelineVariable('data', true);
-    // Check if generalNbackCounter is odd
-    let shouldShowRed = false;
-    let positionInBlock = data.trial_number % 10; // Position within each 10-trial block
-    if (data.block === "main_easy" || data.block === "main_hard") {
-      if (data.level == 3 && (positionInBlock == 8 || positionInBlock == 9 || positionInBlock == 0)) {
-        shouldShowRed = true;
-      } else if ((data.level == 2 || data.level == 3) && (positionInBlock == 9 || positionInBlock == 0)) {
-        shouldShowRed = true;
-      } else if ((data.level == 1 || data.level == 2 || data.level == 3) && positionInBlock == 0) {
-        shouldShowRed = true;
-      }
-    }
-    else if (data.block === "overall_training_hard" || data.block === "overall_training_easy") {
-      if (data.level == 3 && (data.trial_number == 8 || data.trial_number == 9 || data.trial_number == 10)) {
-        shouldShowRed = true;
-        console.log("shouldShowRed is true for level 3 overall training")
-      }
-      else if ((data.level == 2 || data.level == 3) && (data.trial_number == 9 || data.trial_number == 10 )) {
-        shouldShowRed = true;
-        console.log("shouldShowRed is true for level 2 overall training")
-      }
-      else if ((data.level == 1 || data.level == 2 || data.level == 3) && data.trial_number == 10 ) {
-        shouldShowRed = true;
-        console.log("shouldShowRed is true for level 1 overall training")
-      }
-    };
-    return shouldShowRed ? 
-      baseStimulus.replace("class='stimulus'", "class='stimulus' style='color: #F016DF;'") : 
-      baseStimulus;
+    return jsPsych.timelineVariable('stimulus', true);
+  // Below is the code to make last stimuli appear in pink
+    // const baseStimulus = jsPsych.timelineVariable('stimulus', true);
+    // let data = jsPsych.timelineVariable('data', true);
+    // // Check if generalNbackCounter is odd
+    // let shouldShowRed = false;
+    // let positionInBlock = data.trial_number % 10; // Position within each 10-trial block
+    // if (data.block === "main_easy" || data.block === "main_hard") {
+    //   if (data.level == 3 && (positionInBlock == 8 || positionInBlock == 9 || positionInBlock == 0)) {
+    //     shouldShowRed = true;
+    //   } else if ((data.level == 2 || data.level == 3) && (positionInBlock == 9 || positionInBlock == 0)) {
+    //     shouldShowRed = true;
+    //   } else if ((data.level == 1 || data.level == 2 || data.level == 3) && positionInBlock == 0) {
+    //     shouldShowRed = true;
+    //   }
+    // }
+    // else if (data.block === "overall_training_hard" || data.block === "overall_training_easy") {
+    //   if (data.level == 3 && (data.trial_number == 8 || data.trial_number == 9 || data.trial_number == 10)) {
+    //     shouldShowRed = true;
+    //     console.log("shouldShowRed is true for level 3 overall training")
+    //   }
+    //   else if ((data.level == 2 || data.level == 3) && (data.trial_number == 9 || data.trial_number == 10 )) {
+    //     shouldShowRed = true;
+    //     console.log("shouldShowRed is true for level 2 overall training")
+    //   }
+    //   else if ((data.level == 1 || data.level == 2 || data.level == 3) && data.trial_number == 10 ) {
+    //     shouldShowRed = true;
+    //     console.log("shouldShowRed is true for level 1 overall training")
+    //   }
+    // };
+    // return shouldShowRed ? 
+    //   baseStimulus.replace("class='stimulus'", "class='stimulus' style='color: #F016DF;'") : 
+    //   baseStimulus;
   },
   choices: buttonToPressForTarget,
   response_ends_trial: false,
@@ -2839,7 +2841,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_nback_nback, paymentExplanationEasyTrialSecond, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

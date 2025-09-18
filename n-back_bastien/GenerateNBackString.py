@@ -1,9 +1,9 @@
 import random
 
-lseq = 15
-ntarget = 5
-nplus1 = 2
-nminus1 = 2
+lseq = 10
+ntarget = 3
+nplus1 = 3
+nminus1 = 3
 
 def generate_nback_string(nback, has_fourples):
     letters = ['st0', 'st1', 'st2', 'st3', 'st4', 'st5', 'st6', 'st7', 'st8']
@@ -103,9 +103,9 @@ def make41():
     
     return sequences
 
-# example = make41()
-# print(example)
-# analyze_nback(example[0], 2)
+example = make41()
+print(example)
+analyze_nback(example[0], 2)
 
 # Usage example:
 # all_sequences = make41()
@@ -118,7 +118,7 @@ def make41():
 # print(analyze_nback(['O', 'Y', 'M', 'O', 'O', 'M', 'M', 'C', 'M', 'A', 'C', 'M', 'M', 'C', 'I', 'M', 'M', 'A', 'I', 'M', 'Y', 'I', 'E', 'K', 'A', 'I', 'E', 'C', 'C', 'A', 'E', 'O', 'C', 'A', 'M', 'Y', 'Y', 'A', 'E', 'Y', 'C', 'E', 'I', 'C', 'A', 'I', 'P', 'A', 'A', 'I', 'I', 'A', 'C', 'I', 'I', 'C', 'E', 'Y', 'K', 'E', 'E', 'K', 'E'], 1))
 
 # print(analyze_nback(,1))
-print(analyze_nback(['M', 'A', 'M', 'C', 'C', 'G', 'U', 'U', 'G', 'A', 'G', 'K', 'K', 'K', 'U', 'G', 'O', 'O', 'P', 'O', 'G', 'G', 'G', 'M', 'P', 'P', 'P', 'P', 'P', 'E', 'P', 'E', 'G', 'E', 'G', 'E', 'P', 'G', 'G', 'G', 'U', 'P', 'U', 'K', 'K', 'A', 'A', 'A', 'M', 'M', 'M', 'I', 'I', 'I', 'O', 'G', 'O', 'E', 'O', 'M', 'E', 'K', 'Y'], 2))
+#print(analyze_nback(['M', 'A', 'M', 'C', 'C', 'G', 'U', 'U', 'G', 'A', 'G', 'K', 'K', 'K', 'U', 'G', 'O', 'O', 'P', 'O', 'G', 'G', 'G', 'M', 'P', 'P', 'P', 'P', 'P', 'E', 'P', 'E', 'G', 'E', 'G', 'E', 'P', 'G', 'G', 'G', 'U', 'P', 'U', 'K', 'K', 'A', 'A', 'A', 'M', 'M', 'M', 'I', 'I', 'I', 'O', 'G', 'O', 'E', 'O', 'M', 'E', 'K', 'Y'], 2))
 
 
 

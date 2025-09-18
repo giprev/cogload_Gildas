@@ -852,20 +852,20 @@ const fr = {
         title: "Entraînement Complet",
         description1Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de 2-back visuel et de 1-back lettres.",
         description3Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de 2-back visuel et de 3-back lettres.",
-        structure1Back: "Vous commencerez par 10 essais de 1-back lettres, puis ferez un bloc: une tâche de 2-back visuel (10 essais), et une tâche de 1-back lettres (10 essais).",
-        structure3Back: "Vous commencerez par 10 essais de 3-back lettres, puis ferez un bloc: une tâche de 2-back visuel (10 essais), et une tâche de 3-back lettres (10 essais).",
+        structure1Back: "Vous commencerez par 10 essais de 1-back lettres, puis ferez un bloc: une tâche de 2-back visuel, et une tâche de 1-back lettres.",
+        structure3Back: "Vous commencerez par 10 essais de 3-back lettres, puis ferez un bloc: une tâche de 2-back visuel, et une tâche de 3-back lettres.",
         importance: "Cet entraînement vous aidera à comprendre la structure complète d'un bloc et le fonctionnement du système de notation.",
         feedback: "À la fin, vous verrez un retour sur votre performance et comment votre bonus serait calculé si c'était un vrai bloc.",
-        highlightEasy: "Portez une attention particulière à la lettre immédiatement après le 2-back visuel - c'est la plus importante pour votre bonus ! Pour vous aider, la lettre correspondante avant le 2-back visuel est colorée en <span style='color:#F016DF;'>rose</span>.",
-        highlightHard: "Portez une attention particulière aux {level} premières lettres immédiatement après le 2-back visuel - ce sont les plus importantes pour votre bonus ! Pour vous aider, les lettres correspondantes avant le 2-back visuel sont colorées en <span style='color:#F016DF;'>rose</span>.",
+        highlightEasy: "Portez une attention particulière à la lettre immédiatement après le 2-back visuel - c'est la plus importante pour votre bonus !", // Pour vous aider, la lettre correspondante avant le 2-back visuel est colorée en <span style='color:#F016DF;'>rose</span>.
+        highlightHard: "Portez une attention particulière aux {level} premières lettres immédiatement après le 2-back visuel - ce sont les plus importantes pour votre bonus ! ", // Pour vous aider, les lettres correspondantes avant le 2-back visuel sont colorées en <span style='color:#F016DF;'>rose</span>.
         ready: "Quand vous êtes prêt à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
     },
     overallTrainingFeedback: {
         title: "Entraînement Terminé - Démonstration du système de points",
         performance: "Voici comment votre performance serait notée si c'était un vrai bloc et qu'il était sélectionné pour le paiement (au hasard) :",
-        nbackLetter1Back: "1-back lettres après le 2-back visuel (les dix essais): {accuracy}% de précision ({correct}/{total} essais)",
-        nbackLetter3Back: "3-back lettres après le 2-back visuel (les dix essais): {accuracy}% de précision ({correct}/{total} essais)",
-        visualNback: "2-back visuel (les dix essais): {accuracy}% de précision ({correct}/{total} essais)",
+        nbackLetter1Back: "1-back lettres après le 2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
+        nbackLetter3Back: "3-back lettres après le 2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
+        visualNback: "2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
         afterVisual: "{Lettres} après le 2-back visuel ({total} essais): {accuracy}% de précision ({correct}/{total} essais)",
         explain1Back: "La dernière lettre avant le 2-back visuel était K, et la première après était C. Vous deviez donc appuyer sur la touche 'F' lorsque vous voyiez le C après le 2-back visuel (C différent de K).",
         explain2Back: "Les deux dernières lettres avant le 2-back visuel étaient A puis P, et les deux premières après étaient P puis K. Vous deviez donc appuyer sur la touche 'F' lorsque vous voyiez le P et le K après le 2-back visuel (P différent de A et K de P).",
