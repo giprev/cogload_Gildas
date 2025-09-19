@@ -27,17 +27,24 @@ file_path3 <- "/Users/domitilleprevost/Downloads/jatos_pilot_2_first(codeerror).
 file_path4 <- "/Users/domitilleprevost/Downloads/jatos_pilot_5_first(codeerror).txt"
 file_path_test <- "/Users/domitilleprevost/Downloads/jatos_results_data_20250911170821.txt"
 file_path_test2 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20250912120513.txt"
+file_path_test_Théophane <- "/Users/domitilleprevost/Downloads/jatos_results_data_Theophane.txt"
+file_path_test_Gildas_18_09 <- "/Users/domitilleprevost/Downloads/jatos_Gildas_test_18-09_midi.txt" 
+
 
 #text <- readLines(file_path)
 #text1 <- readLines(file_path1)
-text <- readLines(file_path_test)
+text <- readLines(file_path_test_Gildas_18_09)
 
 length(text)
 
+test_mean <- dataPerParticipant %>%
+  filter(task == "nbackVisual") %>%
+  filter (block %in% c("main_easy", "main_hard")) %>%
+  select("hit", "miss", "false_alarm", "correct_rejection") %>%
+  lapply(., function(x) sum(x == 1, na.rm = TRUE))
+test_mean
 
-
-
-#Loop through each part of the text file and write it to a separate text file
+# Loop through each part of the text file and write it to a separate text file
 for(i in 1:length(text)) {
   part <- text[i]
   writeLines(part, paste0("part", i, ".txt"))
@@ -55,9 +62,32 @@ for(iSub in 1:nSub) {
   
   dataPerParticipant <- fromJSON(partDirectory)
   
+  view(dataPerParticipant)
+  
   # Filter for nback and nbackVisual trials only, excluding practice trials
-  # Count all_correct == FALSE occurrences
-  all_correct_false_count <- sum(dataPerParticipant$all_correct == FALSE, na.rm = TRUE)    
+  # Count all_correct == FALSE occurrences in comprehensionSurveyHard and comprehensionSurveyEasy
+  all_correct_false_count <- dataPerParticipant %>%
+    filter(task %in% c("comprehensionSurveyHard", "comprehensionSurveyEasy")) %>%
+    group_by(task) %>%
+    summarise(false_count = sum(all_correct == FALSE, na.rm = TRUE), .groups = 'drop') %>%
+    deframe()  # Creates named vector: c(comprehensionSurveyEasy = 2, comprehensionSurveyHard = 1)
+
+  number_training_block <- dataPerParticipant %>%
+  mutate(
+    # Get block from 2 rows above
+    block_2_above = lag(block, n = 2)
+  ) %>%
+  # Filter for rows with practiceIndex and valid practice blocks 2 rows above
+  filter(
+    !is.na(practiceIndex),
+    block_2_above %in% c("nbackVisual_practice", "practice_easy", "practice_hard")
+  ) %>%
+  # Group by the practice block type and get maximum practiceIndex
+  group_by(block_2_above) %>%
+  summarise(max_practice_index = max(practiceIndex, na.rm = TRUE), .groups = 'drop') %>%
+  # Convert to named vector
+  deframe()
+  
   
   dataPerParticipant <- dataPerParticipant %>%
     mutate(key_press =
@@ -220,7 +250,11 @@ for(iSub in 1:nSub) {
       STAT_accuracy_afterVisualTrials = stat_accuracy_afterVisualTrials,
       STAT_accuracy_afterVisualTrials_hard = stat_accuracy_afterVisualTrials_hard,
       STAT_accuracy_afterVisualTrials_easy = stat_accuracy_afterVisualTrials_easy,
-      repeated_comprehension_question = all_correct_false_count,
+      repeated_comprehension_question_easy = as.numeric(all_correct_false_count["comprehensionSurveyEasy"]),
+      repeated_comprehension_question_hard = as.numeric(all_correct_false_count["comprehensionSurveyHard"]),
+      trained_easy_nth = as.numeric(number_training_block["practice_easy"]),
+      trained_hard_nth = as.numeric(number_training_block["practice_hard"]),
+      trained_visual_nth = as.numeric(number_training_block["nbackVisual_practice"]),
       treatment_order = block_order
     )
     
@@ -293,7 +327,8 @@ for(iSub in 1:nSub) {
 df_model <- final_data %>%
   # Select relevant columns and demographic data
   select(subject, treatment_order, demo_age, demo_occu, demo_gend, demo_educ, 
-         demo_lsat, demo_reve, repeated_comprehension_question,
+         demo_lsat, demo_reve, repeated_comprehension_question_easy, repeated_comprehension_question_hard,
+         trained_easy_nth, trained_hard_nth, trained_visual_nth,
          starts_with("trial_")) %>%
   # Reshape to long format - each trial becomes a row
   pivot_longer(
@@ -371,11 +406,19 @@ df_model <- final_data %>%
   # Select final columns in desired order
   select(subject, block, is_first_block, demo_age, demo_occu, demo_gend, demo_educ,
          task, trial_number, miss, hit, false_alarm, correct_rejection, 
-         is_correct_excluding, is_correct_including, key_press) #%>%
+         is_correct_excluding, is_correct_including, key_press, 
+         repeated_comprehension_question_easy,
+         repeated_comprehension_question_hard, trained_easy_nth,
+         trained_hard_nth, trained_visual_nth) #%>%
   # Remove rows with missing essential data
   #filter(!is.na(block), !is.na(task))
+
+df_model
+
 df_model["is_correct_excluding"]
 view(df_model)
+
+
 # Check the result
 print(paste("df_model has", nrow(df_model), "rows and", ncol(df_model), "columns"))
 str(df_model)
@@ -993,26 +1036,26 @@ create_comparison_barplot <- function(data, easy_col, hard_col, task_name, chanc
 # library(purrr)
 
 # # Define plot specifications
-# plot_specs <- list(
-#   nbackVisual = list(
-#     easy_col = "STAT_accuracy_nbackVisual_easy",
-#     hard_col = "STAT_accuracy_nbackVisual_hard", 
-#     task_name = "nbackVisual",
-#     chance_level = accuracy_best_strat_nbackVisual
-#   ),
-#   nback = list(
-#     easy_col = "STAT_accuracy_nback_easy",
-#     hard_col = "STAT_accuracy_nback_hard",
-#     task_name = "nback", 
-#     chance_level = accuracy_best_strat_nback
-#   ),
-#   afterNbackVisual = list(
-#     easy_col = "STAT_accuracy_afterVisualTrials_easy",
-#     hard_col = "STAT_accuracy_afterVisualTrials_hard",
-#     task_name = "nbackAfterVisualTrials",
-#     chance_level = accuracy_best_strat_nback
-#   )
-# )
+plot_specs <- list(
+  nbackVisual = list(
+    easy_col = "STAT_accuracy_nbackVisual_easy",
+    hard_col = "STAT_accuracy_nbackVisual_hard", 
+    task_name = "nbackVisual",
+    chance_level = accuracy_best_strat_nbackVisual
+  ),
+  nback = list(
+    easy_col = "STAT_accuracy_nback_easy",
+    hard_col = "STAT_accuracy_nback_hard",
+    task_name = "nback", 
+    chance_level = accuracy_best_strat_nback
+  ),
+  afterNbackVisual = list(
+    easy_col = "STAT_accuracy_afterVisualTrials_easy",
+    hard_col = "STAT_accuracy_afterVisualTrials_hard",
+    task_name = "nbackAfterVisualTrials",
+    chance_level = accuracy_best_strat_nback
+  )
+)
 
 # Generate all plots at once
 all_plots <- map(plot_specs, ~create_comparison_barplot(

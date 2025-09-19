@@ -2841,7 +2841,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_nback_nback, paymentExplanationEasyTrialSecond, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
@@ -2912,7 +2912,7 @@ jatos.onLoad(() => {
         timeline: timeline,
         on_finish: function() {
             jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
+            //jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });
