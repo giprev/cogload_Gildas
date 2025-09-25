@@ -69,7 +69,6 @@ paymentExplanationEasy = language.paymentExplanation1Back
 
 let explainHard;
 let remindAfterHard;
-let remindBeforeHard;
 if (level == 0) {
   instruction_hard = language.instructions0back
   taskHard = language.task1back
@@ -84,7 +83,6 @@ if (level == 0) {
   taskHard = language.task2back
   paymentExplanationHard = language.paymentExplanation2Back
   remindAfterHard = language.overallTrainingFeedback.remindAfter2Back
-  remindBeforeHard = language.overallTrainingFeedback.remindBefore2Back
   explainHard = language.overallTrainingFeedback.explain2Back
 } else if (level == 3) {
   instruction_hard = language.instructions3back
@@ -92,7 +90,6 @@ if (level == 0) {
   paymentExplanationHard = language.paymentExplanation3Back
   remindAfterHard = language.overallTrainingFeedback.remindAfter3Back
   console.log(remindAfterHard, "is remindAfterHard")
-  remindBeforeHard = language.overallTrainingFeedback.remindBefore3Back
   explainHard = language.overallTrainingFeedback.explain3Back
 }
 
@@ -448,43 +445,12 @@ const feedbackNo = {
   stimulus: `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">+</div><div style="font-size:40px; color: red; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">${language.feedback.noResponse}</div>` 
 }
 
-const feedbackRemindBeforeHard0 = { 
+const feedbackRemindBeforeHard = { 
   ... feedbackCorrect,
   trial_duration: remindDuration,
-  stimulus: function() {
-    if (level == 3) {
-    return `<p>${remindBeforeHard[0]}</p>`;
-  }
-  else return "error : level should be 2 or 3";
+  stimulus: `<p>${language.overallTrainingFeedback.remindBeforeHard}</p>`
 }
-}
-const feedbackRemindBeforeHard1 = { 
-  ... feedbackCorrect,
-  trial_duration: remindDuration,
-  stimulus: function() {
-    if (level == 3) {
-      return `<p>${remindBeforeHard[1]}</p>`;
-    }
-    else if (level == 2) {
-      return `<p>${remindBeforeHard[0]}</p>`;
-    }
-    else return "error : level should be 2 or 3"
-  }
-}
-const feedbackRemindBeforeHard2 = { 
-  ...feedbackCorrect,
-  trial_duration: remindDuration,
-  stimulus: function() {
-    // This function only runs when the trial actually executes
-    if (level == 3) {
-      return `<p>${remindBeforeHard[2]}</p>`;
-    }
-    else if (level == 2) {
-      return `<p>${remindBeforeHard[1]}</p>`;
-    }
-    else return "error : level should be 2 or 3"
-  }
-}
+
 const feedbackRemindBeforeEasy = { 
   ... feedbackCorrect,
   trial_duration: remindDuration,
@@ -1396,6 +1362,174 @@ function display_flanker(stimulus) {
     `<img src='${stimulus}' width='290'><p><br></p>`
 }
 
+
+
+/********** define the MPL trials *************/
+
+
+// Data setup
+
+
+
+
+let numbersArray = generateShuffledArray();
+let mpl_html_array = [];
+let list_mpl_tables = {
+    1: "G10", 
+    2: "G25", 
+    3: "G50", 
+    4: "G75", 
+    5: "G90", 
+    6: "L10", 
+    7: "L25", 
+    8: "L50", 
+    9: "L75", 
+    10: "L90", 
+    11: "A10", 
+    12: "A15"};
+console.log(numbersArray, "is numbersArray");
+// Create mpl_html_array following the order of numbersArray
+mpl_html_array = numbersArray.map(x => {
+    const tableType = list_mpl_tables[x];
+    // Extract the probability and type from the table identifier
+    const probability = parseInt(tableType.substring(1)); // Extract number part
+    const type = tableType.charAt(0); // Extract letter part (G, L, or A)
+    return mplGenerator(probability, type);
+});
+mpl_html_array = [{html : mpl_html_array}];
+
+console.log(mpl_html_array, "is mpl_html_array with generated HTML");
+console.log(`Generated ${mpl_html_array.length} MPL tables in randomized order`);
+
+// let mpl_html = mplGenerator(75, "L");
+
+const mpl_trial = {
+  type: 'survey-html-form',
+  html: jsPsych.timelineVariable("html", true),
+  on_load: function() {
+    console.log(jsPsych.timelineVariable("html", true), "is jsPsych.timelineVariable('html'), true)")
+
+    function selectRow(row, choice) {
+        document.querySelectorAll(`.choice[data-row="${row}"]`)
+          .forEach(b => b.classList.remove('selected'));
+        let cell = document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`);
+        cell.classList.add('selected');
+        cell.querySelector('input').checked = true;
+      }
+
+    document.querySelectorAll('.mirror').forEach(cell => {
+      cell.addEventListener('click', function() {
+          let row = parseInt(this.dataset.row);
+          this.classList.add('selected');
+          console.log(row, "is row of mirror")
+          let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+          // this.classList.add('selected')
+      if (lotteryCell) {
+          let clickEvent = new MouseEvent('click', {
+              bubbles: true,    // Allows the event to bubble up through the DOM
+              cancelable: true,  // Allows the event to be canceled
+              // view: window       // Associates the event with the window
+          });
+          lotteryCell.dispatchEvent(clickEvent);
+          }
+    });
+      cell.addEventListener('mouseenter', function() {
+        let row = parseInt(this.dataset.row);
+        let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+        if (lotteryCell){
+          lotteryCell.classList.add('hovered');
+        }
+      });
+      cell.addEventListener('mouseleave', function() {
+        let row = parseInt(this.dataset.row);
+        let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+        if (lotteryCell) {
+          lotteryCell.classList.remove('hovered');
+        }
+      });
+    });
+  
+    document.querySelectorAll('.choice').forEach(cell => {
+      cell.addEventListener('click', function() {
+        let row = parseInt(this.dataset.row); // dataset refers to all the custom data attributes of an element (data-*)
+        console.log(row, "is row of choice")
+        let choice = this.dataset.choice;
+        // Fill from row 0 to clicked row with clicked choice
+        for (let r = 0; r <= row; r++) {
+          selectRow(r, choice);
+          if (choice == "lottery"){
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.add('selected')
+          }
+          if (choice == "sure") {
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
+          }
+        }
+        // Fill from clicked row+1 to end with the opposite choice
+        let otherChoice = (choice === 'sure') ? 'lottery' : 'sure';
+        for (let r = row + 1; r < sure_payments.length; r++) {
+          selectRow(r, otherChoice);
+          if (choice == "lottery"){
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
+          }
+          if (choice == "sure") {
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.add('selected')
+          }        
+        }
+      });
+    });
+  },
+  
+  on_finish: function(data) {
+    // Parse the responses JSON
+    console.log("data is ", data)
+    let responses_mpl = JSON.parse(data.responses);
+    console.log("data.responses is ",data.responses)
+
+    // Determine switching row
+    let prevChoice = null;
+    let switchRow = null;
+    let switchRow1 = null;
+    let switchRow2 = null;
+    let choicesArray = [];
+
+    for (var i = 0; i < sure_payments.length; i++) {
+      let choice = responses_mpl[`row${i}`];
+      choicesArray.push(choice);
+      if (prevChoice && choice !== prevChoice && switchRow === null) {
+        switchRow2 = i; // +1 for human-readable row index
+        switchRow1 = i - 1; // 0-based index
+        switchRow2Choice = responses_mpl[`row${i}`];
+        switchRow1Choice = responses_mpl[`row${i - 1}`];
+        console.log("switchRow1 is ", switchRow1, "and switchRow2 is ", switchRow2, "and switchRow1Choice is ", switchRow1Choice, "and switchRow2Choice is ", switchRow2Choice)
+      }
+      prevChoice = choice;
+    }
+
+    let mplTypeMatch = mpl_html.match(/data-mpl-type="([^"]+)"/);
+            if (mplTypeMatch && mplTypeMatch[1]) {
+                data.mpl_type = mplTypeMatch[1];
+            } else {
+                data.mpl_type = "unknown";
+            }
+            
+    console.log("MPL type saved:", data.mpl_type);
+    
+
+    data.switch_row2 = switchRow2; // null means no switch
+    data.switch_row1 = switchRow1; // null means no switch
+    data.switchRow2Choice = switchRow2Choice;
+    data.switchRow1Choice = switchRow1Choice;
+    console.log("data.switchRow2Choice is ", data.switchRow2Choice, "and data.switchRow1Choice is ", data.switchRow1Choice)
+    data.choices = choicesArray;
+    console.log("choicesArray is ", choicesArray)
+    data.task = "mpl";
+  }
+};
+
+const timeline_easyBlockMPL = {
+    timeline: [mpl_trial],
+    timeline_variables: mpl_html_array,
+}
 /* define the flanker trials */ 
 
 const trial_flanker = {
@@ -1543,7 +1677,7 @@ const afterFlankerPractice = {
 }
 
 
-/* define the span trials */
+/************ define the span trials ***************/
 
 
 const instructions_span = {
@@ -1681,7 +1815,7 @@ const afterHardBlock_span = {
   }
 
 
-/* define conditional timeline elements for nback practice */
+/************* define conditional timeline elements for nback practice ************/
 
 const feedBackC = {
   timeline: [feedbackCorrect],
@@ -2188,25 +2322,18 @@ const feedbackRBEasy = {
             return nbackCounter === 9;
         }
 }
-const feedbackRBHard0 = {
-    timeline: [feedbackRemindBeforeHard0],
+const feedbackRBHard3back = {
+    timeline: [feedbackRemindBeforeHard],
     timeline_variables: feedbackNo.data,
         conditional_function: function () {
             return nbackCounter === 7 & level == 3;
         }
 }
-const feedbackRBHard1 = {
-    timeline: [feedbackRemindBeforeHard1],
-    timeline_variables: feedbackNo.data,
+const feedbackRBHard2back = {
+    timeline: [feedbackRemindBeforeHard],
+    timeline_variables: feedbackNo.data & level == 2,
         conditional_function: function () {
-            return nbackCounter === 8;
-        }
-}
-const feedbackRBHard2 = {
-    timeline: [feedbackRemindBeforeHard2],
-    timeline_variables: feedbackNo.data,
-        conditional_function: function () {
-            return nbackCounter === 9;
+            return nbackCounter === 8 & level == 2;
         }
 }
 
@@ -2239,7 +2366,7 @@ const feedbackRAHard2 = {
         }
 }
 
-const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackRBHard0, feedbackRBHard1, feedbackRBHard2, feedbackRAHard0, feedbackRAHard1, feedbackRAHard2] }
+const overallTrainingHard_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliHardOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackRBHard3back, feedbackRBHard2back, feedbackRAHard0, feedbackRAHard1, feedbackRAHard2] }
 const overallTrainingEasy_nback = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasyOverallTraining, timeline: [fixation, testNback, overallTrainingNbackVisual, feedbackRBEasy, feedbackRAEasy] }
 
 // const hardBlock_overallTraining = { ...timelineElementStructure, timeline: [overallTrainingHard_nback] } // overallTrainingNbackVisual
@@ -2287,17 +2414,6 @@ const loopComprehensionSurveyEasy = {
 
 const overallTrainingHard = { ...timelineElementStructure, timeline: [nback_reset, overallTrainingExplanationHard, overallTrainingHard_nback, overallTrainingHardFeedback, loopComprehensionSurveyHard, nback_and_subBlock_reset_to_6] }
 const overallTrainingEasy = { ...timelineElementStructure, timeline: [nback_reset, overallTrainingExplanationEasy, overallTrainingEasy_nback, overallTrainingEasyFeedback, loopComprehensionSurveyEasy, nback_and_subBlock_reset_to_0] }
-
-
-
-
-const practiceEasyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeEasy_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
-const practiceHardBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeHard_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW] }
-
-const easyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_flanker, timeline: [fixation, testNback, flanker_1, flanker_2, flanker_3, flanker_4, flanker_5, flanker_6] }
-const hardBlock_nback_flanker = { ... easyBlock_nback_flanker, timeline_variables: nbackStimuli.stimuliHard_flanker,timeline: [fixation, testNback, flanker_7, flanker_8, flanker_9, flanker_10, flanker_11, flanker_12] }
-
-
 
 
 
@@ -2381,78 +2497,7 @@ const experiment_nback_nback = {
     randomize_order: true,
 }
 
-
-
-
-/* timelines flanker */
-
-const practiceAndTestEasy_nback_flanker = {
-  timeline: [block_indicator, instructions_easy, startPractice, practiceEasyBlock_nback_flanker, afterPracticeEasy, easyBlock_nback_flanker, afterEasyBlock_flanker],
-  repetitions: 1,
-  randomize_order: false,
-  on_start: function () {
-    blockEasy = 1;
-  },
-  on_finish: function () {
-  }
-};
-const practiceAndTestHard_nback_flanker = {
-  timeline: [block_indicator, instructions_hard, startPractice, practiceHardBlock_nback_flanker, afterPracticeHard, hardBlock_nback_flanker, afterHardBlock_flanker],
-  repetitions: 1,
-  randomize_order: false,
-  on_start: function () {
-  },
-  on_finish: function () {
-  }
-};
-
-if (Math.random() < 0.5) {
-  experimentBlocks_nback_flanker = [practiceAndTestHard_nback_flanker, practiceAndTestEasy_nback_flanker];} 
-else {experimentBlocks_nback_flanker = [practiceAndTestEasy_nback_flanker, practiceAndTestHard_nback_flanker];}
-
-const experiment_nback_flanker = {
-timeline: experimentBlocks_nback_flanker,
-randomize_order: true,
-};
-
-const debriefBlock = {
-  type: "html-keyboard-response",
-  choices: jsPsych.NO_KEYS,
-  stimulus: function() {
-    let trials = jsPsych.data.get().filterCustom(function(trial){
-      return (trial.block === 1 || trial.block === 2) && trial.test_part === "test";
-  }); 
-    let correct_trials = trials.filterCustom(function(trial){
-      return (trial.hit === 1 || trial.correct_rejection === 1) &&
-             trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-  })
-    let accuracy = Math.round(correct_trials.count()/trials.count() * 100);
-    let rt = Math.round(correct_trials.select('rt').mean());
-
-    return `
-    <h2>${language.end.end}</h2>
-    <p>${language.end.thankYou}</p>`;
-    // <p>${language.feedback.accuracy}${accuracy}${language.feedback.accuracy2}</p>
-    // <p>${language.feedback.rt}${rt}${language.feedback.rt2}</p>
-  },
-  trial_duration: 3000,
-  on_finish: function(trial) { statCalculation(trial) }
-};
-
-// Function to generate a random integer between min and max (inclusive)
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  // Generate a random integer between 1 and 11
-const subBlockInteger = getRandomInt(1, 12);
-//getRandomInt(1, totSubBlocks);
-console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
-
-
-
-// Incentives screen after n-back tasks
-
-  const incentives = {
+const incentives = {
     type: "html-keyboard-response",
     choices: ['Enter'],
     stimulus: "",
@@ -2481,9 +2526,9 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         
         let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
             return trial.subBlock == subBlockInteger && 
-                   (trial.hit === 1 || trial.correct_rejection === 1) && 
-                   trial.task == "nbackVisual" &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+                    (trial.hit === 1 || trial.correct_rejection === 1) && 
+                    trial.task == "nbackVisual" &&
+                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
         console.log(corTrialsVN, "is corTrialsVN inside the incentives filter, when subBlockInteger == 6")
 
@@ -2517,15 +2562,15 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         let postVisualTrials = jsPsych.data.get()
         .filterCustom(function(trial) {
             return trial.subBlock == subBlockInteger && 
-                   trial.task == "nback" &&
-                   trial.trial_number >= minTrialNumber &&
-                   trial.trial_number < (minTrialNumber + nbackLevel);
+                    trial.task == "nback" &&
+                    trial.trial_number >= minTrialNumber &&
+                    trial.trial_number < (minTrialNumber + nbackLevel);
         });
         console.log(postVisualTrials, "is postVisualTrials inside the incentives filter, when subBlockInteger == 6")
 
         let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
             return (trial.hit === 1 || trial.correct_rejection === 1) &&
-                   trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
         }).count();
 
         // Calculate accuracies as decimals (0-1 range instead of percentages)
@@ -2538,11 +2583,13 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
         // Round to 2 decimal places
         totalPayment = Math.round(totalPayment * 100) / 100;
 
-        trial.totalPayment = totalPayment;
-        trial.accuracy_post_visual = accuracyPostVisual;
-        trial.accuracy_visual = accuracyVN;
-        trial.accuracy_letter = accuracyN;
-        trial.nback_level_payment = nbackLevel;
+        trial.data = trial.data || {};
+
+        trial.data.totalPayment = totalPayment;
+        trial.data.accuracy_post_visual = accuracyPostVisual;
+        trial.data.accuracy_visual = accuracyVN;
+        trial.data.accuracy_letter = accuracyN;
+        trial.data.nback_level_payment = nbackLevel;
 
         let html;
         if (language == fr) {
@@ -2608,128 +2655,85 @@ console.log(subBlockInteger, "selected subBlock for payment"); // Output: random
     on_finish: function(trial) { 
         trial.selected_subblock = subBlockInteger;
         trial.block_order_indicator = block_order_indicator;
-        trial.totalPayment = trial.totalPayment;
 
         statCalculation(trial);
     },
 };
 
-//   const incentives_originals = {
-//     type: "html-keyboard-response",
-//     choices: ['Enter'],
-//     stimulus: function() {
-
-//         // Get n-back level for the selected subBlock // could also be determined by the subBlock number : if <=6 it is 1; if >= 7, it is level
-//         if (subBlockInteger <= 6) {
-//             nbackLevel = 1;
-//         } else {
-//             nbackLevel = level;
-//         }
-//         console.log(nbackLevel, "is the nback level for the subBlock selected for payment")
-//         // let nbackLevel = jsPsych.data.get().filterCustom(function(trial) {
-//         //     return trial.subBlock == subBlockInteger && trial.level;
-//         // }).select('level').values[0];
-//         // console.log(nbackLevel, "is the nback level for the selected subBlock"
-//         // )
-
-//         // Get all trials and correct trials for visual nback
-//         let totalTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-//             console.log(trial.task, "is trial.task inside the incentives filter, when subBlockInteger == 6")
-//             console.log(trial.subBlock, "is trial.subBlock inside the incentives filter, when subBlockInteger == 6")
-//             return trial.subBlock == subBlockInteger && trial.task == "nbackVisual";
-//         }).count();
-//         console.log(totalTrialsVN, "is totalTrialsVN inside the incentives filter, when subBlockInteger == 6")
-        
-//         let corTrialsVN = jsPsych.data.get().filterCustom(function(trial) {
-//             return trial.subBlock == subBlockInteger && 
-//                    (trial.hit === 1 || trial.correct_rejection === 1) && 
-//                    trial.task == "nbackVisual" &&
-//                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-//         }).count();
-//         console.log(corTrialsVN, "is corTrialsVN inside the incentives filter, when subBlockInteger == 6")
-
-//         // Get all trials and correct trials for classic nback
-//         let totalTrialsNback = jsPsych.data.get().filterCustom(function(trial) {
-//             if (subBlockInteger == 6) {
-//                 console.log(trial.block, "is trial.block inside the incentives filter, when subBlockInteger == 6")
-//                 return trial.task === "nback" && trial.block === "main_easy" && (trial.subBlock === 6 || (trial.trial_number >= 1 && trial.trial_number <= 10));
-//             }
-//             else if (subBlockInteger == 12) {
-//                 return trial.task === "nback" && trial.block === "main_hard" && (trial.subBlock === 12 || (trial.trial_number >= 1 && trial.trial_number <= 10));
-//             }
-//             else return trial.task === "nback" && trial.subBlock === subBlockInteger
-//         });
-
-//         let totalTrialsN = totalTrialsNback.count();
-//         let corTrialsN = totalTrialsNback.filterCustom(function(trial) {
-//             return (trial.hit === 1 || trial.correct_rejection === 1) && trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-//         }).count();
 
 
-//         // Get trials immediately following visual n-back
-//         let minTrialNumber = jsPsych.data.get()
-//         .filterCustom(function(trial) {
-//             return trial.subBlock == subBlockInteger && 
-//                 trial.task == "nback";
-//         })
-//         .select('trial_number')
-//         .min();
 
-//         let postVisualTrials = jsPsych.data.get()
-//         .filterCustom(function(trial) {
-//             return trial.subBlock == subBlockInteger && 
-//                    trial.task == "nback" &&
-//                    trial.trial_number >= minTrialNumber &&
-//                    trial.trial_number < (minTrialNumber + nbackLevel);
-//         });
-//         console.log(postVisualTrials, "is postVisualTrials inside the incentives filter, when subBlockInteger == 6")
+/* timelines flanker */
 
-//         let corPostVisualTrials = postVisualTrials.filterCustom(function(trial) {
-//             return (trial.hit === 1 || trial.correct_rejection === 1) &&
-//                    trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
-//         }).count();
+const practiceEasyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeEasy_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW]}
+const practiceHardBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliPracticeHard_flanker, timeline: [fixation, testNback, feedBackN, feedBackC, feedBackW] }
 
-//         // Calculate accuracies as decimals (0-1 range instead of percentages)
-//         let accuracyVN = corTrialsVN / totalTrialsVN;
-//         let accuracyN = corTrialsN / totalTrialsN;
-//         let accuracyPostVisual = corPostVisualTrials / postVisualTrials.count();
+const easyBlock_nback_flanker = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_flanker, timeline: [fixation, testNback, flanker_1, flanker_2, flanker_3, flanker_4, flanker_5, flanker_6] }
+const hardBlock_nback_flanker = { ... easyBlock_nback_flanker, timeline_variables: nbackStimuli.stimuliHard_flanker,timeline: [fixation, testNback, flanker_7, flanker_8, flanker_9, flanker_10, flanker_11, flanker_12] }
 
-//         // Calculate total payment - weighted sum of accuracies
-//         let totalPayment = payment * (0.5 * accuracyPostVisual + 0.25 * accuracyVN + 0.25 * accuracyN);
-//         // Round to 2 decimal places
-//         totalPayment = Math.round(totalPayment * 100) / 100;
 
-//         return `
-//     <p>${language.incentives.selectedBlock.replace('${subBlockInteger}', subBlockInteger)}</p>
-//     <p>${language.incentives.accuracies
-//         .replace('${percentPostVisual}', Math.round(accuracyPostVisual * 100))
-//         .replace('${percentVN}', Math.round(accuracyVN * 100))
-//         .replace('${percentN}', Math.round(accuracyN * 100))}</p>
-//     <p>${language.incentives.visualDetails
-//         .replace('${totalTrialsVN}', totalTrialsVN)
-//         .replace('${corTrialsVN}', corTrialsVN)}</p>
-//     <p>${language.incentives.letterDetails
-//         .replace('${totalTrialsN}', totalTrialsN)
-//         .replace('${corTrialsN}', corTrialsN)}</p>
-//     <p>${language.incentives.postVisualDetails
-//         .replace('${postVisualTrials}', postVisualTrials.count())
-//         .replace('${corPostVisualTrials}', corPostVisualTrials)}</p>
-//     <p>${language.incentives.paymentExplanation
-//         .replace('${accuracyPostVisual}', Math.round(accuracyPostVisual * 100) + '%')
-//         .replace('${accuracyVN}', Math.round(accuracyVN * 100) + '%')
-//         .replace('${accuracyN}', Math.round(accuracyN * 100) + '%')}</p>
-//     <p><b>${language.incentives.totalPayment.replace('${totalPayment}', totalPayment)}</b></p>
-//     <p>${language.incentives.thankYou}</p>
-//     <p>${language.incentives.redirect}</p>
-//     <p>${language.incentives.continue}</p>`;
-//     },
-//     on_finish: function(trial) { 
-//         trial.selected_subblock = subBlockInteger;
-//         trial.block_order_indicator = block_order_indicator;
+const practiceAndTestEasy_nback_flanker = {
+  timeline: [block_indicator, instructions_easy, startPractice, practiceEasyBlock_nback_flanker, afterPracticeEasy, easyBlock_nback_flanker, afterEasyBlock_flanker],
+  repetitions: 1,
+  randomize_order: false,
+  on_start: function () {
+    blockEasy = 1;
+  },
+  on_finish: function () {
+  }
+};
+const practiceAndTestHard_nback_flanker = {
+  timeline: [block_indicator, instructions_hard, startPractice, practiceHardBlock_nback_flanker, afterPracticeHard, hardBlock_nback_flanker, afterHardBlock_flanker],
+  repetitions: 1,
+  randomize_order: false,
+  on_start: function () {
+  },
+  on_finish: function () {
+  }
+};
 
-//         statCalculation(trial);
-//     },
-// };
+if (Math.random() < 0.5) {
+  experimentBlocks_nback_flanker = [practiceAndTestHard_nback_flanker, practiceAndTestEasy_nback_flanker];} 
+else {experimentBlocks_nback_flanker = [practiceAndTestEasy_nback_flanker, practiceAndTestHard_nback_flanker];}
+
+const experiment_nback_flanker = {
+timeline: experimentBlocks_nback_flanker,
+randomize_order: true,
+};
+
+const debriefBlock = {
+  type: "html-keyboard-response",
+  choices: jsPsych.NO_KEYS,
+  stimulus: function() {
+    let trials = jsPsych.data.get().filterCustom(function(trial){
+      return (trial.block === 1 || trial.block === 2) && trial.test_part === "test";
+  }); 
+    let correct_trials = trials.filterCustom(function(trial){
+      return (trial.hit === 1 || trial.correct_rejection === 1) &&
+             trial.key_press !== null && trial.key_press !== -1; // Exclude no-response trials from correct count
+  })
+    let accuracy = Math.round(correct_trials.count()/trials.count() * 100);
+    let rt = Math.round(correct_trials.select('rt').mean());
+
+    return `
+    <h2>${language.end.end}</h2>
+    <p>${language.end.thankYou}</p>`;
+    // <p>${language.feedback.accuracy}${accuracy}${language.feedback.accuracy2}</p>
+    // <p>${language.feedback.rt}${rt}${language.feedback.rt2}</p>
+  },
+  trial_duration: 3000,
+  on_finish: function(trial) { statCalculation(trial) }
+};
+
+// Function to generate a random integer between min and max (inclusive)
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  // Generate a random integer between 1 and 11
+const subBlockInteger = getRandomInt(1, 12);
+//getRandomInt(1, totSubBlocks);
+console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
+
 
 
 var letter_proc = {
@@ -2841,7 +2845,10 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /* instructions_span, fds_practiceproc, experiment_nback_span , instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
+timeline.push({type: "fullscreen", fullscreen_mode: true}, timeline_easyBlockMPL, welcome, prolific_id_loop, overviewPage, demographics_age_loop, demographics, 
+    descriptionExperiment, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, /*
+    instructions_span, fds_practiceproc, experiment_nback_span,
+    instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock,*/ incentives);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

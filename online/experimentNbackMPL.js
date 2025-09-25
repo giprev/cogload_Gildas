@@ -43,6 +43,7 @@ var stimList; //this is going to house the ordering of the stimuli for each tria
 var idx = 0; //for indexing the current letter to be presented
 var exitLetters; //for exiting the letter loop
 var fdb = "Not assigned"; // is the feedback displayed for the span, when it nothing has been selected
+let block_order = 0;
 
 const arrSum = arr => arr.reduce((a,b) => a + b, 0) //simple variable for calculating sum of an array
 
@@ -177,6 +178,9 @@ if (level === 2) {
     defineHard3Back();
 } // these functions define nbackStimuli.practiceListHard and nbackStimuli.stimuliListHard
 
+assignRandomStimuli2back()
+assignRandomStimuli1back()
+assignRandomStimuli3back()
 
 createBlocks(nbackStimuli.practiceListEasy_flanker, nbackStimuli.stimuliPracticeEasy_flanker, 1)
 createBlocks(nbackStimuli.practiceListHard_flanker, nbackStimuli.stimuliPracticeHard_flanker, level)
@@ -186,6 +190,8 @@ createBlocks(nbackStimuli.practiceListEasy_span, nbackStimuli.stimuliPracticeEas
 createBlocks(nbackStimuli.practiceListHard_span, nbackStimuli.stimuliPracticeHard_span, level)
 createBlocks(nbackStimuli.stimuliListHard_span, nbackStimuli.stimuliHard_span, level)
 createBlocks(nbackStimuli.stimuliListEasy_span,nbackStimuli.stimuliEasy_span, 1)
+
+
 
 // previoulsy "createBlocks(nbackStimuli.stimuliListSecondBlock, nbackStimuli.stimuliSecondBlock, level)"
 
@@ -1204,7 +1210,7 @@ randomize_order: true,
 /* main timeline */ 
 
 jsPsych.data.addProperties({subject: subjectId});
-timeline.push({type: "fullscreen", fullscreen_mode: false}, mpl_trial, welcome, instructions_span, fds_practiceproc, experiment_nback_span, instructions_flanker_1, flanker_practice, afterFlankerPractice, /*startPractice, practiceBlock, afterPractice, firstBlock, betweenBlockRest, ready, secondBlock,*/ experiment_nback_flanker,  debriefBlock, {type: "fullscreen", fullscreen_mode: false});
+timeline.push({type: "fullscreen", fullscreen_mode: false}, mpl_trial, experiment_nback_span, welcome, instructions_span, fds_practiceproc, experiment_nback_span, instructions_flanker_1, flanker_practice, afterFlankerPractice, /*startPractice, practiceBlock, afterPractice, firstBlock, betweenBlockRest, ready, secondBlock,*/ experiment_nback_flanker,  debriefBlock, {type: "fullscreen", fullscreen_mode: false});
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

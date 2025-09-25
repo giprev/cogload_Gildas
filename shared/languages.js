@@ -351,15 +351,7 @@ const en = {
             1: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
         },
         remindAfter1Back: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-        remindBefore3Back: {
-            0: "Remember this letter well to answer correctly at the first letter after the visual 2-back!",
-            1: "Remember this letter well to answer correctly at the second letter after the visual 2-back!",
-            2: "Remember this letter well to answer correctly at the third letter after the visual 2-back!",
-        },
-        remindBefore2Back: {
-            0: "Remember this letter well to answer correctly at the first letter after the visual 2-back!",
-            1: "Remember this letter well to answer correctly at the second letter after the visual 2-back!",
-        },
+        remindBeforeHard :"Remember the following letters well to answer correctly at the first letter after the visual 2-back!",
         remindBefore1Back: "Remember this letter well to answer correctly at the first letter after the visual 2-back!",
     },
 
@@ -502,7 +494,21 @@ const en = {
     },
     },
     prolificID: "Please enter your Prolific ID:",
-    redirectProlific: "You will be automatically redirected to Prolific in 3 seconds..."
+    redirectProlific: "You will be automatically redirected to Prolific in 3 seconds...",
+    endowmentsMPL: {
+        G90: "Your initial endowment is 90€.",
+        G75: "Your initial endowment is 75€.",
+        G50: "Your initial endowment is 50€.",
+        G25: "Your initial endowment is 25€.",
+        G10: "Your initial endowment is 10€.",
+        L90: "Your initial endowment is 90€.",
+        L75: "Your initial endowment is 75€.",
+        L50: "Your initial endowment is 50€.",
+        L25: "Your initial endowment is 25€.",
+        L10: "Your initial endowment is 10€.",
+        A10: "Your initial endowment is 10€.",
+        A15: "Your initial endowment is 15€.",
+    }
 }
 
 
@@ -879,9 +885,8 @@ const fr = {
         remindAfter3Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre trois positions en arrière, <strong style='color:red;'>avant le 2-back visuel</strong>.",
         remindAfter2Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre deux positions en arrière, <strong style='color:red;'>avant le 2-back visuel</strong>.",
         remindAfter1Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre une position en arrière, <strong style='color:red;'>avant le 2-back visuel</strong>.",
-        remindBefore3Back: "Retenez bien cette lettre pour répondre aux premiers essais après le 2-back visuel!",
-        remindBefore2Back: "Retenez bien cette lettre pour répondre aux premiers essais après le 2-back visuel!",
-        remindBefore1Back: "Retenez bien cette lettre pour répondre aux premiers essais après le 2-back visuel!",
+        remindBeforeHard: "Retenez bien les lettres suivantes pour répondre aux premiers essais après le 2-back visuel!",
+        remindBefore1Back: "Retenez bien la lettre suivante pour répondre aux premiers essais après le 2-back visuel!",
         remindAfter3Back: {
             0 :"Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
             1: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
@@ -890,19 +895,8 @@ const fr = {
         remindAfter2Back: {
             0: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
             1: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
-        },
-        remindAfter1Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
-        remindBefore3Back: {
-            0: "Retenez bien la lettre suivante pour répondre correctement au premier essai après le 2-back visuel!",
-            1: "Retenez bien la lettre suivante pour répondre correctement au deuxième essai après le 2-back visuel!",
-            2: "Retenez bien la lettre suivante pour répondre correctement au troisième essai après le 2-back visuel!",
-        },
-        remindBefore2Back: {
-            0: "Retenez bien la lettre suivante pour répondre correctement au premier essai après le 2-back visuel!",
-            1: "Retenez bien la lettre suivante pour répondre correctement au deuxième essai après le 2-back visuel!",
-        },
-        remindBefore1Back: "Retenez bien la lettre suivante pour répondre correctement au premier essai après le 2-back visuel!",
-    },
+        },    
+},
 
     // New: comprehension check (French)
     comprehensionIntro: "Avant de commencer l’expérience, vous devez répondre correctement à quelques questions de compréhension.",
@@ -1042,7 +1036,24 @@ const fr = {
         },
     },
     prolificID: "Veuillez saisir votre identifiant Prolific:",
-    redirectProlific: "Vous allez être dirigé automatiquement sur Prolific dans 3 secondes..."
+    redirectProlific: "Vous allez être dirigé automatiquement sur Prolific dans 3 secondes...",
+    instructionsMPL: {
+       makeChoice: "Please make your choices. Once you switch from the sure payment to the lottery (or vice versa), all later rows will be selected automatically."
+    },
+    endowmentsMPL: {
+        G90: "Votre dotation initiale est de 90€.",
+        G75: "Votre dotation initiale est de 75€.",
+        G50: "Votre dotation initiale est de 50€.",
+        G25: "Votre dotation initiale est de 25€.",
+        G10: "Votre dotation initiale est de 10€.",
+        L90: "Votre dotation initiale est de 90€.",
+        L75: "Votre dotation initiale est de 75€.",
+        L50: "Votre dotation initiale est de 50€.",
+        L25: "Votre dotation initiale est de 25€.",
+        L10: "Votre dotation initiale est de 10€.",
+        A10: "Votre dotation initiale est de 10€.",
+        A15: "Votre dotation initiale est de 15€.",
+    }
 }
 
 let language = fr;

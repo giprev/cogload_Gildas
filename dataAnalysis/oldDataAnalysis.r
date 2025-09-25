@@ -28,23 +28,17 @@ file_path4 <- "/Users/domitilleprevost/Downloads/jatos_pilot_5_first(codeerror).
 file_path5 <- "/Users/domitilleprevost/Downloads/jatos_pilot_5_second(codeerror).txt"
 file_path_test <- "/Users/domitilleprevost/Downloads/jatos_results_data_20250911170821.txt"
 file_path_test2 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20250912120513.txt"
-file_path_test_Théophane <- "/Users/domitilleprevost/Downloads/jatos_results_data_Theophane.txt"
-file_path_test_Gildas_18_09 <- "/Users/domitilleprevost/Downloads/jatos_Gildas_test_18-09_midi.txt" 
-file_path6 <- "/Users/domitilleprevost/Downloads/jatos_pilot2_first.txt"
-file_path7 <- "~/Downloads/jatos_pilot2_second.txt"
 
-text <- readLines(file_path7)
+#text <- readLines(file_path)
+#text1 <- readLines(file_path1)
+text <- readLines(file_path5)
 
 length(text)
 
-#test_mean <- dataPerParticipant %>%
-#  filter(task == "nbackVisual") %>%
-#  filter (block %in% c("main_easy", "main_hard")) %>%
-#  select("hit", "miss", "false_alarm", "correct_rejection") %>%
-#  lapply(., function(x) sum(x == 1, na.rm = TRUE))
-#test_mean
 
-# Loop through each part of the text file and write it to a separate text file
+
+
+#Loop through each part of the text file and write it to a separate text file
 for(i in 1:length(text)) {
   part <- text[i]
   writeLines(part, paste0("part", i, ".txt"))
@@ -56,36 +50,15 @@ nSub <- length(text)
 # Initialize final_data outside the loop
 final_data <- data.frame()
 
-# # create final_data : data in a wide format, one row per subject
-for(iSub in 1:nSub) {
+# create final_data : data in a wide format, one row per subject
+for(iSub in 1:nSub) { 
   partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
   
   dataPerParticipant <- fromJSON(partDirectory)
   
-  # Count all_correct == FALSE occurrences in comprehensionSurveyHard and comprehensionSurveyEasy 
-  # to know how many times the participant has failed the comprehension questions
-  all_correct_false_count <- dataPerParticipant %>%
-    filter(task %in% c("comprehensionSurveyHard", "comprehensionSurveyEasy")) %>%
-    group_by(task) %>%
-    summarise(false_count = sum(all_correct == FALSE, na.rm = TRUE), .groups = 'drop') %>%
-    deframe()  # Creates named vector: c(comprehensionSurveyEasy = 2, comprehensionSurveyHard = 1)
-
-  number_training_block <- dataPerParticipant %>%
-  mutate(
-    # Get block from 2 rows above
-    block_2_above = lag(block, n = 2)
-  ) %>%
-  # Filter for rows with practiceIndex and valid practice blocks 2 rows above
-  filter(
-    !is.na(practiceIndex),
-    block_2_above %in% c("nbackVisual_practice", "practice_easy", "practice_hard")
-  ) %>%
-  # Group by the practice block type and get maximum practiceIndex
-  group_by(block_2_above) %>%
-  summarise(max_practice_index = max(practiceIndex, na.rm = TRUE), .groups = 'drop') %>%
-  # Convert to named vector
-  deframe()
-  
+  # Filter for nback and nbackVisual trials only, excluding practice trials
+  # Count all_correct == FALSE occurrences
+  all_correct_false_count <- sum(dataPerParticipant$all_correct == FALSE, na.rm = TRUE)    
   
   dataPerParticipant <- dataPerParticipant %>%
     mutate(key_press =
@@ -135,36 +108,26 @@ for(iSub in 1:nSub) {
   nback_trials <- dataPerParticipant %>%
     filter(task %in% c("nback", "nbackVisual")) %>%
     filter(block %in% c("main_hard", "main_easy")) %>%
-    select(subject, task, block, trial_number, miss, hit, false_alarm, correct_rejection, all_correct, mainNbackCounter, nbackVisualCounter, key_press, generalNbackCounter)# %>%
-    cat("Total trials after filters (nback_trials):", nrow(nback_trials), "\n")
-  nback_trials_training <- dataPerParticipant %>%
-    filter(task %in% c("nback", "nbackVisual")) %>%
-    filter(block %in% c("nbackVisual_practice", "practice_easy", "practice_hard", "overall_training_easy", "overall_training_hard", "nbackVisual_overall_practice", "nbackVisual_overall_practice")) %>%
-    select(subject, task, block, trial_number, miss, hit, false_alarm, correct_rejection, all_correct, mainNbackCounter, nbackVisualCounter, key_press, generalNbackCounter)# %>%
-  cat("Total trials after filters (nback_trials_training):", nrow(nback_trials_training), "\n")
+    select(subject, task, block, trial_number, miss, hit, false_alarm, correct_rejection, all_correct, mainNbackCounter, nbackVisualCounter, key_press)# %>%
   
   # Add block_position column for trials
-    nback_trials <- nback_trials %>%
-    mutate(
-      is_first_block = case_when(
-        block == "main_easy" & block_order == "easy_first" ~ 1,
-        block == "main_hard" & block_order == "hard_first" ~ 1,
-        block == "main_easy" & block_order == "hard_first" ~ 0,
-        block == "main_hard" & block_order == "easy_first" ~ 0,
-        TRUE ~ NA_real_  # Handle any unexpected cases
-      )
+  nback_trials <- nback_trials %>%
+  mutate(
+    is_first_block = case_when(
+      block == "main_easy" & block_order == "easy_first" ~ 1,
+      block == "main_hard" & block_order == "hard_first" ~ 1,
+      block == "main_easy" & block_order == "hard_first" ~ 0,
+      block == "main_hard" & block_order == "easy_first" ~ 0,
+      TRUE ~ NA_real_  # Handle any unexpected cases
     )
+  )
   
-# Find the trials that are counting for 50% of the payment: 1 in column after_visual
+# Find the trials that are counting for 50% of the payment
   nback_trials <- nback_trials %>%
     arrange(mainNbackCounter) %>%
     mutate(
       # Determine n based on block
-      n_letters = case_when (
-        block == "main_easy" ~ 1,
-        block == "main_hard" ~ 3,
-        TRUE ~ NA_real_
-      ),
+      n_letters = ifelse(block == "main_easy", 1, 3),
       # Mark if previous trial was nbackVisual
       prev_was_visual = lag(task == "nbackVisual", default = FALSE),
       # Create a counter for consecutive nback trials after visual
@@ -173,9 +136,7 @@ for(iSub in 1:nSub) {
       consecutive_after_visual3 = ifelse(task == "nback" & lag(consecutive_after_visual2, default = 0) == 1 & n_letters == 3, 1, 0),
       # Final after_visual column
       after_visual = case_when(
-        task == "nback" 
-        & (block %in% c("main_easy", "main_hard"))
-        & (
+        task == "nback" & (
           consecutive_after_visual1 == 1 | consecutive_after_visual2 == 1 | consecutive_after_visual3 == 1
         ) ~ 1,
         TRUE ~ 0
@@ -183,14 +144,9 @@ for(iSub in 1:nSub) {
     ) %>%
     select(-n_letters, -prev_was_visual, -consecutive_after_visual1, -consecutive_after_visual2, -consecutive_after_visual3)  # Remove helper columns
 
-datasets <- list(nback_trials, nback_trials_training) # can't do for i in c(nback.. , nback...) because i doesn't iterate on dataframes
-subject_id <- NA
-for(dataset in datasets) {
-  if(nrow(dataset) > 0) {
-    subject_id <- dataset$subject[1]
-    break  # Found one, stop looking
-  }
-}
+  if(nrow(nback_trials) > 0) {
+    # Get subject ID (assuming it's consistent across trials)
+    subject_id <- nback_trials$subject[1]
     
     # Calculate accuracy statistics
     calc_accuracy <- function(data) {
@@ -201,108 +157,52 @@ for(dataset in datasets) {
     }
     
     # Calculate STAT accuracy columns
-    stat_accuracy_nback <- calc_accuracy(nback_trials %>% filter(task == "nback" & block %in% c("main_hard", "main_easy")))
-    stat_accuracy_nbackVisual <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & block %in% c("main_hard", "main_easy")))
+    stat_accuracy_nback <- calc_accuracy(nback_trials %>% filter(task == "nback"))
+    stat_accuracy_nbackVisual <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual"))
     stat_accuracy_nback_hard <- calc_accuracy(nback_trials %>% filter(task == "nback" & block == "main_hard"))
     stat_accuracy_nback_easy <- calc_accuracy(nback_trials %>% filter(task == "nback" & block == "main_easy"))
     stat_accuracy_nbackVisual_hard <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & block == "main_hard"))
     stat_accuracy_nbackVisual_easy <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & block == "main_easy"))
 
-    stat_accuracy_2firstVisualTrials <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2) & block %in% c("main_hard", "main_easy")))  
-    stat_accuracy_without_2firstVisualTrials <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2)) & block %in% c("main_hard", "main_easy")))
-    stat_accuracy_without_2firstVisualTrials_1stBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2)) & is_first_block == 1 & block %in% c("main_hard", "main_easy")))
-    stat_accuracy_without_2firstVisualTrials_2ndBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2)) & is_first_block == 0 & block %in% c("main_hard", "main_easy")))
-    stat_accuracy_2firstVisualTrials_1stBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2) & is_first_block == 1 & block %in% c("main_hard", "main_easy")))
-    stat_accuracy_2firstVisualTrials_2ndBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2) & is_first_block == 0 & block %in% c("main_hard", "main_easy")))
+    stat_accuracy_2firstVisualTrials <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2)))  
+    stat_accuracy_without_2firstVisualTrials <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2))))
+    stat_accuracy_without_2firstVisualTrials_1stBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2)) & is_first_block == 1))
+    stat_accuracy_without_2firstVisualTrials_2ndBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & !(nbackVisualCounter %% 10 %in% c(1, 2)) & is_first_block == 0))
+    stat_accuracy_2firstVisualTrials_1stBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2) & is_first_block == 1))
+    stat_accuracy_2firstVisualTrials_2ndBlock <- calc_accuracy(nback_trials %>% filter(task == "nbackVisual" & nbackVisualCounter %% 10 %in% c(1, 2) & is_first_block == 0))
 
-    stat_accuracy_afterVisualTrials <- calc_accuracy(nback_trials %>% filter(after_visual == 1 & block %in% c("main_hard", "main_easy")))
+    stat_accuracy_afterVisualTrials <- calc_accuracy(nback_trials %>% filter(after_visual == 1))
     stat_accuracy_afterVisualTrials_hard <- calc_accuracy(nback_trials %>% filter( after_visual == 1 & block == "main_hard"))
     stat_accuracy_afterVisualTrials_easy <- calc_accuracy(nback_trials %>% filter( after_visual == 1 & block == "main_easy"))
-    
-    stat_accuracy_nbackVisualPractice <- calc_accuracy(nback_trials_training %>% filter(task == "nbackVisual" & block == "nbackVisual_practice"))
-    stat_accuracy_nbackPractice_hard <- calc_accuracy(nback_trials_training %>% filter(task == "nback" & block == "practice_hard"))
-    stat_accuracy_nbackPractice_easy <- calc_accuracy(nback_trials_training %>% filter(task == "nback" & block == "practice_easy"))
-    stat_accuracy_nbackOverallTraining_hard <- calc_accuracy(nback_trials_training %>% filter(block == "overall_training_hard"))
-    stat_accuracy_nbackOverallTraining_easy <- calc_accuracy(nback_trials_training %>% filter(block == "overall_training_easy"))
-                                                                                                      
-                                                                                                          
-                                                       
 
     # Create wide format data - Use unified trial number
-    # for (i in c(nback_trials, nback_trials_training)) {
-    #   if (i == nback_trials){
-    #     usedCounter <- mainNbackCounter
-    #     notUsedCounter <- generalNbackCounter
-    #   }
-    #   else if (i == nback_trials_training) {
-    #     usedCounter <- generalNbackCounter
-    #     notUsedCounter <- mainNbackCounter
-    #   }
-    # trial_data_wide <- i %>%
-    #   select(usedCounter, notUsedCounter, miss, hit, false_alarm, correct_rejection, task, is_first_block, after_visual) %>%
-    #   # Create unique identifier using task and mainNbackCounter
-    #   mutate(trial_id = paste0("trial_", task, "_", usedCounter)) %>%
-    #   pivot_longer(cols = c(miss, hit, false_alarm, correct_rejection, is_first_block, after_visual, notUsedCounter), 
-    #                names_to = "measure", 
-    #                values_to = "value") %>%
-    #   unite("column_name", trial_id, measure, sep = "_") %>%
-    #   select(column_name, value) %>%
-    #   # group_by(column_name) %>%
-    #   pivot_wider(names_from = column_name, values_from = value)
-    # }
-
-  # Simple function approach
-  create_wide_data <- function(data, counter_col) {
-    if(nrow(data) == 0) return(data.frame())
-    data %>%
-      select(all_of(counter_col), any_of(c("miss", "hit", "false_alarm", "correct_rejection", 
-            "task", "is_first_block", "after_visual"))) %>%
-      mutate(trial_id = paste0("trial", "_", task, "_", .data[[counter_col]])) %>%
-      pivot_longer(cols = any_of(c("miss", "hit", "false_alarm", "correct_rejection", "is_first_block", "after_visual")), 
-                  names_to = "measure", values_to = "value") %>%
+    trial_data_wide <- nback_trials %>%
+      select(mainNbackCounter, miss, hit, false_alarm, correct_rejection, task, is_first_block, after_visual) %>%
+      # Create unique identifier using task and mainNbackCounter
+      mutate(trial_id = paste0("trial_", task, "_", mainNbackCounter)) %>%
+      pivot_longer(cols = c(miss, hit, false_alarm, correct_rejection, is_first_block, after_visual), 
+                   names_to = "measure", 
+                   values_to = "value") %>%
       unite("column_name", trial_id, measure, sep = "_") %>%
       select(column_name, value) %>%
+      # group_by(column_name) %>%
       pivot_wider(names_from = column_name, values_from = value)
-  }
-
-  # Use it
-  trial_data_wide_main <- create_wide_data(nback_trials, "mainNbackCounter")
-  trial_data_wide_training <- create_wide_data(nback_trials_training, "generalNbackCounter")
-
-  create_wide_data <- function(data, counter_col) {
-    if(nrow(data) == 0) return(data.frame())
-    data %>%
-      select(all_of(counter_col), block, task) %>%
+    
+    block_data_wide <- nback_trials %>%
+      select(mainNbackCounter, block, task) %>%
       # Create unique identifier for block columns
-      mutate(trial_id = paste0("trial_", task, "_", .data[[counter_col]], "_block")) %>%
+      mutate(trial_id = paste0("trial_", task, "_", mainNbackCounter, "_block")) %>%
       select(trial_id, block) %>%
       # group_by(trial_id) %>%
       pivot_wider(names_from = trial_id, values_from = block)
-  }
-  block_data_wide_main <- create_wide_data(nback_trials, "mainNbackCounter")
-  block_data_wide_training <- create_wide_data(nback_trials_training, "generalNbackCounter")
 
-
-  create_wide_data <- function(data, counter_col) {
-    if(nrow(data) == 0) return(data.frame())
-    data %>%
-      select(all_of(counter_col), key_press, task) %>%
+    keypress_data_wide <- nback_trials %>%
+      select(mainNbackCounter, key_press, task) %>%
       # Create unique identifier for key_press columns
-      mutate(trial_id = paste0("trial_", task, "_", .data[[counter_col]], "_key_press")) %>%
+      mutate(trial_id = paste0("trial_", task, "_", mainNbackCounter, "_key_press")) %>%
       select(trial_id, key_press) %>%
       pivot_wider(names_from = trial_id, values_from = key_press)
-  }
-  keypress_data_wide_main <- create_wide_data(nback_trials, "mainNbackCounter")
-  keypress_data_wide_training <- create_wide_data(nback_trials_training, "generalNbackCounter")
     
-  duplicate_cols <- names(trial_data_wide_main)[duplicated(names(trial_data_wide_main))]
-
-  if(length(duplicate_cols) > 0) {
-    cat("Found duplicate column names:\n")
-    print(duplicate_cols)
-  } else {
-    cat("No duplicate column names found\n")
-  }
     # Create the final row for this participant
     participant_row <- data.frame(
       subject = subject_id,
@@ -321,109 +221,93 @@ for(dataset in datasets) {
       STAT_accuracy_afterVisualTrials = stat_accuracy_afterVisualTrials,
       STAT_accuracy_afterVisualTrials_hard = stat_accuracy_afterVisualTrials_hard,
       STAT_accuracy_afterVisualTrials_easy = stat_accuracy_afterVisualTrials_easy,
-      STAT_accuracy_nbackVisualPractice = stat_accuracy_nbackVisualPractice,
-      STAT_accuracy_nbackPractice_hard = stat_accuracy_nbackPractice_hard,
-      STAT_accuracy_nbackPractice_easy = stat_accuracy_nbackPractice_easy,
-      STAT_accuracy_nbackOverallTraining_hard = stat_accuracy_nbackOverallTraining_hard,
-      STAT_accuracy_nbackOverallTraining_easy = stat_accuracy_nbackOverallTraining_easy,
-      repeated_comprehension_question_easy = as.numeric(all_correct_false_count["comprehensionSurveyEasy"]),
-      repeated_comprehension_question_hard = as.numeric(all_correct_false_count["comprehensionSurveyHard"]),
-      trained_easy_nth = as.numeric(number_training_block["practice_easy"]),
-      trained_hard_nth = as.numeric(number_training_block["practice_hard"]),
-      trained_visual_nth = as.numeric(number_training_block["nbackVisual_practice"]),
+      repeated_comprehension_question = all_correct_false_count,
       treatment_order = block_order
     )
     
     # Combine with trial data
-    if(ncol(trial_data_wide_main) > 0) {
-      participant_row_main <- cbind(participant_row, trial_data_wide_main)
+    if(ncol(trial_data_wide) > 0) {
+      participant_row <- cbind(participant_row, trial_data_wide)
     }
-    if(ncol(trial_data_wide_training) > 0) {
-      participant_row_training <- cbind(participant_row, trial_data_wide_training)
+    if(ncol(block_data_wide) > 0) {
+      participant_row <- cbind(participant_row, block_data_wide)
     }
-    if(ncol(block_data_wide_main) > 0) {
-      participant_row_main <- cbind(participant_row_main, block_data_wide_main)
+    if(ncol(keypress_data_wide) > 0) {
+      participant_row <- cbind(participant_row, keypress_data_wide)
     }
-   if(ncol(block_data_wide_training) > 0) {
-      participant_row_training <- cbind(participant_row_training, block_data_wide_training)
-    }
-    if(ncol(keypress_data_wide_main) > 0) {
-      participant_row_main <- cbind(participant_row_main, keypress_data_wide_main)
-    }
-    if(ncol(keypress_data_wide_training) > 0) {
-      participant_row_training <- cbind(participant_row_training, keypress_data_wide_training)
-    }
-    if(ncol(demographics_df) > 0) {
-    participant_row_main <- cbind(participant_row_main, demographics_df)
-    participant_row_training <- cbind(participant_row_training, demographics_df)
+    if(ncol(keypress_data_wide) > 0) {
+      participant_row <- cbind(participant_row, demographics_df)
     }
     
 
     # Create dynamically named dataset for this participant
-    dataset_name_main <- paste0("final_data_main_", iSub)
-    assign(dataset_name_main, participant_row_main)
-    dataset_name_training <- paste0("final_data_training_", subject_id)
-    assign(dataset_name_training, participant_row_training)
+    dataset_name <- paste0("final_data_", iSub)
+    assign(dataset_name, participant_row)
     
     # Add to final_data
     if (iSub == 1) {
-      final_data_main <- participant_row_main
+      final_data <- participant_row
     } else {
-      final_data_main <- rbind(final_data_main, participant_row_main)   
+      final_data <- rbind(final_data, participant_row)
     }
     
     # # Optional: Also save as CSV file
     # csv_filename <- paste0("final_data_", iSub, ".csv")
     # write.csv(participant_row, csv_filename, row.names = FALSE)
     
+  }
 }
-final_data["trial_99_key_press"]
-
-
- view(final_data_main)
- trial_nback_cols <- final_data_main %>% 
-   select(starts_with("trial_nback_1_") | starts_with("trial_nbackVisual_1_")) %>% 
-   colnames()
- view(trial_nback_cols)
- print(trial_nback_cols)
+ view(final_data)
  
-# mean_nbackVisual_easy <- dataPerParticipant %>%
-#   filter(block == "main_easy", task == "nbackVisual") %>%
-#   select("hit", "correct_rejection") %>%
-#   sum()
-# mean_nbackVisual_easy
-# mean_nbackVisual_hard <- dataPerParticipant %>%
-#   filter(block == "main_hard", task == "nbackVisual") %>%
-#   select("hit", "correct_rejection") %>%
-#   sum()
-# mean_nbackVisual_hard
+mean_nbackVisual_easy <- dataPerParticipant %>%
+  filter(block == "main_easy", task == "nbackVisual") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nbackVisual_easy
+mean_nbackVisual_hard <- dataPerParticipant %>%
+  filter(block == "main_hard", task == "nbackVisual") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nbackVisual_hard
 
-# mean_nbackVisual_easy_df <- df_model %>%
-#   filter(block == "main_easy", task == "nbackVisual") %>%
-#   select("hit", "correct_rejection") %>%
-#   sum()
-# mean_nbackVisual_easy_df
-# mean_nbackVisual_hard_fd <- df_model %>%
-#   filter(block == "main_hard", task == "nbackVisual") %>%
-#   select("hit", "correct_rejection") %>%
-#   sum()
-# mean_nbackVisual_hard_func <- calc_accuracy(df_model %>% filter(block == "main_hard", task == "nbackVisual"))
-# mean_nbackVisual_hard_func #0.4
-# calc_accuracy <- function(data) {
-#   if(nrow(data) == 0) return(NA)
-#   correct_trials <- sum(data$hit == 1 | data$correct_rejection == 1, na.rm = TRUE)
-#   total_trials <- nrow(data)
-#   return(correct_trials / total_trials)
-# }
-# mean_nbackVisual_hard
+mean_nbackVisual_easy_df <- df_model %>%
+  filter(block == "main_easy", task == "nbackVisual") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nbackVisual_easy_df
+mean_nbackVisual_hard_fd <- df_model %>%
+  filter(block == "main_hard", task == "nbackVisual") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nbackVisual_hard_func <- calc_accuracy(df_model %>% filter(block == "main_hard", task == "nbackVisual"))
+mean_nbackVisual_hard_func #0.4
+calc_accuracy <- function(data) {
+  if(nrow(data) == 0) return(NA)
+  correct_trials <- sum(data$hit == 1 | data$correct_rejection == 1, na.rm = TRUE)
+  total_trials <- nrow(data)
+  return(correct_trials / total_trials)
+}
+mean_nbackVisual_hard
+view(dataPerParticipant)
+
+mean_nback_easy <- dataPerParticipant %>%
+  filter(block == "main_easy", task == "nback", subject == "edeklr84k5op981") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nback_easy
+mean_nback_hard <- dataPerParticipant %>%
+  filter(block == "main_hard", task == "nback") %>%
+  select("hit", "correct_rejection") %>%
+  sum()
+mean_nback_hard
+
 
 
 # Create df_model for linear models from final_data - reshape from wide to long
-df_model <- final_data_main %>%
+df_model <- final_data %>%
   # Select relevant columns and demographic data
   select(subject, treatment_order, demo_age, demo_occu, demo_gend, demo_educ, 
-         demo_lsat, demo_reve, repeated_comprehension_question_easy, repeated_comprehension_question_hard,
-         trained_easy_nth, trained_hard_nth, trained_visual_nth,
+         demo_lsat, demo_reve, repeated_comprehension_question,
          starts_with("trial_")) %>%
   # Reshape to long format - each trial becomes a row
   pivot_longer(
@@ -435,39 +319,14 @@ df_model <- final_data_main %>%
   separate(trial_info, 
            into = c("trial", "task", "trial_number", "measure"), 
            sep = "_", 
-           extra = "merge") %>%
-# Check for duplicates
-# duplicates <- df_model %>%
-#   group_by(subject, task, trial_number, measure) %>%
-#   summarise(n = n(), .groups = 'drop') %>%
-#   filter(n > 1)
-
-# if(nrow(duplicates) > 0) {
-#   cat("Found duplicates:\n")
-#   print(n = 100, duplicates)
-# }
-# duplicates_check <- df_model %>%
-#   filter(subject == "nc8np2p74lsmype", task == "nback", measure == "after_visual", trial_number == 1)
-# duplicates_check1 <- which(
-#   df_model$subject == "nc8np2p74lsmype" & 
-#     df_model$task == "nback" & 
-#     df_model$measure == "after_visual" & 
-#     df_model$trial_number == 1
-# )
-
-# rowPerSubj <- df_model %>%
-#   filter(subject == "tlxaz39vhdk444o")%>%
-#   nrow()
-# rowPerSubj # 2460
-# nrow(df_model)
-
+           extra = "merge")%>%
   # Pivot wider to get measures as columns
   pivot_wider(
     names_from = measure,
     values_from = value
   ) %>%
   # Extract block information from block columns in final_data
-  left_join( final_data_main %>%
+  left_join( final_data %>%
       select(subject, starts_with("trial_") & ends_with("_block") & !ends_with("first_block")) %>%
       pivot_longer(
         cols = starts_with("trial_") & ends_with("_block"),
@@ -480,7 +339,7 @@ df_model <- final_data_main %>%
       select(subject, task, trial_number, block),
    by = c("subject", "task", "trial_number")
   ) %>%
-  left_join( final_data_main %>%
+  left_join( final_data %>%
                select(subject, starts_with("trial_") & ends_with("key_press")) %>%
                pivot_longer(
                  cols = starts_with("trial_") & ends_with("key_press"),
@@ -526,19 +385,11 @@ df_model <- final_data_main %>%
   # Select final columns in desired order
   select(subject, block, is_first_block, demo_age, demo_occu, demo_gend, demo_educ,
          task, trial_number, miss, hit, false_alarm, correct_rejection, 
-         is_correct_excluding, is_correct_including, key_press, 
-         repeated_comprehension_question_easy,
-         repeated_comprehension_question_hard, trained_easy_nth,
-         trained_hard_nth, trained_visual_nth) #%>%
+         is_correct_excluding, is_correct_including, key_press) #%>%
   # Remove rows with missing essential data
   #filter(!is.na(block), !is.na(task))
-
-df_model
-
 df_model["is_correct_excluding"]
 view(df_model)
-
-
 # Check the result
 print(paste("df_model has", nrow(df_model), "rows and", ncol(df_model), "columns"))
 str(df_model)
@@ -676,7 +527,7 @@ print(key_press_summary)
 
 #PLOTS
 #Plot nback visual
-plot_data_nbackVisual <- final_data_main %>%
+plot_data_nbackVisual <- final_data %>%
   select(subject, STAT_accuracy_nbackVisual_hard, STAT_accuracy_nbackVisual_easy) %>%
   pivot_longer(
     cols = c(STAT_accuracy_nbackVisual_hard, STAT_accuracy_nbackVisual_easy),
@@ -690,7 +541,6 @@ plot_data_nbackVisual <- final_data_main %>%
     ),
     condition = factor(condition, levels = c("Easy", "Hard"))
   )
-view(plot_data_nbackVisual)
 
 # Calculate descriptive statistics
 desc_stats <- plot_data_nbackVisual %>%
@@ -779,7 +629,7 @@ ggsave("barplot_accuracy_hard_vs_easy_nbackVisual.png", p, width = 8, height = 6
 
 # Plot nback letters
 
-plot_data_nback <- final_data_main %>%
+plot_data_nback <- final_data %>%
   select(subject, STAT_accuracy_nback_hard, STAT_accuracy_nback_easy) %>%
   pivot_longer(
     cols = c(STAT_accuracy_nback_hard, STAT_accuracy_nback_easy),
@@ -881,7 +731,7 @@ ggsave("barplot_accuracy_hard_vs_easy_nback.png", p, width = 8, height = 6, dpi 
 
 
 # Scatter plot: Easy vs Hard nbackVisual accuracy for each participant
-scatter_plot <- ggplot(final_data_main, aes(x = STAT_accuracy_nbackVisual_easy, y = STAT_accuracy_nbackVisual_hard)) +
+scatter_plot <- ggplot(final_data, aes(x = STAT_accuracy_nbackVisual_easy, y = STAT_accuracy_nbackVisual_hard)) +
   # Add diagonal line (equal performance line)
   geom_abline(
     intercept = 0, 
@@ -1154,9 +1004,9 @@ create_comparison_barplot <- function(data, easy_col, hard_col, task_name, chanc
 
 
 # # Super compact version using purrr
-# library(purrr)
+library(purrr)
 
-# # Define plot specifications
+# Define plot specifications
 plot_specs <- list(
   nbackVisual = list(
     easy_col = "STAT_accuracy_nbackVisual_easy",
@@ -1180,7 +1030,7 @@ plot_specs <- list(
 
 # Generate all plots at once
 all_plots <- map(plot_specs, ~create_comparison_barplot(
-  final_data_main, .$easy_col, .$hard_col, .$task_name, .$chance_level
+  final_data, .$easy_col, .$hard_col, .$task_name, .$chance_level
 ))
 
 # Save all plots
