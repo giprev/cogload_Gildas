@@ -104,12 +104,10 @@ body {
 .numbox {
     width:30vw;
     height: 30vw;
-    position:absolute;
-    top:50%;
-    left:50%;
-    margin-right:-50%;
-    transform: translate(-50%,-50%);
-  }
+    position:relative;
+    margin: 0 auto;
+    /*transform: translateY(-50%); */
+}
 
 .square {
     float:left;
@@ -139,7 +137,7 @@ body {
 }
 
 .square:hover, .submit_button:hover, .clear_button:hover {
-	color: blue;
+	color: #ff8000;
 }
 .square:active, .submit_button:active, .clear_button:active {
 	background-color: #505050;
@@ -156,7 +154,12 @@ body {
     color: white;
 } */
 
-table.mpl { border-collapse: collapse; margin: auto;}
+table.mpl { 
+    border-collapse: collapse; 
+    margin: auto;
+    width: 30vw;
+    max-width: 100%;
+}
 
 /* Remove right border from second column and left border from third column */
 .mpl td:nth-child(2) {
@@ -172,7 +175,11 @@ table.mpl td.choice, table.mpl td.mirror { cursor: pointer; }
 table.mpl td.choice:hover, table.mpl td.mirror:hover{ background-color: #eef; }
 table.mpl td.choice.hovered, table.mpl td.mirror.hovered{ background-color: #eef; }
 
-/* input[type=radio] { display: none; } */
+/* Hide radio buttons of the MPLs */
+input[type="radio"][value="sure"],
+input[type="radio"][value="lottery"] {
+    display: none;
+}
 
 .selected { background-color: #cce !important; }
 

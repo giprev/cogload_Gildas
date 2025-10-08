@@ -15,11 +15,6 @@ var digitToFile = function (digit) {
     return folder + fileMap[digit];
 };
 
-// var staircase_assess = {
-//     type: 'call-function',
-//     func: updateSpan
-// };
-
 //function to shuffle an array (Fisher-Yates)
 function shuffle(a) {
 	var j, x, i;
@@ -66,6 +61,38 @@ function getStimuli(numDigits) {
 	fds_correct_ans = currentDigitList; //this is the reversed array for assessing performance
 	return stimList;
 }
+function getStimuliFirstLetters(numDigits) {
+	var digit;
+	var stimList = [];
+	currentDigitList = getDigitList(numDigits);
+	for (var i = 0; i < currentDigitList.length; i += 1) {
+		if (useAudio) {
+			digit = currentDigitList[i];
+			stimList.push(digitToFile(digit));
+		} else {
+			digit = currentDigitList[i].toString();
+			stimList.push('<p style="font-size:60px;font-weight:600;color:blue;">' + digit + '</p>');// blue for the first letter
+		}
+	}
+	fds_correct_ans_first_letters = currentDigitList; //this is the reversed array for assessing performance, for the first letters (special naming to take it back after the second letter presentation)
+	return stimList;
+}
+function getStimuliSecondLetters(numDigits) { 
+	var digit;
+	var stimList = [];
+	currentDigitList = getDigitList(numDigits);
+	for (var i = 0; i < currentDigitList.length; i += 1) {
+		if (useAudio) {
+			digit = currentDigitList[i];
+			stimList.push(digitToFile(digit));
+		} else {
+			digit = currentDigitList[i].toString();
+			stimList.push('<p style="font-size:60px;font-weight:600;color:red;">' + digit + '</p>'); //red for the second letter
+		}
+	}
+	fds_correct_ans = currentDigitList; //this is the reversed array for assessing performance
+	return stimList;
+}
 
 //function to update the span as appropriate (using a 1:2 staircase procedure)
 function updateSpan() {
@@ -90,5 +117,30 @@ function updateSpan() {
 };
 
 function updateTotalTrials() {
-    fdsTotalTrials = 2
+    fdsTotalTrials = totalFdsSpanMplTrials;
+}
+
+let accuracySpanSpan = function (answer, correct) {
+    // Handle edge cases
+    if (!answer || !correct || correct.length === 0) {
+        return 0;
+    }
+
+    // Use the length of the correct array as the total number of positions to check
+    const totalPositions = correct.length;
+	const maxPositions = Math.max(answer.length, correct.length);
+    let correctMatches = 0;
+    
+    // Compare each position up to the length of the correct array
+    for (let i = 0; i < totalPositions; i++) {
+        if (answer[i] === correct[i]) {
+            correctMatches++;
+        }
+        // If answer[i] is undefined (answer is shorter) or different, it's counted as incorrect
+    }
+    
+    // Any extra elements in answer beyond correct.length are automatically incorrect
+    // (they don't affect correctMatches, and totalPositions is based on correct.length)
+    
+    return correctMatches / maxPositions;
 }

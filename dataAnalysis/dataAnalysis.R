@@ -32,8 +32,9 @@ file_path_test_Théophane <- "/Users/domitilleprevost/Downloads/jatos_results_da
 file_path_test_Gildas_18_09 <- "/Users/domitilleprevost/Downloads/jatos_Gildas_test_18-09_midi.txt" 
 file_path6 <- "/Users/domitilleprevost/Downloads/jatos_pilot2_first.txt"
 file_path7 <- "~/Downloads/jatos_pilot2_second.txt"
+file_path8 <- "~/Downloads/jatos_pilot2_third.txt"
 
-text <- readLines(file_path7)
+text <- readLines(file_path8)
 
 length(text)
 
@@ -45,7 +46,7 @@ length(text)
 #test_mean
 
 # Loop through each part of the text file and write it to a separate text file
-for(i in 1:length(text)) {
+for(i in 1:nSub) {
   part <- text[i]
   writeLines(part, paste0("part", i, ".txt"))
 }
@@ -57,7 +58,7 @@ nSub <- length(text)
 final_data <- data.frame()
 
 # # create final_data : data in a wide format, one row per subject
-for(iSub in 1:nSub) {
+for (iSub in c(1, 2, 4, 7)) {
   partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
   
   dataPerParticipant <- fromJSON(partDirectory)
@@ -69,6 +70,17 @@ for(iSub in 1:nSub) {
     group_by(task) %>%
     summarise(false_count = sum(all_correct == FALSE, na.rm = TRUE), .groups = 'drop') %>%
     deframe()  # Creates named vector: c(comprehensionSurveyEasy = 2, comprehensionSurveyHard = 1)
+  
+  # extract the payment of the participant
+  totPay <- dataPerParticipant %>%
+    filter(!is.na(totalPayment)) %>%
+    select(totalPayment) %>%
+    pull()
+  # extract the block selected for payment 
+  selSub <- dataPerParticipant %>%
+    filter(!is.na(totalPayment)) %>%
+    select(selected_subblock) %>%
+    pull()
 
   number_training_block <- dataPerParticipant %>%
   mutate(
@@ -182,6 +194,13 @@ for(iSub in 1:nSub) {
       )
     ) %>%
     select(-n_letters, -prev_was_visual, -consecutive_after_visual1, -consecutive_after_visual2, -consecutive_after_visual3)  # Remove helper columns
+  
+afterVisualAnswers <- nback_trials %>%
+  group_by("subject_id") %>%
+  filter(after_visual == 1 & miss == 0 & hit == 0 & false_alarm == 0 & correct_rejection == 0) %>%
+  nrow()
+
+cat("afterVisualAnswers is ", afterVisualAnswers, "\n")
 
 datasets <- list(nback_trials, nback_trials_training) # can't do for i in c(nback.. , nback...) because i doesn't iterate on dataframes
 subject_id <- NA
@@ -331,7 +350,9 @@ for(dataset in datasets) {
       trained_easy_nth = as.numeric(number_training_block["practice_easy"]),
       trained_hard_nth = as.numeric(number_training_block["practice_hard"]),
       trained_visual_nth = as.numeric(number_training_block["nbackVisual_practice"]),
-      treatment_order = block_order
+      treatment_order = block_order,
+      payment = totPay,
+      selected_block = selSub
     )
     
     # Combine with trial data
@@ -366,26 +387,20 @@ for(dataset in datasets) {
     assign(dataset_name_training, participant_row_training)
     
     # Add to final_data
-    if (iSub == 1) {
-      final_data_main <- participant_row_main
-    } else {
-      final_data_main <- rbind(final_data_main, participant_row_main)   
+    if(afterVisualAnswers <= 12){
+      if (iSub == 1) {
+        final_data_main <- participant_row_main
+      } else {
+        final_data_main <- rbind(final_data_main, participant_row_main)   
+      }
     }
-    
     # # Optional: Also save as CSV file
     # csv_filename <- paste0("final_data_", iSub, ".csv")
     # write.csv(participant_row, csv_filename, row.names = FALSE)
     
 }
-final_data["trial_99_key_press"]
 
-
- view(final_data_main)
- trial_nback_cols <- final_data_main %>% 
-   select(starts_with("trial_nback_1_") | starts_with("trial_nbackVisual_1_")) %>% 
-   colnames()
- view(trial_nback_cols)
- print(trial_nback_cols)
+view(final_data_main)
  
 # mean_nbackVisual_easy <- dataPerParticipant %>%
 #   filter(block == "main_easy", task == "nbackVisual") %>%
@@ -544,6 +559,9 @@ print(paste("df_model has", nrow(df_model), "rows and", ncol(df_model), "columns
 str(df_model)
 head(df_model)
 
+countPerSubject <- df_model %>%
+  filter(subject == "7r1ha500wuwpcuh") %>%
+  nrow()
 
 
 
@@ -690,7 +708,7 @@ plot_data_nbackVisual <- final_data_main %>%
     ),
     condition = factor(condition, levels = c("Easy", "Hard"))
   )
-view(plot_data_nbackVisual)
+
 
 # Calculate descriptive statistics
 desc_stats <- plot_data_nbackVisual %>%
@@ -1178,7 +1196,7 @@ plot_specs <- list(
   )
 )
 
-# Generate all plots at once
+# Generate all plots at oncePui
 all_plots <- map(plot_specs, ~create_comparison_barplot(
   final_data_main, .$easy_col, .$hard_col, .$task_name, .$chance_level
 ))

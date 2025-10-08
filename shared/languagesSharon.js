@@ -13,11 +13,11 @@ const en = {
         withdrawal: "You are free to withdraw from the experiment at any time without penalty.",
         clickNext: "Click on <strong>Next</strong> to continue!"
     },    
-    descriptionExperimentNback: {
+    descriptionExperiment: {
         title: "Description of the experiment",
         twoGames: "You will have two different tasks to play: the visual 2-back and the letter n-back.",
         instructionsAfter: "You will receive instructions for each task after this page.",
-        subBlockExplanation: "The experiment consists of 12 subBlocks. One block consists of a visual 2-back task and then a letter n-back task.",
+        subBlockExplanation: "The experiment consists of 12 blocks. One block consists of a visual 2-back task and then a letter n-back task.",
         paymentAfter: "So you understand how you will be paid, you will receive the payment instructions after the task guidelines.",
         clickNext: "Click on <strong>Next</strong> to continue!"
         
@@ -77,7 +77,9 @@ const en = {
         yourPerformance: "Your precision in the previous practice block was {accuracy}%.",
         rules: "If you achieve to have more than 80% precision in two practice blocks in a row, you will quit the training part.",
         achievedMessage: "You achieved more than 80% for two practice blocks in a row. Congratulation!",
+        firstAchieved: "You achieved 80% or more accuracy in the previous practice block. If you do it again in the next block, training will end.",
         achievedClickNext: "You can now click on <strong>Next</strong> to move on to the next instructions!",
+        firstAchievedClickNext: "You can now click on <strong>Next</strong> to try a new practice block.",
         notAchievedClickNext: "You can now click on <strong>Next</strong> to try a new practice block."
     },
     betweenBlocks: {
@@ -143,8 +145,8 @@ const en = {
         goBackButton: "Change the parameters"
     },
     incentives: {
-        selectedBlock: "The selected subBlock for payment was subBlock number ${subBlockInteger}:",
-        accuracies: "Your accuracy in that subBlock was ${percentPostVisual}% for the trials following the visual 2-back, ${percentVN}% for the visual 2-back, ${percentN}% for the classic n-back.",
+        selectedBlock: "The selected block for payment was block number ${subBlockInteger}:",
+        accuracies: "Your accuracy in that block was ${percentPostVisual}% for the trials following the visual 2-back, ${percentVN}% for the visual 2-back, ${percentN}% for the classic n-back.",
         visualDetails: "Visual 2-back total trials: ${totalTrialsVN}, correct trials: ${corTrialsVN}.",
         letterDetails: "Letter n-back total trials: ${totalTrialsN}, correct trials: ${corTrialsN}.",
         postVisualDetails: "Post visual 2-back total trials: ${postVisualTrials}, correct trials: ${corPostVisualTrials}.",
@@ -158,6 +160,7 @@ const en = {
         title: "Rules change!",
         ruleTo1Back: "Pay attention, you are now switching to 1-back letter (the 2-back visual remains the same)!",
         ruleTo3Back: "Pay attention, you are now switching to 3-back letter (the 2-back visual remains the same)!",
+        paymentRuleChange: "Attention, the payment rules also change!",
         pressKey: "Press any key to continue."
     },
     paymentExplanation1Back: {
@@ -316,6 +319,10 @@ const en = {
         clickNext: "When you have understood, click on <strong>Next</strong> to continue!"
 
     },
+    rulesWillChange: {
+        attention: "Attention, these rules will change halfway through the experiment!",
+        clear: "This will be clearly indicated. Pay close attention to the instructions."
+    },
     overallTrainingIntro: {
         title: "Full Training",
         description1Back: "Now you will practice how the real experiment works: alternating between the visual 2-back task and the letter 1-back task.",
@@ -330,29 +337,32 @@ const en = {
     },
     overallTrainingFeedback: {
         title: "Training Complete - Scoring Demonstration",
-        performance: "Here's how your performance would be scored if this were a real block:",
-        beforeVisual: "Letters before visual 2-back: {accuracy}% accuracy ({correct}/{total} trials)",
-        visualNback: "Visual n-back: {accuracy}% accuracy ({correct}/{total} trials)", 
-        afterVisual: "Letters after visual 2-back: {accuracy}% accuracy ({correct}/{total} trials)",
-        explain1Back: "The last letter before the visual 2-back was K, and the first letter after was C. Therefore you had to press the key 'F' when seeing the 'C' after the visual nback.",
-        explain2Back: "The last two letters before the visual 2-back were 'A' and 'P', and the first two letters after were 'P' and 'K'. Therefore you had to press the key 'F' when seeing the 'P' and 'K' after the visual nback ('P' different from 'A' and 'K' from 'P').",
-        explain3Back: "The last three letters before the visual 2-back were 'B', 'A', 'A', and the first three letters after were 'B', 'A', 'P'. Therefore you had to press the key 'J' when seeing 'B' and 'A' and 'F' when seeing 'P' after the visual nback ('P' different from 'A').",
-        keyImportance: "💡 Key insight: The first {level} letters immediately after the visual 2-back are worth 50% of your bonus!",
+        performance: "Here is how your performance would be scored if it were a real block randomly selected for payment:",
+        nbackLetter1Back: "Letter 1-back after visual 2-back: {accuracy}% accuracy ({correct}/{total} trials)",
+        nbackLetter3Back: "Letter 3-back after visual 2-back: {accuracy}% accuracy ({correct}/{total} trials)",
+        visualNback: "Visual 2-back: {accuracy}% accuracy ({correct}/{total} trials)",
+        afterVisual: "{Lettres} after visual 2-back ({total} trials): {accuracy}% accuracy ({correct}/{total} trials)",
+        explain1Back: "The last letter before the visual 2-back was K, and the first after was C. You had to press 'F' for C (C different from K).",
+        explain2Back: "The last two letters before the visual 2-back were A then P; the first two after were P then K. You had to press 'F' for P and K (P ≠ A, K ≠ P).",
+        explain3Back: "The last three letters before the visual 2-back were B then A then A; the first three after were B then A then P. You had to press 'J' for B and A and 'F' for P (P ≠ A).",
+        keyImportanceHard: "💡 Key point: The first {level} letters immediately after the visual 2-back are worth 50% of your bonus!",
+        keyImportanceEasy: "💡 Key point: The first letter immediately after the visual 2-back is worth 50% of your bonus!",
         calculation: "Bonus calculation: €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
-        remember: "Remember: Always keep the last few letters in mind during the visual task!",
+        rememberHard: "Remember: Keep the last {level} letters in mind during the visual 2-back!",
+        rememberEasy: "Remember: Keep the last letter in mind during the visual 2-back!",
         continue: "Press any key to continue to the main experiment.",
         remindAfter3Back: {
-            0 :"To answer correctly to the next letter, you should think about the last last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-            1: "To answer correctly to the next letter, you should think about the last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-            2: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
+            0: "To answer the next letter correctly, recall the letter three letters back <strong style='color:red;'>before the visual 2-back</strong>.",
+            1: "To answer the next letter correctly, recall the letter two letters back <strong style='color:red;'>before the visual 2-back</strong>.",
+            2: "To answer the next letter correctly, recall the last letter <strong style='color:red;'>before the visual 2-back</strong>."
         },
         remindAfter2Back: {
-            0: "To answer correctly to the next letter, you should think about the last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-            1: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
+            0: "To answer the next letter correctly, recall the letter two letters back <strong style='color:red;'>before the visual 2-back</strong>.",
+            1: "To answer the next letter correctly, recall the last letter <strong style='color:red;'>before the visual 2-back</strong>."
         },
-        remindAfter1Back: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-        remindBeforeHard :"Remember the following letters well to answer correctly at the first letter after the visual 2-back!",
-        remindBefore1Back: "Remember this letter well to answer correctly at the first letter after the visual 2-back!",
+        remindAfter1Back: "To answer the next letter correctly, recall the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
+        remindBeforeHard: "Remember the following letters well to answer the first trials after the visual 2-back!",
+        remindBefore1Back: "Remember the following letter well to answer the first trial after the visual 2-back!"
     },
 
 
@@ -414,6 +424,7 @@ const en = {
         failed: "You have responded incorrectly to at least one of the questions.",
         viewInstructions: "Next you are going to view the instructions again.",
         surveyAgain: "Then you will take the survey again.",
+        press: "Press <strong>Next</strong> to continue!"
     },
     demographics : {
     preamble: "<strong>Demographics</strong>",
@@ -495,6 +506,9 @@ const en = {
     },
     prolificID: "Please enter your Prolific ID:",
     redirectProlific: "You will be automatically redirected to Prolific in 3 seconds...",
+    instructionsMPL: {
+        makeChoice: "Please make your choices. Once you switch from the sure payment to the lottery (or vice versa), all later rows will be selected automatically."
+    },
     endowmentsMPL: {
         G90: "Your initial endowment is 90€.",
         G75: "Your initial endowment is 75€.",
@@ -518,16 +532,15 @@ const fr = {
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
     overviewPage: {
-        purpose: "Cette expérience porte sur la prise de décision et la mémoire.",
-        procedure: "Elle comprend des tâches de mémoire et des tâches de prise de décision.",
-        IRB: "Cette expérience a été approuvée par l'Institutional Review Board (comité d'éthique) de Paris School of Economics, numéro d'approbation XXXXX.",
-        anonimity: "Tous vos résultats resteront anonymes. Les données collectées seront utilisées à des fins de recherche uniquement.",
+        purpose: "Cette expérience porte sur les processus cognitifs liés à la mémoire.",
+        procedure: "Elle comprend deux tâches de mémoire que vous alternerez.",
+        anonimity: "Tous vos résultats resteront anonymes.",
         credits: "Cette expérience est menée par l'étudiant en master Gildas Prévost sous la supervision du professeur Dr. Bastien Blain, tous deux à l'Université Paris 1 Panthéon-Sorbonne.",
         question: "Si vous avez des questions ou des demandes, veuillez envoyer un email à gildas.prevost@etu.univ-paris1.fr.",
         withdrawal: "Vous êtes libre de quitter l'expérience à tout moment, sans aucune conséquence.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
-    descriptionExperimentNback: {
+    descriptionExperiment: {
         title: "Description de l'expérience",
         twoGames: "Vous aurez deux tâches différentes à réaliser : le 2-back visuel et le n-back lettres.",
         instructionsAfter: "Vous recevrez les consignes pour chaque tâche après cette page.",
@@ -535,33 +548,6 @@ const fr = {
         paymentAfter: "Pour que vous compreniez comment vous serez payé, vous recevrez les explications du paiement après les consignes.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
-    descriptionExperimentSpanMPL: {
-        title: "Description de l'expérience",
-        threeParts: "L'expérience se déroule en trois parties.",
-        part1: 'Dans la première partie, vous effectuerez une tâche de mémoire appelée "span de mémoire".',
-        part2: "Dans la deuxième partie, vous effectuerez une variation de cette tâche de mémoire.",
-        part3: "Dans la troisième partie, vous effectuerez en combinaison avec un tâche de prise de décision.",
-        payment_hard: "Votre paiement de base est de {basePayment} euros. Chaque partie donne lieu à un paiement bonus déterminé en fonction de votre performance et de vos choix.",
-        payment_easy: "Votre paiement de base est de {basePayment} euros. Les deuxièmes et troisièmes parties donnent lieu à un paiement bonus, déterminé en fonction de votre performance et de vos choix.",
-        paymentAfter: "Pour que vous compreniez comment vous serez payé, vous recevrez les explications du paiement après les consignes pour chaque partie.",
-        instructionsAfter: "Vous recevrez les consignes de la première partie après cette page.",
-        clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
-    },
-    instruction_span_general:{
-        title: "Consignes pour la tâche de span.",
-        description: "À chaque essai, vous verrez une séquence de chiffres et vous devrez la retaper dans le même ordre dans lequel elle a été vue.",
-        examplePresentation: "Par exemple, si vous voyez les chiffres <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>, vous devrez répondre <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>.",
-        clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
-    },
-    instruction_calibration:{
-        title: "Consignes pour la première partie.",
-        roundsHard: "Dans cette partie, vous effectuerez 12 essais de la tâche de span de mémoire.",
-        roundsEasy: "Dans cette partie, vous effectuerez 3 essais de la tâche de span de mémoire.",
-        description: "À chaque essai, vous verrez une séquence de chiffres et vous devrez la retaper dans le même ordre dans lequel elle a été vue.",
-        examplePresentation: "Par exemple, si vous voyez les chiffres <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>, vous devrez répondre <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>.",
-        clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
-    },
-
     instructions0back: {
         letter: "Dans cette tâche, des <strong>lettres</strong> apparaîtront à l'écran consécutivement.",
         yourTask1: "Votre tâche sera <strong>d'appuyer sur la touche 'J' si vous voyez la lettre <strong style='color:red'>X</strong> à l'écran.</strong>",
@@ -905,7 +891,7 @@ const fr = {
         explain2Back: "Les deux dernières lettres avant le 2-back visuel étaient A puis P, et les deux premières après étaient P puis K. Vous deviez donc appuyer sur la touche 'F' lorsque vous voyiez le P et le K après le 2-back visuel (P différent de A et K de P).",
         explain3Back: "Les trois dernières lettres avant le 2-back visuel étaient B puis A puis A, et les trois premières après étaient B puis A puis P. Vous deviez donc appuyer sur la touche 'J' lorsque vous voyiez B et A et sur la touche 'F' lorsque vous voyiez P après le 2-back visuel (P différent de A).",
         keyImportanceHard: "💡 Point clé : Les {level} premières lettres immédiatement après le 2-back visuel valent 50% de votre bonus !",
-        keyImportanceEasy: "💡 Point clé : La dernière lettre immédiatement après le 2-back visuel vaut 50% de votre bonus !",
+        keyImportanceEasy: "💡 Point clé : La première lettre immédiatement après le 2-back visuel vaut 50% de votre bonus !",
         calculation: "Calcul du bonus : €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
         rememberHard: "À retenir : Gardez toujours en mémoire les {level} dernières lettres pendant le 2-back visuel!",
         rememberEasy: "À retenir : Gardez toujours en mémoire la dernière lettre pendant le 2-back visuel!",
@@ -964,91 +950,92 @@ const fr = {
             ]
         },
         q3Easy: {
-            prompt: "Je viens de terminer un 2-back visuel. Avant lui, la dernière lettre que j’ai vue était I. La lettre I apparaît. Sur quelle touche dois-je appuyer ?",
+            prompt: "Question 3: I have just finished a visual 2-back. Before it, the last letter I saw was A. The letter A appears. Which key should I press?",
             options: [
-                "La touche “F”.",
-                "La touche “J”.",
-                "La touche “espace”."
+                "The 'F' key.",
+                "The 'J' key.",
+                "The Space key."
             ]
         },
+        // correct answers as option strings (used for checking)
         correct_answers: {
-            q1: "Je suis payé en fonction du n-back lettres uniquement pour un bloc de l’expérience.",
-            q2: "La touche “F”.",
-            q3: "La touche “J”."
+            q1: "I am paid based on the letter n-back only for one block of the experiment.",
+            q2: "The 'F' key.",
+            q3: "The 'J' key."
         },
-        tryAgain: "Une ou plusieurs réponses sont incorrectes. Veuillez relire les consignes et réessayer.",
-        success: "Toutes les réponses sont correctes. Appuyez sur une touche pour continuer."
+        tryAgain: "One or more answers are incorrect. Please review the instructions and try again.",
+        success: "All answers are correct. Press any key to continue."
     },
     loopAgain: {
-        failed: "Vous avez répondu incorrectement à au moins une des questions.",
-        viewInstructions: "Vous allez revoir les instructions.",
-        surveyAgain: "Puis vous allez de nouveau répondre aux questions.",
-        press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
+        failed: "You have responded incorrectly to at least one of the questions.",
+        viewInstructions: "Next you are going to view the instructions again.",
+        surveyAgain: "Then you will take the survey again.",
+        press: "Press <strong>Next</strong> to continue!"
     },
     demographics: {
-        preamble: "<strong>Données démographiques</strong>",
+        preamble: "<strong>Demographics</strong>",
         questions: [
-            "Quel âge avez-vous?",
-            "Quel est votre genre?",
-            "Quel est votre niveau d'études : (si vous êtes étudiant·e, choisissez le diplôme en cours)?",
-            "Quelle est votre situation professionnelle?",
-            "Quelle est la fourchette de votre revenu mensuel?",
-            "Globalement, à quel point êtes-vous satisfait·e de votre vie de nos jours?"
+            "How old are you?",
+            "Gender:",
+            "Education level: (if you are a student, please choose the degree you are currently enrolled in)",
+            "Work status:",
+            "What is the range of your monthly income?",
+            "Overall, how satisfied are you with your life nowadays?"
         ],
         options: {
             age: [
-                "Moins de 18 ans",
+                "Under 18",
                 "18-24",
                 "25-34",
                 "35-44",
                 "45-54",
                 "55-64",
-                "65 ans ou plus",
-                "Préfère ne pas répondre"
+                "65 or older",
+                "Prefer not to say"
             ],
             gender: [
-                "Homme",
-                "Femme",
-                "Autre",
-                "Préfère ne pas répondre"
+                "Male",
+                "Female",
+                "Other",
+                "Prefer not to say"
             ],
             education: [
-                "Moins qu'un diplôme d'études secondaires",
-                "Diplôme d'études secondaires ou équivalent (ex. : BEP/CAP)",
-                "Quelques études supérieures, sans diplôme",
-                "Diplôme d'études tertiaires (ex. : BTS, DUT)",
-                "Licence",
-                "Master",
-                "Diplôme d'ingénieur / diplôme professionnel",
-                "Doctorat (ex. : Thèse / PhD)",
-                "Préfère ne pas répondre"
+                "Less than a high school diploma",
+                "High school degree or equivalent (e.g. GED)",
+                "Some college, no degree",
+                "Associate degree (e.g. AA, AS)",
+                "Bachelor’s degree (e.g. BA, BS)",
+                "Master’s degree (e.g. MA, MS, MEd)",
+                "Professional degree (e.g. MD, DDS, DVM)",
+                "Doctorate (e.g. PhD, EdD)",
+                "Prefer not to say"
             ],
             work: [
-                "Employé·e à temps plein (35h ou plus par semaine)",
-                "Employé·e à temps partiel (jusqu'à 34h par semaine)",
-                "Chômeur·se - actuellement en recherche d'emploi",
-                "Chômeur·se - ne recherche pas d'emploi",
-                "Mise en chômage partiel",
-                "Étudiant·e",
-                "Retraité·e",
-                "Personne au foyer",
-                "Travailleur·se indépendant·e",
-                "Ne peut pas travailler",
-                "Préfère ne pas répondre"
+                "Full-time employee (40 or more hours per week)",
+                "Part-time employee (up to 39 hours per week)",
+                "Unemployed - currently looking for work",
+                "Unemployed - currently not looking for work",
+                "Furlough",
+                "Student",
+                "Retired",
+                "Homemaker",
+                "Self-employed",
+                "Unable to work",
+                "Prefer not to say"
             ],
             income: [
-                "Moins de 500 €",
-                "Entre 500 € et 1000 €",
-                "Entre 1000 € et 1500 €",
-                "Entre 1500 € et 2000 €",
-                "Entre 2000 € et 3000 €",
-                "Entre 3000 € et 5000 €",
-                "Plus de 5000 €",
-                "Non applicable",
-                "Préfère ne pas répondre"
+                "Less than €500",
+                "Between €500 and €1000",
+                "Between €1000 and €1500",
+                "Between €1500 and €2000",
+                "Between €2000 and €3000",
+                "Between €3000 and €5000",
+                "More than €5000",
+                "Not applicable",
+                "Prefer not to say"
             ],
             life: [
-                "0 (pas du tout)",
+                "0 (not at all)",
                 "1",
                 "2",
                 "3",
@@ -1058,76 +1045,30 @@ const fr = {
                 "7",
                 "8",
                 "9",
-                "10 (très)",
-                "Préfère ne pas répondre"
+                "10 (very)",
+                "Prefer not to say"
             ]
-        },
+        }
     },
-    prolificID: "Veuillez saisir votre identifiant Prolific:",
-    redirectProlific: "Vous allez être dirigé automatiquement sur Prolific dans 3 secondes...",
-    feedback_span: {
-        hard: "<p><b>{fdb}</b><br>Votre réponse était {answer}, les bons chiffres étaient {fds_correct_ans}.</br></p>",
-        easy: "<p><b>{fdb}</b><br>Votre réponse était {answer}, le bon chiffre était {fds_correct_ans}.</br></p>",
-    },
+    prolificID: "Please enter your Prolific ID:",
+    redirectProlific: "You will be automatically redirected to Prolific in 3 seconds...",
     instructionsMPL: {
-            makeChoice: `Veuillez <span style="background-color: #cce">sélectionner</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque lignes (chaque \"Version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,
-            computerChooses: 'Si cette tâche est choisie pour le paiement, l\'ordinateur choisira une ligne (\"Version\") au hasard et utilisera votre <span style="background-color: #cce">choix</span> (lot <span  style="color: red">A</span> ou lot <span style="color: blue">B</span>) à cette ligne pour déterminer votre paiement.;',
+        makeChoice: "Please make your choices. Once you switch from the sure payment to the lottery (or vice versa), all later rows will be selected automatically."
     },
     endowmentsMPL: {
-        lottery: {
-            G90: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G75: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G50: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G25: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G10: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L90: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L75: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L50: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L25: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L10: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A10: `Vous serez payé 15€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A15: `Vous serez payé 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-        },
-        mirror: {
-            G90: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G75: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G50: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G25: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G10: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L90: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L75: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L50: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L25: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L10: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A10: `Vous serez payé 15€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A15: `Vous serez payé 20€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+        G90: "Your initial endowment is 90€.",
+        G75: "Your initial endowment is 75€.",
+        G50: "Your initial endowment is 50€.",
+        G25: "Your initial endowment is 25€.",
+        G10: "Your initial endowment is 10€.",
+        L90: "Your initial endowment is 90€.",
+        L75: "Your initial endowment is 75€.",
+        L50: "Your initial endowment is 50€.",
+        L25: "Your initial endowment is 25€.",
+        L10: "Your initial endowment is 10€.",
+        A10: "Your initial endowment is 10€.",
+        A15: "Your initial endowment is 15€."
     }
-    },
-    span_span: {
-        first_letters_priority: "Vous allez voir les lettres <span style='color: blue'>bleues</span>. Retenez les en priorité, même pendant la présentation des lettres <span style='color: red'>rouges</span>.",
-        first_letters_give_back: "Après avoir vu les lettres <span style='color: blue'>bleues</span>, vous verrez les lettres <span style='color: red'>rouges</span>. Puis vous devrez redonner les lettres <span style='color: red'>rouges</span>. Après cela vous devrez redonner les lettres <span style='color: blue'>bleues</span>.",
-        second_letters_priority: "Vous allez voir les lettres <span style='color: red'>rouges</span>. Cependant, gardez en tête les lettres <span style='color: blue'>bleues</span>.",
-        second_letters_give_back: "Après les avoir vus les lettres <span style='color: red'>rouges</span>, vous devrez les redonner immédiatement. Après cela vous devrez redonner les lettres <span style='color: blue'>bleues</span>.",
-        type_second_letters: "Tapez ci-dessous les lettres <span style='color: red'>rouges</span> dans l'ordre où vous les avez vues, puis appuyez sur Entrée.",
-        type_first_letters: "Tapez ci-dessous les lettres <span style='color: blue'>bleues</span> dans l'ordre où vous les avez vues, puis appuyez sur Entrée.",
-    },
-    fds: {
-        trialOutOf: "<p>Essai {current} sur {total}</p>",
-    },
-    response_grid_instructions: "<p>Tapez ci-dessous les lettres dans l'ordre où vous les avez vues, puis appuyez sur Entrée.</p>",
-    debrief_incentives_span_mpl: {
-        title: "Fin de l'expérience",
-        thanks: "Merci d'avoir participé à cette expérience !",
-        bonusCalibration: "Votre bonus pour la première partie de l'expérience est de {trainingBonus}€.",
-        bonusSpanSpan: "Votre bonus pour la deuxième partie de l'expérience est de {spanSpanBonus}€.",
-        selectedForMPL: "Vous avez été sélectionné·e pour qu'une lotterie soit tirée parmis celles auxquelles vous avez répondues.",
-        notSelectedForMPL: "Vous n'avez pas été sélectionné·e pour qu'une lotterie soit tirée parmis celles auxquelles vous avez répondues.",
-        bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est donc de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour la lotterie.",
-        bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
-        totalBonus: "Votre bonus total est donc de {totalBonus}€.",
-        thanksAgain: "Merci encore pour votre participation !",
+}
 
-    }
-};
-
-let language = fr;
+let language = en;
