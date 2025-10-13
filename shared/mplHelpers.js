@@ -25,6 +25,11 @@ function mplGenerator(y, X, condition) {
     } else if (condition == "lottery") {
         endowmentsMPL = language.endowmentsMPL.lottery[Xy];
     }
+    let endowmentValue = "";
+    if (X == "G"){ endowmentValue = 5;}
+    else if (X == "L") { endowmentValue = 30;}
+    else if (X == "A" && y == 10) { endowmentValue = 15;}
+    else if (X == "A" && y == 15) { endowmentValue = 20;}
 
   // Generate sure payment values
     let rows = ``;
@@ -35,12 +40,12 @@ function mplGenerator(y, X, condition) {
         <tr>
             <td>${i + 1}</td>
             <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
-            ${sign}$25
+            ${sign}25€
             <input type="radio" name="row${i}" value="lottery">
             </td>
-            <td class="mirror" data-row="${i}" style="color: red">$0</td>
+            <td class="mirror" data-row="${i}" style="color: red">0€</td>
             <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
-            ${sign}$${amt}
+            ${sign}${amt}€
             <input type="radio" name="row${i}" value="sure">
             </td>
         </tr>
@@ -48,6 +53,7 @@ function mplGenerator(y, X, condition) {
 
         mpl_html = `
         <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
         <ul>
         <li>${language.instructionsMPL.makeChoice}</li><br>
         <li>${language.instructionsMPL.computerChooses}</li><br>
@@ -76,11 +82,11 @@ function mplGenerator(y, X, condition) {
         <tr>
             <td>${i + 1}</td>
             <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
-            $${amt} <input type="radio" name="row${i}" value="lottery">
+            ${amt}€ <input type="radio" name="row${i}" value="lottery">
             </td>
-            <td class="mirror" data-row="${i}" style="color: red">$-${y}</td>
+            <td class="mirror" data-row="${i}" style="color: red">-${y}€</td>
             <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
-            $0
+            0€
             <input type="radio" name="row${i}" value="sure">
             </td>
         </tr>
@@ -89,6 +95,7 @@ function mplGenerator(y, X, condition) {
         mpl_html = `
 
         <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
         <ul>
         <li>${language.instructionsMPL.makeChoice}</li><br>
         <li>${language.instructionsMPL.computerChooses}</li><br>
@@ -191,6 +198,36 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
         } 
     }
 }
+
+function generateHTML(setALabel = "Set A", setBLabel = "Set B") {
+        // Generate 100 squares for each set
+        let setASquares = '';
+        let setBSquares = '';
+        
+        for (let i = 0; i < 100; i++) {
+            setASquares += '<div class="squareMPL square-a"></div>';
+            setBSquares += '<div class="squareMPL square-b"></div>';
+        }
+        //             ${this.styles}
+        return `
+
+            <div class="squares-container">
+                <div class="square-set set-a">
+                    <h3>${setALabel}</h3>
+                    <div class="squares-grid grid-a">
+                        ${setASquares}
+                    </div>
+                </div>
+                
+                <div class="square-set set-b">
+                    <h3>${setBLabel}</h3>
+                    <div class="squares-grid grid-b">
+                        ${setBSquares}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 
 // function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
 //     console.log("=== calculateMPLPayment DEBUG START ===");
@@ -314,3 +351,491 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
 //     console.log("=== calculateMPLPayment DEBUG END ===");
 //     return undefined;
 // }
+
+let example1MPL = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+            16€
+            <input type="radio" name="row1" value="lottery">
+            </td>
+            <td class="mirror" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `; 
+
+let example1MPLSelected = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            16€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+
+let example2MPL = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 25 boites</th>
+            <th style="color: red"> 75 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+            -12€
+            <input type="radio" name="row1" value="lottery">
+            </td>
+            <td class="choice" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            -3€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+let example3MPLSelected = `
+    <div style="width: 50vw; margin: auto;">
+    <table class="mpl">
+        <tr>
+        <th></th>
+        <th colspan="2" style="color: red">Lot A</th>
+        <th style="color: blue">Lot B</th>
+        </tr>
+        <tr>
+        <th>Version</th>
+        <th style="color: red"> 25 boites</th>
+        <th style="color: red"> 75 boites</th>
+        <th style="color: blue">100 boites</th>
+        </tr>
+        <tr>
+        <td>1</td>
+        <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+        -8€
+        <input type="radio" name="row1" value="lottery">
+        </td>
+        <td class="choice" data-row="1" style="color: red">0€</td>
+        <td class="choice selected" data-row="1" data-choice="sure" style="color: blue">
+        -6€
+        <input type="radio" name="row1" value="sure">
+        </td>
+    </tr>
+    </table>
+    `;
+
+let example1MPLSelectedWithEndowment = `
+        <div style="width: 50vw; margin: auto;">
+        <ul>
+        <li><span style="color: green">Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.</span></li><br>
+        </ul></div>
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            16€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+
+let example3MPLSelectedWithEndowment = `
+        <div style="width: 50vw; margin: auto;">
+        <span style="color: green">Vous serez payé 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.</span></li><br>
+        </div>
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            -8€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+
+let example4MPLSelected = `
+    <div style="width: 50vw; margin: auto;">
+    <table class="mpl">
+        <tr>
+        <th></th>
+        <th colspan="2" style="color: red">Lot A</th>
+        <th style="color: blue">Lot B</th>
+        </tr>
+        <tr>
+        <th>Version</th>
+        <th style="color: red"> 50 boites</th>
+        <th style="color: red"> 50 boites</th>
+        <th style="color: blue">100 boites</th>
+        </tr>
+        <tr>
+        <td>1</td>
+        <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+        -8€
+        <input type="radio" name="row1" value="lottery">
+        </td>
+        <td class="choice" data-row="1" style="color: red">0€</td>
+        <td class="choice selected" data-row="1" data-choice="sure" style="color: blue">
+        -6€
+        <input type="radio" name="row1" value="sure">
+        </td>
+    </tr>
+    </table>
+    `;
+
+    // ...existing code...
+let example5MPL = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 40 boites</th>
+            <th style="color: red"> 60 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row1" value="lottery">
+            </td>
+            <td class="mirror" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            10€
+            <input type="radio" name="row1" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>2</td>
+            <td class="choice" data-row="2" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row2" value="lottery">
+            </td>
+            <td class="mirror" data-row="2" style="color: red">0€</td>
+            <td class="choice" data-row="2" data-choice="sure" style="color: blue">
+            9€
+            <input type="radio" name="row2" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>3</td>
+            <td class="choice" data-row="3" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row3" value="lottery">
+            </td>
+            <td class="mirror" data-row="3" style="color: red">0€</td>
+            <td class="choice" data-row="3" data-choice="sure" style="color: blue">
+            8€
+            <input type="radio" name="row3" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>4</td>
+            <td class="choice" data-row="4" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row4" value="lottery">
+            </td>
+            <td class="mirror" data-row="4" style="color: red">0€</td>
+            <td class="choice" data-row="4" data-choice="sure" style="color: blue">
+            7€
+            <input type="radio" name="row4" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>5</td>
+            <td class="choice" data-row="5" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row5" value="lottery">
+            </td>
+            <td class="mirror" data-row="5" style="color: red">0€</td>
+            <td class="choice" data-row="5" data-choice="sure" style="color: blue">
+            6€
+            <input type="radio" name="row5" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>6</td>
+            <td class="choice" data-row="6" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row6" value="lottery">
+            </td>
+            <td class="mirror" data-row="6" style="color: red">0€</td>
+            <td class="choice" data-row="6" data-choice="sure" style="color: blue">
+            5€
+            <input type="radio" name="row6" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>7</td>
+            <td class="choice" data-row="7" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row7" value="lottery">
+            </td>
+            <td class="mirror" data-row="7" style="color: red">0€</td>
+            <td class="choice" data-row="7" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row7" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>8</td>
+            <td class="choice" data-row="8" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row8" value="lottery">
+            </td>
+            <td class="mirror" data-row="8" style="color: red">0€</td>
+            <td class="choice" data-row="8" data-choice="sure" style="color: blue">
+            3€
+            <input type="radio" name="row8" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>9</td>
+            <td class="choice" data-row="9" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row9" value="lottery">
+            </td>
+            <td class="mirror" data-row="9" style="color: red">0€</td>
+            <td class="choice" data-row="9" data-choice="sure" style="color: blue">
+            2€
+            <input type="radio" name="row9" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>10</td>
+            <td class="choice" data-row="10" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row10" value="lottery">
+            </td>
+            <td class="mirror" data-row="10" style="color: red">0€</td>
+            <td class="choice" data-row="10" data-choice="sure" style="color: blue">
+            1€
+            <input type="radio" name="row10" value="sure">
+            </td>
+            </tr>
+        </table>
+        `; 
+
+
+let example5MPLSelected = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 40 boites</th>
+            <th style="color: red"> 60 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            10€
+            <input type="radio" name="row1" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>2</td>
+            <td class="choice selected" data-row="2" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row2" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="2" style="color: red">0€</td>
+            <td class="choice" data-row="2" data-choice="sure" style="color: blue">
+            9€
+            <input type="radio" name="row2" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>3</td>
+            <td class="choice selected" data-row="3" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row3" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="3" style="color: red">0€</td>
+            <td class="choice" data-row="3" data-choice="sure" style="color: blue">
+            8€
+            <input type="radio" name="row3" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>4</td>
+            <td class="choice selected" data-row="4" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row4" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="4" style="color: red">0€</td>
+            <td class="choice" data-row="4" data-choice="sure" style="color: blue">
+            7€
+            <input type="radio" name="row4" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>5</td>
+            <td class="choice selected" data-row="5" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row5" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="5" style="color: red">0€</td>
+            <td class="choice" data-row="5" data-choice="sure" style="color: blue">
+            6€
+            <input type="radio" name="row5" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>6</td>
+            <td class="choice selected" data-row="6" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row6" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="6" style="color: red">0€</td>
+            <td class="choice" data-row="6" data-choice="sure" style="color: blue">
+            5€
+            <input type="radio" name="row6" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>7</td>
+            <td class="choice selected" data-row="7" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row7" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="7" style="color: red">0€</td>
+            <td class="choice" data-row="7" data-choice="sure" style="color: blue">
+            4€
+            <input type="radio" name="row7" value="sure">
+            </td>
+            </tr>
+            <tr>
+            <td>8</td>
+            <td class="choice" data-row="8" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row8" value="lottery">
+            </td>
+            <td class="choice" data-row="8" style="color: red">0€</td>
+            <td class="choice selected" data-row="8" data-choice="sure" style="color: blue">
+            3€
+            <input type="radio" name="row8" value="sure" checked>
+            </td>
+            </tr>
+            <tr>
+            <td>9</td>
+            <td class="choice" data-row="9" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row9" value="lottery">
+            </td>
+            <td class="choice" data-row="9" style="color: red">0€</td>
+            <td class="choice selected" data-row="9" data-choice="sure" style="color: blue">
+            2€
+            <input type="radio" name="row9" value="sure" checked>
+            </td>
+            </tr>
+            <tr>
+            <td>10</td>
+            <td class="choice" data-row="10" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row10" value="lottery">
+            </td>
+            <td class="choice" data-row="10" style="color: red">0€</td>
+            <td class="choice selected" data-row="10" data-choice="sure" style="color: blue">
+            1€
+            <input type="radio" name="row10" value="sure" checked>
+            </td>
+            </tr>
+        </table>
+        `;
+
+
+
+
+

@@ -5,14 +5,14 @@ const feedBackDuration = 100;//1000ms
 const payment = 0 // payment amount for the n-back nback task
 const basePayment_hard = 7; // Payment amount: = 7 euros
 const basePayment_easy = 5; // Payment amount: = 5 euros
-const spanMplPayment_hard = 2;
+const spanMplPayment_hard = 3;
 const calibrationPayment = spanMplPayment_hard /6;  // 1/6 of the MPL payment
 const spanSpanPayment_hard = spanMplPayment_hard /6
 const spanMplPayment_easy = 1;
 const spanSpanPayment_easy = spanMplPayment_easy /6;
-const propSelecForMPL = 10; // 1 out of propSelecForMPL participants will be selected for the MPL payment
-const fds_letter_presentation = 500; //500ms
-const fds_post_trial_gap = 250; //250ms
+const propSelecForMPL = 25; // 1 out of propSelecForMPL participants will be selected for the MPL payment
+const fds_letter_presentation = 100; //500ms
+const fds_post_trial_gap = 50; //250ms
 // Change default language to French
 
 const practice_duration = 30; //= 30000; // duration of practice flanker
@@ -34,4 +34,4 @@ let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
 console.log("treatment is", treatment)
 
-let totalFdsTrainingTrials = treatment === "hard" ? 12 : 3; //number of trials in the training phase: 12 if cognitive load, to determine the appropriate load, 3 if easy just to ensure they have understood the task
+let totalFdsTrainingTrials = 12; // 12 in the main experiment // number of rounds of the calibration

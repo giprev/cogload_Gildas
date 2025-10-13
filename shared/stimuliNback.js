@@ -57,6 +57,7 @@ function setArrays (){
   }
   
   function defineHard3Back() {
+
     nbackStimuli.practiceListHard_flanker =  ['K', 'A', 'K', 'A', 'A', 'C', 'A', 'A', 'C', 'K', 'K', 'M', 'P', 'K', 'M', 'P', 'P', 'M', 'P', 'P']; // 10 3-backs, 4 2-backs and 4 4-backs
     // nbackStimuli.stimuliListHard_flanker = ['G', 'Y', 'G', 'G', 'P', 'I', 'U', 'G', 'I', 'A', 'I', 'M', 'C', 'A', 'A', 'A', 'A', 'B', 'A', 'C', 'P', 'E', 'A', 'B', 'E', 'C', 'B', 'E', 'C', 'B', 'C', 'E', 'B', 'M', 'G', 'C', 'M', 'Y', 'E', 'M', 'E', 'Y', 'E', 'M', 'Y', 'M', 'I', 'A', 'G', 'I', 'E', 'G', 'E', 'E', 'B', 'G', 'O', 'B', 'M', 'G', 'B', 'M', 'G']; // 20 3-backs, 10 2-backs and 10 4-backs
     nbackStimuli.practiceListHard_span = ['P', 'C', 'P', 'P', 'C', 'P', 'P', 'C', 'E', 'E', 'P', 'E', 'E', 'P', 'P', 'G', 'C', 'C', 'G', 'C'];

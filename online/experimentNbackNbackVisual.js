@@ -23,6 +23,7 @@ let nbackLevel = 0; // store the level of the n-back task selected for the incen
 let remindDuration = 6000;
 let pc = 0;
 let isPostVisualWithFirsts = 0;
+let maximumSpanCalibration = 0;
 
 /*************** VARIABLES span ***************/
 var useAudio = false; // change to false if you want this to be a visual task!
@@ -33,15 +34,7 @@ var totalTrials = 0; //counter for total trials
 var maxSpan; //value that will reflect a participant's maximum span (e.g., 6)
 var folder = "digits/"; //folder name for storing the audio files
 var fdsTrialNum = 1; //counter for trials
-let fdsTotalTrials;
-switch (treatment) {
-    case "hard":
-        fdsTotalTrials = 12; //total number of desired trials
-        break;
-    case "easy":
-        fdsTotalTrials = 4; //total number of desired trials
-        break;
-}
+let fdsTotalTrials = 12;
 let totalFdsSpanSpanTrials = 6;
 var response = []; //for storing partcipants' responses
 var fds_correct_ans; //for storing the correct answer on a given trial
@@ -50,8 +43,7 @@ var staircaseChecker = []; //for assessing whether the span should move up/down/
 var staircaseIndex = 0; //index for the current staircase
 var digit_list = [1,2,3,4,5,6,7,8,9]; //digits to be used (unlikely you will want to change this)
 
-let startingSpan = (treatment === "hard") ? 3 : 1;
-console.log(startingSpan, "is starting span");
+let startingSpan = 3; //starting span for the calibration task. Then it is updated based on performance
 
 var currentSpan; //to reference where participants currently are
 var spanHistory = []; //easy logging of the participant's trajectory
@@ -75,6 +67,9 @@ var point_location = [];
 
 
 /*************** VARIABLES span ***************/
+let spanCounter = 0; // the counter for each n-back trial
+let mplCounter = 0; // the counter for each mpl trial
+
 
 
 let taskEasy;
@@ -130,15 +125,14 @@ const welcome = {
 //   }
 }
 
-const overviewPage ={
-    type: "instructions",
-    pages: [`<div style="max-width: 1200px"><p>${language.overviewPage.purpose}</p><p>${language.overviewPage.IRB}</p><p>${language.overviewPage.anonimity}</p><p>${language.overviewPage.credits}</p>
-        <p>${language.overviewPage.question}</p><p>${language.overviewPage.withdrawal}</p> <p>${language.overviewPage.clickNext}</p></div>`
-       ],
-    show_clickable_nav: true,
-    button_label_next: language.button.next,
-    button_label_previous: language.button.previous,
-}
+// const overviewPage ={
+//     type: "instructions",
+//     pages: [],
+//     show_clickable_nav: true,
+//     button_label_next: language.button.next,
+//     button_label_previous: language.button.previous,
+//     allow_backward: true,
+// }
 
 const descriptionExperimentNback = {
     type: "instructions",
@@ -155,52 +149,501 @@ const descriptionExperimentNback = {
 }
 
 if (treatment === "hard") {
-descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment_hard.replace("{basePayment}", basePayment_hard);}
-else {descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment_easy.replace("{basePayment}", basePayment_easy);}
-const descriptionExperimentSpanMPL= {
+descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment.replace("{basePayment}", basePayment_hard);}
+else {descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment.replace("{basePayment}", basePayment_easy);}
+// const descriptionExperimentSpanMPL= {
+//     type: "instructions",
+//     pages: [
+
+//     ],
+//     show_clickable_nav: true,
+//     button_label_next: language.button.next,
+//     button_label_previous: language.button.previous,
+//     allow_backward: true,
+// }
+
+const instructionsBeforeCalibration = {
     type: "instructions",
-    pages: [
-        `<div style="max-width: 1200px"> <p>${language.descriptionExperimentNback.title}</p>
-        <p>${language.descriptionExperimentSpanMPL.threeParts}</p>
-        <ul>
-        <li>${language.descriptionExperimentSpanMPL.part1}</li>
-        <li>${language.descriptionExperimentSpanMPL.part2}</li>
-        <li>${language.descriptionExperimentSpanMPL.part3}</li>
-        </ul>
-        <p>${descriptionExperimentSpanMPLpaymentExplanation}</p>
-        <p>${language.descriptionExperimentSpanMPL.paymentAfter}</p>
-        <p>${language.descriptionExperimentSpanMPL.instructionsAfter}</p>
-        <p>${language.descriptionExperimentSpanMPL.clickNext}</p> </div>`
+    pages: [    //<p>${language.overviewPage.IRB}</p> when it'll be available
+        `<h2>${language.overviewPage.purpose}</h2>
+                <p>${language.overviewPage.anonimity}</p>
+                <p>${language.overviewPage.credits}</p>
+                <p>${language.overviewPage.question}</p>
+                <p>${language.overviewPage.withdrawal}</p> 
+                <p>${language.overviewPage.clickNext}</p>`,
+
+                `<h2>${language.descriptionExperimentNback.title}</h2>
+                <p>${language.descriptionExperimentSpanMPL.threeParts}</p>
+                <ul>
+                <li>${language.descriptionExperimentSpanMPL.part1}</li>
+                <li>${language.descriptionExperimentSpanMPL.part2}</li>
+                <li>${language.descriptionExperimentSpanMPL.part3}</li>
+                </ul>
+                <p>${descriptionExperimentSpanMPLpaymentExplanation}</p>
+                <p>${language.descriptionExperimentSpanMPL.paymentAfter}</p>
+                <p>${language.descriptionExperimentSpanMPL.clickNext}</p>`,
+
+                `<h2>${language.instruction_span_general.title}</h2>
+                <p>${language.instruction_span_general.description}</p>
+                <p>${language.instruction_span_general.examplePresentation}</p>
+                <p>${language.instruction_span_general.precision}</p>
+                <p>${language.instruction_span_general.examplePrecision}</p>
+                <p>${language.instruction_span_general.clickNext}</p>`,
+
+                `<h2>${language.instructionCalibration.title}</h2>
+                <p>${language.instructionCalibration.rounds}</p>
+                <p>${language.instructionCalibration.staircase}</p>
+                <p>${language.instructionCalibration.goal}</p>
+                <p>${language.instructionCalibration.incentiveRule.replace("{bonus}", calibrationPayment)}</p>
+                <p>${language.instructionCalibration.incentiveRuleExample.replace("{bonus}", calibrationPayment).replace("{examplePayment}", Math.round(calibrationPayment*(7/10)*100)/100)}</p>
+                <p>${language.instructionCalibration.meanDuration}</p>
+                <p>${language.instructionCalibration.clickNext}</p>`
+            ],
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+
+
+const instructionsSpanSpan = {
+    type: "instructions",
+    pages: function(){
+        let someBlueDigits, theBlueDigits, the;
+        if (treatment == "hard") {
+            someBlueDigits = language.instructionsSpanSpan.variableHard.someBlueDigits.replace("{startingSpan}", startingSpan).replace("{the}", the).replace("{startingSpan}",startingSpan);
+            theBlueDigits = language.instructionsSpanSpan.variableHard.theBlueDigits.replace("{startingSpan}", startingSpan);
+            the = language.instructionsSpanSpan.variableHard.the;
+        }
+        if (treatment == "easy") {
+            someBlueDigits = language.instructionsSpanSpan.variableEasy.someBlueDigits;
+            theBlueDigits = language.instructionsSpanSpan.variableEasy.theBlueDigits;
+            the = language.instructionsSpanSpan.variableEasy.the;
+        }
+
+        return [`<h2>${language.instructionsSpanSpan.title}</h2>
+        <p>${language.instructionsSpanSpan.description}</p>
+        <p>${language.instructionsSpanSpan.lettersOrder.replace("{someBlueDigits}", someBlueDigits).replace("{the}", the).replace("{theBlueDigits}", theBlueDigits)}</p>
+        <p>${language.instructionsSpanSpan.goal}</p>
+        <p>${language.instructionsSpanSpan.sequenceNumber}</p>
+        <p>${language.instruction_span_general.clickNext}</p>`,
+        `<h2>${language.instructionsSpanSpanPayment.title}</h2>
+        <h3>${language.instructionsSpanSpanPayment.subTitle}</h3>
+        <p>${language.instructionsSpanSpanPayment.incentives.replace("{bonus}", spanSpanPayment_hard)}</p>
+        <p>${language.instructionsSpanSpanPayment.incentiveRule.replace("{theBlueDigits}", theBlueDigits)}</p>
+        <p>${language.instructionsSpanSpanPayment.incentiveRuleExample.replace("{theBlueDigits}", theBlueDigits).replace("{bonus}", spanSpanPayment_hard).replace("{examplePayment}", Math.round(spanSpanPayment_hard*(7.75/10)*100)/100)}</p>
+        <p>${language.instructionsSpanSpanPayment.remember.replace("{theBlueDigits}", theBlueDigits)}</p>
+        <p>${language.instructionsSpanSpanPayment.meanDuration}</p>
+        <p>${language.instructionsSpanSpanPayment.clickNext}</p>`
+    ];
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+
+const instructionsSpanMPLMirror = {
+    type: "instructions",
+    pages: function(){
+
+        return [`<h2>${language.instructionsThirdPart.title}</h2>
+        <p>${language.instructionsThirdPart.description}</p>
+        <p>${language.instructionsThirdPart.clickNext}</p>`,
+               `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <p>${language.instructionsBoxesWithMoney.clickNext}</p>`,
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsDecisionTable.clickNext}</p>`,
+        `<h2>${language.instructionsPaymentRuleMirror.title}</h2>
+        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        ${example3MPLSelected}
+        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+        <p>${language.instructionsPaymentRuleMirror.clickNext}</p>
+        `
+    ];
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+const instructionsSpanMPLLottery = {
+    type: "instructions",
+    pages: function(){
+
+        return [`<h2>${language.instructionsThirdPart.title}</h2>
+        <p>${language.instructionsThirdPart.description}</p>
+        <p>${language.instructionsThirdPart.clickNext}</p>`,
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <p>${language.instructionsBoxesWithMoney.clickNext}</p>`,
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsDecisionTable.clickNext}</p>`,
+        `<h2>${language.instructionsPaymentRuleRandomBox.title}</h2>
+        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
+        ${example3MPLSelected}
+        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+        <p>${language.instructionsPaymentRuleRandomBox.clickNext}</p>`,
+    ];
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+};
+
+const instructionsPaymentRuleLottery = {
+    type: "instructions",
+    pages: function(){
+
+        return [`<h2>${language.instructionsPaymentRuleRandomBox.title}</h2>
+        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
+        ${example3MPLSelected}
+        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+        <p>${language.instructionsPaymentRuleRandomBox.clickNext}</p>`,
+    ];
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+};
+const instructionsPaymentRuleMirror = {
+    type: "instructions",
+    pages: function(){
+
+        return `<h2>${language.instructionsPaymentRuleMirror.title}</h2>
+        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        ${example1MPLSelected}
+        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        ${example3MPLSelected}
+        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+        <p>${language.instructionsPaymentRuleMirror.clickNext}</p>`
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+const instructionsChoosingASetOfBoxes = {
+    type: "instructions",
+    pages: function(){
+
+        return [`<h2>${language.instructionsChoosingASetOfBoxes.title}</h2>
+         <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.description}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
+        ${example5MPL}
+        <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
+        ${example5MPLSelected}
+        <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+        <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.clickNext}</p>`,
+        `<h2>${language.instructionsSpanInMPL.title}</h2>
+        <h3>${language.instructionsSpanInMPL.subTitle}</h3>
+        <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+        <p>${language.instructionsSpanInMPL.priority}</p>
+        <h3>${language.instructionsSpanInMPL.incentives}</h3>
+        <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanMplPayment_hard)}</p>
+        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
+        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanMplPayment_hard).replace("{examplePaymentSpan}", Math.round((spanMplPayment_hard * 0.8)*100)/100)}</p>
+        <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+        <p>${language.instructionsSpanInMPL.clickNext}</p> `
+        ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+
+let correct_responses =[];
+
+
+const comprehensionQuestionsMPLLottery = {
+    type: "survey-multi-select",
+    data: {task: 'comprehensionSurveyHard'},
+    questions: [
+        {
+            prompt: `${example1MPLSelected}
+            <p>${language.comprehensionQMPL.q1.prompt}</p>`,
+            options: [
+                language.comprehensionQMPL.q1.options[0],
+                language.comprehensionQMPL.q1.options[1],
+                language.comprehensionQMPL.q1.options[2],
+                language.comprehensionQMPL.q1.options[3]
+            ],
+            required: true,
+            correct_response: 3,
+        },
+        {
+            prompt: language.comprehensionQMPL.q2.prompt,
+            options: [
+                language.comprehensionQMPL.q2.options[0],
+                language.comprehensionQMPL.q2.options[1],
+                language.comprehensionQMPL.q2.options[2],
+                language.comprehensionQMPL.q2.options[3]
+            ],
+            required: true,
+            correct_response: 1,
+        },
+        {
+            prompt: language.comprehensionQMPL.q3.prompt,
+            options: [
+                language.comprehensionQMPL.q3.options[0],
+                language.comprehensionQMPL.q3.options[1],
+                language.comprehensionQMPL.q3.options[2],
+                language.comprehensionQMPL.q3.options[3]
+            ],
+            required: true,
+            correct_response: 3,
+        },
+        {
+            prompt: language.comprehensionQMPL.q4.prompt,
+            options: [
+                language.comprehensionQMPL.q4.options[0],
+                language.comprehensionQMPL.q4.options[1],
+                language.comprehensionQMPL.q4.options[2],
+                language.comprehensionQMPL.q4.options[3]
+            ],
+            required: true,
+            correct_response: 1,
+        },
+        {
+            prompt: `<br><br>${example4MPLSelected}
+            <p>${language.comprehensionQMPL.q5.prompt}</p>`,
+            options: [
+                language.comprehensionQMPL.q5.options[0],
+                language.comprehensionQMPL.q5.options[1],
+                language.comprehensionQMPL.q5.options[2],
+                language.comprehensionQMPL.q5.options[3]
+            ],
+            required: true,
+            correct_response: 3,
+        },
+
     ],
-    show_clickable_nav: true,
-    button_label_next: language.button.next,
-    button_label_previous: language.button.previous,
-}
+    button_label: language.button.next,
+    randomize_question_order : false,
+    preamble: `<h2>${language.comprehensionMPLIntro}</h2>`,
+    on_finish: function (data) {
+        const responses = JSON.parse(data.responses);
+        
+        let all_correct = true;
+        let questions_correct = []; // Array to track which questions were correct
+        let questions_incorrect = []; // Array to track which questions were incorrect
+        let detailed_results = {}; // Object to store detailed results for each question
 
-const instructions_span_general = {
-    type: "instructions",
-    pages: [
-                `<p>${language.instruction_span_general.title}</p>
-                <p>${language.instruction_span_general.description}</p>
-                <p>${language.instruction_span_general.examplePresentation}</p>
-                <p>${language.instruction_span_general.clickNext}</p>`
-            ],
-    show_clickable_nav: true,
-    button_label_next: language.button.next,
-    button_label_previous: language.button.previous,
-}
+        comprehensionQuestionsMPLLottery.questions.forEach((q, i) => {
+            const given_answer = responses["Q" + i];
+            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
+            const is_correct = given_answer == correct_text;
+            
+            // Track results
+            if (is_correct) {
+                questions_correct.push(i + 1); // Store 1-based question numbers
+            } else {
+                questions_incorrect.push(i + 1);
+                all_correct = false;
+            }
+            
+            // Store detailed results
+            detailed_results[`q${i + 1}`] = {
+                question_number: i + 1,
+                given_answer: given_answer,
+                correct_answer: correct_text,
+                is_correct: is_correct,
+                correct_option_index: q.correct_response - 1 // 0-based index
+            };
+            
+            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
+        });
 
-const instructions_calibration = {
-    type: "instructions",
-    pages: [
-                `<p>${language.instruction_span_general.title}</p>
-                <p>${language.instruction_span_general.description}</p>
-                <p>${language.instruction_span_general.examplePresentation}</p>
-                <p>${language.instruction_span_general.clickNext}</p>`
+        // Save comprehensive results to trial data
+        data.all_correct = all_correct;
+        data.questions_correct = questions_correct;
+        data.questions_incorrect = questions_incorrect;
+        data.num_correct = questions_correct.length;
+        data.num_incorrect = questions_incorrect.length;
+        data.detailed_results = detailed_results;
+        
+        console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLLottery.questions.length} correct`);
+        console.log("Questions answered correctly:", questions_correct);
+        console.log("Questions answered incorrectly:", questions_incorrect);
+        console.log("All correct:", all_correct);
+    }
+};
+
+const comprehensionQuestionsMPLMirror = {
+    ...comprehensionQuestionsMPLLottery,
+        questions: [
+        {
+            prompt: `${example1MPLSelected}
+            <p>${language.comprehensionQMPL.q1.prompt}</p>`,
+            options: [
+                language.comprehensionQMPL.q1.options[0],
+                language.comprehensionQMPL.q1.options[1],
+                language.comprehensionQMPL.q1.options[2],
+                language.comprehensionQMPL.q1.options[3]
             ],
-    show_clickable_nav: true,
-    button_label_next: language.button.next,
-    button_label_previous: language.button.previous,
+            required: true,
+            correct_response: 1,
+        },
+        {
+            prompt: language.comprehensionQMPL.q2.prompt,
+            options: [
+                language.comprehensionQMPL.q2.options[0],
+                language.comprehensionQMPL.q2.options[1],
+                language.comprehensionQMPL.q2.options[2],
+                language.comprehensionQMPL.q2.options[3]
+            ],
+            required: true,
+            correct_response: 1,
+        },
+        {
+            prompt: language.comprehensionQMPL.q3.prompt,
+            options: [
+                language.comprehensionQMPL.q3.options[0],
+                language.comprehensionQMPL.q3.options[1],
+                language.comprehensionQMPL.q3.options[2],
+                language.comprehensionQMPL.q3.options[3]
+            ],
+            required: true,
+            correct_response: 1,
+        },
+        {
+            prompt: language.comprehensionQMPL.q4.prompt,
+            options: [
+                language.comprehensionQMPL.q4.options[0],
+                language.comprehensionQMPL.q4.options[1],
+                language.comprehensionQMPL.q4.options[2],
+                language.comprehensionQMPL.q4.options[3]
+            ],
+            required: true,
+            correct_response: 4,
+        },
+        {
+            prompt: `<br><br>${example4MPLSelected}
+            <p>${language.comprehensionQMPL.q5.prompt}</p>`,
+            options: [
+                language.comprehensionQMPL.q5.options[0],
+                language.comprehensionQMPL.q5.options[1],
+                language.comprehensionQMPL.q5.options[2],
+                language.comprehensionQMPL.q5.options[3]
+            ],
+            required: true,
+            correct_response: 3,
+        },
+
+    ],
+
+    button_label: language.button.next,
+    randomize_question_order : false,
+    preamble: `<h2>${language.comprehensionMPLIntro}</h2>`,
+    on_finish: function (data) {
+        const responses = JSON.parse(data.responses);
+        
+        let all_correct = true;
+        let questions_correct = []; // Array to track which questions were correct
+        let questions_incorrect = []; // Array to track which questions were incorrect
+        let detailed_results = {}; // Object to store detailed results for each question
+
+        comprehensionQuestionsMPLMirror.questions.forEach((q, i) => {
+            const given_answer = responses["Q" + i];
+            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
+            const is_correct = given_answer == correct_text;
+            
+            // Track results
+            if (is_correct) {
+                questions_correct.push(i + 1); // Store 1-based question numbers
+            } else {
+                questions_incorrect.push(i + 1);
+                all_correct = false;
+            }
+            
+            // Store detailed results
+            detailed_results[`q${i + 1}`] = {
+                question_number: i + 1,
+                given_answer: given_answer,
+                correct_answer: correct_text,
+                is_correct: is_correct,
+                correct_option_index: q.correct_response - 1 // 0-based index
+            };
+            
+            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
+        });
+
+        // Save comprehensive results to trial data
+        data.all_correct = all_correct;
+        data.questions_correct = questions_correct;
+        data.questions_incorrect = questions_incorrect;
+        data.num_correct = questions_correct.length;
+        data.num_incorrect = questions_incorrect.length;
+        data.detailed_results = detailed_results;
+        
+        console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLMirror.questions.length} correct`);
+        console.log("Questions answered correctly:", questions_correct);
+        console.log("Questions answered incorrectly:", questions_incorrect);
+        console.log("All correct:", all_correct);
+    }
+
 }
 
 const instructions_easy = {
@@ -491,8 +934,8 @@ var response_grid =
 '<button id = button_7 class = "square num-button" onclick = "recordClick(this)"><div class = content><div class = numbers>7</div></div></button>' +
 '<button id = button_8 class = "square num-button" onclick = "recordClick(this)"><div class = content><div class = numbers>8</div></div></button>' +
 '<button id = button_9 class = "square num-button" onclick = "recordClick(this)"><div class = content><div class = numbers>9</div></div></button>' +
-'<button class = clear_button id = "ClearButton" onclick = "clearResponse()">Clear</button>'+
-'<p><u><b>Current Answer:</b></u></p><div id=echoed_txt style="font-size: 30px; color:#ff8000;"><b></b></div></div>'
+`<button class = clear_button id = "ClearButton" onclick = "clearResponse()">${language.responseGrid.clear}</button>`+
+`<p><u><b>${language.responseGrid.currentAnswer}:</b></u></p><div id=echoed_txt style="font-size: 30px; color:#ff8000;"><b></b></div></div>`
 
 
 /* define practice feedback trials for n-back */
@@ -1439,13 +1882,14 @@ function display_flanker(stimulus) {
 
 
 
-
 let numbersArray_lottery = generateShuffledArray();
 console.log(numbersArray_lottery, "is numbersArray_lottery");
 let numbersArray_mirror = generateShuffledArray();
 console.log(numbersArray_mirror, "is numbersArray_mirror");
 let mpl_html_array_lottery = [];
 let mpl_html_array_mirror = [];
+let example_mpl_html_array_lottery = [];
+let example_mpl_html_array_mirror = [];
 let list_mpl_tables = {
     1: "G10", 
     2: "G25", 
@@ -1474,8 +1918,13 @@ mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     return mplGenerator(probability, type, "mirror");
 });
+example_mpl_html_array_lottery = [mplGenerator(50, "G", "lottery")];
+example_mpl_html_array_mirror = [mplGenerator(50, "G", "mirror")];
 mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
+example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
+example_mpl_html_array_mirror = example_mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
+// console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
 
 
 //console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
@@ -1487,6 +1936,7 @@ console.log( "is mpl_html_array_mirror with generated HTML", mpl_html_array_mirr
 
 const mpl_trial = {
   type: 'survey-html-form',
+  button_label: language.button.next,
   html: function() {
     return jsPsych.timelineVariable("html", true);  
   },
@@ -1575,6 +2025,7 @@ const mpl_trial = {
     let switchRow2 = null;
     let choicesArray = [];
 
+
     for (var i = 0; i < sure_payments.length; i++) {
       let choice = responses_mpl[`row${i}`];
       choicesArray.push(choice);
@@ -1610,6 +2061,10 @@ const mpl_trial = {
 
 
     console.log("MPL type saved:", data.mplType);
+    console.log("block type is ", block_type)
+    console.log("data.mplType is ", data.mplType)
+    mplCounter++;
+    data.mplCounter = mplCounter;
     data.subBlock = subBlock;
     data.statusMPL = statusMPL
     data.block = block_type;
@@ -1624,9 +2079,6 @@ const mpl_trial = {
     data.task = "mpl";
 
     console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 0, data.choices, data.statusMPL));
-
-
-
   }
 };
 
@@ -1844,13 +2296,13 @@ const feedback_span ={
 
 const staircase_assess = {
     type: 'call-function',
-    func: updateSpan
+    func: updateSpan //update currentSpan based on staircase
 };
 
 const setup_fds = {
     type: 'html-button-response',
     stimulus: function(){return language.fds.trialOutOf.replace('{current}', fdsTrialNum).replace('{total}', fdsTotalTrials);},
-    choices: ['Begin'],
+    choices: [`${language.button.next}`],
         post_trial_gap: 500,
         on_finish: function(){
             if(fdsTrialNum == 1) {
@@ -1866,18 +2318,32 @@ const setup_fds = {
 
 const before_span_span1 = {
     type: 'html-button-response',
-    stimulus: function(){return `<p>${language.fds.trialOutOf.replace('{current}', fdsTrialNum).replace('{total}', totalFdsSpanSpanTrials)}</p><br>
-        <p>${language.span_span.first_letters_priority}</p><br>
-        <p>${language.span_span.first_letters_give_back}</p>`;
+    stimulus: function(){
+        if (treatment == 'hard') {
+            theBlueDigits = language.span_span.variableHard.theBlueDigits
+        }
+        else if (treatment == 'easy') {
+            theBlueDigits = language.span_span.variableEasy.theBlueDigits
+        }
+        return `<p>${language.fds.trialOutOf.replace('{current}', fdsTrialNum).replace('{total}', totalFdsSpanSpanTrials)}</p><br>
+        <p>${language.span_span.first_letters_priority.replace("{theBlueDigits}", theBlueDigits).replace("{theBlueDigits}", theBlueDigits)}</p><br>
+        <p>${language.span_span.first_letters_give_back.replace("{theBlueDigits}", theBlueDigits).replace("{theBlueDigits}", theBlueDigits)}</p>`;
     },
     choices: ['Begin'],
         post_trial_gap: 500,
         on_finish: function(){
-            if(fdsTrialNum == 1) {
-                currentSpan = startingSpan;
+            // if(fdsTrialNum == 1) {
+            //     currentSpan = startingSpan;
+            // }
+            if (treatment == 'hard') {
+                stimList = getStimuliFirstLetters(startingSpan),
+                spanHistory[fdsTrialNum-1]=startingSpan;
             }
-            stimList = getStimuliFirstLetters(currentSpan); //get the current stimuli for the trial
-            spanHistory[fdsTrialNum-1]=currentSpan; //log the current span in an array
+            else if (treatment == 'easy') {
+                stimList = getStimuliFirstLetters(1),
+                spanHistory[fdsTrialNum-1]=1
+            }; //get the current stimuli for the trial
+            spanHistory[fdsTrialNum-1]=startingSpan; //log the current span in an array
             idx = 0; //reset the index prior to the letter presentation
             exitLetters = 0; //reset the exit letter variable
             fdsTotalTrials = totalFdsSpanSpanTrials;
@@ -1892,8 +2358,8 @@ const before_span_span2 = {
     choices: ['Begin'],
         post_trial_gap: 500,
         on_finish: function(){
-            stimList = getStimuliSecondLetters(currentSpan); //get the current stimuli for the trial
-            spanHistory[fdsTrialNum-1]=currentSpan; //log the current span in an array
+            stimList = getStimuliSecondLetters(startingSpan);
+            spanHistory[fdsTrialNum-1]=startingSpan;
             idx = 0; //reset the index prior to the letter presentation
             exitLetters = 0; //reset the exit letter variable
         }
@@ -1942,6 +2408,7 @@ const fds_response_screen = {
             response = []; //clear the response for the next trial
             staircaseIndex += 1; //update the staircase index
             console.log(staircaseChecker);
+            spanCounter ++;
     
             jsPsych.data.addDataToLastTrial({
                 designation: 'FDS-RESPONSE',
@@ -1953,7 +2420,8 @@ const fds_response_screen = {
                 task: "spanTest",
                 block: block_type,
                 subBlock: subBlock,
-                statusMPL: statusMPL
+                statusMPL: statusMPL,
+                spanCounter: spanCounter,
             });
             console.log("accuracySpanSpan(data.answer, data.correct) is ", accuracySpanSpan(data.answer, data.correct));
             console.log("data.answer is ", curans, "and data.correct is ", corans, "and data.was_correct is ", gotItRight);
@@ -1977,6 +2445,7 @@ const fds_response_screen_span_span1 = {
             }
             response = []; //clear the response for the next trial
             staircaseIndex += 1; //update the staircase index
+            spanCounter ++;
             console.log(staircaseChecker);
     
             jsPsych.data.addDataToLastTrial({
@@ -1989,7 +2458,9 @@ const fds_response_screen_span_span1 = {
                 task: "spanTest",
                 block: block_type,
                 letterType: 2,
-                subBlock_span_span: subBlock_span_span
+                subBlock_span_span: subBlock_span_span,
+                spanCounter: spanCounter,
+                accuracySpanSpan: accuracySpanSpan(data.answer, data.correct)
             });
             console.log("accuracySpanSpan(data.answer, data.correct) is ", accuracySpanSpan(data.answer, data.correct));
             console.log("data.answer is ", curans, "and data.correct is ", corans, "and data.was_correct is ", gotItRight);
@@ -1997,7 +2468,14 @@ const fds_response_screen_span_span1 = {
 }
 const fds_response_screen_span_span2 = {
     type: 'html-keyboard-response',
-    stimulus: response_grid.replace('{instructions}', language.span_span.type_first_letters),
+    stimulus: function () {
+        let stim;
+        if (treatment == 'hard') {
+            stim = language.span_span.type_first_letters.replace('{theBlueDigits}', language.span_span.variableHard.theBlueDigits);}
+        else if (treatment == 'easy') {
+            stim = language.span_span.type_first_letters.replace('{theBlueDigits}', language.span_span.variableEasy.theBlueDigits);}
+        return response_grid.replace('{instructions}', stim);
+    },
     choices: ['Enter'],
         on_finish: function(data){
             var curans = response;
@@ -2015,6 +2493,7 @@ const fds_response_screen_span_span2 = {
             staircaseIndex += 1; //update the staircase index
             console.log(staircaseChecker);
             fdsTrialNum += 1; //add 1 to the total trial count only after the two trials
+            spanCounter ++;
     
             jsPsych.data.addDataToLastTrial({
                 designation: 'FDS-RESPONSE',
@@ -2026,6 +2505,7 @@ const fds_response_screen_span_span2 = {
                 block: block_type,
                 letterType: 1,
                 subBlock_span_span: subBlock_span_span,
+                spanCounter: spanCounter,
             });
             console.log("accuracySpanSpan(data.answer, data.correct) is ", accuracySpanSpan(data.answer, data.correct));
             console.log("data.answer is ", curans, "and data.correct is ", corans, "and data.was_correct is ", gotItRight);
@@ -2081,6 +2561,8 @@ const fdsBlockToSpanMplAndSubBlockIncrementLottery = {
         subBlock ++;
         statusMPL = "lottery";
         console.log("span_mpl, block_type is " + block_type);
+        console.log("fdsBlockToSpanMplAndSubBlockIncrementLottery is activated");
+        correct_responses = [3,1,3,1,3];
     },
 };
 const fdsBlockToSpanMplAndSubBlockIncrementMirror = {
@@ -2090,9 +2572,29 @@ const fdsBlockToSpanMplAndSubBlockIncrementMirror = {
         subBlock ++;
         statusMPL = "mirror";
         console.log("span_mpl, block_type is " + block_type);
+        correct_responses = [1,1,1,4,3];
     },
 };
 
+const blockIsExample = {
+    type: "call-function",
+    func: function() {
+        block_type = "example_span_mpl";
+        fdsTotalTrials = 1;
+        console.log("block_type is " + block_type);
+    },
+};
+const blockIsspan_mPLAndFdsTrialNumReset = {
+    type: "call-function",
+    func: function() {
+        block_type = "span_mpl";
+        fdsTrialNum = 1;
+        fdsTotalTrials = totalFdsSpanMplTrials;
+        mplCounter = mplCounter - 1; // to exclude this trial from the count of mpls that matter for data analysis
+        spanCounter = spanCounter - 1; // same reason
+        console.log("block_type is " + block_type + ", fdsTrialNum is " + fdsTrialNum);
+    },
+};
 /************* define conditional timeline elements for nback practice ************/
 
 const feedBackC = {
@@ -2938,7 +3440,153 @@ const incentives_nback_nbackVisual = {
     },
 };
 
+const calibrationDebrief = {
+    type: "html-button-response",
+    choices: [`${language.button.next}`],
+    stimulus: "",
+    on_start: function(trial) {
 
+    let actual_payment_calibration = 0;
+    actual_payment_calibration = calibrationPayment * ((maximumSpanCalibration)/10)
+    console.log(actual_payment_calibration, "is actual_payment_calibration")
+
+    // Use the calculated payments
+    trial.data = trial.data || {};
+    trial.data.payment_calibration = actual_payment_calibration;
+
+    let html;
+    html = 
+    `<h2>${language.debriefCalibration.title}</h2>
+    <p>${language.debriefCalibration.performance.replace('{maxSpan}', maximumSpanCalibration)}</p>
+    <p>${language.debriefCalibration.bonus.replace('{bonus}', calibrationPayment).replace('{maxSpan}', maximumSpanCalibration).replace('{totalBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
+    `
+    trial.stimulus = html; // set final display
+    },
+};
+
+const spanSpanDebrief = {
+    type: "html-button-response",
+    choices: [`${language.button.next}`],
+    stimulus: "",
+    on_start: function(trial) {
+
+    /******* payment for span_span *********/
+    let actual_payment_span_span;
+    const subBlockIntegerSpanSpan = getRandomInt(0, 5);
+    console.log("subBlockIntegerSpanSpan is ", subBlockIntegerSpanSpan);
+    let trialsSpanSpan = jsPsych.data.get().filterCustom(function(trial){
+        return trial.task == 'spanTest' && trial.block == 'spanSpan' && trial.subBlock_span_span == subBlockIntegerSpanSpan;
+    });
+    console.log(trialsSpanSpan, "is trialsSpanSpan");
+    console.log(trialsSpanSpan.count(), "is trialsSpanSpan.count()");
+    let trialsSpan1Letters = trialsSpanSpan.filter({letterType: 1});
+    console.log("trialsSpan1Letters is ", trialsSpan1Letters);
+    let trialsSpan2Letters = trialsSpanSpan.filter({letterType: 2});
+    console.log("trialsSpan2Letters is ", trialsSpan2Letters);
+    let accuracyLetters1 = accuracySpanSpan(trialsSpan1Letters.select('answer').values[0], trialsSpan1Letters.select('correct').values[0]);
+    console.log("trialsSpan1Letters.select('answer').values[0] is ", trialsSpan1Letters.select('answer').values[0] );
+    console.log("accuracyLetters1 is ", accuracyLetters1);
+    let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
+    console.log("accuracyLetters2 is ", accuracyLetters2);
+    actual_payment_span_span = (spanSpanPayment_hard * 0.75 * accuracyLetters1) + (spanSpanPayment_hard * 0.25 * accuracyLetters2);
+
+    // Use the calculated payments
+    trial.data = trial.data || {};
+    trial.data.payment_span_span = actual_payment_span_span;
+
+    let html;
+    html = 
+    `<h2>${language.debriefSpanSpan.title}</h2>
+    <p>${language.debriefSpanSpan.performance.replace('{blueAccuracy}', Math.round(accuracyLetters1*100*100)/100).replace('{redAccuracy}', Math.round(accuracyLetters2*100*100)/100)}</p>
+    <p>${language.debriefSpanSpan.bonus.replace('{bonus}', spanSpanPayment_hard).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)/100).replace('{redAccuracy}', Math.round(accuracyLetters2*100)/100).replace('{totalBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
+    `
+    trial.stimulus = html; // set final display
+    },
+};
+
+const feedbackExampleSpanMPL = {
+    type: "html-button-response",
+    choices: [`${language.button.next}`],
+    stimulus: "",
+    on_start: function(trial) {
+    /******* span_mpl payment *********/
+    let actual_payment_span_mpl;
+    let answerSpan;
+    let correctSpan;
+    let accuracy;
+    if (treatment == "hard"){
+    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+        return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
+    });
+    console.log("trialsSpanMPL is ", trialsSpanMpl);
+    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+    answerSpan = trialsSpanMpl.select('answer').values[0];
+    correctSpan = trialsSpanMpl.select('correct').values[0];
+    accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+    console.log("accuracy is ", accuracy);
+    actual_payment_span_mpl = spanMplPayment_hard * accuracy;
+    } else if (treatment == "easy") {
+    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+        return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
+    });
+    console.log("trialsSpanMPL is ", trialsSpanMpl);
+    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+    answerSpan = trialsSpanMpl.select('answer').values[0];
+    correctSpan = trialsSpanMpl.select('correct').values[0];
+    accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+    console.log("accuracy is ", accuracy);
+    actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+    } 
+    let bonusSpan;
+    if (treatment == "hard") {
+        bonusSpan = spanMplPayment_hard}
+    else if (treatment == "easy") {
+        bonusSpan = spanMplPayment_easy}
+    console.log("bonusSpan is " + bonusSpan);
+
+    // mpl
+    let actual_payment_mpl;
+    let selectedRow = getRandomInt(0, 24); // select one of the 25 rows
+    console.log("selectedRow is ", selectedRow);
+    let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
+        return trial.task == 'mpl' && trial.block == 'example_span_mpl';
+    });
+    console.log(selectedTrial, "is the selectedTrial for mpl payment");
+    console.log(selectedTrial.count(), "is the selectedTrial count for mpl payment (should be one)");
+    let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
+    console.log(mplType, "is the mplType for the selected trial");
+    let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
+    console.log(choices, "is the choices for the selected trial");
+    let chosenStatusExample = block_order_indicator_span_MPL == "mirror_first" ? "mirror" : "lottery";
+    actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample);
+    console.log(actual_payment_mpl)
+    let chosenLot = "";
+    if (choices[selectedRow] == "sure") { chosenLot = "<span style='color: blue'>lot B</span>"; }
+    else if (choices[selectedRow] == "lottery") { chosenLot = "<span style='color: red'>lot A</span>"; }
+    console.log("choices[selectedRow]", choices[selectedRow]);
+    console.log("chosenLot is ", chosenLot);
+
+    // Use the calculated payments
+    trial.data = trial.data || {};
+    trial.data.payment_span_mpl_exemple = actual_payment_span_mpl;
+    trial.data.payment_mpl_exemple = actual_payment_mpl;
+
+    let html;
+    html = 
+    `<h2>${language.feedbackExampleSpanMPL.title}</h2>
+    <p>${language.feedbackExampleSpanMPL.description}<p>
+    <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{correctSpan}', correctSpan).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)/100).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)/100).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
+    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl)}</p>
+    <p>${language.feedbackExampleSpanMPL.remind.replace('{frequency}', propSelecForMPL)}</p>
+     <p>${language.feedbackExampleSpanMPL.clickNext}</p>
+    `
+    trial.stimulus = html; // set final display
+    },
+};
 const incentives_span_mpl = {
     type: "html-keyboard-response",
     choices: ['Enter'],
@@ -2959,7 +3607,6 @@ const incentives_span_mpl = {
 
     /******* payment for span_span *********/
     let actual_payment_span_span;
-    if (treatment == "hard"){
         const subBlockIntegerSpanSpan = getRandomInt(0, 5);
         console.log("subBlockIntegerSpanSpan is ", subBlockIntegerSpanSpan);
         let trialsSpanSpan = jsPsych.data.get().filterCustom(function(trial){
@@ -2977,28 +3624,6 @@ const incentives_span_mpl = {
         let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
         console.log("accuracyLetters2 is ", accuracyLetters2);
         actual_payment_span_span = (spanSpanPayment_hard * 0.75 * accuracyLetters1) + (spanSpanPayment_hard * 0.25 * accuracyLetters2);
-    }
-    else if (treatment == "easy"){
-        const subBlockIntegerSpanSpan = getRandomInt(0, 5);
-        console.log("subBlockIntegerSpanSpan is ", subBlockIntegerSpanSpan);
-        let trialsSpanSpan = jsPsych.data.get().filterCustom(function(trial){
-            return trial.task == 'spanTest' && trial.block == 'spanSpan' && trial.subBlock_span_span == subBlockIntegerSpanSpan;
-        });
-        console.log(trialsSpanSpan, "is trialsSpanSpan");
-        console.log(trialsSpanSpan.count(), "is trialsSpanSpan.count()");
-        let trialsSpan1Letters = trialsSpanSpan.filter({letterType: 1});
-        console.log("trialsSpan1Letters is ", trialsSpan1Letters);
-        let trialsSpan2Letters = trialsSpanSpan.filter({letterType: 2});
-        console.log("trialsSpan2Letters is ", trialsSpan2Letters);
-        let accuracyLetters1 = accuracySpanSpan(trialsSpan1Letters.select('answer').values[0], trialsSpan1Letters.select('correct').values[0]);
-        console.log("trialsSpan1Letters.select('answer').values is ", trialsSpan1Letters.select('answer').values[0] );
-        console.log("trialsSpan2Letters.select('answer').values[0] is ", trialsSpan2Letters.select('answer').values[0] );
-        console.log("accuracyLetters1 is ", accuracyLetters1);
-        let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
-        console.log("accuracyLetters2 is ", accuracyLetters2);
-        actual_payment_span_span = (spanSpanPayment_easy * 0.75 * accuracyLetters1) + (spanSpanPayment_easy * 0.25 * accuracyLetters2);
-    }
-    console.log("actual_payement_span_span is " + actual_payment_span_span);
 
     /******* span_mpl payment *********/
     let actual_payment_span_mpl;
@@ -3070,9 +3695,9 @@ const incentives_span_mpl = {
     if (treatment == "hard"){
         if (luckyPp == 1) {
                 html = 
-            `<p>${language.debrief_incentives_span_mpl.title}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusCalibration.replace('{trainingBonus}', actual_payment_calibration)}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanSpan.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
+            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', actual_payment_calibration)}</p>
+            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', actual_payment_span_mpl + actual_payment_mpl).replace('{spanMPL}',actual_payment_span_mpl).replace('{mplBonus}', actual_payment_mpl)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span + actual_payment_calibration)}</p>
@@ -3080,9 +3705,9 @@ const incentives_span_mpl = {
         }
         else if (luckyPp != 1){
                 html = 
-            `<p>${language.debrief_incentives_span_mpl.title}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusCalibration.replace('{trainingBonus}', actual_payment_calibration)}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanSpan.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
+            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', actual_payment_calibration)}</p>
+            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', actual_payment_span_mpl)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', actual_payment_span_mpl + actual_payment_span_span + actual_payment_calibration)}</p>
@@ -3091,8 +3716,8 @@ const incentives_span_mpl = {
     } else if (treatment == "easy"){
         if (luckyPp == 1) {
             html = 
-            `<p>${language.debrief_incentives_span_mpl.title}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanSpan.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
+            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', actual_payment_span_mpl + actual_payment_mpl).replace('{spanMPL}',actual_payment_span_mpl).replace('{mplBonus}', actual_payment_mpl)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span)}</p>
@@ -3100,8 +3725,8 @@ const incentives_span_mpl = {
         }
         else if (luckyPp != 1) {
                 html = 
-            `<p>${language.debrief_incentives_span_mpl.title}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanSpan.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
+            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', actual_payment_span_mpl)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', actual_payment_span_mpl + actual_payment_span_span)}</p>
@@ -3204,26 +3829,24 @@ const staircase = {
     timeline: [setup_fds, letter_proc, fds_response_screen]
 };
 
-let timeline_fds_calibration_hard = [fdsTotalTrialsTraining_update, staircase, feedback_span, staircase_assess];
-let timeline_fds_calibration_easy = [fdsTotalTrialsTraining_update, staircase, feedback_span];
-if (treatment == "hard") {
-    timeline_fds_calibration = timeline_fds_calibration_hard;
-}
-else if (treatment == "easy") {
-    timeline_fds_calibration = timeline_fds_calibration_easy;
-}
+
 const fds_calibration = {
-    timeline: timeline_fds_calibration,
+    timeline: [fdsTotalTrialsTraining_update, staircase, feedback_span, staircase_assess],
     loop_function: function() {
         if((fdsTrialNum) == fdsTotalTrials +1) {
             if (currentSpan == 0 || currentSpan == 1) {
                 startingSpan = 1}
             else if (currentSpan >= 2) {
-                startingSpan = currentSpan -1}
+                console.log("currentSpan before updating startingSpan is " + currentSpan);
+                startingSpan = currentSpan -1;
+                console.log("startingSpan is now " + startingSpan);
+            }
             fdsTrialNum =1 ;
             idx = 0;
             exitLetters = 0;
             fdsTotalTrials = totalFdsSpanSpanTrials;
+            maximumSpanCalibration = currentSpan;
+            console.log("maximumSpanCalibration is " + maximumSpanCalibration);
 
             console.log("exiting fds_calibration, currentSpan is " + currentSpan);
             return false;
@@ -3244,7 +3867,11 @@ const fds_span_span_proc = {
             idx = 0;
             exitLetters = 0;
             fdsTotalTrials = totalFdsSpanMplTrials;
-            console.log("exiting fds_calibration, currentSpan is " + currentSpan);
+            if (treatment == "easy") {
+                startingSpan = 1;
+                currentSpan = 1;
+            }
+            console.log("exiting fds_span_span_proc, currentSpan is " + currentSpan);
             return false;
         } else {
             return true;
@@ -3252,7 +3879,30 @@ const fds_span_span_proc = {
     },
 }
 
-
+const timelineExampleSpanMPLTrialMirror= {
+    timeline : [blockIsExample, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
+    timeline_variables: example_mpl_html_array_mirror,
+}
+const timelineExampleSpanMPLTrialLottery= {
+    timeline : [blockIsExample, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
+    timeline_variables: example_mpl_html_array_lottery,
+}
+const timelineFirstInstructionsLottery = {
+    timeline: [instructionsSpanMPLLottery, comprehensionQuestionsMPLLottery, instructionsChoosingASetOfBoxes, timelineExampleSpanMPLTrialLottery],
+    conditional_function: function() { return fdsTrialNum == 1; }
+}
+const timelineFirstInstructionsMirror = {
+    timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirror, instructionsChoosingASetOfBoxes, timelineExampleSpanMPLTrialMirror],
+    conditional_function: function() { return fdsTrialNum == 1; }
+}
+const timelineSecondInstructionsLottery = {
+    timeline: [changePaymentRule, instructionsPaymentRuleLottery, comprehensionQuestionsMPLLottery],
+    conditional_function: function() { return fdsTrialNum == 1; }
+};
+const timelineSecondInstructionsMirror = {
+    timeline: [changePaymentRule, instructionsPaymentRuleMirror, comprehensionQuestionsMPLMirror],
+    conditional_function: function() { return fdsTrialNum == 1; }
+};
 const timeline_spanMPL_lottery = {
     timeline: [fdsBlockToSpanMplAndSubBlockIncrementLottery, setup_fds, letter_proc, mpl_trial, fds_response_screen, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]}],
     timeline_variables: mpl_html_array_lottery,
@@ -3268,11 +3918,15 @@ const timeline_spanMPL_mirror = {
 if (Math.random() < 0.5) {
     experimentBlocks_span_MPL = [timeline_spanMPL_lottery, timeline_spanMPL_mirror /*, timeline_spanMPL_easy_lottery, timeline_spanMPL_easy_mirror*/];
     block_order_indicator_span_MPL = "lottery_first";
+    timeline_spanMPL_lottery.timeline.splice(1, 0, timelineFirstInstructionsLottery);
+    timeline_spanMPL_mirror.timeline.splice(1, 0, timelineSecondInstructionsLottery);
     console.log(block_order_indicator_span_MPL)
     
 } else {
     experimentBlocks_span_MPL = [timeline_spanMPL_mirror, timeline_spanMPL_lottery /*, timeline_spanMPL_easy_mirror, timeline_spanMPL_easy_lottery*/];
     block_order_indicator_span_MPL = "mirror_first";
+    timeline_spanMPL_lottery.timeline.splice(1, 0, timelineSecondInstructionsLottery);
+    timeline_spanMPL_mirror.timeline.splice(1, 0, timelineFirstInstructionsLottery);
     console.log(block_order_indicator_span_MPL);
 }
 
@@ -3342,8 +3996,9 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: false}, welcome, /*prolific_id_loop,*/ overviewPage, descriptionExperimentSpanMPL, instructions_span_general, demographics_age_loop, demographics, fds_calibration, fds_span_span_proc, fdsTrialNumReset, experiment_span_MPL, incentives_span_mpl, /* 
-    descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
+timeline.push({type: "fullscreen", fullscreen_mode: false}, welcome, prolific_id_loop, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief, 
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, incentives_span_mpl, /* 
+descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl/*
     instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock, incentives_nback_nbackVisual*/);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
