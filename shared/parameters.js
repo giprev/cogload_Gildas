@@ -1,18 +1,18 @@
 const level = 3; //available levels: 0, 1, 2, 3
-const fixationDuration = 50; //500ms
-const letterDuration = 150; //1500ms
-const feedBackDuration = 100;//1000ms
+const fixationDuration = 500; //500ms
+const letterDuration = 1500; //1500ms
+const feedBackDuration = 1000;//1000ms
 const payment = 0 // payment amount for the n-back nback task
 const basePayment_hard = 7; // Payment amount: = 7 euros
 const basePayment_easy = 5; // Payment amount: = 5 euros
-const spanMplPayment_hard = 3;
-const calibrationPayment = spanMplPayment_hard /6;  // 1/6 of the MPL payment
-const spanSpanPayment_hard = spanMplPayment_hard /6
+const spanMplPayment_hard = 2;
+const calibrationPayment = spanMplPayment_hard * 0.25;  // 1/4 of the MPL payment
+const spanSpanPayment_hard = spanMplPayment_hard * 0.25;
 const spanMplPayment_easy = 1;
-const spanSpanPayment_easy = spanMplPayment_easy /6;
-const propSelecForMPL = 25; // 1 out of propSelecForMPL participants will be selected for the MPL payment
-const fds_letter_presentation = 100; //500ms
-const fds_post_trial_gap = 50; //250ms
+const spanSpanPayment_easy = spanMplPayment_hard * 0.25; // not used as it's the same as spanSpanPayment_hard
+const propSelecForMPL = 22; // 1 out of propSelecForMPL participants will be selected for the MPL payment : that makes an EV of around 1€.
+const fds_letter_presentation = 500; //500ms
+const fds_post_trial_gap = 250; //250ms
 // Change default language to French
 
 const practice_duration = 30; //= 30000; // duration of practice flanker
@@ -33,5 +33,6 @@ let totalFdsSpanMplTrials = 14;
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
 console.log("treatment is", treatment)
+const notUnderstoodPayment = (treatment === "hard") ? basePayment_hard/3 : basePayment_easy/3; // if the participant does not understand the comprehension questions, they get 1/3 of the base payment
 
 let totalFdsTrainingTrials = 12; // 12 in the main experiment // number of rounds of the calibration

@@ -103,11 +103,13 @@ const en = {
     button: {
         next: "Next",
         previous: "Previous",
-        finish: "Finish Experiment"
+        finish: "Finish Experiment",
+        close: "Close",
+        help: "Help"
     },
     experimentStop: {
         title: "Practice Session Completed",
-        message: "Unfortunately, you were unable to achieve the required accuracy of 80% in two consecutive practice blocks after multiple attempts.",
+        message: "Unfortunately, you were unable to achieve the required accuracy of 80% in two consecutive practice blocks after Multiples attempts.",
         explanation: "This indicates that the task may be too difficult at this level. The experiment will now end.",
         thankYou: "Thank you for your participation and effort.",
         contact: "If you have any questions, please contact the research team."
@@ -353,7 +355,7 @@ const en = {
         remember: "Remember: Always keep the last few letters in mind during the visual task!",
         continue: "Press any key to continue to the main experiment.",
         remindAfter3Back: {
-            0 :"To answer correctly to the next letter, you should think about the last last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
+            0:"To answer correctly to the next letter, you should think about the last last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
             1: "To answer correctly to the next letter, you should think about the last last letter <strong style='color:red;'>before the visual 2-back</strong>.",
             2: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
         },
@@ -362,7 +364,7 @@ const en = {
             1: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
         },
         remindAfter1Back: "To answer correctly to the next letter, you should think about the last letter <strong style='color:red;'>before the visual 2-back</strong>.",
-        remindBeforeHard :"Remember the following letters well to answer correctly at the first letter after the visual 2-back!",
+        remindBeforeHard:"Remember the following letters well to answer correctly at the first letter after the visual 2-back!",
         remindBefore1Back: "Remember this letter well to answer correctly at the first letter after the visual 2-back!",
     },
 
@@ -426,7 +428,7 @@ const en = {
         viewInstructions: "Next you are going to view the instructions again.",
         surveyAgain: "Then you will take the survey again.",
     },
-    demographics : {
+    demographics: {
     preamble: "<strong>Demographics</strong>",
     questions: [
         "How old are you?",
@@ -544,7 +546,7 @@ const fr = {
     },
     descriptionExperimentNback: {
         title: "Description de l'expérience",
-        twoGames: "Vous aurez deux tâches différentes à réaliser : le 2-back visuel et le n-back lettres.",
+        twoGames: "Vous aurez deux tâches différentes à réaliser: le 2-back visuel et le n-back lettres.",
         instructionsAfter: "Vous recevrez les consignes pour chaque tâche après cette page.",
         subBlockExplanation: "L'expérience se compose de 12 blocs. Un bloc comprend une tâche de 2-back visuel suivie d'une tâche de n-back lettres.",
         paymentAfter: "Pour que vous compreniez comment vous serez payé, vous recevrez les explications du paiement après les consignes.",
@@ -554,27 +556,29 @@ const fr = {
         title: "Description de l'expérience",
         threeParts: "L'expérience se déroule en <b>trois parties</b>.",
         part1: 'Dans la première partie, vous effectuerez une tâche de mémoire appelée "span de mémoire".',
-        part2: "Dans la deuxième partie, vous effectuerez une variation du span de mémoire.",
-        part3: "Dans la troisième partie, vous effectuerez le span de mémoire en combinaison avec un tâche de prise de décision.",
+        part2: "Dans la deuxième partie, vous effectuerez une variation de la tâche de span de mémoire.",
+        part3: "Dans la troisième partie, vous effectuerez la tâche de span de mémoire en combinaison avec une tâche de prise de décision.",
         payment: "Votre paiement de base est de <b>{basePayment}€</b>. Chaque partie donne lieu à un <b>paiement bonus</b> déterminé en fonction de votre performance et de vos choix.",
-        paymentAfter: "Pour que vous compreniez comment vous serez payé, vous recevrez les explications du paiement après les consignes pour chaque partie.",
+        warningComprehensionQuestions: `Avant de commencer la troisième partie, vous devrez répondre à des questions de compréhension à propos des consignes la concernant.
+        Si vous répondez incorrectement à plus d'une question sur les cinq, l'expérience s'arrêtera et vous votre paiement de base ne sera que de {notUnderstoodPayment}€, auquel vous ajouterez les bonus de la première et de la deuxième partie.`,
+        paymentAfter: "Pour que vous compreniez comment les bonus sont calculés, vous recevrez les explications des bonus après les consignes pour chaque partie.",
         instructionsAfter: "Vous recevrez les consignes de la première partie après cette page.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
     instruction_span_general:{
-        title: "Consignes pour la tâche de span (valables tout au long de l'expérience).",
+        title: "Consignes pour la tâche de span de mémoire (valables tout au long de l'expérience).",
         description: "À chaque essai, une séquence de chiffres s'affichera. Vous devrez la restituer dans le même ordre à l'aide d'un clavier à l'écran.",
-        examplePresentation: "Par exemple, si vous voyez les chiffres <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>, vous devrez répondre <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>.",
+        examplePresentation: "Par exemple, si vous voyez les chiffres <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>, vous devrez répondre <b style=\"color:green;\">1</b>, <b style=\"color:green;\">2</b>, <b style=\"color:green;\">3</b>.",
         precision: "La <b>précision</b> pour un essai est calculée comme suit: la proportion de chiffres correctement restitués dans la bonne position. Si vous restituez trop de chiffres, ils comptent comme des erreurs.",
         examplePrecision: `<ul> 
         <li>Exemple 1: si vous avez vu <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, <b style="color:blue;">3</b> 
-        et que vous répondez <b style="color:blue;">1</b>, <b style="color:blue;">3</b>,  <b style="color:blue;">2</b>, votre précision est de 1/3 = <b>33%</b>.
+        et que vous répondez <b style="color:green;">1</b>, <b style="color:red;">3</b>,  <b style="color:red;">2</b>, votre précision est de 1/3 = <b>33%</b>.
         </li>
         <li>Exemple 2: si vous avez vu <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, <b style="color:blue;">3</b> 
-        et que vous répondez <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, <b style="color:blue;">2</b>, <b style="color:blue;">3</b>, votre précision est de 2/4 = <b>50%</b>.
+        et que vous répondez <b style="color:green;">1</b>, <b style="color:green;">2</b>, <b style="color:red;">2</b>, <b style="color:red;">3</b>, votre précision est de 2/4 = <b>50%</b>.
         </li>
         <li>Exemple 3: si vous avez vu <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, <b style="color:blue;">3</b> 
-        et que vous répondez <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, votre précision est de 2/3 = <b>66%</b>.
+        et que vous répondez <b style="color:green;">1</b>, <b style="color:green;">2</b>, votre précision est de 2/3 = <b>66%</b>.
         </li>
         </ul>`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
@@ -587,16 +591,16 @@ const fr = {
         staircase: "La longueur des séquences de chiffres augmentera après une réussite (100% de précision) et diminuera après deux échecs consécutifs.",
         goal: "Votre but est d'atteindre la <b>plus longue séquence possible</b> à la fin des douzes essais ! Votre bonus dépend de votre performance.",
         incentiveRule: "Votre bonus sera de {bonus}€, <b>multiplié par la longueur</b> obtenue après la dernière séquence, divisée par 10.",
-        incentiveRuleExample: "Par exemple, si vous atteignez une longueur de 7, votre bonus sera de {bonus} x 7/10 = <b>{examplePayment}€</b>.",
+        incentiveRuleExample: "Par exemple, si vous atteignez une longueur de 7, votre bonus sera de {bonus}€ x 7/10 = <b>{examplePayment}€</b>.",
         meanDuration: "Cette partie dure environ 3 minutes.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour commencer la première partie!"
     },
     instructionsSpanSpan:{
         title: "Consignes pour la deuxième partie.",
-        description: "Dans cette partie, vous allez effectuer deux tâches de span en même temps.",
-        lettersOrder: "Vous allez d'abord mémoriser {someBlueDigits}. Puis, au lieu de {the} restituer directement, vous verrez une série de chiffres <span style='color:red'>rouges</span>. Immédiatement après vous devrez restituer les lettres <span style='color:red'>rouges</span>. Enfin vous devrez restituer {theBlueDigits}.",
+        description: "Dans cette partie, vous allez effectuer deux tâches de span de mémoire en même temps.",
+        lettersOrder: "À chaque essai, vous allez d'abord mémoriser {someBlueDigits}. Puis, au lieu de {the} restituer directement, vous verrez une série de chiffres <span style='color:red'>rouges</span>. Immédiatement après vous devrez restituer les lettres <span style='color:red'>rouges</span>. Enfin vous devrez restituer {theBlueDigits}.",
         goal: "Votre <b>priorité</b> doit être de restituer correctement les chiffres <span style='color:blue'>bleus</span>.",
-        sequenceNumber: "Vous répéterez cette séquence 6 fois.",
+        sequenceNumber: "Vous ferez 6 essais.",
         variableHard: {
             someBlueDigits: "{startingSpan} chiffres <span style='color:blue'>bleus</span>",
             theBlueDigits: "les {startingSpan} chiffres <span style='color:blue'>bleus</span>",
@@ -606,63 +610,67 @@ const fr = {
             someBlueDigits: "1 chiffre <span style='color:blue'>bleu</span>",
             theBlueDigits: "le chiffre <span style='color:blue'>bleu</span>",
             the: "le",
-        }
+        },
+        clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir le bonus de la deuxième partie !"
+
     },
     instructionsSpanSpanPayment:{
         title: "Consignes pour la deuxième partie.",
         subTitle: "Explication du bonus",
         incentives: "Votre bonus (<b>{bonus}€</b> maximum) dépend de votre performance.",
-        incentiveRule: `Votre bonus est calculé comme suit. L'ordinateur sélectionne un essai au hasard parmi les 6 essais de la partie. Votre bonus dépend de votre précision dans cet essai sélectionné au hasard, selon la formule suivante :
+        incentiveRule: `Votre bonus est calculé comme suit. L'ordinateur sélectionne un essai au hasard parmi les 6 essais de la partie. Votre bonus dépend de votre précision dans cet essai sélectionné au hasard, selon la formule suivante:
         <ul> 
         <li> <b>75%</b> du bonus dépend de votre précision pour {theBlueDigits}. </li>
         <li> <b>25%</b> du bonus dépend de votre précision pour les chiffres <span style='color:red'>rouges</span>.</li>
         </ul>`,
-        incentiveRuleExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 100% sur {theBlueDigits} mais seulement 10% sur les chiffres <span style='color:red'>rouges</span>, votre bonus sera de {bonus} x (<span style='color:blue'>0.75 * 100%</span> + <span style='color:red'>0.25 * 0.1</span>) = {examplePayment}€.",
+        incentiveRuleExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 100% sur {theBlueDigits} mais seulement 10% sur les chiffres <span style='color:red'>rouges</span>, votre bonus sera de {bonus}€ x (<span style='color:blue'>0.75 * 100%</span> + <span style='color:red'>0.25 * 10%</span>) = {examplePayment}€.",
         remember1: "Le plus important pour maximiser votre bonus est donc de restituer correctement {theBlueDigits} !",
         remember:  `<div class="important-note">
-                    💡 À retenir : Le plus important pour maximiser votre bonus est donc de restituer correctement {theBlueDigits} !
+                    💡 À retenir: Le plus important pour maximiser votre bonus est donc de restituer correctement {theBlueDigits} !
                 </div>`,
         meanDuration: "Cette partie dure environ 3 minutes.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour commencer la deuxième partie!"
     },
     instructionsThirdPart:{
         title: "Consignes pour la troisième partie.",
-        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Liste à Choix Multiple\" (LCM).",
+        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Liste à Choix Multiples\" (LCM).",
+        freqMPL: "<b>Une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LCM) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LCM !"
     },
     instructionsSpanInMPL: {
         title: "Consignes finales pour la troisième partie.",
-        subTitle: "Combinaison de la tâche de span et des Listes à Choix Multiple (LCM).",
+        subTitle: "Combinaison de la tâche de span de mémoire et des Listes à Choix Multiples (LCM).",
         MPLInSpan: "Dans la troisième partie, vous verrez <b>une série de chiffres à retenir, puis vous devrez faire vos choix pour une tâche de LCM, et enfin vous devrez restituer les chiffres.</b>",
         MPLInSpanRepeat: "Vous répéterez cela avec des séquences de chiffres et des tableaux différents.",
         priority: "Votre <b>priorité</b> doit être de restituer correctement les chiffres.",
-        incentives: "Bonus pour la tâche de span",
-        incentivesSpan: "Le <b>bonus</b> pour la tâche de span, de <b>{bonusSpan}€</b> maximum, sera calculé de manière similaire à la deuxième partie:",
+        incentives: "Bonus pour la tâche de span de mémoire",
+        incentivesSpan: "Le <b>bonus</b> pour la tâche de span de mémoire, de <b>{bonusSpan}€</b> maximum, sera calculé de manière similaire à la deuxième partie:",
         incentivesSpanDetails: `Un essai sera sélectionné au hasard parmi les essais de la troisième partie. Votre bonus dépendra de votre <b>précision</b> dans cet essai.`,
-        incentiveSpanExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 80%, votre bonus sera de {bonusSpan} x 0.8 = {examplePaymentSpan}€.",
-        randomMechanism: "Puisque le bonus est basé sur un essai tiré au hasard, veuillez traiter chaque décision comme si c’était celle qui allait être payée.",
+        incentiveSpanExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 80%, votre bonus sera de {bonusSpan}€ x 0.8 = {examplePaymentSpan}€.",
+        randomMechanism: "Puisque le bonus dépend d'un essai tiré au hasard, veuillez considérer chaque essai comme si c’était celui qui allait être payé.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour voir l'exemple final !"
     },
     feedbackExampleSpanMPL: {
         title: "Exemple de paiement type à la troisième partie.",
-        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span et de LCM.",
-        paymentSpan: "Pour le span les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}. Votre paiement est donc de <b>{bonusSpan}€ x {precision} = {paymentSpan}€</b>.",
-        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard par l'ordinateur est {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après les calculs, le paiement pour la LCM serait de <b>{paymentMPL}€</b>.",
-        remind: "N'oubliez pas que seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de MPL soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LCM.",
+        paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre paiement est donc de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard par l'ordinateur est {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LCM s’élèverait à <b>{paymentMPL}€</b>.",
+        remind: "À retenir: seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de MPL soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
     instructionsDecisionTable:{
-        title: "Consignes pour les Listes à Choix Multiple (LCM).",
+        title: "Consignes pour les Listes à Choix Multiples (LCM).",
         subTitle: "Choisir entre deux lots de boîtes",
-        description: "Dans chaque LCM, les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et le montant d'argent qu'elles contiennent.",
+        description: "Dans chaque LCM, les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et la somme d'argent qu'elles contiennent.",
         exampleAbove: "Dans l'exemple ci-dessus, le <span style='color:red'>lot A</span> est composé de 50 boîtes contenant 16€ et 50 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant 4€.",
         exampleBelow: "Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est composé de 25 boîtes contenant -12€ et 75 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant -3€.",
-        clickToChoose: `Votre tâche est de cliquer sur le tableau pour sélectionner le lot que vous préférez que l'ordinateur choisisse pour déterminer votre bonus. Le lot sélectionné est en <span style='background-color:#cce'>bleu</span>.
-        Dans l'exemple ci-dessous, vous avez sélectionné le <span style='color:blue'>lot A</span> et vous serez donc payé en fonction de ce lot.`,
+        clickToChoose: `Vous devez cliquer sur le tableau pour choisir le lot que l’ordinateur sélectionnera afin de calculer votre bonus. Le lot sélectionné est en <span style='background-color:#cce'>bleu</span>.
+        Dans l'exemple ci-dessous, vous avez sélectionné le <span style='color:red'>lot A</span> et vous serez donc payé en fonction de ce lot.`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir la règle de paiement!"
     },
     instructionsBoxesWithMoney:{
-        title: "Consignes pour les Listes à Choix Multiple (LCM).",
+        title: "Consignes pour les Listes à Choix Multiples (LCM).",
         subTitle: "Les boîtes contenant de l'argent",
         initialSum: "Au début de chaque LCM, vous recevez une somme d'argent (entre 5 et 30€).",
         chooseSet: "Vous devez ensuite choisir un lot de boîtes que vous voudriez que l'ordinateur sélectionne.",
@@ -671,7 +679,7 @@ const fr = {
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir comment sélectionner les lots !"
     },
     // instructionsRandomBox:{
-    //     title: "Consignes pour les Listes à Choix Multiple (LCM).",
+    //     title: "Consignes pour les Listes à Choix Multiples (LCM).",
     //     subTitle: "Règle de paiement: une boîte au hasard.",
     //     selectABox: "Après que vous ayez choisi un lot, l'ordinateur sélectionne une boîte au hasard dans ce lot et vous recevez l'argent qui est à l'intérieur de cette boîte.",
     //     ifNegative: "Si le montant est négatif, il sera déduit de la somme d'argent que vous avez reçue. S'il est positif il est ajouté.",
@@ -680,16 +688,16 @@ const fr = {
     //     riskExplanation: "Cela signifie que le lot <span style='color:red'>A</span> contient plus de boîtes avec des montants d'argent très élevés ou très faibles"
     // },
     instructionsPaymentRuleMirror:{
-        title: "Consignes pour les Listes à Choix Multiple (LCM).",
+        title: "Consignes pour les Listes à Choix Multiples (LCM).",
         subTitle: "Règle de paiement: la boîte moyenne.",
-        paymentRule:`Votre <b>bonus</b> pour chaque LCM est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenu dans les boîtes du lot choisi.
+        paymentRule:`Votre bonus pour une LCM est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenue dans les boîtes du lot choisi.
         Cela veut dire qu'il va additionner la somme d'argent de toutes les boîtes du lot, puis va la diviser par 100. 
-        Si cette quantité est positive, il <b>l'ajoutera</b> à votre somme initiale d'argent, si elle est négative il la <b>retirera</b>.`,
-        example1: `Votre bonus pour les LCM est calculé comme suit:, le <span style='color:red'>lot A</span> est sélectionné. `,
+        Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
+        example1: `Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est sélectionné. `,
         example1Payment: `
         <ul>
-        <li>Le lot est composé de 100 boîtes en tout, 50 contiennent 16€ et 50 0€. L'ordinateur calcule la moyenne: <span style='color:green'>(50€ * 50 + 0€ * 50)/100 = 8€</span>. Le résultat est ajouté à votre somme d'argent initiale.</li>
-        <li>Pour vous aider à mieux comprendre les différentes résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
+        <li>Le lot est composé de 100 boîtes en tout, 50 contiennent 16€ et 50 contiennent 0€. L'ordinateur calcule la moyenne: <span style='color:green'>(50€ * 50 + 0€ * 50)/100 = 8€</span>. Le résultat est ajouté à votre somme d'argent initiale.</li>
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['8€', '8€'], 10)}
         </ul></li>
@@ -699,24 +707,25 @@ const fr = {
         example2Payment: `
         <ul>
         <li>Le lot est composé de 100 boîtes en tout, toutes contiennent -6€. L'ordinateur calcule la moyenne: <span style='color:green'>(-6€ * 100)/100 = -6€</span>. Le résultat est retiré de votre somme initiale d'argent.</li>
-        <li>Pour vous aider à mieux comprendre les différentes résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
-        <li>Si le <span style='color:red'>lot A</span> avait été sélectionné,  <span style='color:green'>(-8€*50 + 0€*50)/100 = -4€</span> aurait été retirés de votre somme initiale d'argent.</li>
+        <li>Si le <span style='color:red'>lot A</span> avait été sélectionné,  <span style='color:green'>(-8€*50 + 0€*50)/100 = -4€</span> auraient été retirés de votre somme initiale d'argent.</li>
         </ul>`,
+        remindNotEveryone: "Seulement une personne sur {frequency} est sélectionnée pour qu'un de ses choix soit réellement payé.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension!"
     },
     instructionsPaymentRuleRandomBox:{
-        title: "Consignes pour les Listes à Choix Multiple (LCM).",
+        title: "Consignes pour les Listes à Choix Multiples (LCM).",
         subTitle: "Règle de paiement: une boîte au hasard.",
-        paymentRule: `Votre bonus pour chaque LCM est calculé comme suit : l'ordinateur choisit <b>une boîte au hasard</b> parmi les 100 boîtes du lot que vous avez choisi. 
-        Si cette quantité est positive, il <b>l'ajoutera</b> à votre somme initiale d'argent, si elle est négative il la <b>retirera</b>.`,
+        paymentRule: `Votre bonus pour une LCM est calculé comme suit: l'ordinateur choisit <b>une boîte au hasard</b> parmi les 100 boîtes du lot que vous avez choisi.
+        Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
         example1: `Dans l'exemple ci-dessous, vous avez choisi le <span style='color:red'>lot A</span>.`,
         example1Payment: `
-        <div><ul> 
+        <div><ul>
         <li>Le lot se compose de 50 boîtes contenant 16€, et 50 boîtes contenant 0€. Il y a donc une probabilité de 50% que <span style='color: green'>16€</span> soient ajoutés à votre somme initiale d'argent, et une probabilité de 50% que <span style='color: green'>0€</span> soit ajouté.</li>
-        <li>Pour vous aider à mieux comprendre les différentes résultats, voici 10 simulations de boîte tirée au hasard pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de boîte tirée au hasard pour la lotterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['16€', '0€'], 10)}
         </ul></li>
@@ -725,18 +734,19 @@ const fr = {
         example2: `Dans l'exemple ci-dessous, vous avez choisi le <span style='color:blue'>lot B</span>.`,
         example2Payment: `
         <div><ul> 
-        <li>Le lot se compose de 100 boîtes, toutes contenant -6€. Donc <span style='color: green'>6€</span> auraient été retirés à votre somme initiale d'argent pour sûr.</li>
-        <li>Pour vous aider à mieux comprendre les différentes résultats, voici 10 simulations de boîte tirées au hasard pour la lotterie sélectionnée:
+        <li>Le lot se compose de 100 boîtes, toutes contenant -6€. Donc <span style='color: green'>6€</span> sont retirés de votre somme initiale d'argent pour sûr.</li>
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de boîte tirées au hasard pour la lotterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
         <li>Si vous aviez choisi le <span style='color:red'>lot A</span>, comme il y a 50 boîtes contenant -8€, et 50 boîtes contenant 0€, il y aurait eu une probabilité de 50% que <span style='color: green'>8€</span> soient retirés de votre somme initiale d'argent, et une probabilité de 50% que <span style='color: green'>0€</span> soit ajouté.</li>
         </ul></div> `,
+        remindNotEveryone: "Seulement une personne sur {frequency} est sélectionnée pour qu'un de ses choix soit réellement payé.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension!"
 
     },
     instructionsChoosingASetOfBoxes: {
-        title: "Consignes pour les Listes à Choix Multiple (LCM).",
+        title: "Consignes pour les Listes à Choix Multiples (LCM).",
         subTitle: "Sélectionner un lot de boîtes",
         description: `Dans la troisième partie, vous devez choisir entre différentes versions du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>. Chaque ligne du tableau présente une version différente de ces lots.`,
         example1: ` 
@@ -746,24 +756,33 @@ const fr = {
         Les lignes suivantes présentent d'autres versions du <span style='color:blue'>lot B</span>.`,
         chooseSet: "Vous ferez un choix à chaque ligne en cliquant sur le tableau. Le lot sélectionné à chaque ligne est en <span style='background-color:#cce'>bleu</span>.",
         example2: `Dans l'exemple ci-dessus, vous sélectionnez le <span style='color:red'>lot A</span> dans les versions 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les versions 8, 9 et 10.`,
-        pickOneRow: `À la fin de l'expérience, l'ordinateur sélectionnera au hasard une ligne du tableau 
+        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau 
         (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé en fonction du lot que vous aurez sélectionné pour cette ligne. 
         Vous devez donc choisir chaque ligne comme si c'était celle qui allait être payée.`,
         computerOnlyOneChoice: `L'ordinateur n'autorise à changer du <span style='color:red'>lot A</span> au <span style='color:blue'>lot B</span> qu'une seule fois dans le tableau.
         Quand vous êtes sûr de votre choix, vous pouvez valider votre saisie avec le bouton "Suivant!"`,
         severalTables: "Plusieurs tableaux",
         severalTablesDescription: `Vous effectuerez cette tâche plusieurs fois pendant la troisième partie de l'expérience.
-        Les tableaux varient dans leur contenu: les lignes et le nombre la répartition des boîtes dans les lots.`,
-        incentivesMPL: `À la fin de l'expérience, l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
-        puis déterminera votre paiement <b>selon votre choix pour cette ligne.</b>.
+        Les tableaux varient dans leur contenu: les lignes et la répartition des boîtes dans les lots.`,
+        incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné (vous avez une chance sur 22), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
+        puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.
         Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         clickNext: "Cliquez sur <strong>Suivant</strong> découvrir les dernières consignes avant de commencer !",
     },
-
-    comprehensionMPLIntro: "Avant de commencer l’expérience, vous devez répondre correctement à quelques questions de compréhension.",
+    comprehensionMPLIntro: "Questions de compréhension",
+    comprehensionMPLExplanation: ` Si vous ne répondez pas correctement à au moins 4 questions, 
+    l'expérience se terminera et vous serez payé {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents. 
+    Vous pouvez cliquer sur le bouton {buttonHelp} pour afficher les consignes.`,
+    comprehensionFailure:{
+        title: "Fin de l'expérience",
+        description: `Malheureusement, vous n'avez pas répondu correctement aux questions de compréhension.
+        L'expérience se termine ici. Vous serez payé {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
+        thanks: "Merci beaucoup pour votre participation!",
+        clickNext: "Cliquez sur <strong>Suivant</strong> terminer l'expérience.",
+    },
     comprehensionQMPL: {
         q1: {
-            prompt: "Supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus. Quelle est la probabilité que exactement 16€ soit ajoutés à votre somme initiale d'argent ?",
+            prompt: "Supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus. Vous êtes sélectionné pour que ce choix soit payé. Quelle est la probabilité que exactement 20€ soit ajoutés à votre somme initiale d'argent ?",
             options: [
                 "0 sur 100 (0%)",
                 "25 sur 100 (25%)",
@@ -790,7 +809,7 @@ const fr = {
             ],
         },
         q4: {
-            prompt: "Quelle est la probabilité que exactement 8€ soit ajoutés à votre somme initiale d'argent ?",
+            prompt: "Quelle est la probabilité que exactement 10€ soit ajoutés à votre somme initiale d'argent ?",
             options: [
                 "0 sur 100 (0%)",
                 "25 sur 100 (25%)",
@@ -799,11 +818,12 @@ const fr = {
             ],
         },
         q5: {
-            prompt: "Supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. Si l'on fait de nouveau des simulations comme lors des consignes, quel(s) résultat(s) pourriez-vous obtenir ?",
+            prompt: `Supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
+            Vous êtes sélectionné pour que ce choix soit payé. Quelle(s) somme(s) d'argent pourrai(en)t être ajoutée(s) à ou retirée(s) de votre somme initiale d'argent ?`,
             options: [
                 "0€",
-                "-8€",
                 "-6€",
+                "-8€",
                 "-100€",
             ],
         },
@@ -812,12 +832,12 @@ const fr = {
     debriefCalibration:{
         title: "Fin de la première partie",
         performance: "La longueur finale (après la prise en compte de votre succès ou échel final) est de {maxSpan}.",
-        bonus: "Votre bonus pour cette partie est donc de {bonus} x {maxSpan}/10 = <b>{totalBonus}€</b>.",
+        bonus: "Votre bonus pour cette partie est donc de {bonus}€ x {maxSpan}/10 = <b>{totalBonus}€</b>.",
     },
     debriefSpanSpan:{
         title: "Fin de la deuxième partie",
-        performance: "Votre précision pour les chiffres <span style='color:blue'>bleus</span> est de {blueAccuracy}/100. Votre précision pour les chiffres <span style='color:red'>rouges</span> est de {redAccuracy}%.",
-        bonus: "Votre bonus pour cette partie est donc de {bonus} x (0.75 x {blueAccuracy} + 0.25 x {redAccuracy}) = {totalBonus}€.",
+        performance: "Dans le bloc sélectionné, votre précision pour les chiffres <span style='color:blue'>bleus</span> est de {blueAccuracy}%, et votre précision pour les chiffres <span style='color:red'>rouges</span> est de {redAccuracy}%.",
+        bonus: "Votre bonus pour cette partie est donc de {bonus}€ x (0.75 x {blueAccuracy}% + 0.25 x {redAccuracy}%) = <b>{totalBonus}€</b>.",
     },
     instructions0back: {
         letter: "Dans cette tâche, des <strong>lettres</strong> apparaîtront à l'écran consécutivement.",
@@ -892,7 +912,9 @@ const fr = {
     button: {
         next: "Suivant",
         previous: "Précédent",
-        finish: "Terminer l'expérience"
+        finish: "Terminer l'expérience",
+        close: "Fermer",
+        help: "Afficher les consignes"
     },
     experimentStop: {
         title: "Session d'entraînement terminée",
@@ -916,25 +938,25 @@ const fr = {
     },
     task1back: {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
-        remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
+        remember1: "Rappelez-vous: appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que la <strong style='color:red'>précédente</strong></strong>.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
         press: "Appuyez sur n'importe quelle touche pour continuer.",
     },
     task2back: {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
-        remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>deux</strong> lettres.",
+        remember1: "Rappelez-vous: appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>deux</strong> lettres.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
         press: "Appuyez sur n'importe quelle touche pour pour continuer.",
     },
     task3back: {
         start: "La tâche commence maintenant. À partir de maintenant, vous ne recevrez plus de feedback.",
-        remember1: "Rappelez-vous : appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>trois</strong> lettres.",
+        remember1: "Rappelez-vous: appuyez sur la touche <strong>'J'</strong> si la lettre à l'écran est la même que celle d'il y a <strong style='color:red'>trois</strong> lettres.",
         remember2: "Sinon, appuyez sur la touche <strong>'F'</strong>.",
         press: "Appuyez sur n'importe quelle touche pour pour continuer.",
     },
     parameters: {
-        subject: "Numéro du Sujet :",
-        session: "Numéro de Session :"
+        subject: "Numéro du Sujet:",
+        session: "Numéro de Session:"
     },
     startWarning: {
         startSubject: "Vous êtes sur le point de commencer le jeu avec le <strong>Numéro de Sujet ",
@@ -943,13 +965,13 @@ const fr = {
         goBackButton: "Modifier les paramètres"
     },
     incentives: {
-        selectedBlock: "Le bloc sélectionné pour le paiement était le bloc numéro ${subBlockInteger} :",
+        selectedBlock: "Le bloc sélectionné pour le paiement était le bloc numéro ${subBlockInteger}:",
         accuracies: "Votre précision dans ce bloc était de ${percentPostVisual}% pour ${len}essais suivant le 2-back visuel, ${percentVN}% pour le 2-back visuel, ${percentN}% pour le ${n}-back lettres.",
-        visualDetails: "2-back visuel essais totaux : ${totalTrialsVN}, essais corrects : ${corTrialsVN}.",
-        letterDetails: "${N}-back lettres essais totaux : ${totalTrialsN}, essais corrects : ${corTrialsN}.",
-        postVisualDetails: "${N-lettres} après le 2-back visuel : ${postVisualTrials}, essais corrects : ${corPostVisualTrials}.",
-        paymentExplanation: "Votre paiement est basé sur votre performance :\n- 50% sur les essais après le 2-back visuel (${accuracyPostVisual})\n- 25% sur le 2-back visuel (${accuracyVN})\n- 25% sur le n-back lettres (${accuracyN})",
-        totalPayment: "Votre bonus total sera de : ${totalPayment}€",
+        visualDetails: "2-back visuel essais totaux: ${totalTrialsVN}, essais corrects: ${corTrialsVN}.",
+        letterDetails: "${N}-back lettres essais totaux: ${totalTrialsN}, essais corrects: ${corTrialsN}.",
+        postVisualDetails: "${N-lettres} après le 2-back visuel: ${postVisualTrials}, essais corrects: ${corPostVisualTrials}.",
+        paymentExplanation: "Votre paiement est basé sur votre performance:\n- 50% sur les essais après le 2-back visuel (${accuracyPostVisual})\n- 25% sur le 2-back visuel (${accuracyVN})\n- 25% sur le n-back lettres (${accuracyN})",
+        totalPayment: "Votre bonus total sera de: ${totalPayment}€",
         thankYou: "Merci de votre participation à cette expérience !",
         redirect: "",
         continue: "Appuyez sur Entrée pour continuer"
@@ -958,8 +980,9 @@ const fr = {
         title: "Changement de règles",
         ruleTo1Back: "Attention, vous passez maintenant en 1-back lettre (le 2-back visuel reste le même)!",
         ruleTo3Back: "Attention, vous passez maintenant en 3-back lettre (le 2-back visuel reste le même)!",
-        paymentRuleChange: "Attention, les règles de paiement changent !",
-        pressKey: "Appuyez sur n'importe quelle touche pour continuer."
+        paymentRuleChange: "Attention, la règle de paiement change !",
+        paymentRuleChange2: "À partir de maintenant, la règle de paiement pour les Listes à Choix Multiples (LCM) va changer. Si l'ordinateur choisit un essai dans les essais suivants, il <b>vous paiera avec la nouvelle règle</b>, qui va vous être présentée.",
+        pressKey: "Appuyez sur n'importe quelle touche pour découvrir la nouvelle règle de paiement."
     },
     paymentExplanation1Back: {
         title: "Informations sur le paiement",
@@ -968,7 +991,7 @@ const fr = {
         score: `
         <div class="payment-info">
              <div class="payment-illustration">
-                <h3>Fonctionnement :</h3>
+                <h3>Fonctionnement:</h3>
                 <div class="nback-sequence" style="position: relative;">
                     <div class="nback-box"><span style="float: right;">... A Q L K L <span class="highlight">M</span></span><br><span style="font-size:0.9em;">(1-back lettres)</span></div>
                     <div class="nback-box visual-nback-box" id="visual-nback-box">
@@ -987,7 +1010,7 @@ const fr = {
                 </div>
                 <br><br>
                 <p>L'expérience se compose de 12 blocs. Un bloc comprend une tâche de 2-back visuel suivie d'une tâche de 1-back lettres.</p>
-                <p>À la fin de l'expérience, un bloc sera sélectionné aléatoirement pour le calcul de votre bonus:</p>
+                <p>À la fin de l'expérience, si vous êtes sélectionné, un bloc sera sélectionné aléatoirement pour le calcul de votre bonus:</p>
 
                 <ol>
                     <li><strong><span style="color:red;">50 %</span> de votre bonus</strong> dépend de votre précision lors de l'essai immédiatement après le 2-back visuel du bloc sélectionné.
@@ -1002,17 +1025,17 @@ const fr = {
                 </div>
                 --->
                 
-                <p><strong>Exemple :</strong> Si vous obtenez :<br>
+                <p><strong>Exemple:</strong> Si vous obtenez:<br>
                 - 100 % de précision dans l'essai après le 2-back visuel<br>
                 - 50 % de précision dans le 2-back visuel<br>
                 - 50 % de précision dans le 1-back de lettres<br>
-                Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
+                Votre bonus serait: __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
                 <br>
                 <div class="important-note">
-                    💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si la première lettre du 1-back lettres correspond à la dernière lettre que vous avez vue avant le 2-back visuel !
+                    💡 À retenir: l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si la première lettre du 1-back lettres correspond à la dernière lettre que vous avez vue avant le 2-back visuel !
                 </div>
                 <div style="margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-left: 3px solid #dee2e6; font-size: 0.85em; color: #6c757d;">
-                    <strong>Note technique :</strong> Le dernier bloc ne contient que trois essais du 1-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
+                    <strong>Note technique:</strong> Le dernier bloc ne contient que trois essais du 1-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
                 </div>
             </div>
         </div>`,
@@ -1026,7 +1049,7 @@ const fr = {
         score: `
         <div class="payment-info">
             <div class="payment-illustration">
-                <h3>Fonctionnement :</h3>
+                <h3>Fonctionnement:</h3>
                 <div class="nback-sequence" style="position: relative;">
                     <div class="nback-box"><span style="float: right;">... A Q M K<span class="highlight">M L</span></span><br><span style="font-size:0.9em;">(2-back lettres)</span></div>
                     <div class="nback-box visual-nback-box" id="visual-nback-box">
@@ -1058,17 +1081,17 @@ const fr = {
                     Bonus final = __PAYMENT__€ × (0,5 × précision_après_visuel + 0,25 × précision_visuel + 0,25 × précision_lettres)
                 </div>
                 --->
-                <p><strong>Exemple :</strong> Si vous obtenez :<br>
+                <p><strong>Exemple:</strong> Si vous obtenez:<br>
                 - 100 % de précision dans les deux essais après le 2-back visuel<br>
                 - 50 % de précision dans le 2-back visuel<br>
                 - 50 % de précision dans le 2-back de lettres<br>
-                Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
+                Votre bonus serait: __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
                 <br>    
                 <div class="important-note">
-                    💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si les deux premières lettres du 2-back lettres correspondent respectivement aux deux dernières lettres que vous avez vues avant le 2-back visuel !
+                    💡 À retenir: l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si les deux premières lettres du 2-back lettres correspondent respectivement aux deux dernières lettres que vous avez vues avant le 2-back visuel !
                 </div>
                 <div style="margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-left: 3px solid #dee2e6; font-size: 0.85em; color: #6c757d;">
-                    <strong>Note technique :</strong> Le dernier bloc ne contient que trois essais de 2-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
+                    <strong>Note technique:</strong> Le dernier bloc ne contient que trois essais de 2-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
                 </div>
             </div>
             </div>`,
@@ -1082,7 +1105,7 @@ const fr = {
         score: `
         <div class="payment-info">
             <div class="payment-illustration">
-                <h3>Fonctionnement :</h3>
+                <h3>Fonctionnement:</h3>
                 <div class="nback-sequence" style="position: relative;">
                     <div class="nback-box"><span style="float: right;">... A Q M <span class="highlight">M K L</span></span><br><span style="font-size:0.9em;">(3-back lettres)</span></div>
                     <div class="nback-box visual-nback-box" id="visual-nback-box">
@@ -1117,18 +1140,18 @@ const fr = {
                     Bonus final = __PAYMENT__€ × (0,5 × précision_après_visuel + 0,25 × précision_visuel + 0,25 × précision_lettres)
                 </div>
                 --->
-                <p><strong>Exemple :</strong> Si vous obtenez :<br>
+                <p><strong>Exemple:</strong> Si vous obtenez:<br>
                 - 100 % de précision dans les trois essais après le 2-back visuel<br>
                 - 50 % de précision dans le 2-back visuel<br>
                 - 50 % de précision dans le 3-back de lettres<br>
-                Votre bonus serait : __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
+                Votre bonus serait: __PAYMENT__€ × (0,5 × 1.0 + 0,25 × 0,5 + 0,25 × 0,5) = __PAYMENT__€ × 0,75</p>
 
                 <br>    
                 <div class="important-note">
-                    💡 À retenir : l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si les trois premières lettres du 3-back lettres correspondent respectivement aux trois dernières lettres que vous avez vues avant le 2-back visuel !
+                    💡 À retenir: l’élément le plus important pour maximiser votre bonus est d’identifier, après chaque 2-back visuel, si les trois premières lettres du 3-back lettres correspondent respectivement aux trois dernières lettres que vous avez vues avant le 2-back visuel !
                 </div>
                 <div style="margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-left: 3px solid #dee2e6; font-size: 0.85em; color: #6c757d;">
-                    <strong>Note technique :</strong> Le dernier bloc ne contient que trois essais de 3-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
+                    <strong>Note technique:</strong> Le dernier bloc ne contient que trois essais de 3-back lettres. S'il est sélectionné au hasard pour le paiement, la portion de 25% du bonus sera calculée en utilisant ces trois essais plus les dix lettres précédant le premier bloc.
                 </div>
             </div>
             </div>`,
@@ -1141,8 +1164,8 @@ const fr = {
     },
     overallTrainingIntro: {
         title: "Entraînement Complet",
-        description1Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de 2-back visuel et de 1-back lettres.",
-        description3Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle : alterner entre les tâches de 2-back visuel et de 3-back lettres.",
+        description1Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle: alterner entre les tâches de 2-back visuel et de 1-back lettres.",
+        description3Back: "Maintenant vous allez pratiquer le fonctionnement de l'expérience réelle: alterner entre les tâches de 2-back visuel et de 3-back lettres.",
         structure1Back: "Vous commencerez par 10 essais de 1-back lettres, puis ferez un bloc: une tâche de 2-back visuel, et une tâche de 1-back lettres.",
         structure3Back: "Vous commencerez par 10 essais de 3-back lettres, puis ferez un bloc: une tâche de 2-back visuel, et une tâche de 3-back lettres.",
         importance: "Cet entraînement vous aidera à comprendre la structure complète d'un bloc et le fonctionnement du système de notation.",
@@ -1153,7 +1176,7 @@ const fr = {
     },
     overallTrainingFeedback: {
         title: "Entraînement Terminé - Démonstration du système de points",
-        performance: "Voici comment votre performance serait notée si c'était un vrai bloc et qu'il était sélectionné pour le paiement (au hasard) :",
+        performance: "Voici comment votre performance serait notée si c'était un vrai bloc et qu'il était sélectionné pour le paiement (au hasard):",
         nbackLetter1Back: "1-back lettres après le 2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
         nbackLetter3Back: "3-back lettres après le 2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
         visualNback: "2-back visuel: {accuracy}% de précision ({correct}/{total} essais)",
@@ -1161,11 +1184,11 @@ const fr = {
         explain1Back: "La dernière lettre avant le 2-back visuel était K, et la première après était C. Vous deviez donc appuyer sur la touche 'F' lorsque vous voyiez le C après le 2-back visuel (C différent de K).",
         explain2Back: "Les deux dernières lettres avant le 2-back visuel étaient A puis P, et les deux premières après étaient P puis K. Vous deviez donc appuyer sur la touche 'F' lorsque vous voyiez le P et le K après le 2-back visuel (P différent de A et K de P).",
         explain3Back: "Les trois dernières lettres avant le 2-back visuel étaient B puis A puis A, et les trois premières après étaient B puis A puis P. Vous deviez donc appuyer sur la touche 'J' lorsque vous voyiez B et A et sur la touche 'F' lorsque vous voyiez P après le 2-back visuel (P différent de A).",
-        keyImportanceHard: "💡 Point clé : Les {level} premières lettres immédiatement après le 2-back visuel valent 50% de votre bonus !",
-        keyImportanceEasy: "💡 Point clé : La dernière lettre immédiatement après le 2-back visuel vaut 50% de votre bonus !",
-        calculation: "Calcul du bonus : €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
-        rememberHard: "À retenir : Gardez toujours en mémoire les {level} dernières lettres pendant le 2-back visuel!",
-        rememberEasy: "À retenir : Gardez toujours en mémoire la dernière lettre pendant le 2-back visuel!",
+        keyImportanceHard: "💡 Point clé: Les {level} premières lettres immédiatement après le 2-back visuel valent 50% de votre bonus !",
+        keyImportanceEasy: "💡 Point clé: La dernière lettre immédiatement après le 2-back visuel vaut 50% de votre bonus !",
+        calculation: "Calcul du bonus: €{payment} × (0.5 × {afterVisualAcc} + 0.25 × {visualAcc} + 0.25 × {letterAcc}) = €{totalBonus}",
+        rememberHard: "À retenir: Gardez toujours en mémoire les {level} dernières lettres pendant le 2-back visuel!",
+        rememberEasy: "À retenir: Gardez toujours en mémoire la dernière lettre pendant le 2-back visuel!",
         continue: "Appuyez sur n'importe quelle touche pour continuer vers l'expérience principale.",
         remindAfter3Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre trois positions en arrière, <strong style='color:red;'>avant le 2-back visuel</strong>.",
         remindAfter2Back: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la lettre deux positions en arrière, <strong style='color:red;'>avant le 2-back visuel</strong>.",
@@ -1173,7 +1196,7 @@ const fr = {
         remindBeforeHard: "Retenez bien les lettres suivantes pour répondre aux premiers essais après le 2-back visuel!",
         remindBefore1Back: "Retenez bien la lettre suivante pour répondre aux premiers essais après le 2-back visuel!",
         remindAfter3Back: {
-            0 :"Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
+            0:"Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
             1: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de l'avant dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
             2: "Pour répondre correctement à la prochaine lettre, vous devez vous souvenir de la dernière lettre <strong style='color:red;'>avant le 2-back visuel</strong>.",
         },
@@ -1246,7 +1269,7 @@ const fr = {
         questions: [
             "Quel âge avez-vous?",
             "Quel est votre genre?",
-            "Quel est votre niveau d'études : (si vous êtes étudiant·e, choisissez le diplôme en cours)?",
+            "Quel est votre niveau d'études: (si vous êtes étudiant·e, choisissez le diplôme en cours)?",
             "Quelle est votre situation professionnelle?",
             "Quelle est la fourchette de votre revenu mensuel?",
             "Globalement, à quel point êtes-vous satisfait·e de votre vie de nos jours?"
@@ -1270,13 +1293,13 @@ const fr = {
             ],
             education: [
                 "Moins qu'un diplôme d'études secondaires",
-                "Diplôme d'études secondaires ou équivalent (ex. : BEP/CAP)",
+                "Diplôme d'études secondaires ou équivalent (ex.: BEP/CAP)",
                 "Quelques études supérieures, sans diplôme",
-                "Diplôme d'études tertiaires (ex. : BTS, DUT)",
+                "Diplôme d'études tertiaires (ex.: BTS, DUT)",
                 "Licence",
                 "Master",
                 "Diplôme d'ingénieur / diplôme professionnel",
-                "Doctorat (ex. : Thèse / PhD)",
+                "Doctorat (ex.: Thèse / PhD)",
                 "Préfère ne pas répondre"
             ],
             work: [
@@ -1360,17 +1383,19 @@ const fr = {
     }
     },
     span_span: {
-        first_letters_priority: "Vous allez voir les chiffres <span style='color: blue'>bleus</span>. Retenez les en priorité, même pendant la présentation des chiffres <span style='color: red'>rouges</span>.",
+        first_letters_priority: "Vous allez voir {theBlueDigits}. Retenez {the} en <b>priorité</b>, même pendant la présentation des chiffres <span style='color: red'>rouges</span>.",
         first_letters_give_back: "Après avoir vu {theBlueDigits}, vous verrez les chiffres <span style='color: red'>rouges</span>. Puis vous devrez redonner les chiffres <span style='color: red'>rouges</span>. Après cela vous devrez redonner {theBlueDigits}.",
-        second_letters_priority: "Vous allez voir les chiffres <span style='color: red'>rouges</span>. Cependant, gardez en tête les chiffres <span style='color: blue'>bleus</span>.",
-        second_letters_give_back: "Après les avoir vus les chiffres <span style='color: red'>rouges</span>, vous devrez les redonner immédiatement. Après cela vous devrez redonner les chiffres bleus.",
+        second_letters_priority: "Vous allez voir les chiffres <span style='color: red'>rouges</span>. Cependant, gardez en tête {theBlueDigits}.",
+        second_letters_give_back: "Après les avoir vus les chiffres <span style='color: red'>rouges</span>, vous devrez les redonner immédiatement. Après cela vous devrez redonner {theBlueDigits}.",
         type_second_letters: "Restituez ci-dessous les chiffres <span style='color: red'>rouges</span>, puis appuyez sur Entrée.",
         type_first_letters: "Restituez ci-dessous {theBlueDigits}, puis appuyez sur Entrée.",
         variableHard: {
             theBlueDigits: "les chiffres <span style='color:blue'>bleus</span>",
+            the: "les",
         },
         variableEasy: {
             theBlueDigits: "le chiffre <span style='color:blue'>bleu</span>",
+            the: "le",
         }
     },
     fds: {
@@ -1382,9 +1407,9 @@ const fr = {
         thanks: "Merci d'avoir participé à cette expérience !",
         calibrationPayment: "Votre bonus pour la première partie de l'expérience est de {trainingBonus}€.",
         spanSpanPayment_hard: "Votre bonus pour la deuxième partie de l'expérience est de {spanSpanBonus}€.",
-        selectedForMPL: "Vous avez été sélectionné·e pour qu'une lotterie soit tirée parmis celles auxquelles vous avez répondues.",
-        notSelectedForMPL: "Vous n'avez pas été sélectionné·e pour qu'une lotterie soit tirée parmis celles auxquelles vous avez répondues.",
-        bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est donc de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour la lotterie.",
+        selectedForMPL: "Vous avez été sélectionné pour qu'un de vos choix aux tâches de décisions (LCM) soit payé.",
+        notSelectedForMPL: "Vous n'avez pas été sélectionné pour qu'un de vos choix aux tâches de décisions (LCM) soit payé.",
+        bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est donc de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour le choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
         totalBonus: "Votre bonus total est donc de {totalBonus}€.",
         thanksAgain: "Merci encore pour votre participation ! Vous pouvez appuyer sur Entrée pour quitter l'expérience.",

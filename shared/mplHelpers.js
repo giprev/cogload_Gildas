@@ -1,6 +1,6 @@
-let sure_payments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
-let Y_valuesMPL = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
-
+const sure_payments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+const Y_valuesMPL = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
+let helpPageCounter = 0;
 function mplGenerator(y, X, condition) {
     let sign = "";
     if (X == "G") {
@@ -351,8 +351,250 @@ function generateHTML(setALabel = "Set A", setBLabel = "Set B") {
 //     console.log("=== calculateMPLPayment DEBUG END ===");
 //     return undefined;
 // }
+function showInstructionModal() {
+    helpPageCounter ++;
+    console.log("helpPageCounter is ", helpPageCounter);
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background-color: rgba(0,0,0,0.5); z-index: 2000; 
+        display: flex; justify-content: center; align-items: center;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white; padding: 20px; border-radius: 8px; 
+        max-width: 80%; max-height: 80%; overflow-y: auto;
+        position: relative;
+    `;
+    
+    // You can customize the help content based on the current block type
+    let helpContent = '';
+    let spanPayment = 0;
+    if (treatment == "hard"){
+        spanPayment = spanMplPayment_hard;
+    }
+    else if (treatment == "easy"){
+        spanPayment = spanMplPayment_easy;
+    }
+    if (statusMPL === "mirror") {
+        helpContent = 
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+         <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.description}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
+        ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
+        ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+        <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <h3>${language.instructionsSpanInMPL.subTitle}</h3>
+        <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+        <p>${language.instructionsSpanInMPL.priority}</p>
+        <h3>${language.instructionsSpanInMPL.incentives}</h3>
+        <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
+        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
+        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
+        <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+         `;
+        
+    } else if (statusMPL === "lottery") {
+        helpContent = 
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
+        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+        <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.description}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
+        ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
+        ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+        <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <h3>${language.instructionsSpanInMPL.subTitle}</h3>
+        <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+        <p>${language.instructionsSpanInMPL.priority}</p>
+        <h3>${language.instructionsSpanInMPL.incentives}</h3>
+        <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
+        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
+        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
+        <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+        `;
+    }
+    
+    modalContent.innerHTML = `
+        ${helpContent}
+        <div style="margin-top: 20px; text-align: center;">
+            <button id="close-modal" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                ${language.button.close || "Close"}
+            </button>
+        </div>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close button handler
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+}
+function showInstructionModalForQuestions(instructionType) {
+    helpPageCounter ++;
+    console.log("helpPageCounter is ", helpPageCounter);
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background-color: rgba(0,0,0,0.5); z-index: 2000; 
+        display: flex; justify-content: center; align-items: center;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white; padding: 20px; border-radius: 8px; 
+        max-width: 80%; max-height: 80%; overflow-y: auto;
+        position: relative;
+    `;
+    
+    // You can customize the help content based on the current block type
+    let helpContent = '';
+    if (instructionType === "mirror") {
+        console.log("Generating help content for mirror condition");
+        helpContent = 
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+         `;
+//<p>${language.instructionsPaymentRuleMirror.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
 
-let example1MPL = `
+    } else if (instructionType === "lottery") {
+        console.log("Generating help content for lottery condition");
+        helpContent = 
+        `<h2>${language.instructionsDecisionTable.title}</h2>
+        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        ${generateHTML("Lot A", "Lot B")}
+        <p>${language.instructionsBoxesWithMoney.choice}</p>
+        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.description}</p>
+        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.exampleAbove}</p>
+        <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
+        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
+        <br>
+        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
+        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+        `;
+// <p>${language.instructionsPaymentRuleRandomBox.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
+
+    }
+    
+    modalContent.innerHTML = `
+        ${helpContent}
+        <div style="margin-top: 20px; text-align: center;">
+            <button id="close-modal" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                ${language.button.close || "Close"}
+            </button>
+        </div>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close button handler
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+}
+
+const example1MPL = `
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -381,7 +623,7 @@ let example1MPL = `
         </table>
         `; 
 
-let example1MPLSelected = `
+const example1MPLSelected = `
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -410,7 +652,7 @@ let example1MPLSelected = `
         </table>
         `;
 
-let example2MPL = `
+const example2MPL = `
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -438,7 +680,7 @@ let example2MPL = `
         </tr>
         </table>
         `;
-let example3MPLSelected = `
+const example3MPLSelected = `
     <div style="width: 50vw; margin: auto;">
     <table class="mpl">
         <tr>
@@ -448,8 +690,8 @@ let example3MPLSelected = `
         </tr>
         <tr>
         <th>Version</th>
-        <th style="color: red"> 25 boites</th>
-        <th style="color: red"> 75 boites</th>
+        <th style="color: red"> 50 boites</th>
+        <th style="color: red"> 50 boites</th>
         <th style="color: blue">100 boites</th>
         </tr>
         <tr>
@@ -467,7 +709,7 @@ let example3MPLSelected = `
     </table>
     `;
 
-let example1MPLSelectedWithEndowment = `
+const example1MPLSelectedWithEndowment = `
         <div style="width: 50vw; margin: auto;">
         <ul>
         <li><span style="color: green">Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.</span></li><br>
@@ -499,7 +741,7 @@ let example1MPLSelectedWithEndowment = `
         </table>
         `;
 
-let example3MPLSelectedWithEndowment = `
+const example3MPLSelectedWithEndowment = `
         <div style="width: 50vw; margin: auto;">
         <span style="color: green">Vous serez payé 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.</span></li><br>
         </div>
@@ -530,7 +772,7 @@ let example3MPLSelectedWithEndowment = `
         </table>
         `;
 
-let example4MPLSelected = `
+const example4MPLSelected = `
     <div style="width: 50vw; margin: auto;">
     <table class="mpl">
         <tr>
@@ -560,7 +802,7 @@ let example4MPLSelected = `
     `;
 
     // ...existing code...
-let example5MPL = `
+const example5MPL = `
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -698,7 +940,7 @@ let example5MPL = `
         `; 
 
 
-let example5MPLSelected = `
+const example5MPLSelected = `
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -836,6 +1078,62 @@ let example5MPLSelected = `
         `;
 
 
+const example6MPLSelected = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            20€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            5€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
 
+const example7MPLSelected = `
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: red"> 50 boites</th>
+            <th style="color: blue">100 boites</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+            -12€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice" data-row="1" style="color: red">0€</td>
+            <td class="choice selected" data-row="1" data-choice="sure" style="color: blue">
+            -8€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
 
 
