@@ -633,14 +633,14 @@ const fr = {
     },
     instructionsThirdPart:{
         title: "Consignes pour la troisième partie.",
-        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Liste à Choix Multiples\" (LCM).",
-        freqMPL: "<b>Une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LCM) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
-        clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LCM !"
+        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Listes à Multiples Prix \" (LMP ).",
+        freqMPL: "<b>Une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP ) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
+        clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LMP  !"
     },
     instructionsSpanInMPL: {
         title: "Consignes finales pour la troisième partie.",
-        subTitle: "Combinaison de la tâche de span de mémoire et des Listes à Choix Multiples (LCM).",
-        MPLInSpan: "Dans la troisième partie, vous verrez <b>une série de chiffres à retenir, puis vous devrez faire vos choix pour une tâche de LCM, et enfin vous devrez restituer les chiffres.</b>",
+        subTitle: "Combinaison de la tâche de span de mémoire et des Listes à Multiples Prix  (LMP ).",
+        MPLInSpan: "Dans la troisième partie, vous verrez <b>une série de chiffres à retenir, puis vous devrez faire vos choix pour une tâche de LMP , et enfin vous devrez restituer les chiffres.</b>",
         MPLInSpanRepeat: "Vous répéterez cela avec des séquences de chiffres et des tableaux différents.",
         priority: "Votre <b>priorité</b> doit être de restituer correctement les chiffres.",
         incentives: "Bonus pour la tâche de span de mémoire",
@@ -652,17 +652,17 @@ const fr = {
     },
     feedbackExampleSpanMPL: {
         title: "Exemple de paiement type à la troisième partie.",
-        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LCM.",
-        paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre paiement est donc de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
-        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard par l'ordinateur est {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LCM s’élèverait à <b>{paymentMPL}€</b>.",
+        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP .",
+        paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est donc de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard par l'ordinateur est {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP  s’élèverait à <b>{paymentMPL}€</b>.",
         remind: "À retenir: seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de MPL soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
     instructionsDecisionTable:{
-        title: "Consignes pour les Listes à Choix Multiples (LCM).",
+        title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
         subTitle: "Choisir entre deux lots de boîtes",
-        description: "Dans chaque LCM, les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et la somme d'argent qu'elles contiennent.",
+        description: "Dans chaque LMP , les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et la somme d'argent qu'elles contiennent.",
         exampleAbove: "Dans l'exemple ci-dessus, le <span style='color:red'>lot A</span> est composé de 50 boîtes contenant 16€ et 50 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant 4€.",
         exampleBelow: "Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est composé de 25 boîtes contenant -12€ et 75 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant -3€.",
         clickToChoose: `Vous devez cliquer sur le tableau pour choisir le lot que l’ordinateur sélectionnera afin de calculer votre bonus. Le lot sélectionné est en <span style='background-color:#cce'>bleu</span>.
@@ -670,16 +670,16 @@ const fr = {
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir la règle de paiement!"
     },
     instructionsBoxesWithMoney:{
-        title: "Consignes pour les Listes à Choix Multiples (LCM).",
+        title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
         subTitle: "Les boîtes contenant de l'argent",
-        initialSum: "Au début de chaque LCM, vous recevez une somme d'argent (entre 5 et 30€).",
+        initialSum: "Au début de chaque LMP , vous recevez une somme d'argent (entre 5 et 30€).",
         chooseSet: "Vous devez ensuite choisir un lot de boîtes que vous voudriez que l'ordinateur sélectionne.",
         choice: "Vous aurez toujours le choix entre les lots <span style='color:red'>A</span> et <span style='color:blue'>B</span>, composés de 100 boîtes chacuns.",
         moneyInside: "Chaque boîte contient une certaine <b>somme d'argent</b> qui peut être négative ou positive. Votre bonus en dépend selon une règle de paiement qui va vous être expliquée.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir comment sélectionner les lots !"
     },
     // instructionsRandomBox:{
-    //     title: "Consignes pour les Listes à Choix Multiples (LCM).",
+    //     title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
     //     subTitle: "Règle de paiement: une boîte au hasard.",
     //     selectABox: "Après que vous ayez choisi un lot, l'ordinateur sélectionne une boîte au hasard dans ce lot et vous recevez l'argent qui est à l'intérieur de cette boîte.",
     //     ifNegative: "Si le montant est négatif, il sera déduit de la somme d'argent que vous avez reçue. S'il est positif il est ajouté.",
@@ -688,9 +688,9 @@ const fr = {
     //     riskExplanation: "Cela signifie que le lot <span style='color:red'>A</span> contient plus de boîtes avec des montants d'argent très élevés ou très faibles"
     // },
     instructionsPaymentRuleMirror:{
-        title: "Consignes pour les Listes à Choix Multiples (LCM).",
+        title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
         subTitle: "Règle de paiement: la boîte moyenne.",
-        paymentRule:`Votre bonus pour une LCM est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenue dans les boîtes du lot choisi.
+        paymentRule:`Votre bonus pour une LMP  est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenue dans les boîtes du lot choisi.
         Cela veut dire qu'il va additionner la somme d'argent de toutes les boîtes du lot, puis va la diviser par 100. 
         Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
         example1: `Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est sélectionné. `,
@@ -717,9 +717,9 @@ const fr = {
         clickNext: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension!"
     },
     instructionsPaymentRuleRandomBox:{
-        title: "Consignes pour les Listes à Choix Multiples (LCM).",
+        title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
         subTitle: "Règle de paiement: une boîte au hasard.",
-        paymentRule: `Votre bonus pour une LCM est calculé comme suit: l'ordinateur choisit <b>une boîte au hasard</b> parmi les 100 boîtes du lot que vous avez choisi.
+        paymentRule: `Votre bonus pour une LMP  est calculé comme suit: l'ordinateur choisit <b>une boîte au hasard</b> parmi les 100 boîtes du lot que vous avez choisi.
         Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
         example1: `Dans l'exemple ci-dessous, vous avez choisi le <span style='color:red'>lot A</span>.`,
         example1Payment: `
@@ -746,7 +746,7 @@ const fr = {
 
     },
     instructionsChoosingASetOfBoxes: {
-        title: "Consignes pour les Listes à Choix Multiples (LCM).",
+        title: "Consignes pour les Listes à Multiples Prix  (LMP ).",
         subTitle: "Sélectionner un lot de boîtes",
         description: `Dans la troisième partie, vous devez choisir entre différentes versions du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>. Chaque ligne du tableau présente une version différente de ces lots.`,
         example1: ` 
@@ -981,7 +981,7 @@ const fr = {
         ruleTo1Back: "Attention, vous passez maintenant en 1-back lettre (le 2-back visuel reste le même)!",
         ruleTo3Back: "Attention, vous passez maintenant en 3-back lettre (le 2-back visuel reste le même)!",
         paymentRuleChange: "Attention, la règle de paiement change !",
-        paymentRuleChange2: "À partir de maintenant, la règle de paiement pour les Listes à Choix Multiples (LCM) va changer. Si l'ordinateur choisit un essai dans les essais suivants, il <b>vous paiera avec la nouvelle règle</b>, qui va vous être présentée.",
+        paymentRuleChange2: "À partir de maintenant, la règle de paiement pour les Listes à Multiples Prix  (LMP ) va changer. Si l'ordinateur choisit un essai dans les essais suivants, il <b>vous paiera avec la nouvelle règle</b>, qui va vous être présentée.",
         pressKey: "Appuyez sur n'importe quelle touche pour découvrir la nouvelle règle de paiement."
     },
     paymentExplanation1Back: {
@@ -1407,8 +1407,8 @@ const fr = {
         thanks: "Merci d'avoir participé à cette expérience !",
         calibrationPayment: "Votre bonus pour la première partie de l'expérience est de {trainingBonus}€.",
         spanSpanPayment_hard: "Votre bonus pour la deuxième partie de l'expérience est de {spanSpanBonus}€.",
-        selectedForMPL: "Vous avez été sélectionné pour qu'un de vos choix aux tâches de décisions (LCM) soit payé.",
-        notSelectedForMPL: "Vous n'avez pas été sélectionné pour qu'un de vos choix aux tâches de décisions (LCM) soit payé.",
+        selectedForMPL: "Vous avez été sélectionné pour qu'un de vos choix aux tâches de décisions (LMP ) soit payé.",
+        notSelectedForMPL: "Vous n'avez pas été sélectionné pour qu'un de vos choix aux tâches de décisions (LMP ) soit payé.",
         bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est donc de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour le choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
         totalBonus: "Votre bonus total est donc de {totalBonus}€.",

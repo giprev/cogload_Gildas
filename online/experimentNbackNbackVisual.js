@@ -165,18 +165,24 @@ else {descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExper
 //     button_label_previous: language.button.previous,
 //     allow_backward: true,
 // }
-
-const instructionsBeforeCalibration = {
-    type: "instructions",
-    pages: [    //<p>${language.overviewPage.IRB}</p> when it'll be available
-        `<h2>${language.overviewPage.purpose}</h2>
+const consentForm = {
+    type: "instructions", //<p>${language.overviewPage.IRB}</p> when it'll be available
+    pages: [`<h2>${language.overviewPage.purpose}</h2>
                 <p>${language.overviewPage.anonimity}</p>
                 <p>${language.overviewPage.credits}</p>
                 <p>${language.overviewPage.question}</p>
                 <p>${language.overviewPage.withdrawal}</p> 
-                <p>${language.overviewPage.clickNext}</p>`,
-
-                `<h2>${language.descriptionExperimentSpanMPL.title}</h2>
+                <p>${language.overviewPage.clickNext}</p>`]
+    ,
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+const instructionsBeforeCalibration = {
+    type: "instructions",
+    pages: [    
+        `       <h2>${language.descriptionExperimentSpanMPL.title}</h2>
                 <p>${language.descriptionExperimentSpanMPL.threeParts}</p>
                 <ul>
                 <li>${language.descriptionExperimentSpanMPL.part1}</li>
@@ -431,7 +437,7 @@ let correct_responses =[];
 
 const comprehensionQuestionsMPLLottery = {
     type: "survey-multi-select",
-    data: {task: 'comprehensionSurveyHard'},
+    data: {task: 'comprehensionSurveyMPLLottery'},
     questions: [
         {
             prompt: `${example6MPLSelected}
@@ -562,6 +568,7 @@ const comprehensionQuestionsMPLLottery = {
 
 const comprehensionQuestionsMPLMirror = {
     ...comprehensionQuestionsMPLLottery,
+    data: {task: 'comprehensionSurveyMPLMirror'},
         questions: [
         {
             prompt: `${example6MPLSelected}
@@ -705,12 +712,21 @@ const comprehensionFailureTrial = {
             <p>${language.comprehensionFailure.clickNext}</p>
         </div>`;
     },
-    on_load: function(data) {
-        data.totalPayment = notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span;
-        data.task = 'comprehensionFailure';
+    on_start: function(trial) {
+        console.log("notUnderstoodPayment is", notUnderstoodPayment);
+        console.log("actual_payment_calibration is", actual_payment_calibration);
+        console.log("actual_payment_span_span is", actual_payment_span_span);
+        console.log("total payment is", notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span);
+        
+        // Add data to trial object instead of data parameter
+        trial.data = trial.data || {};
+        trial.data.totalPayment = notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span;
+        trial.data.task = 'comprehensionFailure';
+        trial.data.treatment = treatment;
     },
     on_finish: function() {
         // End the experiment
+        //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         jatos.endStudy(jsPsych.data.get().json());
     }
 };
@@ -3822,6 +3838,8 @@ const incentives_span_mpl = {
         
     // Use the calculated payments
     trial.data = trial.data || {};
+    trial.data.treatment = treatment;
+    trial.data.versionFirst = block_order_indicator_span_MPL;
     trial.data.payment_calibration = actual_payment_calibration;
     trial.data.payment_span_span = actual_payment_span_span;
     trial.data.payment_span_mpl = actual_payment_span_mpl;
@@ -3831,7 +3849,11 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalPayment = cCal + cSpan + cSpanMpl + cMpl;
+    trial.data.totalBonus = cCal + cSpan + cSpanMpl + cMpl;
+    if (treatment == "hard") {
+    trial.data.totalPayment = basePayment_hard + trial.data.totalBonus;}
+    else if (treatment == "easy") {
+    trial.data.totalPayment = basePayment_easy + trial.data.totalBonus;}
 
 
     let html;
@@ -4176,7 +4198,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push({type: "fullscreen", fullscreen_mode: true}, comprehensionFailureTrial,  welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl/*
@@ -4251,7 +4273,7 @@ jatos.onLoad(() => {
         timeline: timeline,
         on_finish: function() {
             jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });
