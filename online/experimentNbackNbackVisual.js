@@ -71,7 +71,7 @@ let spanCounter = 0; // the counter for each n-back trial
 let mplCounter = 0; // the counter for each mpl trial
 
 const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
-// let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
+//let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
 
@@ -224,18 +224,34 @@ const instructionsSpanSpan = {
             someBlueDigits = language.instructionsSpanSpan.variableHard.someBlueDigits.replace("{startingSpan}", startingSpan).replace("{the}", the).replace("{startingSpan}",startingSpan);
             theBlueDigits = language.instructionsSpanSpan.variableHard.theBlueDigits.replace("{startingSpan}", startingSpan);
             the = language.instructionsSpanSpan.variableHard.the;
+            displayed = language.instructionsSpanSpan.variableHard.displayed;
         }
         if (treatment == "easy") {
             someBlueDigits = language.instructionsSpanSpan.variableEasy.someBlueDigits;
             theBlueDigits = language.instructionsSpanSpan.variableEasy.theBlueDigits;
             the = language.instructionsSpanSpan.variableEasy.the;
+            displayed = language.instructionsSpanSpan.variableEasy.displayed;
         }
 
+    //     return [`<h2>${language.instructionsSpanSpan.title}</h2>
+    //     <p>${language.instructionsSpanSpan.description}</p>
+    //     <p>${language.instructionsSpanSpan.lettersOrder.replace("{someBlueDigits}", someBlueDigits).replace("{the}", the).replace("{theBlueDigits}", theBlueDigits)}</p>
+    //     <p>${language.instructionsSpanSpan.goal}</p>
+    //     <p>${language.instructionsSpanSpan.clickNext}</p>`,
+    //     `<h2>${language.instructionsSpanSpanPayment.title}</h2>
+    //     <h3>${language.instructionsSpanSpanPayment.subTitle}</h3>
+    //     <p>${language.instructionsSpanSpanPayment.incentives.replace("{bonus}", spanSpanPayment_hard)}</p>
+    //     <p>${language.instructionsSpanSpanPayment.incentiveRule.replace("{theBlueDigits}", theBlueDigits)}</p>
+    //     <p>${language.instructionsSpanSpanPayment.incentiveRuleExample.replace("{theBlueDigits}", theBlueDigits).replace("{bonus}", spanSpanPayment_hard).replace("{examplePayment}", Math.round(spanSpanPayment_hard*(7.75/10)*100)/100)}</p>
+    //     <p>${language.instructionsSpanSpanPayment.remember.replace("{theBlueDigits}", theBlueDigits)}</p>
+    //     <p>${language.instructionsSpanSpanPayment.clickNext}</p>`
+    // ];
+
+        // version where the red digits task is named
         return [`<h2>${language.instructionsSpanSpan.title}</h2>
         <p>${language.instructionsSpanSpan.description}</p>
-        <p>${language.instructionsSpanSpan.lettersOrder.replace("{someBlueDigits}", someBlueDigits).replace("{the}", the).replace("{theBlueDigits}", theBlueDigits)}</p>
-        <p>${language.instructionsSpanSpan.goal}</p>
-        <p>${language.instructionsSpanSpan.sequenceNumber}</p>
+        <p>${language.instructionsSpanSpan.lettersOrder.replace("{theBlueDigits}", theBlueDigits).replace("{displayed}", displayed).replace("{theBlueDigits}", theBlueDigits)}</p>
+        <p>${language.instructionsSpanSpan.goal.replace("{theBlueDigits}", theBlueDigits)}</p>
         <p>${language.instructionsSpanSpan.clickNext}</p>`,
         `<h2>${language.instructionsSpanSpanPayment.title}</h2>
         <h3>${language.instructionsSpanSpanPayment.subTitle}</h3>
@@ -245,6 +261,8 @@ const instructionsSpanSpan = {
         <p>${language.instructionsSpanSpanPayment.remember.replace("{theBlueDigits}", theBlueDigits)}</p>
         <p>${language.instructionsSpanSpanPayment.clickNext}</p>`
     ];
+
+
     },
     show_clickable_nav: true,
     button_label_next: language.button.next,
@@ -417,12 +435,12 @@ const instructionsChoosingASetOfBoxes = {
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
-        <p>${language.instructionsSpanInMPL.priority}</p>
         <h3>${language.instructionsSpanInMPL.incentives}</h3>
         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", bonusSpan)}</p>
         <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
         <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)}</p>
         <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+        <p>${language.instructionsSpanInMPL.priority}</p>
         <p>${language.instructionsSpanInMPL.clickNext}</p> `
         ]
     },
@@ -440,7 +458,7 @@ const comprehensionQuestionsMPLLottery = {
     data: {task: 'comprehensionSurveyMPLLottery'},
     questions: [
         {
-            prompt: `${example6MPLSelected}
+            prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPL.q1.prompt}</p>`,
             options: [
                 language.comprehensionQMPL.q1.options[0],
@@ -485,7 +503,7 @@ const comprehensionQuestionsMPLLottery = {
             correct_response: 1,
         },
         {
-            prompt: `<br><br>${example7MPLSelected}
+            prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPL.q5.prompt}</p>`,
             options: [
                 language.comprehensionQMPL.q5.options[0],
@@ -555,15 +573,21 @@ const comprehensionQuestionsMPLLottery = {
         console.log("All correct:", all_correct);
     },
     on_load: function() {
-        // Set statusMPL for the help modal
+                // Set statusMPL for the help modal
+        
         // Add click handler for help button
         const helpButton = document.getElementById('help-button-comprehension');
         if (helpButton) {
-            helpButton.addEventListener('click', function() {
-                showInstructionModalForQuestions("lottery");
+        helpButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+
+                // Check if modal is already open
+                if (!document.getElementById('instruction-modal')) {
+                    showInstructionModalForQuestions("lottery");
+                }
             });
         }
-    }
+}
 };
 
 const comprehensionQuestionsMPLMirror = {
@@ -571,7 +595,7 @@ const comprehensionQuestionsMPLMirror = {
     data: {task: 'comprehensionSurveyMPLMirror'},
         questions: [
         {
-            prompt: `${example6MPLSelected}
+            prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPL.q1.prompt}</p>`,
             options: [
                 language.comprehensionQMPL.q1.options[0],
@@ -616,7 +640,7 @@ const comprehensionQuestionsMPLMirror = {
             correct_response: 4,
         },
         {
-            prompt: `<br><br>${example7MPLSelected}
+            prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPL.q5.prompt}</p>`,
             options: [
                 language.comprehensionQMPL.q5.options[0],
@@ -688,16 +712,19 @@ const comprehensionQuestionsMPLMirror = {
         console.log("All correct:", all_correct);
     },
     on_load: function() {
-                // Set statusMPL for the help modal
-        
         // Add click handler for help button
         const helpButton = document.getElementById('help-button-comprehension');
         if (helpButton) {
-            helpButton.addEventListener('click', function() {
-                showInstructionModalForQuestions("mirror");
+        helpButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+
+                // Check if modal is already open
+                if (!document.getElementById('instruction-modal')) {
+                    showInstructionModalForQuestions("mirror"); // or "lottery"
+                }
             });
         }
-    }
+}
 }
 
 const comprehensionFailureTrial = {
@@ -855,6 +882,19 @@ const loopAgain = {
         <p>${language.loopAgain.viewInstructions}</p>
         <p>${language.loopAgain.surveyAgain}</p>
         <p>${language.loopAgain.press}</p>
+        </div>`
+    ],
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
+const loopAgainSpanMpl = {
+    type: "instructions",
+    pages: [
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed}</p>
+        <p>${language.loopAgainSpanMpl.surveyAgain}</p>
+        <p>${language.loopAgainSpanMpl.readInstructions}</p>
+        <p>${language.loopAgainSpanMpl.clickNext}</p>
         </div>`
     ],
     show_clickable_nav: true,
@@ -1531,9 +1571,21 @@ const demographics = (function(){
         options: language.demographics.options.income.slice(),
         required: true
     });
-    // question 5: life satisfaction
+    // question 5: college major
     qs.push({
         prompt: language.demographics.questions[5],
+        options: language.demographics.options.collegeDegree.slice(),
+        required: true
+    });
+    // question 6: college course
+    qs.push({
+        prompt: language.demographics.questions[6],
+        options: language.demographics.options.collegeCourse.slice(),
+        required: true
+    });
+    // question 7: life satisfaction
+    qs.push({
+        prompt: language.demographics.questions[7],
         options: language.demographics.options.life.slice(),
         required: true
     });
@@ -2096,7 +2148,6 @@ const mpl_trial = {
     document.querySelectorAll('.choice').forEach(cell => {
       cell.addEventListener('click', function() {
         let row = parseInt(this.dataset.row); // dataset refers to all the custom data attributes of an element (data-*)
-        console.log(row, "is row of choice")
         let choice = this.dataset.choice;
         // Fill from row 0 to clicked row with clicked choice
         for (let r = 0; r <= row; r++) {
@@ -2190,7 +2241,7 @@ const mpl_trial = {
     console.log("status of mpl is", data.statusMPL)
     data.task = "mpl";
 
-    console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 0, data.choices, data.statusMPL));
+    console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 24, data.choices, data.statusMPL));
   }
 };
 
@@ -2733,6 +2784,149 @@ const blockIsspan_mPLAndFdsTrialNumReset = {
         console.log("block_type is " + block_type + ", fdsTrialNum is " + fdsTrialNum);
     },
 };
+
+
+const cognitiveUncertaintyMirror = {
+    type: 'survey-html-form',
+    html: function(){
+        if (block_order_indicator_span_MPL == "mirror_first") {
+            sliderOrder = language.choicesBefore;
+        }
+        else if (block_order_indicator_span_MPL == "lottery_first") {
+            sliderOrder = language.choicesAfter;
+        }
+
+        return `
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2>${language.sliderTitle}</h2><br>
+                <p>${language.sliderMirror.replace('{order}', sliderOrder)}</p><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderCognitiveUncertainty.question}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderCognitiveUncertainty.veryUncertain}</span>
+                        <input type="range" name="cognitiveUncertainty" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderCognitiveUncertainty.veryCertain}</span>
+                    </div>
+                </div><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderInattention.questionBoxes}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderInattention.veryUncertain}</span>
+                        <input type="range" name="inattentionBoxes" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderInattention.veryCertain}</span>
+                    </div>
+                </div><br>
+
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderInattention.questionPayoffs}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderInattention.veryUncertain}</span>
+                        <input type="range" name="inattentionPayoffs" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderInattention.veryCertain}</span>
+                    </div>
+                </div><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderImprecision.question}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderImprecision.veryUncertain}</span>
+                        <input type="range" name="imprecision" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderImprecision.veryCertain}</span>
+                    </div>
+                </div>
+            </div>
+        `},
+    button_label: language.button.next, 
+    on_finish: function(data) {
+        // Parse the responses JSON
+        const responses = JSON.parse(data.responses);
+        
+        // Store each slider value with your desired naming convention
+        data.sliderCognitiveUncertainty = parseInt(responses.cognitiveUncertainty);
+        console.log(data.sliderCognitiveUncertainty, "is data.sliderCognitiveUncertainty");
+        data.sliderInattentionBoxes = parseInt(responses.inattentionBoxes);
+        console.log(data.sliderInattentionBoxes, "is data.sliderInattentionBoxes");
+        data.sliderInattentionPayoffs = parseInt(responses.inattentionPayoffs);
+        console.log(data.sliderInattentionPayoffs, "is data.sliderInattentionPayoffs");
+        data.sliderImprecision = parseInt(responses.imprecision);
+        console.log(data.sliderImprecision, "is data.sliderImprecision");
+        // Add task identifier
+        data.task = 'sliderQuestionsMirror';
+    }
+};
+const cognitiveUncertaintyLottery = {
+    type: 'survey-html-form',
+    html: function(){
+        if (block_order_indicator_span_MPL == "mirror_first") {
+            sliderOrder = language.choicesAfter;
+        }
+        else if (block_order_indicator_span_MPL == "lottery_first") {
+            sliderOrder = language.choicesBefore;
+        }
+
+        return `
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2>${language.sliderTitle}</h2><br>
+                <p>${language.sliderLottery.replace('{order}', sliderOrder)}</p><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderCognitiveUncertainty.question}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderCognitiveUncertainty.veryUncertain}</span>
+                        <input type="range" name="cognitiveUncertainty" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderCognitiveUncertainty.veryCertain}</span>
+                    </div>
+                </div><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderInattention.questionBoxes}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderInattention.veryUncertain}</span>
+                        <input type="range" name="inattentionBoxes" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderInattention.veryCertain}</span>
+                    </div>
+                </div><br>
+
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderInattention.questionPayoffs}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderInattention.veryUncertain}</span>
+                        <input type="range" name="inattentionPayoffs" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderInattention.veryCertain}</span>
+                    </div>
+                </div><br>
+                
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderImprecision.question}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderImprecision.veryUncertain}</span>
+                        <input type="range" name="imprecision" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderImprecision.veryCertain}</span>
+                    </div>
+                </div>
+            </div>
+        `},
+    button_label: language.button.next, 
+    on_finish: function(data) {
+        // Parse the responses JSON
+        const responses = JSON.parse(data.responses);
+        
+        // Store each slider value with your desired naming convention
+        data.sliderCognitiveUncertainty = parseInt(responses.cognitiveUncertainty);
+        console.log(data.sliderCognitiveUncertainty, "is data.sliderCognitiveUncertainty");
+        data.sliderInattentionBoxes = parseInt(responses.inattentionBoxes);
+        console.log(data.sliderInattentionBoxes, "is data.sliderInattentionBoxes");
+        data.sliderInattentionPayoffs = parseInt(responses.inattentionPayoffs);
+        console.log(data.sliderInattentionPayoffs, "is data.sliderInattentionPayoffs");
+        data.sliderImprecision = parseInt(responses.imprecision);
+        console.log(data.sliderImprecision, "is data.sliderImprecision");
+        // Add task identifier
+        data.task = 'sliderQuestionsMirror';
+    }
+};
+
 /************* define conditional timeline elements for nback practice ************/
 
 const feedBackC = {
@@ -3652,11 +3846,18 @@ const spanSpanDebrief = {
     trial.data.payment_span_span = actual_payment_span_span;
 
     let html;
+    if (treatment == "hard"){
     html = 
-    `<h2>${language.debriefSpanSpan.title}</h2>
-    <p>${language.debriefSpanSpan.performance.replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100))}</p>
-    <p>${language.debriefSpanSpan.bonus.replace('{bonus}', spanSpanPayment_hard).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100)).replace('{totalBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
-    `
+        `<h2>${language.debriefSpanSpan.title}</h2>
+        <p>${language.debriefSpanSpan.performance.replace('{theBlueDigits}', language.debriefSpanSpan.variableHard.theBlueDigits.replace('{startingSpan}', startingSpan)).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100))}</p>
+        <p>${language.debriefSpanSpan.bonus.replace('{bonus}', spanSpanPayment_hard).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100)).replace('{totalBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
+        `}
+    else if (treatment == "easy"){
+    html = 
+        `<h2>${language.debriefSpanSpan.title}</h2>
+        <p>${language.debriefSpanSpan.performance.replace('{theBlueDigits}', language.debriefSpanSpan.variableEasy.theBlueDigits).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100))}</p>
+        <p>${language.debriefSpanSpan.bonus.replace('{bonus}', spanSpanPayment_hard).replace('{blueAccuracy}', Math.round(accuracyLetters1*100)).replace('{redAccuracy}', Math.round(accuracyLetters2*100)).replace('{totalBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
+        `}
     trial.stimulus = html; // set final display
     },
 };
@@ -3736,7 +3937,7 @@ const feedbackExampleSpanMPL = {
     `<h2>${language.feedbackExampleSpanMPL.title}</h2>
     <p>${language.feedbackExampleSpanMPL.description}<p>
     <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{correctSpan}', correctSpan).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl)}</p>
+    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl).replace('{selectedRow}', selectedRow + 1)}</p>
     <div class="important-note">                     
     💡 ${language.feedbackExampleSpanMPL.remind.replace('{frequency}', propSelecForMPL)} 
     </div>
@@ -3746,6 +3947,9 @@ const feedbackExampleSpanMPL = {
     trial.stimulus = html; // set final display
     },
 };
+
+
+
 const incentives_span_mpl = {
     type: "html-keyboard-response",
     choices: ['Enter'],
@@ -3815,7 +4019,7 @@ const incentives_span_mpl = {
     console.log("actual_payement_span_mpl is " + actual_payment_span_mpl);
 
     // mpl
-    let actual_payment_mpl;
+    let actual_payment_mpl = 0;
 
     if (luckyPp == 1) { // 1 in propSelecForMPL chance of being selected for MPL payment
         const selectedRow = getRandomInt(1, 14); // select one of the 15 rows
@@ -3824,7 +4028,7 @@ const incentives_span_mpl = {
             return trial.task == 'mpl' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
         });
         console.log(selectedTrial, "is the selectedTrial for mpl payment");
-        console.log(selectedTrial.count(), "is the selectedTrial count for mpl payment");
+        console.log(selectedTrial.count(), "is selectedTrial count for mpl payment");
         let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
         console.log(mplType, "is the mplType for the selected trial");
         let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
@@ -3843,6 +4047,7 @@ const incentives_span_mpl = {
     trial.data.payment_calibration = actual_payment_calibration;
     trial.data.payment_span_span = actual_payment_span_span;
     trial.data.payment_span_mpl = actual_payment_span_mpl;
+    trial.data.luckyPp = luckyPp;
     trial.data.payment_mpl = actual_payment_mpl;
     trial.data.helpPageCounter = helpPageCounter;
     const cCal  = actual_payment_calibration ?? 0;
@@ -3864,8 +4069,8 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', actual_payment_calibration)}</p>
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_mpl*100)/100).replace('{spanMPL}', Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_mpl*100)/100 + Math.round(actual_payment_span_span*100)/100 + Math.round(actual_payment_calibration*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}', Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
         else if (luckyPp != 1){
@@ -3875,7 +4080,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_span_span*100)/100 + Math.round(actual_payment_calibration*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
     } else if (treatment == "easy"){
@@ -3885,8 +4090,8 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_mpl*100)/100).replace('{spanMPL}',Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_mpl*100)/100 + Math.round(actual_payment_span_span*100)/100 + Math.round(actual_payment_calibration*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}',Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
         else if (luckyPp != 1) {
@@ -3896,7 +4101,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(actual_payment_span_mpl*100)/100 + Math.round(actual_payment_span_span*100)/100 + Math.round(actual_payment_calibration*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
     }
@@ -4052,33 +4257,61 @@ const fds_span_span_proc = {
 const comprehensionQuestionsMPLLotteryWithCheck = {
     timeline: [
         comprehensionQuestionsMPLLottery,
+            {
+            timeline: [loopAgainSpanMpl],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                return last && last.questions_correct.length == 4;
+            }
+        },
         {
             timeline: [comprehensionFailureTrial],
             conditional_function: function() {
-                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyHard'}).last(1).values()[0];
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 return last && last.questions_correct.length < 4;
             }
         }
-    ]
+    ],
+    loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
+        return !(last && last.questions_correct.length === 5);
+    }
 };
 
 const comprehensionQuestionsMPLMirrorWithCheck = {
     timeline: [
         comprehensionQuestionsMPLMirror,
         {
+            timeline: [loopAgainSpanMpl],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirror'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                return last && last.questions_correct.length == 4;
+            }
+        },
+        {
             timeline: [comprehensionFailureTrial],
             conditional_function: function() {
-                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyHard'}).last(1).values()[0];
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirror'}).last(1).values()[0];
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 return last && last.questions_correct.length < 4;
             }
         }
-    ]
+    ],
+        loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirror'}).last(1).values()[0];
+        return !(last && last.questions_correct.length === 5);
+    }
 };
 
 const timelineExampleSpanMPLTrialMirror= {
@@ -4135,6 +4368,14 @@ if (Math.random() < 0.5) {
 const experiment_span_MPL = {
     timeline: experimentBlocks_span_MPL,
 }
+
+const uncertaintyTrials = [cognitiveUncertaintyMirror, cognitiveUncertaintyLottery];
+if (Math.random() < 0.5) {
+    uncertaintyTrials.reverse();
+}
+const timelineUncertainty = {
+    timeline: uncertaintyTrials
+};
 
 
 const easyBlock_nback_span = { ... timelineElementStructure, timeline_variables: nbackStimuli.stimuliEasy_span, timeline: [fixation, testNback, fds_calibration] }
@@ -4198,8 +4439,8 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, comprehensionFailureTrial,  welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, incentives_span_mpl, /* 
+timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl/*
     instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock, incentives_nback_nbackVisual*/);

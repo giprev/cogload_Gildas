@@ -210,7 +210,7 @@ for(dataset in datasets) {
     break  # Found one, stop looking
   }
 }
-    
+
     # Calculate accuracy statistics
     calc_accuracy <- function(data) {
       if(nrow(data) == 0) return(NA)

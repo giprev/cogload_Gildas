@@ -172,8 +172,8 @@ table.mpl td, table.mpl th { border: 1px solid #999; padding: 3px 8px; text-alig
 
 table.mpl td.choice, table.mpl td.mirror { cursor: pointer; }
 
-table.mpl td.choice:hover, table.mpl td.mirror:hover{ background-color: #eef; }
-table.mpl td.choice.hovered, table.mpl td.mirror.hovered{ background-color: #eef; }
+table.mpl td.choice:hover, table.mpl td.mirror:hover{ background-color: rgb(250, 252, 172); }
+table.mpl td.choice.hovered, table.mpl td.mirror.hovered{ background-color: rgb(250, 252, 172); }
 
 /* Hide radio buttons of the MPLs */
 input[type="radio"][value="sure"],
@@ -181,7 +181,7 @@ input[type="radio"][value="lottery"] {
     display: none;
 }
 
-.selected { background-color: #cce !important; }
+.selected { background-color: rgba(239, 243, 4, 1) !important; }
 
 /* Visual n-back */
 

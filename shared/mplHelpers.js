@@ -1,4 +1,4 @@
-const sure_payments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+const sure_payments = [25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 const Y_valuesMPL = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
 let helpPageCounter = 0;
 function mplGenerator(y, X, condition) {
@@ -34,7 +34,7 @@ function mplGenerator(y, X, condition) {
   // Generate sure payment values
     let rows = ``;
     let mpl_html = ``;
-    if (X == "G" || X == "L") {
+    if (X == "L") {
         // HTML generation
         rows = sure_payments.map((amt, i) => `
         <tr>
@@ -68,9 +68,52 @@ function mplGenerator(y, X, condition) {
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red">${y} boites</th>
-            <th style="color: red">${100-y} boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red">${y} boîtes</th>
+            <th style="color: red">${100-y} boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            ${rows}
+        </table>
+        `;
+    }
+    else if (X == "G") {
+        // HTML generation
+        rows = sure_payments.map((amt, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
+            ${sign}25€
+            <input type="radio" name="row${i}" value="lottery">
+            </td>
+            <td class="mirror" data-row="${i}" style="color: red">
+            0€</td>
+            <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
+            ${sign}${26 - amt}€
+            <input type="radio" name="row${i}" value="sure">
+            </td>
+        </tr>
+        `).join('');
+
+        mpl_html = `
+        <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <ul>
+        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${language.instructionsMPL.computerChooses}</li><br>
+        <li><span style="color: green">${endowmentsMPL}</span></li><br>
+        </ul></div>
+
+        <table class="mpl" data-mpl-type="${X}${y}">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red">${y} boîtes</th>
+            <th style="color: red">${100-y} boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             ${rows}
         </table>
@@ -105,14 +148,14 @@ function mplGenerator(y, X, condition) {
         <table class="mpl" data-mpl-type="${X}${y}">
             <tr>
             <th></th>
-            <th colspan="2" style="color: red">Set A</th>
-            <th style="color: blue">Set B</th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red">50 boxes</th>
-            <th style="color: red">50 boxes</th>
-            <th style="color: blue">100 boxes</th>
+            <th style="color: red">50 boîtes</th>
+            <th style="color: red">50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             ${rows}
         </table>
@@ -152,7 +195,7 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
     let sure = choices[rowNumber]; // either "sure" or "lottery"
     if (sure == "sure") {
         if (type == "G") {
-            return sure_payments[rowNumber] + 5;
+            return sure_payments[24 - rowNumber] + 5;
         } else if (type == "L") {
             return -sure_payments[rowNumber] + 30;
         }
@@ -494,9 +537,17 @@ function showInstructionModal() {
     });
 }
 function showInstructionModalForQuestions(instructionType) {
+
+    // Check if modal already exists - prevent duplicates
+    if (document.getElementById('instruction-modal')) {
+        console.log("Modal already open, preventing duplicate");
+        return;
+    }
+
     helpPageCounter ++;
     console.log("helpPageCounter is ", helpPageCounter);
     const modal = document.createElement('div');
+    modal.id = 'instruction-modal';
     modal.style.cssText = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
         background-color: rgba(0,0,0,0.5); z-index: 2000; 
@@ -509,8 +560,19 @@ function showInstructionModalForQuestions(instructionType) {
         max-width: 80%; max-height: 80%; overflow-y: auto;
         position: relative;
     `;
+
+    //Prevent Enter key from submitting form while modal is open
+    function preventEnterSubmission(e) {
+        if (e.key === 'Enter' && document.getElementById('instruction-modal')) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }
     
-    // You can customize the help content based on the current block type
+    // Add the event listener
+    document.addEventListener('keydown', preventEnterSubmission);
+    
     let helpContent = '';
     if (instructionType === "mirror") {
         console.log("Generating help content for mirror condition");
@@ -590,7 +652,15 @@ function showInstructionModalForQuestions(instructionType) {
     
     // Close button handler
     document.getElementById('close-modal').addEventListener('click', function() {
+        document.removeEventListener('keydown', preventEnterSubmission);
         document.body.removeChild(modal);
+    });
+    // Close when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            document.removeEventListener('keydown', preventEnterSubmission);
+            modal.parentNode.removeChild(modal);
+        }
     });
 }
 
@@ -604,9 +674,9 @@ const example1MPL = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -633,9 +703,9 @@ const example1MPLSelected = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -662,9 +732,9 @@ const example2MPL = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 25 boites</th>
-            <th style="color: red"> 75 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 25 boîtes</th>
+            <th style="color: red"> 75 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -690,9 +760,9 @@ const example3MPLSelected = `
         </tr>
         <tr>
         <th>Version</th>
-        <th style="color: red"> 50 boites</th>
-        <th style="color: red"> 50 boites</th>
-        <th style="color: blue">100 boites</th>
+        <th style="color: red"> 50 boîtes</th>
+        <th style="color: red"> 50 boîtes</th>
+        <th style="color: blue">100 boîtes</th>
         </tr>
         <tr>
         <td>1</td>
@@ -722,9 +792,9 @@ const example1MPLSelectedWithEndowment = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -753,9 +823,9 @@ const example3MPLSelectedWithEndowment = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -782,9 +852,9 @@ const example4MPLSelected = `
         </tr>
         <tr>
         <th>Version</th>
-        <th style="color: red"> 50 boites</th>
-        <th style="color: red"> 50 boites</th>
-        <th style="color: blue">100 boites</th>
+        <th style="color: red"> 50 boîtes</th>
+        <th style="color: red"> 50 boîtes</th>
+        <th style="color: blue">100 boîtes</th>
         </tr>
         <tr>
         <td>1</td>
@@ -812,9 +882,9 @@ const example5MPL = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 40 boites</th>
-            <th style="color: red"> 60 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 40 boîtes</th>
+            <th style="color: red"> 60 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -824,7 +894,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="1" style="color: red">0€</td>
             <td class="choice" data-row="1" data-choice="sure" style="color: blue">
-            10€
+            1€
             <input type="radio" name="row1" value="sure">
             </td>
             </tr>
@@ -836,7 +906,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="2" style="color: red">0€</td>
             <td class="choice" data-row="2" data-choice="sure" style="color: blue">
-            9€
+            2€
             <input type="radio" name="row2" value="sure">
             </td>
             </tr>
@@ -848,7 +918,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="3" style="color: red">0€</td>
             <td class="choice" data-row="3" data-choice="sure" style="color: blue">
-            8€
+            3€
             <input type="radio" name="row3" value="sure">
             </td>
             </tr>
@@ -860,7 +930,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="4" style="color: red">0€</td>
             <td class="choice" data-row="4" data-choice="sure" style="color: blue">
-            7€
+            4€
             <input type="radio" name="row4" value="sure">
             </td>
             </tr>
@@ -872,7 +942,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="5" style="color: red">0€</td>
             <td class="choice" data-row="5" data-choice="sure" style="color: blue">
-            6€
+            5€
             <input type="radio" name="row5" value="sure">
             </td>
             </tr>
@@ -884,7 +954,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="6" style="color: red">0€</td>
             <td class="choice" data-row="6" data-choice="sure" style="color: blue">
-            5€
+            6€
             <input type="radio" name="row6" value="sure">
             </td>
             </tr>
@@ -896,7 +966,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="7" style="color: red">0€</td>
             <td class="choice" data-row="7" data-choice="sure" style="color: blue">
-            4€
+            7€
             <input type="radio" name="row7" value="sure">
             </td>
             </tr>
@@ -908,7 +978,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="8" style="color: red">0€</td>
             <td class="choice" data-row="8" data-choice="sure" style="color: blue">
-            3€
+            8€
             <input type="radio" name="row8" value="sure">
             </td>
             </tr>
@@ -920,7 +990,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="9" style="color: red">0€</td>
             <td class="choice" data-row="9" data-choice="sure" style="color: blue">
-            2€
+            9€
             <input type="radio" name="row9" value="sure">
             </td>
             </tr>
@@ -932,7 +1002,7 @@ const example5MPL = `
             </td>
             <td class="mirror" data-row="10" style="color: red">0€</td>
             <td class="choice" data-row="10" data-choice="sure" style="color: blue">
-            1€
+            10€
             <input type="radio" name="row10" value="sure">
             </td>
             </tr>
@@ -950,9 +1020,9 @@ const example5MPLSelected = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 40 boites</th>
-            <th style="color: red"> 60 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 40 boîtes</th>
+            <th style="color: red"> 60 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -962,7 +1032,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="1" style="color: red">0€</td>
             <td class="choice" data-row="1" data-choice="sure" style="color: blue">
-            10€
+            1€
             <input type="radio" name="row1" value="sure">
             </td>
             </tr>
@@ -974,7 +1044,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="2" style="color: red">0€</td>
             <td class="choice" data-row="2" data-choice="sure" style="color: blue">
-            9€
+            2€
             <input type="radio" name="row2" value="sure">
             </td>
             </tr>
@@ -986,7 +1056,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="3" style="color: red">0€</td>
             <td class="choice" data-row="3" data-choice="sure" style="color: blue">
-            8€
+            3€
             <input type="radio" name="row3" value="sure">
             </td>
             </tr>
@@ -998,7 +1068,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="4" style="color: red">0€</td>
             <td class="choice" data-row="4" data-choice="sure" style="color: blue">
-            7€
+            4€
             <input type="radio" name="row4" value="sure">
             </td>
             </tr>
@@ -1010,7 +1080,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="5" style="color: red">0€</td>
             <td class="choice" data-row="5" data-choice="sure" style="color: blue">
-            6€
+            5€
             <input type="radio" name="row5" value="sure">
             </td>
             </tr>
@@ -1022,7 +1092,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="6" style="color: red">0€</td>
             <td class="choice" data-row="6" data-choice="sure" style="color: blue">
-            5€
+            6€
             <input type="radio" name="row6" value="sure">
             </td>
             </tr>
@@ -1034,7 +1104,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice selected" data-row="7" style="color: red">0€</td>
             <td class="choice" data-row="7" data-choice="sure" style="color: blue">
-            4€
+            7€
             <input type="radio" name="row7" value="sure">
             </td>
             </tr>
@@ -1046,7 +1116,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice" data-row="8" style="color: red">0€</td>
             <td class="choice selected" data-row="8" data-choice="sure" style="color: blue">
-            3€
+            8€
             <input type="radio" name="row8" value="sure" checked>
             </td>
             </tr>
@@ -1058,7 +1128,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice" data-row="9" style="color: red">0€</td>
             <td class="choice selected" data-row="9" data-choice="sure" style="color: blue">
-            2€
+            9€
             <input type="radio" name="row9" value="sure" checked>
             </td>
             </tr>
@@ -1070,7 +1140,7 @@ const example5MPLSelected = `
             </td>
             <td class="choice" data-row="10" style="color: red">0€</td>
             <td class="choice selected" data-row="10" data-choice="sure" style="color: blue">
-            1€
+            10€
             <input type="radio" name="row10" value="sure" checked>
             </td>
             </tr>
@@ -1088,9 +1158,9 @@ const example6MPLSelected = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
@@ -1117,9 +1187,9 @@ const example7MPLSelected = `
             </tr>
             <tr>
             <th>Version</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: red"> 50 boites</th>
-            <th style="color: blue">100 boites</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
             </tr>
             <tr>
             <td>1</td>
