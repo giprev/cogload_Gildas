@@ -34,5 +34,7 @@ let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
 console.log("treatment is", treatment)
 const notUnderstoodPayment = (treatment === "hard") ? basePayment_hard/3 : basePayment_easy/3; // if the participant does not understand the comprehension questions, they get 1/3 of the base payment
-
+console.log("not understood payment in parameters is", notUnderstoodPayment)
+const basePaymentThird = (treatment === "hard") ? basePayment_hard * (2/3) : basePayment_easy * (2/3); // base payment for the third part of the experiment
+console.log("base payment third in parameters is", basePaymentThird)
 let totalFdsTrainingTrials = 12; // 12 in the main experiment // number of rounds of the calibration

@@ -1,6 +1,31 @@
 const sure_payments = [25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 const Y_valuesMPL = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
 let helpPageCounter = 0;
+let lengthSurePayments = 17;
+
+function createMPLPositionDictionaryFromList() {
+    const mplPositions = {};
+    
+    // Extract unique probabilities from G and L types
+    const probabilities = [10, 25, 50, 75, 90];
+    
+    // Randomly assign positions for each probability
+    probabilities.forEach(prob => {
+        const gPosition = Math.random() < 0.5 ? "high" : "low";
+        const lPosition = gPosition === "high" ? "low" : "high";
+        
+        mplPositions[`G${prob}`] = gPosition;
+        mplPositions[`L${prob}`] = lPosition;
+    });
+    
+    // Handle A types separately (opposite positions)
+    const aHighFirst = Math.random() < 0.5;
+    mplPositions['A10'] = aHighFirst ? "high" : "low";
+    mplPositions['A15'] = aHighFirst ? "low" : "high";
+    
+    return mplPositions;
+}
+
 function mplGenerator(y, X, condition) {
     let sign = "";
     if (X == "G") {
@@ -122,6 +147,229 @@ function mplGenerator(y, X, condition) {
     else if (X == "A") {
         // HTML generation
         rows = Y_valuesMPL.map((amt, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
+            ${amt}€ <input type="radio" name="row${i}" value="lottery">
+            </td>
+            <td class="mirror" data-row="${i}" style="color: red">-${y}€</td>
+            <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
+            0€
+            <input type="radio" name="row${i}" value="sure">
+            </td>
+        </tr>
+        `).join('');
+
+        mpl_html = `
+
+        <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <ul>
+        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${language.instructionsMPL.computerChooses}</li><br>
+        <li><span style="color: green">${endowmentsMPL}</span></li><br>
+        </ul></div>
+
+        <table class="mpl" data-mpl-type="${X}${y}">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red">50 boîtes</th>
+            <th style="color: red">50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            ${rows}
+        </table>
+        `;
+    }
+  return mpl_html;
+}
+function roundToDownToFifth(number) {
+    return Math.floor(number * 5) / 5;
+}
+function mplGenerator2(y, X, condition, position) {
+    let sign = "";
+    if (X == "G") {
+        sign = "";
+    }
+    else if (X == "L") {
+        sign = "-";
+    }
+    else if (X == "A") {
+        sign = "";
+    }
+    else {
+        console.log("sign error for the lottery");
+    }
+
+    function createSequenceArray(y, X, position) {
+        const array = [];
+        let pos = 0;
+        if (position === "high" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 5;}
+        else if (position === "low" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 11;}
+        else if (position === "high" & (y == 25 | y == 75)) {pos = 4;}
+        else if (position === "low" & (y == 25 | y == 75)) {pos = 12;}
+        else if (position === "high" & y == 50) {pos = 3;}
+        else if (position === "low" & y == 50) {pos = 13;}
+        else if (position === "high" & (y == 10 | y == 15) & X == "A") {pos = 7;}
+        else if (position === "low" & (y == 10 | y == 15) & X == "A") {pos = 9;}
+
+        let EV = 0
+        if (X == "G"){
+            EV =roundToDownToFifth(y*0.25)}
+        else if (X == "L"){
+            EV = roundToDownToFifth(- y*0.25)}
+        else if (X == "A" & y == 10){
+            EV = 9.5 ;}
+        else if (X == "A" & y == 15){
+            EV = 14.5 ;}
+
+        if (X == "G") {
+            console.log("y is", y, "X is", X, "position is", position);
+            console.log("EV in G is", EV);
+            console.log("pos in G is", pos);
+            const startValue = EV - (pos * 0.2); // Calculate starting value
+            console.log("startValue in G is", startValue);
+            for (let i = 0; i < lengthSurePayments + 1; i++) {
+                array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
+            }
+        }
+        else if (X == "L") {
+            console.log("y is", y, "X is", X, "position is", position);
+            console.log("EV in L is", EV);
+            console.log("pos in L is", pos);
+            const startValue = EV - (pos * 0.2);
+            console.log("startValue in L is", startValue);
+            for (let i = 0; i < lengthSurePayments + 1; i++) {
+                array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
+            }
+        }
+        else if (X == "A") {
+            console.log("y is", y, "X is", X, "position is", position);
+            console.log("EV in A is", EV);
+            console.log("pos in A is", pos);
+            const startValue = EV - pos;
+            console.log("startValue in A is", startValue);
+            for (let i = 0; i < lengthSurePayments + 1; i++) {
+                array.push(startValue + i);
+            }
+        };
+        return array;
+    }
+
+    let sure_payments2 = createSequenceArray(y, X, position);
+    console.log("sure_payements2 is", sure_payments2);
+
+    // Dynamically assign endowmentsMPL based on parameters
+    let Xy = X + y; // e.g., "G75" or "L75"
+    // let endowmentsMPL = language.endowmentsMPL[Xy];
+    let endowmentsMPL = "";
+    if (condition == "mirror") {
+        endowmentsMPL = language.endowmentsMPL.mirror[Xy];
+    } else if (condition == "lottery") {
+        endowmentsMPL = language.endowmentsMPL.lottery[Xy];
+    }
+    let endowmentValue = "";
+    if (X == "G"){ endowmentValue = 5;}
+    else if (X == "L") { endowmentValue = 30;}
+    else if (X == "A" && y == 10) { endowmentValue = 15;}
+    else if (X == "A" && y == 15) { endowmentValue = 20;}
+
+  // Generate sure payment values
+    let rows = ``;
+    let mpl_html = ``;
+    if (X == "L") {
+        // HTML generation
+        rows = sure_payments2.map((amt, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
+            ${sign}25€
+            <input type="radio" name="row${i}" value="lottery">
+            </td>
+            <td class="mirror" data-row="${i}" style="color: red">0€</td>
+            <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
+            ${amt}€
+            <input type="radio" name="row${i}" value="sure">
+            </td>
+        </tr>
+        `).join('');
+
+        mpl_html = `
+        <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <ul>
+        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${language.instructionsMPL.computerChooses}</li><br>
+        <li><span style="color: green">${endowmentsMPL}</span></li><br>
+        </ul></div>
+
+        <table class="mpl" data-mpl-type="${X}${y}">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red">${y} boîtes</th>
+            <th style="color: red">${100-y} boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            ${rows}
+        </table>
+        `;
+    }
+    else if (X == "G") {
+        // HTML generation
+        rows = sure_payments2.map((amt, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
+            ${sign}25€
+            <input type="radio" name="row${i}" value="lottery">
+            </td>
+            <td class="mirror" data-row="${i}" style="color: red">
+            0€</td>
+            <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
+            ${sign}${amt}€
+            <input type="radio" name="row${i}" value="sure">
+            </td>
+        </tr>
+        `).join('');
+
+        mpl_html = `
+        <div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <ul>
+        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${language.instructionsMPL.computerChooses}</li><br>
+        <li><span style="color: green">${endowmentsMPL}</span></li><br>
+        </ul></div>
+
+        <table class="mpl" data-mpl-type="${X}${y}">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red">${y} boîtes</th>
+            <th style="color: red">${100-y} boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            ${rows}
+        </table>
+        `;
+    }
+    else if (X == "A") {
+        // HTML generation
+        rows = sure_payments2.map((amt, i) => `
         <tr>
             <td>${i + 1}</td>
             <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">

@@ -557,8 +557,8 @@ const fr = {
         part1: 'Dans la première partie, vous effectuerez une tâche de mémoire appelée "span de mémoire".',
         part2: "Dans la deuxième partie, vous effectuerez une variation de la tâche de span de mémoire.",
         part3: "Dans la troisième partie, vous effectuerez la tâche de span de mémoire en combinaison avec une tâche de prise de décision.",
-        payment: "Votre paiement de base pour les deux premières parties est de <b>{notUnderstoodPayment}€</b>. Le paiement de base pour la troisième partie est de {basePaymentThird}. Vous le recevrez si vous répondez correctement aux questions de compréhension. Sinon vous quitterez l'expérience.",
-        paymentBonu: "De plus vous pouvez gagner des bonus pour chaque partie, en fonctin de vos performances et de vos choix.",
+        payment: "Votre paiement de base pour les deux premières parties est de <b>{notUnderstoodPayment}€</b>. Le paiement de base pour la troisième partie est de <b>{basePaymentThird}€</b>. Vous recevrez ce dernier si vous répondez correctement aux <b>questions de compréhension</b>. Sinon vous quitterez l'expérience.",
+        paymentBonus: "De plus vous pouvez gagner des bonus pour chaque partie, en fonction de vos performances et de vos choix.",
         warningComprehensionQuestions: `Avant de commencer la troisième partie, vous devrez répondre à des questions de compréhension à propos des consignes la concernant.
         Si vous répondez incorrectement à plus d'une question sur les cinq, l'expérience s'arrêtera et vous votre paiement de base ne sera que de {notUnderstoodPayment}€, auquel vous ajouterez les bonus de la première et de la deuxième partie.`,
         paymentAfter: "Pour que vous compreniez comment les bonus sont calculés, vous recevrez les explications des bonus après les consignes pour chaque partie.",
@@ -616,9 +616,9 @@ const fr = {
     // },
     instructionsSpanSpan:{
         title: "Consignes pour la deuxième partie.",
-        description: "Dans cette partie, vous allez réaliser deux tâches de mémoire simultanées :",
+        description: "Dans cette partie, vous allez réaliser deux tâches de mémoire de la manière suivante :",
         lettersOrder: `<ul>
-        <li><b> Début de la tâche source</b> : Mémorisez {theBlueDigits} {displayed} à l’écran.</li>
+        <li><b>Début de la tâche source</b> : Mémorisez {theBlueDigits} {displayed} à l’écran.</li>
         <li><b>Tâche cible</b> : Immédiatement après, une série de chiffres <span style='color:red'>rouges</span> apparaîtra. 
         <br>Vous devrez la restituer dans l’ordre après l'avoir vue.</li>
         <li><b>Fin de la tâche source</b> : Enfin, vous devrez restituer {theBlueDigits}.</li>
@@ -666,7 +666,13 @@ const fr = {
     instructionsSpanInMPL: {
         title: "Consignes finales pour la troisième partie.",
         subTitle: "Combinaison de la tâche de span de mémoire et des Listes à Multiples Prix  (LMP).",
-        MPLInSpan: "Dans la troisième partie, vous verrez <b>une série de chiffres à retenir, puis vous devrez faire vos choix pour une tâche de LMP, et enfin vous devrez restituer les chiffres.</b>",
+        // MPLInSpan: "Dans la troisième partie, vous verrez <b>une série de chiffres à retenir, puis vous devrez faire vos choix pour une tâche de LMP, et enfin vous devrez restituer les chiffres.</b>",
+        MPLInSpan: "Dans cette partie, vous allez réaliser la tâche de span de mémoire et la tâche de prise de décision (LMP) de la manière suivante :",
+        lettersOrder: `<ul>
+        <li><b>Début de la tâche source (tâche de span de mémoire)</b> : mémorisez la série de chiffres à l’écran.</li>
+        <li><b>Tâche cible (LMP)</b> : immédiatement après, vous ferez un choix dans une tâche de LMP.</li>
+        <li><b>Fin de la tâche source (tâche de span de mémoire)</b> : Enfin, vous devrez restituer la série de chiffres vue au début de la tâche source.</li>
+        </ul>`,
         MPLInSpanRepeat: "Vous répéterez cela avec des séquences de chiffres et des tableaux différents.",
         incentives: "Bonus pour la tâche de span de mémoire",
         incentivesSpan: "Le <b>bonus</b> pour la tâche de span de mémoire, de <b>{bonusSpan}€</b> maximum, sera calculé de manière similaire à la deuxième partie:",
@@ -682,6 +688,15 @@ const fr = {
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
         remind: "À retenir: seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
+        clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
+    },    
+    feedbackExampleSpanMPLTemporary: {
+        title: "Exemple de paiement type à la troisième partie.",
+        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
+        paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient 1, 5, 3, 9, 4. Vous avez restitué les chiffres 5, 6, 9. Votre précision est de 0%. Votre bonus est de <b>2€ x 0% = 0€</b>.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne 15.",
+        remind: "À retenir: seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
@@ -808,7 +823,8 @@ const fr = {
     },
     comprehensionQMPL: {
         q1: {
-            prompt: "Supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus. Vous êtes sélectionné pour que ce choix soit payé. Quelle est la probabilité que exactement 20€ soit ajoutés à votre somme initiale d'argent ?",
+            prompt: `Pour les quatres prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné pour que ce choix soit payé. <br> 
+            Quelle est la probabilité que exactement 20€ soient ajoutés à votre somme initiale d'argent ?`,
             options: [
                 "0 sur 100 (0%)",
                 "25 sur 100 (25%)",
@@ -817,7 +833,7 @@ const fr = {
             ],
         },
         q2: {
-            prompt: "Quelle est la probabilité que exactement 5€ soit ajoutés à votre somme initiale d'argent ?",
+            prompt: "Quelle est la probabilité que exactement 5€ soient ajoutés à votre somme initiale d'argent ?",
             options: [
                 "0 sur 100 (0%)",
                 "25 sur 100 (25%)",
@@ -835,7 +851,7 @@ const fr = {
             ],
         },
         q4: {
-            prompt: "Quelle est la probabilité que exactement 10€ soit ajoutés à votre somme initiale d'argent ?",
+            prompt: "Quelle est la probabilité que exactement 10€ soient ajoutés à votre somme initiale d'argent ?",
             options: [
                 "0 sur 100 (0%)",
                 "25 sur 100 (25%)",
@@ -844,7 +860,7 @@ const fr = {
             ],
         },
         q5: {
-            prompt: `Supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
+            prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
             Vous êtes sélectionné pour que ce choix soit payé. Quelle(s) somme(s) d'argent pourrai(en)t être ajoutée(s) à ou retirée(s) de votre somme initiale d'argent ?`,
             options: [
                 "0€",
@@ -1400,7 +1416,7 @@ const fr = {
     },
     instructionsMPL: {
             makeChoice: `Veuillez <span style="background-color: rgba(239, 243, 4, 1)">sélectionner</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque lignes (chaque \"version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,
-            computerChooses: 'Si cette essai est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
+            computerChooses: 'Si cet essai est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
     },
     endowmentsMPL: {
         lottery: {
@@ -1473,6 +1489,7 @@ const fr = {
     sliderTitle: "Questions finales sur vos choix",
     sliderMirror: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"une boîte moyenne"</b> (la règle de paiement reposait sur la <b>moyenne</b> de la somme d'argent contenue dans les boîtes). {order}`,
     sliderLottery: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"une boîte au hasard"</b> (la règle de paiement reposait sur une boîte <b>tirée au hasard</b>). {order}`,
+    sliderHonest: "Vos réponses aux questions suivantes sont anonymes et ne seront pas liées à votre paiement. Veuillez répondre honnêtement.",
     sliderCognitiveUncertainty:{
         question: "Quelle est la probabilité selon vous (en %) que vos réponses aient maximisé vos bonus pour toutes les lignes de chaque tableau des LMP?",
         veryUncertain: "0% (bonus non maximisé)",

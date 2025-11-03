@@ -152,9 +152,6 @@ const descriptionExperimentNback = {
     button_label_previous: language.button.previous,
 }
 
-if (treatment === "hard") {
-descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment.replace("{basePayment}", basePayment_hard);}
-else {descriptionExperimentSpanMPLpaymentExplanation = language.descriptionExperimentSpanMPL.payment.replace("{basePayment}", basePayment_easy);}
 // const descriptionExperimentSpanMPL= {
 //     type: "instructions",
 //     pages: [
@@ -181,6 +178,7 @@ const consentForm = {
 }
 const instructionsBeforeCalibration = {
     type: "instructions",
+    // <p>${language.descriptionExperimentSpanMPL.warningComprehensionQuestions.replace('{notUnderstoodPayment}', Math.round(notUnderstoodPayment*100)/100)}</p>
     pages: [    
         `       <h2>${language.descriptionExperimentSpanMPL.title}</h2>
                 <p>${language.descriptionExperimentSpanMPL.threeParts}</p>
@@ -189,8 +187,8 @@ const instructionsBeforeCalibration = {
                 <li>${language.descriptionExperimentSpanMPL.part2}</li>
                 <li>${language.descriptionExperimentSpanMPL.part3}</li>
                 </ul>
-                <p>${descriptionExperimentSpanMPLpaymentExplanation}</p>
-                <p>${language.descriptionExperimentSpanMPL.warningComprehensionQuestions.replace('{notUnderstoodPayment}', Math.round(notUnderstoodPayment*100)/100)}</p>
+                <p>${language.descriptionExperimentSpanMPL.payment.replace("{notUnderstoodPayment}", Math.round(notUnderstoodPayment * 100)/100).replace("{basePaymentThird}", Math.round(basePaymentThird * 100)/100)}</p>
+                <p>${language.descriptionExperimentSpanMPL.paymentBonus}</p>
                 <p>${language.descriptionExperimentSpanMPL.paymentAfter}</p>
                 <p>${language.descriptionExperimentSpanMPL.clickNext}</p>`,
 
@@ -419,6 +417,7 @@ const instructionsChoosingASetOfBoxes = {
         else {bonusSpan = spanMplPayment_easy}
 
         return [`<h2>${language.instructionsChoosingASetOfBoxes.title}</h2>
+        <br>
          <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.description}</p>
         <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
@@ -427,14 +426,18 @@ const instructionsChoosingASetOfBoxes = {
         ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
         <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+        <br>
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
         <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
         <p>${language.instructionsChoosingASetOfBoxes.clickNext}</p>`,
         `<h2>${language.instructionsSpanInMPL.title}</h2>
+        <br>
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+        <p>${language.instructionsSpanInMPL.lettersOrder}</p>
         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+            <br>
         <h3>${language.instructionsSpanInMPL.incentives}</h3>
         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", bonusSpan)}</p>
         <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
@@ -875,6 +878,26 @@ const instructions_NbackVisual= {
   }
 };
 
+const temporary = {
+    // `<div style="max-width: 1200px">
+    type: "instructions",
+    pages: [
+        `<h2>${language.feedbackExampleSpanMPLTemporary.title}</h2>
+        <p>${language.feedbackExampleSpanMPLTemporary.description}</p>
+        <p>${language.feedbackExampleSpanMPLTemporary.paymentSpan}</p>
+        <p>${language.feedbackExampleSpanMPLTemporary.paymentMPL}</p>
+        <div class="important-note">    
+        <p>${language.feedbackExampleSpanMPLTemporary.remind}</p>
+        </div>
+        <p>${language.feedbackExampleSpanMPLTemporary.instructionReminder}</p>
+        <p>${language.feedbackExampleSpanMPLTemporary.clickNext}</p>
+        </div>`
+    ],
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
+
 const loopAgain = {
     type: "instructions",
     pages: [
@@ -958,23 +981,7 @@ const afterPracticeHard = {... trialStructure,
 
 /*create n-back variables*/
 
-setArrays() /* defines  nbackStimuli = {};
-                        nbackStimuli.stimuliEasy_flanker = [];
-                        nbackStimuli.stimuliHard_flanker = [];
-                        nbackStimuli.stimuliPracticeEasy_flanker = [];
-                        nbackStimuli.stimuliPracticeHard_flanker = [];
-                        nbackStimuli.stimuliEasy_span = [];
-                        nbackStimuli.stimuliHard_span = [];
-                        nbackStimuli.stimuliPracticeEasy_span = [];
-                        nbackStimuli.stimuliPracticeHard_span = [];
-                        nbackStimuli.stimuliEasy_nback = [];
-                        nbackStimuli.stimuliHard_nback = [];
-                        nbackStimuli.stimuliPracticeEasy_nback = [];
-                        nbackStimuli.stimuliPracticeHard_nback = [];
-                        nbackStimuli.correctResponse;
-                        nbackStimuli.target;
-                          */
-
+setArrays()
 
 defineEasyBack()
 assignRandomStimuli1back()
@@ -2034,30 +2041,35 @@ let list_mpl_tables = {
     3: "G50", 
     4: "G75", 
     5: "G90", 
-    6: "L10", 
+    6: "L10",
     7: "L25", 
     8: "L50",
     9: "L75", 
     10: "L90", 
     11: "A10", 
     12: "A15"};
+const mplPositionDict = createMPLPositionDictionaryFromList();
 // Create mpl_html_array_lottery following the order of numbersArray
 mpl_html_array_lottery = numbersArray_lottery.map(x => {
     const tableType = list_mpl_tables[x];
     // Extract the probability and type from the table identifier
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
-    return mplGenerator(probability, type, "lottery");
+    const position = mplPositionDict[tableType]; // Get the position from dictionary
+    console.log("MPLGenerator2 called with:", probability, type, "lottery", position);
+    return mplGenerator2(probability, type, "lottery", position);
 });
 mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const tableType = list_mpl_tables[x];
     // Extract the probability and type from the table identifier
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
-    return mplGenerator(probability, type, "mirror");
+    const position = mplPositionDict[tableType]; // Get the position from dictionary
+    console.log("MPLGenerator2 called with:", probability, type, "mirror", position);
+    return mplGenerator2(probability, type, "mirror", position);
 });
-example_mpl_html_array_lottery = [mplGenerator(50, "G", "lottery")];
-example_mpl_html_array_mirror = [mplGenerator(50, "G", "mirror")];
+example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", 'low')];
+example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", 'low')];
 mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
 example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
@@ -2106,6 +2118,8 @@ const mpl_trial = {
         document.querySelectorAll(`.choice[data-row="${row}"]`)
           .forEach(b => b.classList.remove('selected'));
         let cell = document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`);
+        console.log("In selectRow(), row is ", row, "and choice is ", choice)
+        console.log('document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`) is ', document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`))
         cell.classList.add('selected');
         cell.querySelector('input').checked = true;
 
@@ -2161,7 +2175,7 @@ const mpl_trial = {
         }
         // Fill from clicked row+1 to end with the opposite choice
         let otherChoice = (choice === 'sure') ? 'lottery' : 'sure';
-        for (let r = row + 1; r < sure_payments.length; r++) {
+        for (let r = row + 1; r < lengthSurePayments + 1; r++) {
           selectRow(r, otherChoice);
           if (choice == "lottery"){
             document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
@@ -2188,7 +2202,7 @@ const mpl_trial = {
     let choicesArray = [];
 
 
-    for (var i = 0; i < sure_payments.length; i++) {
+    for (var i = 0; i < lengthSurePayments + 1; i++) {
       let choice = responses_mpl[`row${i}`];
       choicesArray.push(choice);
       prevChoice = i > 0 ? choicesArray[i-1] : null;
@@ -2241,7 +2255,7 @@ const mpl_trial = {
     console.log("status of mpl is", data.statusMPL)
     data.task = "mpl";
 
-    console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 11, data.choices, data.statusMPL));
+    console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 24, data.choices, data.statusMPL));
   }
 };
 
@@ -2800,6 +2814,7 @@ const cognitiveUncertaintyMirror = {
             <div style="max-width: 800px; margin: 0 auto;">
                 <h2>${language.sliderTitle}</h2><br>
                 <p>${language.sliderMirror.replace('{order}', sliderOrder)}</p><br>
+                <p>${language.sliderHonest}</p><br>
                 
                 <div style="margin: 30px 0;">
                     <p>${language.sliderCognitiveUncertainty.question}</p>
@@ -2870,6 +2885,7 @@ const cognitiveUncertaintyLottery = {
             <div style="max-width: 800px; margin: 0 auto;">
                 <h2>${language.sliderTitle}</h2><br>
                 <p>${language.sliderLottery.replace('{order}', sliderOrder)}</p><br>
+                <p>${language.sliderHonest}</p><br>
                 
                 <div style="margin: 30px 0;">
                     <p>${language.sliderCognitiveUncertainty.question}</p>
