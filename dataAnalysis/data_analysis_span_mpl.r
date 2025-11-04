@@ -26,8 +26,9 @@ getwd()
 filePath_testGildas01_20251016 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251015161854.txt"
 filePath_testGildas02_20251017 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251017112941.txt"
 filePath_testGildasSiméon01_20251021 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251021083554.txt"
+filePath_testGildas03_20251104 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251104152827.txt"
 
-text <- readLines(filePath_testGildasSiméon01_20251021)
+text <- readLines(filePath_testGildas03_20251104)
 
 nSub <- length(text)
 
@@ -86,12 +87,86 @@ accuracySpan <- function(answer, correct) {
     return(correctMatches / maxPositions)
 }
 
-extract_mpl_dataframes <- function(dataPerParticipant) {
+roundToDownToFifth <- function(number) {
+  return(floor(number * 5) / 5)
+}
+
+createSequenceArray <- function(y, X, position) {
+
+  lengthSurePayments <- 17  # Adjust this value as needed
   
+  array <- c()
+  pos <- 0
+  
+  # hard code the position of the upper line of the rational switch point
+  if (position == "high" & (y == 10 | y == 90) & (X == "G" | X == "L")) {
+    pos <- 6
+  } else if (position == "low" & (y == 10 | y == 90) & (X == "G" | X == "L")) {
+    pos <- 12
+  } else if (position == "high" & (y == 25 | y == 75)) {
+    pos <- 5
+  } else if (position == "low" & (y == 25 | y == 75)) {
+    pos <- 13
+  } else if (position == "high" & y == 50) {
+    pos <- 4
+  } else if (position == "low" & y == 50) {
+    pos <- 14
+  } else if (position == "high" & (y == 10 | y == 15) & X == "A") {
+    pos <- 8
+  } else if (position == "low" & (y == 10 | y == 15) & X == "A") {
+    pos <- 10
+  }
+  
+  EV <- 0
+  if (X == "G") {
+    EV <- roundToDownToFifth(y * 0.25)
+  } else if (X == "L") {
+    EV <- roundToDownToFifth(-y * 0.25)
+  } else if (X == "A" & y == 10) {
+    EV <- 9.5
+  } else if (X == "A" & y == 15) {
+    EV <- 14.5
+  }
+  
+  if (X == "G") {
+    cat("y is", y, "X is", X, "position is", position, "\n")
+    cat("EV in G is", EV, "\n")
+    cat("pos in G is", pos, "\n")
+    startValue <- EV - ((pos-1) * 0.2)
+    cat("startValue in G is", startValue, "\n")
+    for (i in 0:lengthSurePayments) {
+      array <- c(array, round((startValue + (i * 0.2)) * 10) / 10)
+    }
+  } else if (X == "L") {
+    cat("y is", y, "X is", X, "position is", position, "\n")
+    cat("EV in L is", EV, "\n")
+    cat("pos in L is", pos, "\n")
+    startValue <- EV - ((pos-1) * 0.2)
+    cat("startValue in L is", startValue, "\n")
+    for (i in 0:lengthSurePayments) {
+      array <- c(array, round((startValue + (i * 0.2)) * 10) / 10)
+    }
+  } else if (X == "A") {
+    cat("y is", y, "X is", X, "position is", position, "\n")
+    cat("EV in A is", EV, "\n")
+    cat("pos in A is", pos, "\n")
+    startValue <- EV - (pos-1)
+    cat("startValue in A is", startValue, "\n")
+    for (i in 0:lengthSurePayments) {
+      array <- c(array, startValue + i)
+    }
+  }
+  return(array)
+}
+cat("createSequenceArray(50, 'G', 'low'):", createSequenceArray(50, 'G', 'low'), "\n")
+
+
+extract_mpl_dataframes <- function(dataPerParticipant) {
+
   # Filter data for the conditions you specified
   mpl_data <- dataPerParticipant %>%
     filter(!is.na(mplType) & !is.null(mplType) & mplType != "" & block == "span_mpl" & task == "mpl")
-  
+
   # Check if we have any data
   if(nrow(mpl_data) == 0) {
     warning("No data found matching the criteria")
@@ -165,6 +240,8 @@ extract_mpl_dataframes <- function(dataPerParticipant) {
   
   return(dataframes_list)
 }
+
+
 
 
 

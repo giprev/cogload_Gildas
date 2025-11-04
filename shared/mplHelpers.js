@@ -191,6 +191,62 @@ function mplGenerator(y, X, condition) {
 function roundToDownToFifth(number) {
     return Math.floor(number * 5) / 5;
 }
+
+function createSequenceArray(y, X, position) {
+    const array = [];
+    let pos = 0;
+    if (position === "high" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 5;}
+    else if (position === "low" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 11;}
+    else if (position === "high" & (y == 25 | y == 75)) {pos = 4;}
+    else if (position === "low" & (y == 25 | y == 75)) {pos = 12;}
+    else if (position === "high" & y == 50) {pos = 3;}
+    else if (position === "low" & y == 50) {pos = 13;}
+    else if (position === "high" & (y == 10 | y == 15) & X == "A") {pos = 7;}
+    else if (position === "low" & (y == 10 | y == 15) & X == "A") {pos = 9;}
+
+    let EV = 0
+    if (X == "G"){
+        EV =roundToDownToFifth(y*0.25)}
+    else if (X == "L"){
+        EV = roundToDownToFifth(- y*0.25)}
+    else if (X == "A" & y == 10){
+        EV = 9.5 ;}
+    else if (X == "A" & y == 15){
+        EV = 14.5 ;}
+
+    if (X == "G") {
+        console.log("y is", y, "X is", X, "position is", position);
+        console.log("EV in G is", EV);
+        console.log("pos in G is", pos);
+        const startValue = EV - (pos * 0.2); // Calculate starting value
+        console.log("startValue in G is", startValue);
+        for (let i = 0; i < lengthSurePayments + 1; i++) {
+            array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
+        }
+    }
+    else if (X == "L") {
+        console.log("y is", y, "X is", X, "position is", position);
+        console.log("EV in L is", EV);
+        console.log("pos in L is", pos);
+        const startValue = EV - (pos * 0.2);
+        console.log("startValue in L is", startValue);
+        for (let i = 0; i < lengthSurePayments + 1; i++) {
+            array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
+        }
+    }
+    else if (X == "A") {
+        console.log("y is", y, "X is", X, "position is", position);
+        console.log("EV in A is", EV);
+        console.log("pos in A is", pos);
+        const startValue = EV - pos;
+        console.log("startValue in A is", startValue);
+        for (let i = 0; i < lengthSurePayments + 1; i++) {
+            array.push(startValue + i);
+        }
+    };
+    return array;
+}
+
 function mplGenerator2(y, X, condition, position) {
     let sign = "";
     if (X == "G") {
@@ -204,61 +260,6 @@ function mplGenerator2(y, X, condition, position) {
     }
     else {
         console.log("sign error for the lottery");
-    }
-
-    function createSequenceArray(y, X, position) {
-        const array = [];
-        let pos = 0;
-        if (position === "high" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 5;}
-        else if (position === "low" & (y == 10 | y == 90) & (X == "G" | X =="L")) {pos = 11;}
-        else if (position === "high" & (y == 25 | y == 75)) {pos = 4;}
-        else if (position === "low" & (y == 25 | y == 75)) {pos = 12;}
-        else if (position === "high" & y == 50) {pos = 3;}
-        else if (position === "low" & y == 50) {pos = 13;}
-        else if (position === "high" & (y == 10 | y == 15) & X == "A") {pos = 7;}
-        else if (position === "low" & (y == 10 | y == 15) & X == "A") {pos = 9;}
-
-        let EV = 0
-        if (X == "G"){
-            EV =roundToDownToFifth(y*0.25)}
-        else if (X == "L"){
-            EV = roundToDownToFifth(- y*0.25)}
-        else if (X == "A" & y == 10){
-            EV = 9.5 ;}
-        else if (X == "A" & y == 15){
-            EV = 14.5 ;}
-
-        if (X == "G") {
-            console.log("y is", y, "X is", X, "position is", position);
-            console.log("EV in G is", EV);
-            console.log("pos in G is", pos);
-            const startValue = EV - (pos * 0.2); // Calculate starting value
-            console.log("startValue in G is", startValue);
-            for (let i = 0; i < lengthSurePayments + 1; i++) {
-                array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
-            }
-        }
-        else if (X == "L") {
-            console.log("y is", y, "X is", X, "position is", position);
-            console.log("EV in L is", EV);
-            console.log("pos in L is", pos);
-            const startValue = EV - (pos * 0.2);
-            console.log("startValue in L is", startValue);
-            for (let i = 0; i < lengthSurePayments + 1; i++) {
-                array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
-            }
-        }
-        else if (X == "A") {
-            console.log("y is", y, "X is", X, "position is", position);
-            console.log("EV in A is", EV);
-            console.log("pos in A is", pos);
-            const startValue = EV - pos;
-            console.log("startValue in A is", startValue);
-            for (let i = 0; i < lengthSurePayments + 1; i++) {
-                array.push(startValue + i);
-            }
-        };
-        return array;
     }
 
     let sure_payments2 = createSequenceArray(y, X, position);
@@ -411,6 +412,60 @@ function mplGenerator2(y, X, condition, position) {
     }
   return mpl_html;
 }
+function mplGenerator3(number) {
+
+    if (number == 1) {explanation = language.instructionsMPL.explanation1;}
+    else if (number == 2) {explanation = language.instructionsMPL.explanation2;}
+
+
+    let surePaymentsTraining = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+
+  // Generate sure payment values
+    let rows = ``;
+    let mpl_html = ``;
+
+        // HTML generation
+        rows = surePaymentsTraining.map((amt, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td class="choice" data-row="${i}" data-choice="lottery" style="color: red">
+            15€
+            <input type="radio" name="row${i}" value="lottery">
+            </td>
+            <td class="mirror" data-row="${i}" style="color: red">
+            0€</td>
+            <td class="choice" data-row="${i}" data-choice="sure" style="color: blue">
+            ${amt}€
+            <input type="radio" name="row${i}" value="sure">
+            </td>
+        </tr>
+        `).join('');
+
+        mpl_html = `
+        <div style="width: 50vw; margin: auto;">
+        <h2>${language.instructionsMPL.trainingTitle}</h2>
+        <p>${explanation}</p>
+        <p>${language.instructionsMPL.trainingClickNext}</p>
+        </ul></div>
+
+        <table class="mpl" data-mpl-type="${50}${60}">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red">60 boîtes</th>
+            <th style="color: red">40 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            ${rows}
+        </table>
+        `;
+
+  return mpl_html;
+}
 
 function generateShuffledArray() {
     // Create base array 1-12
@@ -437,15 +492,17 @@ function generateShuffledArray() {
 }
 
 function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
-    console.log("Beginning of calculateMPLPayment with parameters: mplType is", mplType, "rowNumber is", rowNumber, "choices are", choices, "chosenStatus is", chosenStatus);
+    console.log("Beginning of calculateMPLPayment with parameters: mplType is", mplType, "rowNumber is", rowNumber, "choices are", choices, "chosenStatus is", chosenStatus, "position is", mplPositionDict[mplType]);
     const type = mplType.charAt(0);
     const probability = parseInt(mplType.substring(1));
     let sure = choices[rowNumber]; // either "sure" or "lottery"
+    let position = mplPositionDict[mplType];
+    let surePayments = createSequenceArray(probability, type, position);
     if (sure == "sure") {
         if (type == "G") {
-            return sure_payments[24 - rowNumber] + 5;
+            return surePayments[rowNumber] + 5;
         } else if (type == "L") {
-            return -sure_payments[rowNumber] + 30;
+            return surePayments[rowNumber] + 30;
         }
         else if (type == "A") {
             return probability + 5;
@@ -469,9 +526,9 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
                 }
             } else if (type == "A") {
                 if (randomDraw <= 0.5) {
-                    return Y_valuesMPL[rowNumber] + probability + 5;
+                    return surePayments[rowNumber] + probability + 5;
                 } else if (randomDraw > 0.5) {
-                    return 5;
+                    return 5; // = - probability + endowment
                 }
             }
         }
@@ -484,7 +541,7 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
                 let endow = 0;
                 if (probability == 10) { endow  = 15;}
                 else if (probability == 15) { endow = 20;}
-                return (((Y_valuesMPL[rowNumber] - probability)/2) + endow);
+                return (((surePayments[rowNumber] - probability)/2) + endow);
             }
         } 
     }

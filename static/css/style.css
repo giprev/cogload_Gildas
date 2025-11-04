@@ -143,6 +143,29 @@ body {
 	background-color: #505050;
 }
 
+
+/* Red theme for span_span1 response screen */
+.span-span1-red .square:hover, .span-span1-red .submit_button:hover, .span-span1-red .clear_button:hover{
+	color: red;
+}
+.span-span1-red .square:active, .span-span1-red .submit_button:active, .span-span1-red .clear_button:active {
+	background-color: red;
+}
+.span-span1-red #echoed_txt {
+	color: red !important;
+}
+
+/* Blue theme for span_span2 response screen */
+.span-span2-blue .square:hover, .span-span2-blue .submit_button:hover, .span-span2-blue .clear_button:hover {
+	color: blue;
+}
+.span-span2-blue .square:active, .span-span2-blue .submit_button:active, .span-span2-blue .clear_button:active {
+	background-color: blue;
+}
+.span-span2-blue #echoed_txt {
+	color: blue !important;
+}
+
 .numbers{
     font-weight:900;
     text-align: center;

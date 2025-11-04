@@ -616,7 +616,7 @@ const fr = {
     // },
     instructionsSpanSpan:{
         title: "Consignes pour la deuxième partie.",
-        description: "Dans cette partie, vous allez réaliser deux tâches de mémoire de la manière suivante :",
+        description: "Dans cette partie, vous allez réaliser deux tâches de span de mémoire de la manière suivante :",
         lettersOrder: `<ul>
         <li><b>Début de la tâche source</b> : Mémorisez {theBlueDigits} {displayed} à l’écran.</li>
         <li><b>Tâche cible</b> : Immédiatement après, une série de chiffres <span style='color:red'>rouges</span> apparaîtra. 
@@ -676,17 +676,17 @@ const fr = {
         MPLInSpanRepeat: "Vous répéterez cela avec des séquences de chiffres et des tableaux différents.",
         incentives: "Bonus pour la tâche de span de mémoire",
         incentivesSpan: "Le <b>bonus</b> pour la tâche de span de mémoire, de <b>{bonusSpan}€</b> maximum, sera calculé de manière similaire à la deuxième partie:",
-        incentivesSpanDetails: `Un essai sera sélectionné au hasard parmi les essais de la troisième partie. Chaque essai a la même chance d'être sélectionné.Votre bonus dépendra de votre <b>précision</b> dans cet essai.`,
+        incentivesSpanDetails: `Un essai sera sélectionné au hasard parmi les essais de la troisième partie. Chaque essai a la même chance d'être sélectionné. Votre bonus dépendra de votre <b>précision</b> dans cet essai.`,
         incentiveSpanExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 80%, votre bonus sera de {bonusSpan}€ x 0.8 = {examplePaymentSpan}€.",
         randomMechanism: "Puisque le bonus dépend d'un essai tiré au hasard, veuillez considérer chaque essai comme si c’était celui qui allait être payé.",
         priority: "Pour maximiser votre bonus, votre <b>priorité</b> doit être de restituer correctement les chiffres.",
-        clickNext: "Cliquez sur <strong>Suivant</strong> pour voir l'exemple final !"
+        clickNext: "Cliquez sur <strong>Suivant</strong> pour effectuer un exemple final !"
     },
     feedbackExampleSpanMPL: {
         title: "Exemple de paiement type à la troisième partie.",
         description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
-        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
         remind: "À retenir: seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
@@ -808,7 +808,11 @@ const fr = {
         incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné (vous avez une chance sur 22), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.
         Faites donc chaque choix comme si c'était celui qui allait être payé !`,
-        clickNext: "Cliquez sur <strong>Suivant</strong> découvrir les dernières consignes avant de commencer !",
+        clickNext: "Cliquez sur <strong>Suivant</strong> pour vous entraîner à sélectionner des lots de boîtes !",
+    },
+    introductionFinalExampleSpanMPL:{
+        title: "Exemple final avant de commencer la troisième partie.",
+        description: "Cliquer sur <b>Suivant</b> pour faire un exemple complet d'un essai de la troisième partie, combinant la tâche source (span de mémoire) et la tâche cible (LMP).",
     },
     comprehensionMPLIntro: "Questions de compréhension",
     comprehensionMPLExplanation: ` Si vous ne répondez pas correctement à au moins 4 questions, 
@@ -1417,6 +1421,10 @@ const fr = {
     instructionsMPL: {
             makeChoice: `Veuillez <span style="background-color: rgba(239, 243, 4, 1)">sélectionner</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque lignes (chaque \"version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,
             computerChooses: 'Si cet essai est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
+            trainingTitle: "Entraînement à sélectionner les lots",
+            explanation1: "Sélectionnez le lot A pour les versions 1 à 6 et le lot B pour les versions 7 à 18.",
+            explanation2: "Sélectionnez le lot B pour les versions 1 à 8 et le lot A pour les versions 9 à 18.",
+            trainingClickNext: "Quand vous l'avez fait, cliquez sur <strong>Suivant</strong> pour continuer !"
     },
     endowmentsMPL: {
         lottery: {

@@ -1,5 +1,3 @@
-
-
 /*************** VARIABLES nback ***************/
 
 let nbackStimuli = {};
@@ -430,7 +428,23 @@ const instructionsChoosingASetOfBoxes = {
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
         <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <br>
         <p>${language.instructionsChoosingASetOfBoxes.clickNext}</p>`,
+        ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+
+const instructionsIncentivesSpanMPL= {
+    type: "instructions",
+    pages: function(){
+        if (treatment === "hard") {bonusSpan = spanMplPayment_hard}
+        else {bonusSpan = spanMplPayment_easy}
+
+        return [
         `<h2>${language.instructionsSpanInMPL.title}</h2>
         <br>
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
@@ -444,7 +458,21 @@ const instructionsChoosingASetOfBoxes = {
         <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)}</p>
         <p>${language.instructionsSpanInMPL.randomMechanism}</p>
         <p>${language.instructionsSpanInMPL.priority}</p>
+        <br>
         <p>${language.instructionsSpanInMPL.clickNext}</p> `
+        ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+const introductionFinalExampleSpanMPL = {
+    type: "instructions",
+    pages: function(){
+        return [`<h2>${language.introductionFinalExampleSpanMPL.title}</h2>
+        <p>${language.introductionFinalExampleSpanMPL.description}</p>
+        `
         ]
     },
     show_clickable_nav: true,
@@ -752,7 +780,6 @@ const comprehensionFailureTrial = {
         trial.data = trial.data || {};
         trial.data.totalPayment = notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span;
         trial.data.task = 'comprehensionFailure';
-        trial.data.treatment = treatment;
     },
     on_finish: function() {
         // End the experiment
@@ -878,25 +905,25 @@ const instructions_NbackVisual= {
   }
 };
 
-const temporary = {
-    // `<div style="max-width: 1200px">
-    type: "instructions",
-    pages: [
-        `<h2>${language.feedbackExampleSpanMPLTemporary.title}</h2>
-        <p>${language.feedbackExampleSpanMPLTemporary.description}</p>
-        <p>${language.feedbackExampleSpanMPLTemporary.paymentSpan}</p>
-        <p>${language.feedbackExampleSpanMPLTemporary.paymentMPL}</p>
-        <div class="important-note">    
-        <p>${language.feedbackExampleSpanMPLTemporary.remind}</p>
-        </div>
-        <p>${language.feedbackExampleSpanMPLTemporary.instructionReminder}</p>
-        <p>${language.feedbackExampleSpanMPLTemporary.clickNext}</p>
-        </div>`
-    ],
-    show_clickable_nav: true,
-    button_label_next: language.button.next,
-    button_label_previous: language.button.previous,
-}
+// const temporary = {
+//     // `<div style="max-width: 1200px">
+//     type: "instructions",
+//     pages: [
+//         `<h2>${language.feedbackExampleSpanMPLTemporary.title}</h2>
+//         <p>${language.feedbackExampleSpanMPLTemporary.description}</p>
+//         <p>${language.feedbackExampleSpanMPLTemporary.paymentSpan}</p>
+//         <p>${language.feedbackExampleSpanMPLTemporary.paymentMPL}</p>
+//         <div class="important-note">    
+//         <p>${language.feedbackExampleSpanMPLTemporary.remind}</p>
+//         </div>
+//         <p>${language.feedbackExampleSpanMPLTemporary.instructionReminder}</p>
+//         <p>${language.feedbackExampleSpanMPLTemporary.clickNext}</p>
+//         </div>`
+//     ],
+//     show_clickable_nav: true,
+//     button_label_next: language.button.next,
+//     button_label_previous: language.button.previous,
+// }
 
 const loopAgain = {
     type: "instructions",
@@ -1222,7 +1249,7 @@ const testNback = {
     generalNbackCounter ++ ;
     data.generalNbackCounter = generalNbackCounter;
 
-    // data.task = 'n-back';ffff
+    // data.task = 'n-back';
     if (data.correct_response == "f" && data.key_press == 70){
         data.correct_rejection = 1;
     } else {
@@ -2035,18 +2062,20 @@ let mpl_html_array_lottery = [];
 let mpl_html_array_mirror = [];
 let example_mpl_html_array_lottery = [];
 let example_mpl_html_array_mirror = [];
+let training_mpl_html_array1 = [];
+let training_mpl_html_array2 = [];
 let list_mpl_tables = {
-    1: "G10", 
-    2: "G25", 
-    3: "G50", 
-    4: "G75", 
-    5: "G90", 
+    1: "G10",
+    2: "G25",
+    3: "G50",
+    4: "G75",
+    5: "G90",
     6: "L10",
-    7: "L25", 
+    7: "L25",
     8: "L50",
-    9: "L75", 
-    10: "L90", 
-    11: "A10", 
+    9: "L75",
+    10: "L90",
+    11: "A10",
     12: "A15"};
 const mplPositionDict = createMPLPositionDictionaryFromList();
 // Create mpl_html_array_lottery following the order of numbersArray
@@ -2064,16 +2093,24 @@ mpl_html_array_mirror = numbersArray_mirror.map(x => {
     // Extract the probability and type from the table identifier
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
-    const position = mplPositionDict[tableType]; // Get the position from dictionary
+    const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
     console.log("MPLGenerator2 called with:", probability, type, "mirror", position);
     return mplGenerator2(probability, type, "mirror", position);
 });
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", 'low')];
 example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", 'low')];
+training_mpl_html_array1 = [mplGenerator3(1)];
+training_mpl_html_array2 = [mplGenerator3(2)];
+training_mpl_html_array = [mplGenerator3(1), mplGenerator3(2)];
+training_mpl_html_array1 = training_mpl_html_array1.map(html => ({html: html, statusMPL: "mirror"}));
+training_mpl_html_array2 = training_mpl_html_array2.map(html => ({html: html, statusMPL: "mirror"}));
+training_mpl_html_array = training_mpl_html_array.map(html => ({html: html, statusMPL: "mirror"}));
+console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
 mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
 example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 example_mpl_html_array_mirror = example_mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
+console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery with generated HTML");
 // console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
 
 
@@ -2254,8 +2291,226 @@ const mpl_trial = {
     console.log("choicesArray is ", choicesArray)
     console.log("status of mpl is", data.statusMPL)
     data.task = "mpl";
+    data.position = mplPositionDict[data.mplType]
+    console.log("data.position is ", data.position)
+    let exampleLine = getRandomInt(0, lengthSurePayments-1);
+    console.log("calculateMPLPayment with line ", exampleLine, " is", calculateMPLPayment(data.mplType, exampleLine, data.choices, data.statusMPL));
+  }
+};
 
-    console.log("calculateMPLPayment is", calculateMPLPayment(data.mplType, 24, data.choices, data.statusMPL));
+const mpl_trial_training = {
+  type: 'survey-html-form',
+  button_label: language.button.next,
+  html: function() {
+    return jsPsych.timelineVariable("html", true);
+  },
+  on_load: function() {
+
+    // Disable the submit button initially
+    const submitButton = document.querySelector('input[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.style.opacity = '0.5';
+      submitButton.style.cursor = 'not-allowed';
+    }
+
+    if (jsPsych.timelineVariable("html", true) == training_mpl_html_array[0].html){
+    function checkCorrectSelections() {
+      // Check if the correct pattern is selected:
+      // Rows 0-6 should have "lottery" selected
+      // Rows 7-17 should have "sure" selected
+      let correctPattern = true;
+      
+      // Check rows 0-6 for lottery selection
+      for (let r = 0; r < 6; r++) {
+        const lotteryCell = document.querySelector(`.choice[data-row="${r}"][data-choice="lottery"]`);
+        if (!lotteryCell || !lotteryCell.classList.contains('selected')) {
+          correctPattern = false;
+          break;
+        }
+      }
+      
+      // Check rows 7-17 for sure selection (only if rows 0-6 are correct)
+      if (correctPattern) {
+        for (let r = 6; r <= 17; r++) {
+          const sureCell = document.querySelector(`.choice[data-row="${r}"][data-choice="sure"]`);
+          if (!sureCell || !sureCell.classList.contains('selected')) {
+            correctPattern = false;
+            break;
+          }
+        }
+      }
+      
+      // Enable/disable submit button based on correct pattern
+      if (submitButton) {
+        submitButton.disabled = !correctPattern;
+        submitButton.style.opacity = correctPattern ? '1' : '0.5';
+        submitButton.style.cursor = correctPattern ? 'pointer' : 'not-allowed';
+      }
+    }
+    } else if (jsPsych.timelineVariable("html", true) == training_mpl_html_array[1].html){
+    function checkCorrectSelections() {
+      // Check if the correct pattern is selected:
+      // Rows 0-6 should have "lottery" selected
+      // Rows 7-17 should have "sure" selected
+      let correctPattern = true;
+      
+      // Check rows 0-6 for lottery selection
+      for (let r = 0; r < 8; r++) {
+        const lotteryCell = document.querySelector(`.choice[data-row="${r}"][data-choice="sure"]`);
+        if (!lotteryCell || !lotteryCell.classList.contains('selected')) {
+          correctPattern = false;
+          break;
+        }
+      }
+      
+      // Check rows 7-17 for sure selection (only if rows 0-6 are correct)
+      if (correctPattern) {
+        for (let r = 8; r <= 17; r++) {
+          const sureCell = document.querySelector(`.choice[data-row="${r}"][data-choice="lottery"]`);
+          if (!sureCell || !sureCell.classList.contains('selected')) {
+            correctPattern = false;
+            break;
+          }
+        }
+      }
+      
+      // Enable/disable submit button based on correct pattern
+      if (submitButton) {
+        submitButton.disabled = !correctPattern;
+        submitButton.style.opacity = correctPattern ? '1' : '0.5';
+        submitButton.style.cursor = correctPattern ? 'pointer' : 'not-allowed';
+      }
+    }
+    }
+
+    function selectRow(row, choice) {
+        document.querySelectorAll(`.choice[data-row="${row}"]`)
+          .forEach(b => b.classList.remove('selected'));
+        let cell = document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`);
+        if (cell) {
+          cell.classList.add('selected');
+          cell.querySelector('input').checked = true;
+        }
+
+        // Check if the correct pattern is selected
+        checkCorrectSelections();
+      }
+
+    document.querySelectorAll('.mirror').forEach(cell => {
+      cell.addEventListener('click', function() {
+          let row = parseInt(this.dataset.row);
+          this.classList.add('selected');
+          console.log(row, "is row of mirror")
+          let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+      if (lotteryCell) {
+          let clickEvent = new MouseEvent('click', {
+              bubbles: true,
+              cancelable: true,
+          });
+          lotteryCell.dispatchEvent(clickEvent);
+          }
+    });
+      cell.addEventListener('mouseenter', function() {
+        let row = parseInt(this.dataset.row);
+        let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+        if (lotteryCell){
+          lotteryCell.classList.add('hovered');
+        }
+      });
+      cell.addEventListener('mouseleave', function() {
+        let row = parseInt(this.dataset.row);
+        let lotteryCell = document.querySelector(`.choice[data-row="${row}"][data-choice="lottery"]`);
+        if (lotteryCell) {
+          lotteryCell.classList.remove('hovered');
+        }
+      });
+    });
+  
+    // Modified click behavior - restore auto-filling logic but check for correct pattern
+    document.querySelectorAll('.choice').forEach(cell => {
+      cell.addEventListener('click', function() {
+        let row = parseInt(this.dataset.row);
+        let choice = this.dataset.choice;
+        
+        // Fill from row 0 to clicked row with clicked choice (original auto-fill logic)
+        for (let r = 0; r <= row; r++) {
+          selectRow(r, choice);
+          if (choice == "lottery"){
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.add('selected')
+          }
+          if (choice == "sure") {
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
+          }
+        }
+        // Fill from clicked row+1 to end with the opposite choice (original auto-fill logic)
+        let otherChoice = (choice === 'sure') ? 'lottery' : 'sure';
+        for (let r = row + 1; r < lengthSurePayments + 1; r++) {
+          selectRow(r, otherChoice);
+          if (choice == "lottery"){
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
+          }
+          if (choice == "sure") {
+            document.querySelector(`.mirror[data-row="${r}"]`).classList.add('selected')
+          }        
+        }
+      });
+    });
+  },
+  
+  on_finish: function(data) {
+    // Parse the responses JSON
+    console.log("Training MPL data is ", data)
+    let responses_mpl = JSON.parse(data.responses);
+    console.log("Training MPL data.responses is ",data.responses)
+
+    // Determine switching row
+    let prevChoice = null;
+    let switchRow = null;
+    let switchRow1 = null;
+    let switchRow2 = null;
+    let choicesArray = [];
+
+    for (var i = 0; i < lengthSurePayments + 1; i++) {
+      let choice = responses_mpl[`row${i}`];
+      choicesArray.push(choice);
+      prevChoice = i > 0 ? choicesArray[i-1] : null;
+      if (prevChoice && choice !== prevChoice) {
+        switchRow2 = i;
+        switchRow1 = i - 1;
+        switchRow2Choice = responses_mpl[`row${i}`];
+        switchRow1Choice = responses_mpl[`row${i - 1}`];
+      }
+    }
+    
+    // Add condition for all same choices
+    if (switchRow1 === null && switchRow2 === null) {
+        let firstChoice = choicesArray[0];
+        let allSame = choicesArray.every(choice => choice === firstChoice);
+        if (allSame) {
+            switchRow1 = -1;
+            switchRow2 = -1;
+            switchRow1Choice = firstChoice;
+            switchRow2Choice = firstChoice;
+        }
+    }
+
+    let html = jsPsych.timelineVariable("html", true);
+
+    data.mplType = "training";
+    console.log("Training MPL type saved:", data.mplType);
+    mplCounter++;
+    data.mplCounter = mplCounter;
+    data.subBlock = subBlock;
+    data.statusMPL = statusMPL
+    data.block = block_type;
+    data.switch_row2 = switchRow2;
+    data.switch_row1 = switchRow1;
+    data.switchRow2Choice = switchRow2Choice;
+    data.switchRow1Choice = switchRow1Choice;
+    data.choices = choicesArray;
+    data.task = "mpl_training";
+    console.log("Training MPL completed with correct pattern");
   }
 };
 
@@ -2634,6 +2889,10 @@ const fds_response_screen_span_span1 = {
     type: 'html-keyboard-response',
     stimulus: response_grid.replace('{instructions}', language.span_span.type_second_letters),
     choices: ['Enter'],
+    on_load: function() {
+        // Add red theme class for this specific trial
+        document.querySelector('.jspsych-content').classList.add('span-span1-red');
+    },
         on_finish: function(data){
             var curans = response;
             var corans = fds_correct_ans;
@@ -2667,6 +2926,9 @@ const fds_response_screen_span_span1 = {
             });
             console.log("accuracySpanSpan(data.answer, data.correct) is ", accuracySpanSpan(data.answer, data.correct));
             console.log("data.answer is ", curans, "and data.correct is ", corans, "and data.was_correct is ", gotItRight);
+            
+            // Remove red theme class when trial ends
+            document.querySelector('.jspsych-content').classList.remove('span-span1-red');
         }
 }
 const fds_response_screen_span_span2 = {
@@ -2680,6 +2942,10 @@ const fds_response_screen_span_span2 = {
         return response_grid.replace('{instructions}', stim);
     },
     choices: ['Enter'],
+    on_load: function() {
+        // Add blue theme class for this specific trial
+        document.querySelector('.jspsych-content').classList.add('span-span2-blue');
+    },
         on_finish: function(data){
             var curans = response;
             var corans = fds_correct_ans_first_letters;
@@ -2712,6 +2978,9 @@ const fds_response_screen_span_span2 = {
             });
             console.log("accuracySpanSpan(data.answer, data.correct) is ", accuracySpanSpan(data.answer, data.correct));
             console.log("data.answer is ", curans, "and data.correct is ", corans, "and data.was_correct is ", gotItRight);
+            
+            // Remove blue theme class when trial ends
+            document.querySelector('.jspsych-content').classList.remove('span-span2-blue');
         }
 }
 
@@ -2783,6 +3052,14 @@ const blockIsExample = {
     type: "call-function",
     func: function() {
         block_type = "example_span_mpl";
+        fdsTotalTrials = 1;
+        console.log("block_type is " + block_type);
+    },
+};
+const blockIsTraining = {
+    type: "call-function",
+    func: function() {
+        block_type = "training_span_mpl";
         fdsTotalTrials = 1;
         console.log("block_type is " + block_type);
     },
@@ -2868,7 +3145,12 @@ const cognitiveUncertaintyMirror = {
         data.sliderImprecision = parseInt(responses.imprecision);
         console.log(data.sliderImprecision, "is data.sliderImprecision");
         // Add task identifier
-        data.task = 'sliderQuestionsMirror';
+        if (block_order_indicator_span_MPL == "mirror_first") {
+            data.task = 'sliderQuestionsMirror';
+        }
+        else if (block_order_indicator_span_MPL == "lottery_first") {
+            data.task = 'sliderQuestionsLottery';
+        }
     }
 };
 const cognitiveUncertaintyLottery = {
@@ -3814,6 +4096,7 @@ const calibrationDebrief = {
     on_start: function(trial) {
 
     actual_payment_calibration = calibrationPayment * ((maximumSpanCalibration)/10)
+    actual_payment_calibration = Math.min(actual_payment_calibration, 0.75);
     console.log(actual_payment_calibration, "is actual_payment_calibration")
 
     // Use the calculated payments
@@ -3856,6 +4139,7 @@ const spanSpanDebrief = {
     let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
     console.log("accuracyLetters2 is ", accuracyLetters2);
     actual_payment_span_span = (spanSpanPayment_hard * 0.75 * accuracyLetters1) + (spanSpanPayment_hard * 0.25 * accuracyLetters2);
+    actual_payment_span_span = Math.min(actual_payment_span_span, 0.5);
 
     // Use the calculated payments
     trial.data = trial.data || {};
@@ -3901,6 +4185,7 @@ const feedbackExampleSpanMPL = {
     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
     console.log("accuracy is ", accuracy);
     actual_payment_span_mpl = spanMplPayment_hard * accuracy;
+    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
     } else if (treatment == "easy") {
     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
         return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
@@ -3914,6 +4199,7 @@ const feedbackExampleSpanMPL = {
     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
     console.log("accuracy is ", accuracy);
     actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
     } 
     let bonusSpan;
     if (treatment == "hard") {
@@ -3924,7 +4210,7 @@ const feedbackExampleSpanMPL = {
 
     // mpl
     let actual_payment_mpl;
-    let selectedRow = getRandomInt(0, 24); // select one of the 25 rows
+    let selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 25 rows
     console.log("selectedRow is ", selectedRow);
     let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
         return trial.task == 'mpl' && trial.block == 'example_span_mpl';
@@ -3937,6 +4223,7 @@ const feedbackExampleSpanMPL = {
     console.log(choices, "is the choices for the selected trial");
     let chosenStatusExample = block_order_indicator_span_MPL == "mirror_first" ? "mirror" : "lottery";
     actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample);
+    actual_payment_mpl = Math.min(actual_payment_mpl, 25);
     console.log(actual_payment_mpl)
     let chosenLot = "";
     if (choices[selectedRow] == "sure") { chosenLot = "<span style='color: blue'>lot B</span>"; }
@@ -3977,33 +4264,9 @@ const incentives_span_mpl = {
     else { chosenStatus = "lottery"; }
     console.log("chosenStatus is ", chosenStatus);
 
-    /******* payment for calibration *********/
-    // let actual_payment_calibration = 0;
-    // if (treatment == "hard"){
-    //     actual_payment_calibration = calibrationPayment * ((startingSpan +1)/10);
-    // }
     console.log(actual_payment_calibration, "is actual_payment_calibration")
 
-    /******* payment for span_span *********/
-    // let actual_payment_span_span;
-        // const subBlockIntegerSpanSpan = getRandomInt(0, 5);
-        // console.log("subBlockIntegerSpanSpan is ", subBlockIntegerSpanSpan);
-        // let trialsSpanSpan = jsPsych.data.get().filterCustom(function(trial){
-        //     return trial.task == 'spanTest' && trial.block == 'spanSpan' && trial.subBlock_span_span == subBlockIntegerSpanSpan;
-        // });
-        // console.log(trialsSpanSpan, "is trialsSpanSpan");
-        // console.log(trialsSpanSpan.count(), "is trialsSpanSpan.count()");
-        // let trialsSpan1Letters = trialsSpanSpan.filter({letterType: 1});
-        // console.log("trialsSpan1Letters is ", trialsSpan1Letters);
-        // let trialsSpan2Letters = trialsSpanSpan.filter({letterType: 2});
-        // console.log("trialsSpan2Letters is ", trialsSpan2Letters);
-        // let accuracyLetters1 = accuracySpanSpan(trialsSpan1Letters.select('answer').values[0], trialsSpan1Letters.select('correct').values[0]);
-        // console.log("trialsSpan1Letters.select('answer').values[0] is ", trialsSpan1Letters.select('answer').values[0] );
-        // console.log("accuracyLetters1 is ", accuracyLetters1);
-        // let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
-        // console.log("accuracyLetters2 is ", accuracyLetters2);
-        // actual_payment_span_span = (spanSpanPayment_hard * 0.75 * accuracyLetters1) + (spanSpanPayment_hard * 0.25 * accuracyLetters2);
-
+   
     /******* span_mpl payment *********/
     let actual_payment_span_mpl;
     const subBlockIntegerSpanMpl = getRandomInt(1, 14)
@@ -4018,6 +4281,7 @@ const incentives_span_mpl = {
     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
     console.log("accuracy is ", accuracy);
     actual_payment_span_mpl = spanMplPayment_hard * accuracy;
+    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
     console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
     } else if (treatment == "easy") {
     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
@@ -4030,6 +4294,7 @@ const incentives_span_mpl = {
     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
     console.log("accuracy is ", accuracy);
     actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
     console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
     } 
     console.log("actual_payement_span_mpl is " + actual_payment_span_mpl);
@@ -4038,7 +4303,7 @@ const incentives_span_mpl = {
     let actual_payment_mpl = 0;
 
     if (luckyPp == 1) { // 1 in propSelecForMPL chance of being selected for MPL payment
-        const selectedRow = getRandomInt(1, 14); // select one of the 15 rows
+        const selectedRow = getRandomInt(1, lengthSurePayments); // select one of the 14 rows
         console.log("selectedRow is ", selectedRow);
         let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'mpl' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
@@ -4050,6 +4315,7 @@ const incentives_span_mpl = {
         let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
         console.log(choices, "is the choices for the selected trial");
         actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatus);
+        actual_payment_mpl = Math.min(actual_payment_mpl, 25);
         console.log("actual_payment_mpl is", actual_payment_mpl)
         console.log("selectedRow is ", selectedRow, "and subBlockIntegerSpanMpl is", subBlockIntegerSpanMpl, "and luckyPp is ", luckyPp, "and chosenStatus is ", chosenStatus,
         "and choices are ", choices);
@@ -4070,23 +4336,23 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = cCal + cSpan + cSpanMpl + cMpl;
+    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , 28.25); // cap total bonus at 28.25
     if (treatment == "hard") {
     trial.data.totalPayment = basePayment_hard + trial.data.totalBonus;}
     else if (treatment == "easy") {
-    trial.data.totalPayment = basePayment_easy + trial.data.totalBonus;}
-
+    trial.data.totalPayment = basePayment_easy + trial.data.totalBonus;
+}
 
     let html;
     if (treatment == "hard"){
         if (luckyPp == 1) {
                 html = 
             `<h2>${language.debrief_incentives_span_mpl.title}</h2>
-            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', actual_payment_calibration)}</p>
+            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}', Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(trial.data.totalBonus*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
         else if (luckyPp != 1){
@@ -4096,7 +4362,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
     } else if (treatment == "easy"){
@@ -4107,7 +4373,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}',Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
         else if (luckyPp != 1) {
@@ -4117,7 +4383,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((actual_payment_span_mpl + actual_payment_span_span + actual_payment_calibration)*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
     }
@@ -4330,20 +4596,24 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
     }
 };
 
+const timelineTrainingSpanMPLTrial= {
+    timeline : [blockIsTraining, mpl_trial_training],
+    timeline_variables: training_mpl_html_array,
+}
 const timelineExampleSpanMPLTrialMirror= {
-    timeline : [blockIsExample, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
+    timeline : [blockIsExample, introductionFinalExampleSpanMPL, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
     timeline_variables: example_mpl_html_array_mirror,
 }
 const timelineExampleSpanMPLTrialLottery= {
-    timeline : [blockIsExample, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
+    timeline : [blockIsExample, introductionFinalExampleSpanMPL, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
     timeline_variables: example_mpl_html_array_lottery,
 }
 const timelineFirstInstructionsLottery = {
-    timeline: [instructionsSpanMPLLottery, comprehensionQuestionsMPLLotteryWithCheck, instructionsChoosingASetOfBoxes, timelineExampleSpanMPLTrialLottery],
+    timeline: [instructionsSpanMPLLottery, comprehensionQuestionsMPLLotteryWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialLottery],
     conditional_function: function() { return fdsTrialNum == 1; }
 }
 const timelineFirstInstructionsMirror = {
-    timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirrorWithCheck, instructionsChoosingASetOfBoxes, timelineExampleSpanMPLTrialMirror],
+    timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirrorWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialMirror],
     conditional_function: function() { return fdsTrialNum == 1; }
 }
 const timelineSecondInstructionsLottery = {
@@ -4458,79 +4728,18 @@ jsPsych.data.addProperties({subject: subjectId});
 timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
-    /*instructions_span, experiment_nback_span, incentives_span_mpl/*
+    /*instructions_span, experiment_nback_span, incentives_span_mpl,
     instructions_flanker_1, flanker_practice, afterFlankerPractice, experiment_nback_flanker, debriefBlock, incentives_nback_nbackVisual*/);
 // instructions, instructions_flanker_1, experiment, debriefBlock.
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
-
-// jsPsych.init({
-//   timeline: timeline,
-//   on_data_update: function() {
-//     let interactionData = jsPsych.data.getInteractionData()
-//     const interactionDataOfLastTrial = interactionData.filter({'trial': jsPsych.data.get().last(1).values()[0].trial_index}).values();
-//     if (interactionDataOfLastTrial) {
-//         jsPsych.data.get().last(1).values()[0].browser_events = JSON.stringify(interactionDataOfLastTrial)
-//     }
-//   },
-//   on_close: function() {
-//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_quitted_output.csv`);
-//   },
-//   on_finish: function() {
-//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-//     jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-//   }
-// });
-
-
-
-/* initialize jsPsych via jatos onLoad (do not call .run on an undefined return) */
-// jatos.onLoad(() => {
-//     jsPsych.init({
-//         timeline: timeline,
-//         // on_finish: function() {
-//         //     jatos.endStudy(jsPsych.data.get().json());
-//             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-//         // }
-//     });
-// });
-
-// jsPsych.init({
-//     timeline: timeline
-// });
-
-  /* initialize jsPsych */
-//  const jsPsych = jsPsych.init({
-//         timeline: timeline,
-//         on_finish: function() {
-//             jatos.endStudy(jsPsych.data.get().json());
-//         }
-//     });
-
-//  /* start the experiment */
-//     jatos.onLoad(() => {
-//         jsPsych.run(timeline);
-//         console.log("jatos.onLoad works")
-//     });
-
-// jatos.onLoad(() => {
-//     jsPsych.init({
-//         timeline: timeline,
-//         on_finish: function() {
-//             //jatos.endStudy(jsPsych.data.get().json());
-//             jatos.endStudyAndRedirect("https://www.prolific.com/participants", jsPsych.data.get().json());
-//             // jatos.submitResultData(resultJson, jatos.endStudyAndRedirect("https://www.prolific.com/participants");
-//             // jsPsych.data.get().localSave("csv", `NBack_Subject_${subjectId}_${level}back_output.csv`);
-//         }
-//     });
-// });
 
 jatos.onLoad(() => {
     jsPsych.init({
         timeline: timeline,
         on_finish: function() {
             jatos.endStudy(jsPsych.data.get().json());
-            //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });
