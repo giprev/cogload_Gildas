@@ -1,5 +1,6 @@
 # PATH_TO_DATA <- 'replace with your path'
 PATH_TO_DATA<-'~/Library/CloudStorage/Dropbox/@Projects/simplicity equivalents/Replication'
+PATH_TO_DATA<-'/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/replication_official_oprea'
 source(file.path(PATH_TO_DATA,"/Code/Installation.r"))
 
 # -------------------------------------

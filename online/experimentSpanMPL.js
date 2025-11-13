@@ -69,7 +69,7 @@ let spanCounter = 0; // the counter for each n-back trial
 let mplCounter = 0; // the counter for each mpl trial
 
 const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
-//let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
+// let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
 
@@ -774,11 +774,17 @@ const comprehensionFailureTrial = {
         console.log("notUnderstoodPayment is", notUnderstoodPayment);
         console.log("actual_payment_calibration is", actual_payment_calibration);
         console.log("actual_payment_span_span is", actual_payment_span_span);
-        console.log("total payment is", notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span);
+        console.log("total payment is", Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, 6.25));
         
         // Add data to trial object instead of data parameter
         trial.data = trial.data || {};
-        trial.data.totalPayment = notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span;
+        trial.data.totalPayment = Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, 6.25);
+        trial.data.versionFirst = block_order_indicator_span_MPL;
+        trial.data.treatment = treatment;
+        trial.data.helpPageCounter = helpPageCounter;
+        trial.data.totalBonus = Math.min(actual_payment_calibration + actual_payment_span_span, 1.25) ;
+        trial.data.payment_span_span = actual_payment_span_span;
+        trial.data.payment_calibration = actual_payment_calibration;
         trial.data.task = 'comprehensionFailure';
     },
     on_finish: function() {
@@ -2155,8 +2161,6 @@ const mpl_trial = {
         document.querySelectorAll(`.choice[data-row="${row}"]`)
           .forEach(b => b.classList.remove('selected'));
         let cell = document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`);
-        console.log("In selectRow(), row is ", row, "and choice is ", choice)
-        console.log('document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`) is ', document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`))
         cell.classList.add('selected');
         cell.querySelector('input').checked = true;
 
@@ -2293,7 +2297,7 @@ const mpl_trial = {
     data.task = "mpl";
     data.position = mplPositionDict[data.mplType]
     console.log("data.position is ", data.position)
-    let exampleLine = getRandomInt(0, lengthSurePayments-1);
+    let exampleLine = getRandomInt(0, lengthSurePayments);
     console.log("calculateMPLPayment with line ", exampleLine, " is", calculateMPLPayment(data.mplType, exampleLine, data.choices, data.statusMPL));
   }
 };
@@ -4173,33 +4177,34 @@ const feedbackExampleSpanMPL = {
     let correctSpan;
     let accuracy;
     if (treatment == "hard"){
-    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-        return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
-    });
-    console.log("trialsSpanMPL is ", trialsSpanMpl);
-    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-    answerSpan = trialsSpanMpl.select('answer').values[0];
-    correctSpan = trialsSpanMpl.select('correct').values[0];
-    accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-    console.log("accuracy is ", accuracy);
-    actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
-    } else if (treatment == "easy") {
-    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-        return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
-    });
-    console.log("trialsSpanMPL is ", trialsSpanMpl);
-    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-    answerSpan = trialsSpanMpl.select('answer').values[0];
-    correctSpan = trialsSpanMpl.select('correct').values[0];
-    accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-    console.log("accuracy is ", accuracy);
-    actual_payment_span_mpl = spanMplPayment_easy * accuracy;
-    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
+        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+            return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
+        });
+        console.log("trialsSpanMPL is ", trialsSpanMpl);
+        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+        answerSpan = trialsSpanMpl.select('answer').values[0];
+        correctSpan = trialsSpanMpl.select('correct').values[0];
+        accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+        console.log("accuracy is ", accuracy);
+        actual_payment_span_mpl = spanMplPayment_hard * accuracy;
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
+    } 
+    else if (treatment == "easy") {
+        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+            return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
+        });
+        console.log("trialsSpanMPL is ", trialsSpanMpl);
+        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+        answerSpan = trialsSpanMpl.select('answer').values[0];
+        correctSpan = trialsSpanMpl.select('correct').values[0];
+        accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+        console.log("accuracy is ", accuracy);
+        actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
     } 
     let bonusSpan;
     if (treatment == "hard") {
@@ -4210,7 +4215,7 @@ const feedbackExampleSpanMPL = {
 
     // mpl
     let actual_payment_mpl;
-    let selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 25 rows
+    let selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 18 rows
     console.log("selectedRow is ", selectedRow);
     let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
         return trial.task == 'mpl' && trial.block == 'example_span_mpl';
@@ -4271,31 +4276,32 @@ const incentives_span_mpl = {
     let actual_payment_span_mpl;
     const subBlockIntegerSpanMpl = getRandomInt(1, 14)
     if (treatment == "hard"){
-    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-        return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
-    });
-    console.log("trialsSpanMPL is ", trialsSpanMpl);
-    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-    let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-    console.log("accuracy is ", accuracy);
-    actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
-    console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
-    } else if (treatment == "easy") {
-    let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-        return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
-    });
-    console.log("trialsSpanMPL is ", trialsSpanMpl);
-    console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-    let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-    console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-    console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-    console.log("accuracy is ", accuracy);
-    actual_payment_span_mpl = spanMplPayment_easy * accuracy;
-    actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
-    console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
+        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+            return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
+        });
+        console.log("trialsSpanMPL is ", trialsSpanMpl);
+        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+        let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+        console.log("accuracy is ", accuracy);
+        actual_payment_span_mpl = spanMplPayment_hard * accuracy;
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
+        console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
+    } 
+    else if (treatment == "easy") {
+        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+            return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
+        });
+        console.log("trialsSpanMPL is ", trialsSpanMpl);
+        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+        let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+        console.log("accuracy is ", accuracy);
+        actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
+        console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
     } 
     console.log("actual_payement_span_mpl is " + actual_payment_span_mpl);
 
@@ -4303,7 +4309,7 @@ const incentives_span_mpl = {
     let actual_payment_mpl = 0;
 
     if (luckyPp == 1) { // 1 in propSelecForMPL chance of being selected for MPL payment
-        const selectedRow = getRandomInt(1, lengthSurePayments); // select one of the 14 rows
+        const selectedRow = getRandomInt(1, lengthSurePayments); // select one of the 18 rows
         console.log("selectedRow is ", selectedRow);
         let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'mpl' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
@@ -4312,7 +4318,7 @@ const incentives_span_mpl = {
         console.log(selectedTrial.count(), "is selectedTrial count for mpl payment");
         let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
         console.log(mplType, "is the mplType for the selected trial");
-        let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
+        let choices = selectedTrial.select('choices').values[0];
         console.log(choices, "is the choices for the selected trial");
         actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatus);
         actual_payment_mpl = Math.min(actual_payment_mpl, 25);
@@ -4725,7 +4731,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_span_MPL, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl,
@@ -4739,7 +4745,7 @@ jatos.onLoad(() => {
         timeline: timeline,
         on_finish: function() {
             jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });

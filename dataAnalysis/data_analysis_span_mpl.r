@@ -26,9 +26,16 @@ getwd()
 filePath_testGildas01_20251016 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251015161854.txt"
 filePath_testGildas02_20251017 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251017112941.txt"
 filePath_testGildasSiméon01_20251021 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251021083554.txt"
-filePath_testGildas03_20251104 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251104152827.txt"
+filePath_testGildas03_20251104 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251104152827.txt" # risk neutral
+filePath_testGildas04_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121134.txt" # no special pattern
+filePath_testGildas05_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121317.txt" # choices up for high gains and small losses, choices down for small gains and large losses
+filePath_testGildas06_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121734.txt" # multiple trials, some of which failed at comprehension questions
+filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105150400.txt"# trial with failure at the comprehension questions
+filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt"# trial with failure at the comprehension questions
 
-text <- readLines(filePath_testGildas03_20251104)
+
+
+text <- readLines(filePath_testGildas06_20251105)
 
 nSub <- length(text)
 
@@ -40,32 +47,44 @@ for(i in 1:nSub) {
   writeLines(part, paste0("part", i, ".txt"))
 }
 
-# Initialize final_data outside the loop
-final_data <- data.frame()
 
 accuracySpan <- function(answer, correct) {
+  cat("Starting accuracySpan function\n")
     # Handle edge cases
 
     if (is.list(answer)) {
+      if (length(answer) == 0) {
+        cat("answer is an empty list\n")
+        return(0)
+      }
+      cat("answer is a list\n")
         answer <- answer[[1]]
     }
     if (is.list(correct)) {
+      if (length(correct) == 0) {
+        cat("correct is an empty list\n")
+        return(0)
+      }
+      cat("correct is a list\n")
         correct <- correct[[1]]
     }
     
     if (is.null(answer) || is.null(correct) || (length(correct) == 0) || length(answer) == 0 ) {
+      cat("answer or correct is null or length 0\n")
         return(0)
     }
     # Convert answer to integer vector if it's character
     if (is.character(answer)) {
+      cat("answer is character\n")
         answer <- as.integer(answer)
     }
     # If correct is character vector, convert to integers
     if (is.character(correct)) {
+      cat("correct is character\n")
         correct <- as.integer(correct)
     }
-    cat("answer is", answer, "\n")
-    cat("correct is", correct, "\n")
+    cat("answer after class changed is", answer, "\n")
+    cat("correct after class changed is", correct, "\n")
 
 
     totalPositions <- length(correct)
@@ -86,10 +105,12 @@ accuracySpan <- function(answer, correct) {
     # Return the ratio of correct matches to the maximum number of positions
     return(correctMatches / maxPositions)
 }
+cat(accuracySpan(c(1,2,3,4), c(1,2,3,5)), "\n") # should be 0.75
 
-roundToDownToFifth <- function(number) {
+roundDownToFifth <- function(number) {
   return(floor(number * 5) / 5)
 }
+
 
 createSequenceArray <- function(y, X, position) {
 
@@ -119,9 +140,9 @@ createSequenceArray <- function(y, X, position) {
   
   EV <- 0
   if (X == "G") {
-    EV <- roundToDownToFifth(y * 0.25)
+    EV <- roundDownToFifth(y * 0.25)
   } else if (X == "L") {
-    EV <- roundToDownToFifth(-y * 0.25)
+    EV <- roundDownToFifth(-y * 0.25)
   } else if (X == "A" & y == 10) {
     EV <- 9.5
   } else if (X == "A" & y == 15) {
@@ -129,39 +150,38 @@ createSequenceArray <- function(y, X, position) {
   }
   
   if (X == "G") {
-    cat("y is", y, "X is", X, "position is", position, "\n")
-    cat("EV in G is", EV, "\n")
-    cat("pos in G is", pos, "\n")
+    # cat("y is", y, "X is", X, "position is", position, "\n")
+    # cat("EV in G is", EV, "\n")
+    # cat("pos in G is", pos, "\n")
     startValue <- EV - ((pos-1) * 0.2)
-    cat("startValue in G is", startValue, "\n")
+    # cat("startValue in G is", startValue, "\n")
     for (i in 0:lengthSurePayments) {
       array <- c(array, round((startValue + (i * 0.2)) * 10) / 10)
     }
   } else if (X == "L") {
-    cat("y is", y, "X is", X, "position is", position, "\n")
-    cat("EV in L is", EV, "\n")
-    cat("pos in L is", pos, "\n")
+    # cat("y is", y, "X is", X, "position is", position, "\n")
+    # cat("EV in L is", EV, "\n")
+    # cat("pos in L is", pos, "\n")
     startValue <- EV - ((pos-1) * 0.2)
-    cat("startValue in L is", startValue, "\n")
+    # cat("startValue in L is", startValue, "\n")
     for (i in 0:lengthSurePayments) {
       array <- c(array, round((startValue + (i * 0.2)) * 10) / 10)
     }
   } else if (X == "A") {
-    cat("y is", y, "X is", X, "position is", position, "\n")
-    cat("EV in A is", EV, "\n")
-    cat("pos in A is", pos, "\n")
+    # cat("y is", y, "X is", X, "position is", position, "\n")
+    # cat("EV in A is", EV, "\n")
+    # cat("pos in A is", pos, "\n")
     startValue <- EV - (pos-1)
-    cat("startValue in A is", startValue, "\n")
+    # cat("startValue in A is", startValue, "\n")
     for (i in 0:lengthSurePayments) {
       array <- c(array, startValue + i)
     }
   }
   return(array)
 }
-cat("createSequenceArray(50, 'G', 'low'):", createSequenceArray(50, 'G', 'low'), "\n")
 
 
-extract_mpl_dataframes <- function(dataPerParticipant) {
+extractMplDataframes <- function(dataPerParticipant) {
 
   # Filter data for the conditions you specified
   mpl_data <- dataPerParticipant %>%
@@ -182,9 +202,9 @@ extract_mpl_dataframes <- function(dataPerParticipant) {
       )
     )
   
-  # Get unique combinations of mplType and statusMPL
+  # Get unique combinations of mplType and statusMpl
   unique_combinations <- mpl_data %>%
-    select(mplType_modified, statusMPL) %>%
+    select(mplType_modified, statusMpl) %>%
     distinct()
   
   # Initialize list to store dataframes
@@ -193,25 +213,44 @@ extract_mpl_dataframes <- function(dataPerParticipant) {
   # Loop through each unique combination
   for(i in 1:nrow(unique_combinations)) {
     mpl_type <- unique_combinations$mplType_modified[i]
-    status_mpl <- unique_combinations$statusMPL[i]
+    status_mpl <- unique_combinations$statusMpl[i]
     
     # Filter data for this specific combination
     subset_data <- mpl_data %>%
-      filter(mplType_modified == mpl_type & statusMPL == status_mpl)
+      filter(mplType_modified == mpl_type & statusMpl == status_mpl)
     
     # Calculate ev based on mplType
     subset_data <- subset_data %>%
+      rowwise() %>%
       mutate(
-        ev = case_when(
-          str_starts(mplType, "G") ~ (2 * switch_row2 + 1) / 2,
-          mplType == "A10" ~ switch_row2 - 5,
-          mplType == "AS10" ~ switch_row2 - 5,
-          mplType == "A15" ~ switch_row2 - 7.5,
-          mplType == "AS15" ~ switch_row2 - 7.5,
-          str_starts(mplType, "L") ~ - (2 * switch_row2 - 1) / 2,
-          TRUE ~ NA_real_  # For any unexpected mplType values
-        ),
-      )
+        ev = {
+          y_value <- as.numeric(gsub("[^0-9]", "", mplType))
+          X_value <- case_when(
+            str_starts(mplType, "G") ~ "G",
+            str_starts(mplType, "L") ~ "L",
+            str_starts(mplType, "A") ~ "A",
+            TRUE ~ NA_character_
+          )
+          surePayments <- createSequenceArray(y_value, X_value, position) # CAUTION if no switch sr1 = sr2 = -1 !!! Then need to see if choices only lotteries or only mirror
+          if (switch_row1 == -1 & switch_row2 == -1) {
+            if (all(choices == "lottery")) {
+              ev_value <- surePayments[length(surePayments)] + 0.1 # sure amount as if the switching point was on the line after the last line
+              cat("all choices lottery, ev is", ev_value, "\n")
+            } else if (all(choices == "sure")) {
+              ev_value <- surePayments[1] - 0.1 # sure amount as if the switching point was on the line before the first line
+              cat("all choices sure, ev is", ev_value, "\n")
+            } else {
+              ev_value <- NA  # Undefined behavior
+              cat ("switch_row1 = -1 and switch_row2 = -1 but choices are mixed, ev is NA\n")
+            }
+          } else {
+            ev_value <- (surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1]) / 2 # last value of the function is assigned to ev in mutate. ADD 1 because R starts at 1 instead of 0 (js)
+            cat("calculated ev is", ev_value, "\n")
+          }
+        ev_value
+        }
+      ) %>%
+      ungroup()
     
     # Select and rename columns as specified
     final_subset <- subset_data %>%
@@ -219,7 +258,8 @@ extract_mpl_dataframes <- function(dataPerParticipant) {
         ev = ev,
         rt = rt,
         subBlockNumber = subBlock,
-        accuracy = accuracy
+        accuracy = accuracy,
+        position = position
       )
     
     # Create dataframe name
@@ -244,13 +284,23 @@ extract_mpl_dataframes <- function(dataPerParticipant) {
 
 
 
+# Initialize final_data outside the loop
+final_data <- data.frame()
 
 for (iSub in 1:nSub) {
     partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
   
     dataPerParticipant <- fromJSON(partDirectory)
+
+    # Check if this participant has comprehensionFailure and skip if they do
+    if(any(dataPerParticipant$task == "comprehensionFailure", na.rm = TRUE)) {
+        cat("Skipping participant", iSub, "due to comprehensionFailure\n")
+        next  # Skip to the next iteration
+    }
     
     participant_id <- as.character(dataPerParticipant[1,'subject'])
+
+    dataPerParticipant <- dataPerParticipant %>% rename_at('statusMPL', ~'statusMpl')
 
 
     # Extract the demographics cell
@@ -308,7 +358,7 @@ for (iSub in 1:nSub) {
     cat(paste("length(isLotteryFirst) is", length(isLotteryFirst)), "\n")
 
     cat("isLotteryFirst before ifelse is", isLotteryFirst, "\n")
-    isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", 1, 0)
+    isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", TRUE, FALSE)
 
     numCorrectQuestionMirror <- dataPerParticipant %>%
         filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
@@ -329,11 +379,10 @@ for (iSub in 1:nSub) {
         pull()
     cat(paste("length(payment_spanMpl) is", length(payment_spanMpl)), "\n")
 
-    #put THIS PAYMENT MPL BACK WHEN DATA WILL BE ACTUALIZED
-    # payment_mpl <- dataPerParticipant %>%
-    #     filter(!is.na(payment_mpl)) %>%
-    #     select(payment_mpl) %>%
-    #     pull()
+    payment_mpl <- dataPerParticipant %>%
+        filter(!is.na(payment_mpl)) %>%
+        select(payment_mpl) %>%
+        pull()
 
     payment_spanSpan <- dataPerParticipant %>%
         filter(!is.na(payment_span_span)) %>%
@@ -349,7 +398,6 @@ for (iSub in 1:nSub) {
     payment_calibration <- ifelse(length(payment_calibration) > 0, as.numeric(payment_calibration[1]), NA)
     cat(paste("length(payment_calibration) is", length(payment_calibration)), "\n")
 
-        # Extract total payment
     payment_total <- dataPerParticipant %>%
         filter(!is.na(totalPayment)) %>%
         select(totalPayment) %>%
@@ -368,26 +416,31 @@ for (iSub in 1:nSub) {
             TRUE ~ mplType
         )
     )
+    
     dataPerParticipant <- dataPerParticipant %>%
+    rowwise() %>%
         mutate ( accuracy = case_when(
-            !is.na(answer) & !is.null(correct) & mplType != "" & block == "span_mpl" & task == "spanTest" ~ accuracySpan(answer, correct),
+          task == "spanTest" ~  accuracySpan(answer, correct), # & mplType != "" & block == "span_mpl"  !is.na(answer) & !is.null(correct) & 
             TRUE ~ NA_real_
             ),
             .before = was_correct
-        )
+        ) %>%
+      ungroup()
+
     dataPerParticipant <- dataPerParticipant %>%
     # Fill down accuracy for mpl trials
     mutate(
         accuracy = case_when(
-            # For span test trials in span_mpl block, use the previous row's accuracy
-            block == "span_mpl" & task == "mpl" ~ lead(accuracy),
-            # Default case
-            TRUE ~ accuracy
+            # For span test trials in span_mpl block, use the next row's accuracy
+            !(block == "span_mpl" & task == "mpl") ~ accuracy,
+            block == "span_mpl" & task == "mpl" ~ lead(accuracy), #lead(task)
         )
     )
+    dataPerParticipant$accuracy
 
+dataPerParticipant$accuracy
     # Extract MPL dataframes
-    mpl_dataframes <- extract_mpl_dataframes(dataPerParticipant)
+    mpl_dataframes <- extractMplDataframes(dataPerParticipant)
     
     # Create base participant row
     participant_row <- data.frame(
@@ -415,7 +468,7 @@ for (iSub in 1:nSub) {
     mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", "L75", "L90", "A10", "A15",
                     "GS10", "GS25", "GS50", "GS75", "GS90", "LS10", "LS25", "LS50", "LS75", "LS90", "AS10", "AS15")
     status_types <- c("mirror", "lottery")
-    column_types <- c("ev", "rt", "subBlockNumber", "accuracy")
+    column_types <- c("ev", "rt", "subBlockNumber", "accuracy", "position")
 
     # Initialize ALL possible MPL columns with NA values first
     for(mpl_type in mpl_types) {
@@ -445,6 +498,7 @@ for (iSub in 1:nSub) {
             # If dataframe is empty, the NA value remains
         }
     }
+    
 
     # Add to final dataset
     if(nrow(final_data) == 0) {
@@ -457,14 +511,15 @@ for (iSub in 1:nSub) {
 
 
 }
-view(final_data)
+view(dataPerParticipant)
 
-# Create df_model for linear models from final_data - reshape from wide to long
+
+# Create df_model for linear models from final_data - reshape from wide to long, one line per MPL type, both status on the same line
 dfA <- final_data %>%
   # Keep all demographic/payment columns as-is, pivot only MPL columns
   pivot_longer(
-    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_"),  # Match MPL pattern
-    names_to = c("MPLType", "status", "measure"),
+    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_(ev|rt|subBlockNumber|accuracy)$"),  # Match MPL pattern
+    names_to = c("mplType", "status", "measure"),
     names_sep = "_" # Split at the first underscore
   ) %>%
   # Combine status and measure
@@ -474,23 +529,53 @@ dfA <- final_data %>%
     names_from = status_measure,
     values_from = value
   ) %>%
+  # add position columns separately
+  left_join(
+    final_data %>%
+      select(participant_id, matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_position$")) %>%
+      pivot_longer(
+        cols = matches("_position$"),
+        names_to = c("mplType", "status", "measure"),
+        names_sep = "_"
+      ) %>%
+    # Combine status and measure
+    unite("status_measure", status, measure, sep = "_") %>%
+      pivot_wider(
+        names_from = status_measure,
+        values_from = value
+      ),
+    by = c("participant_id", "mplType")
+  ) %>%
+  # Remove all the original position columns that weren't pivoted
+  select(-matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_position$")) %>%
   mutate(
     pred = case_when(
-      str_starts(MPLType, "G") ~ 25 * (as.numeric(str_extract(MPLType, "\\d+")) / 100),
-      str_starts(MPLType, "L") ~ -25 * (as.numeric(str_extract(MPLType, "\\d+")) / 100),
-      str_starts(MPLType, "A") ~ 0,
+      str_starts(mplType, "G") ~ roundDownToFifth(25 * (as.numeric(str_extract(mplType, "\\d+")) / 100))+0.1,
+      str_starts(mplType, "L") ~ roundDownToFifth((-25 * as.numeric(str_extract(mplType, "\\d+")) / 100))+0.1,
+      str_starts(mplType, "A") ~ 0,
       TRUE ~ NA_real_
     ),
   ) %>%
   mutate(
     prob = case_when(
-      str_starts(MPLType, "G") ~ as.numeric(str_extract(MPLType, "\\d+")),
-      str_starts(MPLType, "L") ~ as.numeric(str_extract(MPLType, "\\d+")),
-      str_starts(MPLType, "A") & MPLType %in% c("A10", "AS10") ~ 50,
-      str_starts(MPLType, "A") & MPLType %in% c("A15", "AS15") ~ 50,
+      str_starts(mplType, "G") ~ as.numeric(str_extract(mplType, "\\d+")),
+      str_starts(mplType, "L") ~ as.numeric(str_extract(mplType, "\\d+")),
+      str_starts(mplType, "A") & mplType %in% c("A10", "AS10") ~ 50,
+      str_starts(mplType, "A") & mplType %in% c("A15", "AS15") ~ 50,
       TRUE ~ NA_real_
-    )
+    ),
+  )%>%
+  mutate(
+    multiplier = case_when(
+      (prob %in% c(10, 25) & str_starts(mplType, "G")) ~ 1,
+      (prob %in% c(50, 75, 90) & str_starts(mplType, "G")) ~ -1,
+      (prob %in% c(50, 75, 90) & str_starts(mplType, "L")) ~ 1,
+      (prob %in% c(10, 25) & str_starts(mplType, "L")) ~ -1,
+      (str_starts(mplType, "A")) ~ -1,
+    ),
   )
+
+
 
 
 
@@ -498,86 +583,308 @@ dfA <- final_data %>%
 #------------- Data analysis -----------#
 
 
+# impact of memory load on memory performance check
 
-mainPlot<-function(F,lab='',ylim=c(-10,10)){
+# Create the plot
+p <- ggbarplot(
+  plot_precision_cogload, 
+  x = "condition", 
+  y = "accuracy",
+  add = c("mean_se", "dotplot"),  # Add standard error bars and data points
+  color = "condition",
+  fill = "condition",
+  palette = c("#00AFBB", "#E7B800"),  # Easy = blue, Hard = yellow
+  position = position_dodge(0.8),
+  alpha = 0.2,
+  size = 0.8,
+  width = 0.6,
+) +
+  # Add horizontal line for chance level
+  geom_hline(
+    yintercept = 1/9, 
+    linetype = "dashed", 
+    color = "red", 
+    linewidth = 1
+  ) +
+  # Add chance level annotation
+  annotate(
+    "text", 
+    x = 1.5, 
+    y = chance_level_visual + 0.02, 
+    label = paste0("Chance level = ", round(1/9, 3)), 
+    color = "red", 
+    size = 3.5
+  ) +
+  # # Add statistical comparison
+  # stat_pvalue_manual(
+  #   stat_test, 
+  #   label = "p = {p}",
+  #   tip.length = 0.01,
+  #   y.position = max(plot_data_nbackVisual$accuracy, na.rm = TRUE) + 0.05
+  # ) +
+  # # # Customize appearance
+  # labs(
+  #   title = "Accuracy in nbackVisual Task: Hard vs Easy Blocks",
+  #   subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+  #   x = "Block Difficulty",
+  #   y = "Accuracy",
+  #   caption = "Error bars represent standard error of the mean\nRed dashed line shows theoretical chance level"
+  # ) +
+  theme_pubr() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    breaks = seq(0, 1, 0.1),
+    labels = scales::percent_format(accuracy = 1)
+  )
+
+print(p)
+
+
+# deviation from expected value plots
+
+mainPlot<-function(F, F_high, F_low, F_hard, F_easy, lab='', ylim=c(-2,2), position = 0, cogload = 0){
 
   cex<-1.7
   pt.cex<-0.8
   offset<-1
-  x<-F%>%filter(grepl('G',MPLType))%>%filter(prob!=50)
-  cat(length(x), "is length of x dfA_plot for G\n")
-  plot(x$prob-0.5,x$lottery-x$pred,type='n',pch=21,bg='blue',col='blue',xlim=c(0,100),ylim=ylim,ylab='Deviation from Expected Value',xlab='Probability',yaxt='n',bty='n',xaxt='n',main=lab)
+
+  colors <- if (position == 1 || cogload == 1) {
+    list(
+      lottery_high = "darkgreen", mirror_high = "lightgreen",
+      lottery_low = "darkblue", mirror_low = "lightblue",
+      lottery_hard = "darkgreen", mirror_hard = "lightgreen",
+      lottery_easy = "darkblue", mirror_easy = "lightblue"
+    )
+  } else {
+    list(lottery = "gray", mirror = "white")
+  }
+  if (position == 1) {
+      x<-F_high %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+  }
+  else if (cogload == 1) {
+      x<-F_hard %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+  }
+  else {
+      x<-F %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+  }
+  plot(x$prob-0.5,x$lottery-x$pred,type='n',xlim=c(0,100), ylim=ylim,ylab='Deviation from Expected Value',xlab='Probability',yaxt='n',bty='n',xaxt='n',main=lab) # type='n' to create an empty plot
   axis(1,at=seq(0,100,10),labels=seq(0,1,0.1))
   mtext("Risk/Loss Seeking",at=4,side=4,srt=180); mtext("Risk/Loss Averse",at=-4,side=4,srt=180)
 
-  legend("top",legend=c("Lottery (Certainty Equivalents)",'Mirror (Simplicity Equivalents)'),col=c('black','black'),pt.bg=c('gray','white'),pch=c(21,21),lty=c(1,1),cex=0.9,pt.cex=1.5,bg=NA,box.lwd=NA)
+  # Legend
+  if (position == 1) {
+    legend("top", legend=c("Lottery High", "Mirror High", "Lottery Low", "Mirror Low"),
+           col=c('black','black','black','black'), 
+           pt.bg=c(colors$lottery_high, colors$mirror_high, colors$lottery_low, colors$mirror_low),
+           pch=c(21,21,21,21), lty=c(1,1,1,1), cex=0.9, pt.cex=1.5, bg=NA, box.lwd=NA)
+  } else if (cogload == 1) {
+    legend("top", legend=c("Lottery Hard", "Mirror Hard", "Lottery Easy", "Mirror Easy"),
+           col=c('black','black','black','black'), 
+           pt.bg=c(colors$lottery_hard, colors$mirror_hard, colors$lottery_easy, colors$mirror_easy),
+           pch=c(21,21,21,21), lty=c(1,1,1,1), cex=0.9, pt.cex=1.5, bg=NA, box.lwd=NA)
+  }
+  else {
+    legend("top", legend=c("Lottery (Certainty Equivalents)", 'Mirror (Simplicity Equivalents)'),
+           col=c('black','black'), pt.bg=c(colors$lottery, colors$mirror), pch=c(21,21), 
+           lty=c(1,1), cex=0.9, pt.cex=1.5, bg=NA, box.lwd=NA)
+  }
+  # original legend 
+  # legend("top",legend=c("Lottery (Certainty Equivalents)",'Mirror (Simplicity Equivalents)'),col=c('black','black'),pt.bg=c('gray','white'),pch=c(21,21),lty=c(1,1),cex=0.9,pt.cex=1.5,bg=NA,box.lwd=NA)
 
   axis(2,at=seq(-10,10,5))
   abline('h'=0,lty=1)
 
-  arrows(x0=x$prob-0.5, y0=x$lottery-x$pred-2*x$ceLotteryse, x1=x$prob-0.5, y1=x$lottery-x$pred+2*x$ceLotteryse, code=3, angle=90, length=0.05, col="black", lwd=0.5)
-  points(x$prob-0.5,x$lottery-x$pred,bg='gray',col='black',pch=21,type='p',cex=cex)
-  text(x$prob,x$lottery-x$pred,pos=2,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
+  # Helper function to plot points for a given dataset and position
+  plot_points <- function(data, lottery_color, mirror_color, pch_type=21, show_labels=TRUE) {
+    if (nrow(data) == 0) return()
+  
+    # Lottery points
+    arrows(x0=data$prob-0.5, y0=data$lottery-data$pred-2*data$ceLotteryse, 
+           x1=data$prob-0.5, y1=data$lottery-data$pred+2*data$ceLotteryse, 
+           code=3, angle=90, length=0.05, col="black", lwd=0.5)
+    points(data$prob-0.5, data$lottery-data$pred, bg=lottery_color, col='black', pch=pch_type, cex=cex)
+    if (show_labels) {
+      text(data$prob, data$lottery-data$pred, pos=2, labels=data$mplType, cex=pt.cex, col='black', offset=offset)
+    }
+    
+    # Mirror points
+    y_val <- if (pch_type == 25) data$mirror else data$mirror-data$pred
+    arrows(x0=data$prob+0.5, y0=y_val-2*data$ceMirrorse, 
+           x1=data$prob+0.5, y1=y_val+2*data$ceMirrorse, 
+           code=3, angle=90, length=0.05, col="black", lwd=0.5, lty=1)
+    points(data$prob+0.5, y_val, bg=mirror_color, col='black', pch=pch_type, cex=cex)
+    if (show_labels) {
+      text(data$prob, y_val, pos=4, labels=data$mplType, cex=pt.cex, col='black', offset=offset)
+    }
+  }
+  
+  # Plot G types
+  if (position == 1) {
+    x_high <- F_high %>% filter(grepl('G', mplType)) %>% filter(prob != 50)
+    x_low <- F_low %>% filter(grepl('G', mplType)) %>% filter(prob != 50)
+    plot_points(x_high, lottery_color = colors$lottery_high, mirror_color = colors$mirror_high, pch_type = 21, show_labels = TRUE)
+    plot_points(x_low, lottery_color = colors$lottery_low, mirror_color = colors$mirror_low, pch_type = 21, show_labels = TRUE)
+  } 
+  else if (cogload == 1) {
+    x_hard <- F_hard %>% filter(grepl('G', mplType)) %>% filter(prob != 50)
+    x_easy <- F_easy %>% filter(grepl('G', mplType)) %>% filter(prob != 50)
+    plot_points(x_hard, lottery_color = colors$lottery_hard, mirror_color = colors$mirror_hard, pch_type = 21, show_labels = TRUE)
+    plot_points(x_easy, lottery_color = colors$lottery_easy, mirror_color = colors$mirror_easy, pch_type = 21, show_labels = TRUE)
+  }
+  else if (position == 0 && cogload == 0) {
+    x <- F %>% filter(grepl('G', mplType)) %>% filter(prob != 50)
+    plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 21, show_labels = TRUE)
+  }
 
-  arrows(x0=x$prob+0.5, y0=x$mirror-x$pred-2*x$ceMirrorse, x1=x$prob+0.5, y1=x$mirror-x$pred+2*x$ceMirrorse, code=3, angle=90, length=0.05, col="black", lwd=0.5,lty=1)
-  points(x$prob+0.5,x$mirror-x$pred,bg='white',col='black',pch=21,type='p',cex=cex)
-  text(x$prob,x$mirror-x$pred,pos=4,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
-
-  x<-F%>%filter(grepl('L',MPLType))%>%filter(prob!=50)
-  cat(length(x), "is length of x dfA_plot for L\n")
-  cat(x$prob, "is x$prob \n")
-  cat(x$lottery, "is x$lottery \n")
-  cat(x$pred, "is x$pred \n")
-  cat(x$ceLotteryse, "is x$ceLotteryse \n")
-  cat(x$ceMirrorse, "is x$ceMirrorse \n")
-  arrows(x0=x$prob-0.5, y0=x$lottery-x$pred-2*x$ceLotteryse, x1=x$prob-0.5, y1=x$lottery-x$pred+2*x$ceLotteryse, code=3, angle=90, length=0.05, col="black", lwd=0.5,lty=1)
-  points(x$prob-0.5,x$lottery-x$pred,pch=21,bg='gray',col='black',cex=cex)
-  #points(50, 9, pch=21,bg='green',col='black',cex=cex)
-  #text(50, 9,pos=2,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
-
-  arrows(x0=x$prob+0.5, y0=x$mirror-x$pred-2*x$ceMirrorse, x1=x$prob+0.5, y1=x$mirror-x$pred+2*x$ceMirrorse, code=3, angle=90, length=0.05, col="black", lwd=0.5,lty=1)
-  points(x$prob+0.5,x$mirror-x$pred,pch=21,bg='white',col='black',cex=cex)
-  text(x$prob,x$mirror-x$pred,pos=4,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
-
-  x<-F%>%filter(grepl('A',MPLType) | grepl('M',MPLType))
-  cat(length(x), "is length of x dfA_plot for A\n")
-  arrows(x0=x$prob-0.5, y0=x$lottery-2*x$ceLotteryse, x1=x$prob-0.5, y1=x$lottery+2*x$ceLotteryse, code=3, angle=90, length=0.05, col="black", lwd=0.5,lty=1)
-  points(x$prob-0.5,x$lottery,pch=25,bg='gray',col='black',cex=cex)
-  text(x$prob,x$lottery,pos=2,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
-
-  arrows(x0=x$prob+0.5, y0=x$mirror-2*x$ceMirrorse, x1=x$prob+0.5, y1=x$mirror+2*x$ceMirrorse, code=3, angle=90, length=0.05, col="black", lwd=0.5,lty=1)
-  points(x$prob+0.5,x$mirror,pch=25,bg='white',col='black',cex=cex)
-  # text(x$prob,-x$mirror-x$pred,pos=4,labels=x$MPLType,cex=0.5,col='red')
-  text(x$prob,x$mirror,pos=4,labels=x$MPLType,cex=pt.cex,col='black',offset=offset)
-
+  # Plot L types
+  if (position == 1) {
+    x_high <- F_high %>% filter(grepl('L', mplType)) %>% filter(prob != 50) 
+    x_low <- F_low %>% filter(grepl('L', mplType)) %>% filter(prob != 50)
+    plot_points(x_high, lottery_color = colors$lottery_high, mirror_color = colors$mirror_high, pch_type = 21, show_labels = TRUE)
+    plot_points(x_low, lottery_color = colors$lottery_low, mirror_color = colors$mirror_low, pch_type = 21, show_labels = TRUE)
+  } 
+  else if (cogload == 1) {
+    x_hard <- F_hard %>% filter(grepl('L', mplType)) %>% filter(prob != 50) 
+    x_easy <- F_easy %>% filter(grepl('L', mplType)) %>% filter(prob != 50)
+    plot_points(x_hard, lottery_color = colors$lottery_hard, mirror_color = colors$mirror_hard, pch_type = 21, show_labels = TRUE)
+    plot_points(x_easy, lottery_color = colors$lottery_easy, mirror_color = colors$mirror_easy, pch_type = 21, show_labels = TRUE)
+  }
+  else if (position == 0 && cogload == 0) {
+    x <- F %>% filter(grepl('L', mplType)) %>% filter(prob != 50)
+    plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 21, show_labels = TRUE)
+  }
+  
+  # Plot A types (triangle shape)
+  if (position == 1) {
+    x_high <- F_high %>% filter(grepl('A', mplType) | grepl('M', mplType))
+    x_low <- F_low %>% filter(grepl('A', mplType) | grepl('M', mplType))
+    plot_points(x_high, lottery_color = colors$lottery_high, mirror_color = colors$mirror_high, pch_type = 25, show_labels = TRUE)
+    plot_points(x_low, lottery_color = colors$lottery_low, mirror_color = colors$mirror_low, pch_type = 25, show_labels = TRUE)
+  } 
+  else if (cogload == 1) {
+    x_hard <- F_hard %>% filter(grepl('A', mplType) | grepl('M', mplType))
+    x_easy <- F_easy %>% filter(grepl('A', mplType) | grepl('M', mplType))
+    plot_points(x_hard, lottery_color = colors$lottery_hard, mirror_color = colors$mirror_hard, pch_type = 25, show_labels = TRUE)
+    plot_points(x_easy, lottery_color = colors$lottery_easy, mirror_color = colors$mirror_easy, pch_type = 25, show_labels = TRUE)
+  } 
+  else if (position == 0 && cogload == 0) {
+    x <- F %>% filter(grepl('A', mplType) | grepl('M', mplType))
+    plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 25, show_labels = TRUE)
+  }
 }
 
-dfA_plot<-dfA%>%
-  #filter(treatment=='main')%>%
-  filter(!MPLType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
+dfA_plot_maker = function (type = NULL) {
+  dfA_plot <- dfA %>%
+    filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
                          "LS10", "LS25", "LS50", "LS75", "LS90", 
                          "AS10", "AS15")) %>%
-  group_by(prob,MPLType)%>%
-  summarise(
+    {if (!is.null(type)) {
+      switch(type,
+        "hard" = filter(., treatment == "hard"),
+        "easy" = filter(., treatment == "easy"), 
+        "high" = filter(., mirror_position == "high" & lottery_position == "high"),
+        "low" = filter(., mirror_position == "low" & lottery_position == "low"),
+        .  
+      )
+    } else .} %>%
+    group_by(prob,mplType)%>%
+    summarise(
       n=length(unique(participant_id)),
       medDiff=median(lottery_ev-mirror_ev),
       pred=mean(pred),
       ceLotteryse=sd(lottery_ev)/sqrt(n),
       ceMirrorse=sd(mirror_ev)/sqrt(n),
-    #   ceLotteryse = pmax(sd(lottery_ev, na.rm = TRUE) / sqrt(n), 0.01),
-    #   ceMirrorse = pmax(sd(mirror_ev, na.rm = TRUE) / sqrt(n), 0.01),   
+      #   ceLotteryse = pmax(sd(lottery_ev, na.rm = TRUE) / sqrt(n), 0.01),
+      #   ceMirrorse = pmax(sd(mirror_ev, na.rm = TRUE) / sqrt(n), 0.01),   
       lottery=mean(lottery_ev),
       mirror=mean(mirror_ev),
-  )
+    )
+}
+dfA_plot <- dfA_plot_maker()  # No filtering
+dfA_plot_high <- dfA_plot_maker("high")
+dfA_plot_low <- dfA_plot_maker("low") 
+dfA_plot_hard <- dfA_plot_maker("hard")
+dfA_plot_easy <- dfA_plot_maker("easy")
 
-mainPlot(dfA_plot,'')
+  
 
+mainPlot(F = dfA_plot, lab = '', position=0)
+mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
+mainPlot(F_hard = dfA_plot_hard, F_easy = dfA_plot_easy, lab = '', cogload=1)
 
 pdf(file.path(PATH_TO_DATA,"Figures/Figure1.pdf"), width = 7.41, height = 8.31)
-mainPlot(dfA_plot,'')
+mainPlot(F = dfA_plot, F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 dev.off()
 
 
 
+
+# Scatter plots of individual errors
+
+s_mpl<-dfA%>%
+  filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
+                         "LS10", "LS25", "LS50", "LS75", "LS90", 
+                         "AS10", "AS15")) %>%
+  filter(!grepl('50',mplType)) %>%
+  group_by(isLotteryFirst, participant_id)%>%
+  summarise(
+    mirrorError=mean(abs(mirror_ev - pred)),
+    lotteryError=mean(abs(lottery_ev - pred)),
+    wmirrorError=mean(multiplier*(mirror_ev -pred)),
+    wlotteryError=mean(multiplier*(lottery_ev -pred))
+  )
+
+
+makeScatter<-function(s,lab){
+
+  layout(matrix(1:2,1,2,byrow=FALSE))
+
+  x<-s%>%filter(isLotteryFirst==TRUE)
+  cat("nrow(x) in second plot for lottery first is", nrow(x), "\n")
+  print(x$mirrorError)
+  print(x$lotteryError)
+  plot(x$mirrorError,x$lotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(0,15),ylim=c(0,15),bty='n',main=paste(lab,'Absolute  Deviations'))
+  legend("topleft",legend=c("Lottery First",'Mirror First'),col=c('black','black'),pt.bg=c('gray','white'),pt.cex=1.5,pch=21,cex=1,bg=NA,box.lwd=NA)
+  points(x$mirrorError,x$lotteryError,col='black',bg='darkgray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(0,12),ylim=c(0,12),bty='n',main='Absolute Mean Error')
+  x<-s%>%filter(isLotteryFirst==FALSE)
+  # points(x$mirrorError,x$lotteryError,col=rgb(1,0,0,0.35),pch=19,ylab='lottery Error')
+  points(x$mirrorError,x$lotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
+  abline('a'=0,'b'=1,lty=4)
+
+  x<-s%>%filter(isLotteryFirst==TRUE)
+  plot(x$wmirrorError,x$wlotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(-10,15),ylim=c(-10,15),bty='n',main=paste(lab,'Normalized  Deviations'),xaxt='n',yaxt='n')
+  axis(1,at=seq(-10,16,2))
+  axis(2,at=seq(-10,16,2))
+  abline('h'=0);abline('v'=0)
+  points(x$wmirrorError,x$wlotteryError,col='black',bg='gray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(-10,16),ylim=c(-10,10),bty='n',main='Normalized Mean Error',xaxt='n',yaxt='n')
+  x<-s%>%filter(isLotteryFirst==FALSE)
+  points(x$wmirrorError,x$wlotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
+  abline('a'=0,'b'=1,lty=4)
+
+  print(
+    data.frame(
+    'Normalized'=unlist(cor.test(s$wmirrorError,s$wlotteryError)[c('estimate','p.value')]),
+    'Absolute'=unlist(cor.test(s$mirrorError,s$lotteryError)[c('estimate','p.value')]),
+     'Mirror_First_Normalized'=unlist(cor.test(s[s$isLotteryFirst==FALSE,]$wmirrorError,s[s$isLotteryFirst==FALSE,]$wlotteryError)[c('estimate','p.value')]),
+     'Lottery_First_Normalized'=unlist(cor.test(s[s$isLotteryFirst==TRUE,]$wmirrorError,s[s$isLotteryFirst==TRUE,]$wlotteryError)[c('estimate','p.value')]),  
+     'Mirror_First_Absolute'=unlist(cor.test(s[s$isLotteryFirst==FALSE,]$mirrorError,s[s$isLotteryFirst==FALSE,]$lotteryError)[c('estimate','p.value')]),
+     'Lottery_First_Absolute'=unlist(cor.test(s[s$isLotteryFirst==TRUE,]$mirrorError,s[s$isLotteryFirst==TRUE,]$lotteryError)[c('estimate','p.value')])
+     )
+  )
+
+}
+cor.test(s_mpl$wmirrorError,s_mpl$wlotteryError)
+         
+makeScatter(s_mpl,"")
+
+pdf(file.path(PATH_TO_DATA,"/Figures/Figure4.pdf"), width = 13.05, height = 7.14)
+makeScatter(s_mpl,"")
+dev.off()
+layout(matrix(1))
 
 
