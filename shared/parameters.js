@@ -3,8 +3,8 @@ const fixationDuration = 500; //500ms
 const letterDuration = 1500; //1500ms
 const feedBackDuration = 1000;//1000ms
 const payment = 0 // payment amount for the n-back nback task
-const basePayment_hard = 8; // Payment amount: = 8 euros
-const basePayment_easy = 7; // Payment amount: = 7 euros
+const basePayment_hard = 9.5; // Payment amount: = 8 euros
+const basePayment_easy = 8.5; // Payment amount: = 7 euros
 const notUnderstoodPayment = 5; // if the participant does not understand the comprehension questions,
 const spanMplPayment_hard = 2;
 const calibrationPayment = spanMplPayment_hard * 0.25;  // 1/4 of the MPL payment
@@ -33,7 +33,7 @@ let blockEasy = 0;
 let totalFdsSpanMplTrials = 14;
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
-const basePaymentThird = (treatment === "hard") ? 3 : 2; // base payment for the third part of the experiment (if they answer the comprehension questions correctly)
+const basePaymentThird = (treatment === "hard") ? 4.5 : 3.5; // base payment for the third part of the experiment (if they answer the comprehension questions correctly)
 console.log("treatment is", treatment)
 console.log("not understood payment in parameters is", notUnderstoodPayment)
 console.log("base payment third in parameters is", basePaymentThird)

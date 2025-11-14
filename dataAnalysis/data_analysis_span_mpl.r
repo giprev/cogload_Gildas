@@ -32,10 +32,11 @@ filePath_testGildas05_20251105 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas06_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121734.txt" # multiple trials, some of which failed at comprehension questions
 filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105150400.txt"# trial with failure at the comprehension questions
 filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt"# trial with failure at the comprehension questions
+filePath_testGildas09_20251114 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251114111004.txt"
 
 
 
-text <- readLines(filePath_testGildas06_20251105)
+text <- readLines(filePath_testGildas09_20251114)
 
 nSub <- length(text)
 
@@ -49,42 +50,32 @@ for(i in 1:nSub) {
 
 
 accuracySpan <- function(answer, correct) {
-  cat("Starting accuracySpan function\n")
     # Handle edge cases
 
     if (is.list(answer)) {
       if (length(answer) == 0) {
-        cat("answer is an empty list\n")
         return(0)
       }
-      cat("answer is a list\n")
         answer <- answer[[1]]
     }
     if (is.list(correct)) {
       if (length(correct) == 0) {
-        cat("correct is an empty list\n")
         return(0)
       }
-      cat("correct is a list\n")
         correct <- correct[[1]]
     }
     
     if (is.null(answer) || is.null(correct) || (length(correct) == 0) || length(answer) == 0 ) {
-      cat("answer or correct is null or length 0\n")
         return(0)
     }
     # Convert answer to integer vector if it's character
     if (is.character(answer)) {
-      cat("answer is character\n")
         answer <- as.integer(answer)
     }
     # If correct is character vector, convert to integers
     if (is.character(correct)) {
-      cat("correct is character\n")
         correct <- as.integer(correct)
     }
-    cat("answer after class changed is", answer, "\n")
-    cat("correct after class changed is", correct, "\n")
 
 
     totalPositions <- length(correct)
@@ -99,9 +90,6 @@ accuracySpan <- function(answer, correct) {
         }
       }
     }
-    cat("correctMatches is", correctMatches, "\n")
-    cat("maxPositions is", maxPositions, "\n")
-    cat("accuracySpan is", correctMatches / maxPositions, "\n")
     # Return the ratio of correct matches to the maximum number of positions
     return(correctMatches / maxPositions)
 }
@@ -286,6 +274,7 @@ extractMplDataframes <- function(dataPerParticipant) {
 
 # Initialize final_data outside the loop
 final_data <- data.frame()
+final_data_2 <- data.frame()
 
 for (iSub in 1:nSub) {
     partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
@@ -342,42 +331,34 @@ for (iSub in 1:nSub) {
         select(span) %>%
         pull()
     spanLength <- as.integer(spanLength + 1) # add 1 because one is retrieved after the maximum is achieved, to make the task easier
-    cat(paste("length(spanLength) is", length(spanLength)), "\n")
     
-    treatment <- dataPerParticipant %>%
+    treatmentValue <- dataPerParticipant %>%
         filter (!is.na(treatment)) %>%
         select(treatment) %>%
         pull()
-    treatment <- as.character(treatment)
-    cat(paste("length(treatment) is", length(treatment)), "\n")
+    treatmentValue <- as.character(treatmentValue)
     
     isLotteryFirst <- dataPerParticipant %>%
         filter(!is.na(versionFirst)) %>%
         select(versionFirst) %>%
         pull()
-    cat(paste("length(isLotteryFirst) is", length(isLotteryFirst)), "\n")
 
-    cat("isLotteryFirst before ifelse is", isLotteryFirst, "\n")
     isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", TRUE, FALSE)
 
     numCorrectQuestionMirror <- dataPerParticipant %>%
         filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
         select(num_correct) %>%
         pull()
-    cat(paste("length(numCorrectQuestionMirror) is", length(numCorrectQuestionMirror)), "\n")
     
     numCorrectQuestionLottery <- dataPerParticipant %>%
         filter( !is.na(num_correct) & task == "comprehensionSurveyMPLLottery") %>%
         select(num_correct) %>%
         pull()
-    cat(paste("length(numCorrectQuestionLottery) is", length(numCorrectQuestionLottery)), "\n")
-
 
     payment_spanMpl <- dataPerParticipant %>%
         filter(!is.na(payment_span_mpl)) %>%
         select(payment_span_mpl) %>%
         pull()
-    cat(paste("length(payment_spanMpl) is", length(payment_spanMpl)), "\n")
 
     payment_mpl <- dataPerParticipant %>%
         filter(!is.na(payment_mpl)) %>%
@@ -389,20 +370,17 @@ for (iSub in 1:nSub) {
         select(payment_span_span) %>%
         pull()
     payment_spanSpan <- ifelse(length(payment_spanSpan) > 0, as.numeric(payment_spanSpan[1]), NA)
-    cat(paste("length(payment_spanSpan) is", length(payment_spanSpan)), "\n")
 
     payment_calibration <- dataPerParticipant %>%
         filter(!is.na(payment_calibration)) %>%
         select(payment_calibration) %>%
         pull()
     payment_calibration <- ifelse(length(payment_calibration) > 0, as.numeric(payment_calibration[1]), NA)
-    cat(paste("length(payment_calibration) is", length(payment_calibration)), "\n")
 
     payment_total <- dataPerParticipant %>%
         filter(!is.na(totalPayment)) %>%
         select(totalPayment) %>%
         pull()
-    cat(paste("length(payment_total) is", length(payment_total)), "\n")
 
     dataPerParticipant <- dataPerParticipant %>%
     # Fill down mplType for span test trials
@@ -436,9 +414,7 @@ for (iSub in 1:nSub) {
             block == "span_mpl" & task == "mpl" ~ lead(accuracy), #lead(task)
         )
     )
-    dataPerParticipant$accuracy
 
-dataPerParticipant$accuracy
     # Extract MPL dataframes
     mpl_dataframes <- extractMplDataframes(dataPerParticipant)
     
@@ -452,7 +428,7 @@ dataPerParticipant$accuracy
         demo_lsat = demographics_df$demo_lsat,
         demo_age = demographics_df$demo_age,
         spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
-        treatment = treatment,
+        treatment = treatmentValue,
         isLotteryFirst = isLotteryFirst,
         numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
         numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
@@ -463,6 +439,26 @@ dataPerParticipant$accuracy
         payment_total = payment_total,
         stringsAsFactors = FALSE
     )
+    dataPerParticipant_2 <- dataPerParticipant %>%
+      mutate(
+        participant_id = participant_id,
+        demo_gend = demographics_df$demo_gend,
+        demo_educ = demographics_df$demo_educ,
+        demo_occu = demographics_df$demo_occu,
+        demo_reve = demographics_df$demo_reve,
+        demo_lsat = demographics_df$demo_lsat,
+        demo_age = demographics_df$demo_age,
+        spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
+        treatment = treatmentValue,
+        isLotteryFirst = isLotteryFirst,
+        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
+        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+        payment_spanMpl = payment_spanMpl,
+        # payment_mpl = payment_mpl,
+        payment_spanSpan = payment_spanSpan,
+        payment_calibration = payment_calibration,
+        payment_total = payment_total,
+      )
 
     # Define all possible combinations
     mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", "L75", "L90", "A10", "A15",
@@ -506,12 +502,22 @@ dataPerParticipant$accuracy
     } else {
         final_data <- rbind(final_data, participant_row)
     }
+    
+    # Add to final dataset 2
+    if(nrow(final_data_2) == 0) {
+      final_data_2 <- dataPerParticipant_2
+    } else {
+      final_data_2 <- bind_rows(final_data_2, dataPerParticipant_2)
+    }
 
     cat("Processed participant", iSub, "\n")
 
 
 }
-view(dataPerParticipant)
+
+view(dataPerParticipant_2)
+view(final_data_2)
+
 
 
 # Create df_model for linear models from final_data - reshape from wide to long, one line per MPL type, both status on the same line
@@ -577,28 +583,58 @@ dfA <- final_data %>%
 
 
 
+view(dfA)
+dfA$mirror_accuracy
+dfA$lottery_accuracy
+sum(!is.na(dfA$mirror_accuracy))
+
 
 
 
 #------------- Data analysis -----------#
 
+plot_precision_cogload <- final_data_2 %>%
+filter(
+    block == "spanSpan" & task == "spanTest"
+  ) %>%
+  group_by(subject, treatment) %>%
+  summarise (
+    accuracy_mean_participant = mean(accuracy, na.rm = TRUE),
+    #condition = c("Hard", "Easy")
+  ) %>% 
+  ungroup() %>%
+  mutate(
+    difference = t.test(accuracy_mean_participant ~ treatment, data =.)[['p.value']]
+  ) %>%
+  group_by(treatment)%>%
+  summarise(
+    accuracy = mean(accuracy_mean_participant),
+    se = sd(accuracy_mean_participant),
+    p.value = difference[[1]]
+  ) %>% ungroup()
+
+plot_precision_cogload
 
 # impact of memory load on memory performance check
 
 # Create the plot
 p <- ggbarplot(
   plot_precision_cogload, 
-  x = "condition", 
+  x = "treatment", 
   y = "accuracy",
-  add = c("mean_se", "dotplot"),  # Add standard error bars and data points
-  color = "condition",
-  fill = "condition",
+  color = "treatment",
+  fill = "treatment",
   palette = c("#00AFBB", "#E7B800"),  # Easy = blue, Hard = yellow
   position = position_dodge(0.8),
   alpha = 0.2,
   size = 0.8,
   width = 0.6,
 ) +
+  geom_errorbar(
+    aes(ymin = accuracy - se, ymax = accuracy + se),
+    width = 0.2,
+    position = position_dodge(0.8)
+  ) +
   # Add horizontal line for chance level
   geom_hline(
     yintercept = 1/9, 
@@ -610,26 +646,26 @@ p <- ggbarplot(
   annotate(
     "text", 
     x = 1.5, 
-    y = chance_level_visual + 0.02, 
+    y = 1/9 + 0.02, 
     label = paste0("Chance level = ", round(1/9, 3)), 
     color = "red", 
     size = 3.5
   ) +
-  # # Add statistical comparison
+  # Add statistical comparison
   # stat_pvalue_manual(
-  #   stat_test, 
+  #   plot_precision_cogload, 
   #   label = "p = {p}",
   #   tip.length = 0.01,
   #   y.position = max(plot_data_nbackVisual$accuracy, na.rm = TRUE) + 0.05
   # ) +
-  # # # Customize appearance
-  # labs(
-  #   title = "Accuracy in nbackVisual Task: Hard vs Easy Blocks",
-  #   subtitle = paste0("n = ", desc_stats$n[1], " participants"),
-  #   x = "Block Difficulty",
-  #   y = "Accuracy",
-  #   caption = "Error bars represent standard error of the mean\nRed dashed line shows theoretical chance level"
-  # ) +
+  # Customize appearance
+  labs(
+    title = "Accuracy target task (span): cogload vs baseline treatment",
+    #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+    x = "Block Difficulty",
+    y = "Accuracy",
+    caption = "Error bars represent standard error of the mean\nRed dashed line shows theoretical chance level"
+  ) +
   theme_pubr() +
   theme(
     legend.position = "none",
@@ -647,7 +683,7 @@ print(p)
 
 # deviation from expected value plots
 
-mainPlot<-function(F, F_high, F_low, F_hard, F_easy, lab='', ylim=c(-2,2), position = 0, cogload = 0){
+mainPlot<-function(F, F_high, F_low, F_hard, F_easy, lab='', ylim=c(-3,3), position = 0, cogload = 0){
 
   cex<-1.7
   pt.cex<-0.8

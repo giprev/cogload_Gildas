@@ -2298,7 +2298,7 @@ const mpl_trial = {
     data.position = mplPositionDict[data.mplType]
     console.log("data.position is ", data.position)
     let exampleLine = getRandomInt(0, lengthSurePayments);
-    console.log("calculateMPLPayment with line ", exampleLine, " is", calculateMPLPayment(data.mplType, exampleLine, data.choices, data.statusMPL));
+    console.log("calculateMPLPayment with line ", 0, " is", calculateMPLPayment(data.mplType, 0, data.choices, data.statusMPL));
   }
 };
 
@@ -4309,7 +4309,7 @@ const incentives_span_mpl = {
     let actual_payment_mpl = 0;
 
     if (luckyPp == 1) { // 1 in propSelecForMPL chance of being selected for MPL payment
-        const selectedRow = getRandomInt(1, lengthSurePayments); // select one of the 18 rows
+        const selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 18 rows
         console.log("selectedRow is ", selectedRow);
         let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'mpl' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
@@ -4731,7 +4731,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_span_MPL, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl,
