@@ -660,7 +660,7 @@ const fr = {
     instructionsThirdPart:{
         title: "Consignes pour la troisième partie.",
         description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Listes à Multiples Prix \" (LMP).",
-        freqMPL: "<b>Une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
+        freqMPL: "En moyenne, <b>une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LMP !"
     },
     instructionsSpanInMPL: {
@@ -687,7 +687,7 @@ const fr = {
         description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
-        remind: "À retenir: seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },    
@@ -696,7 +696,7 @@ const fr = {
         description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient 1, 5, 3, 9, 4. Vous avez restitué les chiffres 5, 6, 9. Votre précision est de 0%. Votre bonus est de <b>2€ x 0% = 0€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne 15.",
-        remind: "À retenir: seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },

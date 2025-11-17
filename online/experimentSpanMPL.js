@@ -69,7 +69,7 @@ let spanCounter = 0; // the counter for each n-back trial
 let mplCounter = 0; // the counter for each mpl trial
 
 const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
-// let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
+//let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
 
@@ -4214,7 +4214,7 @@ const feedbackExampleSpanMPL = {
     console.log("bonusSpan is " + bonusSpan);
 
     // mpl
-    let actual_payment_mpl;
+    let actual_payment_mpl_example;
     let selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 18 rows
     console.log("selectedRow is ", selectedRow);
     let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
@@ -4227,9 +4227,9 @@ const feedbackExampleSpanMPL = {
     let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
     console.log(choices, "is the choices for the selected trial");
     let chosenStatusExample = block_order_indicator_span_MPL == "mirror_first" ? "mirror" : "lottery";
-    actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample);
-    actual_payment_mpl = Math.min(actual_payment_mpl, 25);
-    console.log(actual_payment_mpl)
+    actual_payment_mpl_example = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample);
+    actual_payment_mpl_example = Math.min(actual_payment_mpl_example, 30);
+    console.log(actual_payment_mpl_example)
     let chosenLot = "";
     if (choices[selectedRow] == "sure") { chosenLot = "<span style='color: blue'>lot B</span>"; }
     else if (choices[selectedRow] == "lottery") { chosenLot = "<span style='color: red'>lot A</span>"; }
@@ -4239,13 +4239,13 @@ const feedbackExampleSpanMPL = {
     // Use the calculated payments
     trial.data = trial.data || {};
     trial.data.payment_span_mpl_exemple = actual_payment_span_mpl;
-    trial.data.payment_mpl_exemple = actual_payment_mpl;
+    trial.data.payment_mpl_exemple = actual_payment_mpl_example;
     let html;
     html = 
     `<h2>${language.feedbackExampleSpanMPL.title}</h2>
     <p>${language.feedbackExampleSpanMPL.description}<p>
     <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{correctSpan}', correctSpan).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl).replace('{selectedRow}', selectedRow + 1)}</p>
+    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}</p>
     <div class="important-note">                     
     💡 ${language.feedbackExampleSpanMPL.remind.replace('{frequency}', propSelecForMPL)} 
     </div>
@@ -4321,7 +4321,7 @@ const incentives_span_mpl = {
         let choices = selectedTrial.select('choices').values[0];
         console.log(choices, "is the choices for the selected trial");
         actual_payment_mpl = calculateMPLPayment(mplType, selectedRow, choices, chosenStatus);
-        actual_payment_mpl = Math.min(actual_payment_mpl, 25);
+        actual_payment_mpl = Math.min(actual_payment_mpl, 44.5);
         console.log("actual_payment_mpl is", actual_payment_mpl)
         console.log("selectedRow is ", selectedRow, "and subBlockIntegerSpanMpl is", subBlockIntegerSpanMpl, "and luckyPp is ", luckyPp, "and chosenStatus is ", chosenStatus,
         "and choices are ", choices);
@@ -4342,7 +4342,7 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , 28.25); // cap total bonus at 28.25
+    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , 57.25); // cap total bonus at 57.25
     if (treatment == "hard") {
     trial.data.totalPayment = basePayment_hard + trial.data.totalBonus;}
     else if (treatment == "easy") {

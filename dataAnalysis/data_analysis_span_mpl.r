@@ -33,10 +33,12 @@ filePath_testGildas06_20251105 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105150400.txt"# trial with failure at the comprehension questions
 filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt"# trial with failure at the comprehension questions
 filePath_testGildas09_20251114 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251114111004.txt"
+filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251117123042.txt"
 
 
 
-text <- readLines(filePath_testGildas09_20251114)
+
+text <- readLines(filePath_testGildas10_20251117)
 
 nSub <- length(text)
 
