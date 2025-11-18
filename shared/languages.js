@@ -548,7 +548,7 @@ const fr = {
         twoGames: "Vous aurez deux tâches différentes à réaliser: le 2-back visuel et le n-back lettres.",
         instructionsAfter: "Vous recevrez les consignes pour chaque tâche après cette page.",
         subBlockExplanation: "L'expérience se compose de 12 blocs. Un bloc comprend une tâche de 2-back visuel suivie d'une tâche de n-back lettres.",
-        paymentAfter: "Pour que vous compreniez comment vous serez payé, vous recevrez les explications du paiement après les consignes.",
+        paymentAfter: "Pour que vous compreniez comment vous serez payé·e, vous recevrez les explications du paiement après les consignes.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
     descriptionExperimentSpanMPL: {
@@ -684,21 +684,21 @@ const fr = {
     },
     feedbackExampleSpanMPL: {
         title: "Exemple de paiement type à la troisième partie.",
-        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
+        description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
-        clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
+        clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },    
     feedbackExampleSpanMPLTemporary: {
         title: "Exemple de paiement type à la troisième partie.",
-        description: "Voici comment vous seriez payé si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
+        description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient 1, 5, 3, 9, 4. Vous avez restitué les chiffres 5, 6, 9. Votre précision est de 0%. Votre bonus est de <b>2€ x 0% = 0€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne 15.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr d'être sélectionné</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
-        clickNext: "Quand vous êtes prêt, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
+        clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
     instructionsDecisionTable:{
         title: "Consignes pour les Listes à Multiples Prix (LMP).",
@@ -707,7 +707,7 @@ const fr = {
         exampleAbove: "Dans l'exemple ci-dessus, le <span style='color:red'>lot A</span> est composé de 50 boîtes contenant 16€ et 50 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant 4€.",
         exampleBelow: "Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est composé de 25 boîtes contenant -12€ et 75 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant -3€.",
         clickToChoose: `Vous devez cliquer sur le tableau pour choisir le lot que l’ordinateur sélectionnera afin de calculer votre bonus. Le lot sélectionné est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
-        Dans l'exemple ci-dessous, vous avez sélectionné le <span style='color:red'>lot A</span> et vous serez donc payé en fonction de ce lot.`,
+        Dans l'exemple ci-dessous, vous avez sélectionné le <span style='color:red'>lot A</span> et vous serez donc payé·e en fonction de ce lot.`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir la règle de paiement!"
     },
     instructionsBoxesWithMoney:{
@@ -738,17 +738,17 @@ const fr = {
         example1Payment: `
         <ul>
         <li>Le lot est composé de 100 boîtes en tout, 50 contiennent 16€ et 50 contiennent 0€. L'ordinateur calcule la moyenne: <span style='color:green'>(50€ x 50 + 0€ x 50)/100 = 8€</span>. Le résultat est ajouté à votre somme d'argent initiale.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la loterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['8€', '8€'], 10)}
         </ul></li>
-        <li> Si le <span style='color:blue'>lot B</span> avait été sélectionné, <span style='color:green'>(4€ x 100)/100 = 4€</span> aurait été ajoutés à votre somme initiale d'argent.</li>
+        <li> Si le <span style='color:blue'>lot B</span> avait été sélectionné, <span style='color:green'>(4€ x 100)/100 = 4€</span> auraient été ajoutés à votre somme initiale d'argent.</li>
         </ul>`,
         example2: `Dans l'exemple ci-dessous, le <span style='color:blue'>lot B</span> est sélectionné.`,
         example2Payment: `
         <ul>
         <li>Le lot est composé de 100 boîtes en tout, toutes contiennent -6€. L'ordinateur calcule la moyenne: <span style='color:green'>(-6€ x 100)/100 = -6€</span>. Le résultat est retiré de votre somme initiale d'argent.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la loterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
@@ -766,7 +766,7 @@ const fr = {
         example1Payment: `
         <div><ul>
         <li>Le lot se compose de 50 boîtes contenant 16€, et 50 boîtes contenant 0€. Il y a donc une probabilité de 50% que <span style='color: green'>16€</span> soient ajoutés à votre somme initiale d'argent, et une probabilité de 50% que <span style='color: green'>0€</span> soit ajouté.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de boîte tirée au hasard pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations d'une boîte tirée au hasard pour la loterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['16€', '0€'], 10)}
         </ul></li>
@@ -776,7 +776,7 @@ const fr = {
         example2Payment: `
         <div><ul> 
         <li>Le lot se compose de 100 boîtes, toutes contenant -6€. Donc <span style='color: green'>6€</span> sont retirés de votre somme initiale d'argent pour sûr.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de boîte tirées au hasard pour la lotterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations d'une boîte tirée au hasard pour la loterie sélectionnée:
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
@@ -793,19 +793,19 @@ const fr = {
         example1: ` 
         Dans l'exemple ci-dessous, à la première ligne (Version 1), le <span style='color:red'>lot A</span> est composé de 40 boîtes contenant 10€ et 60 boîtes contenant 0€, 
         tandis que le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant <b>1€</b>.
-        Cependant à la deuxième ligne ligne (Version 2), le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant <b>2€</b>.
+        Cependant à la deuxième ligne (Version 2), le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant <b>2€</b>.
         Les lignes suivantes présentent d'autres versions du <span style='color:blue'>lot B</span>.`,
-        chooseSet: "Vous ferez un choix à chaque ligne en cliquant sur le tableau. Le lot sélectionné à chaque ligne est surlignée en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.",
+        chooseSet: "Vous ferez un choix à chaque ligne en cliquant sur le tableau. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.",
         example2: `Dans l'exemple ci-dessus, vous sélectionnez le <span style='color:red'>lot A</span> dans les versions 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les versions 8, 9 et 10.`,
-        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau 
-        (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé en fonction du lot que vous aurez sélectionné pour cette ligne. 
+        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau 
+        (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. 
         Vous devez donc choisir chaque ligne comme si c'était celle qui allait être payée.`,
         computerOnlyOneChoice: `L'ordinateur ne vous autorise à passer du <span style='color:red'>lot A</span> au <span style='color:blue'>lot B</span> qu'une seule fois dans le tableau.
         Quand vous êtes sûr de votre choix, vous pouvez valider votre saisie avec le bouton "Suivant!"`,
         severalTables: "Plusieurs tableaux",
         severalTablesDescription: `Vous effectuerez cette tâche plusieurs fois pendant la troisième partie de l'expérience.
         Les tableaux varient dans leur contenu: les lignes et la répartition des boîtes dans les lots.`,
-        incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné (vous avez une chance sur 22), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
+        incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.
         Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour vous entraîner à sélectionner des lots de boîtes !",
@@ -816,18 +816,18 @@ const fr = {
     },
     comprehensionMPLIntro: "Questions de compréhension",
     comprehensionMPLExplanation: ` Si vous ne répondez pas correctement à au moins quatre des questions, 
-    l'expérience se terminera et vous serez payé {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents. 
+    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents. 
     Vous pouvez cliquer sur le bouton {buttonHelp} pour afficher les consignes.`,
     comprehensionFailure:{
         title: "Fin de l'expérience",
         description: `Malheureusement, vous n'avez pas répondu correctement aux questions de compréhension.
-        L'expérience se termine ici. Vous serez payé {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
+        L'expérience se termine ici. Vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
         thanks: "Merci beaucoup pour votre participation!",
         clickNext: "Cliquez sur <strong>Suivant</strong> terminer l'expérience.",
     },
     comprehensionQMPL: {
         q1: {
-            prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné pour que ce choix soit payé. <br> 
+            prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. <br> 
             Quelle est la probabilité que exactement 20€ soient ajoutés à votre somme initiale d'argent ?`,
             options: [
                 "0 sur 100 (0%)",
@@ -865,7 +865,7 @@ const fr = {
         },
         q5: {
             prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
-            Vous êtes sélectionné pour que ce choix soit payé. Quelle(s) somme(s) d'argent pourrai(en)t être ajoutée(s) à ou retirée(s) de votre somme initiale d'argent ?`,
+            Vous êtes sélectionné·e pour que ce choix soit payé. Quelle(s) somme(s) d'argent pourrai(en)t être ajoutée(s) à ou retirée(s) de votre somme initiale d'argent ?`,
             options: [
                 "0€",
                 "-6€",
@@ -955,7 +955,7 @@ const fr = {
     betweenBlocks: {
         rest: "Maintenant vous pouvez vous reposer un peu.",
         continue: "Appuyez sur n'importe quelle touche pour continuer la tâche !",
-        pressKey: "Si vous êtes prêt(e), appuyez sur une touche !"
+        pressKey: "Si vous êtes prêt·e, appuyez sur une touche !"
     },
     end: {
         end: "Fin de la tâche.",
@@ -1062,7 +1062,7 @@ const fr = {
                 </div>
                 <br><br>
                 <p>L'expérience se compose de 12 blocs. Un bloc comprend une tâche de 2-back visuel suivie d'une tâche de 1-back lettres.</p>
-                <p>À la fin de l'expérience, si vous êtes sélectionné, un bloc sera sélectionné aléatoirement pour le calcul de votre bonus:</p>
+                <p>À la fin de l'expérience, si vous êtes sélectionné·e, un bloc sera sélectionné aléatoirement pour le calcul de votre bonus:</p>
 
                 <ol>
                     <li><strong><span style="color:red;">50 %</span> de votre bonus</strong> dépend de votre précision lors de l'essai immédiatement après le 2-back visuel du bloc sélectionné.
@@ -1224,7 +1224,7 @@ const fr = {
         feedback: "À la fin, vous verrez un retour sur votre performance et comment votre bonus serait calculé si c'était un vrai bloc.",
         highlightEasy: "Portez une attention particulière à la lettre immédiatement après le 2-back visuel - c'est la plus importante pour votre bonus !", // Pour vous aider, la lettre correspondante avant le 2-back visuel est colorée en <span style='color:#F016DF;'>rose</span>.
         highlightHard: "Portez une attention particulière aux {level} premières lettres immédiatement après le 2-back visuel - ce sont les plus importantes pour votre bonus ! ", // Pour vous aider, les lettres correspondantes avant le 2-back visuel sont colorées en <span style='color:#F016DF;'>rose</span>.
-        ready: "Quand vous êtes prêt à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
+        ready: "Quand vous êtes prêt·e à commencer l'entraînement complet, appuyez sur n'importe quelle touche."
     },
     overallTrainingFeedback: {
         title: "Entraînement Terminé - Démonstration du système de points",
@@ -1263,19 +1263,19 @@ const fr = {
         q1Hard: {
             prompt: "Veuillez sélectionner la bonne réponse:",
             options: [
-                "Je suis payé en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
-                "Je suis payé indépendamment de ma précision (100% du bonus).",
-                "Je suis payé en fonction du 3-back lettres uniquement pour un bloc sélectionné au hasard parmi les 12 de l’expérience.",
-                "Je suis payé en fonction de ma précision sur le 2-back visuel (25% du bonus), ma précision sur le 3-back lettres suivant (25% du bonus) et ma précision sur les trois premières lettres du 3-back lettres en particulier (50% du bonus), pour un bloc sélectionné au hasard parmi les 12 de l’expérience."
+                "Je suis payé·e en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
+                "Je suis payé·e indépendamment de ma précision (100% du bonus).",
+                "Je suis payé·e en fonction du 3-back lettres uniquement pour un bloc sélectionné au hasard parmi les 12 de l’expérience.",
+                "Je suis payé·e en fonction de ma précision sur le 2-back visuel (25% du bonus), ma précision sur le 3-back lettres suivant (25% du bonus) et ma précision sur les trois premières lettres du 3-back lettres en particulier (50% du bonus), pour un bloc sélectionné au hasard parmi les 12 de l’expérience."
             ]
         },
         q1Easy: {
             prompt: "Veuillez sélectionner la bonne réponse:",
             options: [
-                "Je suis payé en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
-                "Je suis payé indépendamment de ma précision (100% du bonus).",
-                "Je suis payé en fonction du 1-back lettres uniquement pour un bloc sélectionné au hasard parmi les 12 de l’expérience.",
-                "Je suis payé en fonction de ma précision sur le 2-back visuel (25% du bonus), ma précision sur le 1-back lettres suivant (25% du bonus) et ma précision sur la première lettre du 1-back lettres (50% du bonus ), pour un bloc sélectionné au hasard parmi les 12 de l’expérience."
+                "Je suis payé·e en fonction de la moyenne de ma précision sur tous les essais (100% de bonus).",
+                "Je suis payé·e indépendamment de ma précision (100% du bonus).",
+                "Je suis payé·e en fonction du 1-back lettres uniquement pour un bloc sélectionné au hasard parmi les 12 de l’expérience.",
+                "Je suis payé·e en fonction de ma précision sur le 2-back visuel (25% du bonus), ma précision sur le 1-back lettres suivant (25% du bonus) et ma précision sur la première lettre du 1-back lettres (50% du bonus ), pour un bloc sélectionné au hasard parmi les 12 de l’expérience."
             ]
         },
         q2: {
@@ -1303,7 +1303,7 @@ const fr = {
             ]
         },
         correct_answers: {
-            q1: "Je suis payé en fonction du n-back lettres uniquement pour un bloc de l’expérience.",
+            q1: "Je suis payé·e en fonction du n-back lettres uniquement pour un bloc de l’expérience.",
             q2: "La touche “F”.",
             q3: "La touche “J”."
         },
@@ -1331,8 +1331,8 @@ const fr = {
             "Quelle est votre situation professionnelle?",
             "Quelle est la fourchette de votre revenu mensuel?",
             "Si vous avez eu ou si vous avez actuellement un parcours académique post-bac, la matière principale est-elle liée aux sciences, technologies, mathématiques, à l'ingénierie ou l'économie?",
-            "Avez-vous suivi des cours universitaires (post-bac) en mathématiques, statistiques, probabilité ?",
-            "Globalement, à quel point êtes-vous satisfait de votre vie de nos jours?"
+            "Avez-vous suivi des cours universitaires (post-bac) en mathématiques, statistiques, probabilités ?",
+            "Globalement, à quel point êtes-vous satisfait·e de votre vie de nos jours?"
         ],
         options: {
             age: [
@@ -1428,32 +1428,32 @@ const fr = {
     },
     endowmentsMPL: {
         lottery: {
-            G90: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G75: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G50: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G25: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G10: `Vous serez payé 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L90: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L75: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L50: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L25: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L10: `Vous serez payé 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A10: `Vous serez payé 15€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A15: `Vous serez payé 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G90: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G75: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G50: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G25: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G10: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            L90: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            L75: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            L50: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            L25: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            L10: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            A10: `Vous serez payé·e 15€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            A15: `Vous serez payé·e 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
         },
         mirror: {
-            G90: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G75: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G50: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G25: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G10: `Vous serez payé 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L90: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L75: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L50: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L25: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L10: `Vous serez payé 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A10: `Vous serez payé 15€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A15: `Vous serez payé 20€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G90: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G75: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G50: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G25: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G10: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L90: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L75: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L50: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L25: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L10: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            A10: `Vous serez payé·e 15€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            A15: `Vous serez payé·e 20€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
     }
     },
     span_span: {
@@ -1481,8 +1481,8 @@ const fr = {
         thanks: "Merci d'avoir participé à cette expérience !",
         calibrationPayment: "Votre bonus pour la première partie de l'expérience est de {trainingBonus}€.",
         spanSpanPayment_hard: "Votre bonus pour la deuxième partie de l'expérience est de {spanSpanBonus}€.",
-        selectedForMPL: "Vous avez été sélectionné pour qu'un de vos choix aux tâches de prise de décision (LMP) soit payé.",
-        notSelectedForMPL: "Vous n'avez pas été sélectionné pour qu'un de vos choix aux tâches de prise de décision (LMP) soit payé.",
+        selectedForMPL: "Vous avez été sélectionné·e pour qu'un de vos choix aux tâches de prise de décision (LMP) soit payé.",
+        notSelectedForMPL: "Vous n'avez pas été sélectionné·e pour qu'un de vos choix aux tâches de prise de décision (LMP) soit payé.",
         bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour le choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
         totalBonus: "Votre bonus total est donc de {totalBonus}€.",
