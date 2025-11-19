@@ -253,7 +253,7 @@ const instructionsSpanSpan = {
         <h3>${language.instructionsSpanSpanPayment.subTitle}</h3>
         <p>${language.instructionsSpanSpanPayment.incentives.replace("{bonus}", spanSpanPayment_hard)}</p>
         <p>${language.instructionsSpanSpanPayment.incentiveRule.replace("{theBlueDigits}", theBlueDigits)}</p>
-        <p>${language.instructionsSpanSpanPayment.incentiveRuleExample.replace("{theBlueDigits}", theBlueDigits).replace("{bonus}", spanSpanPayment_hard).replace("{examplePayment}", Math.round(spanSpanPayment_hard*(7.75/10)*100)/100)}</p>
+        <p>${language.instructionsSpanSpanPayment.incentiveRuleExample.replace("{theBlueDigits}", theBlueDigits).replace("{bonus}", spanSpanPayment_hard).replace("{examplePayment}", Math.round((spanSpanPayment_hard*((67/100) +(33/100)*0.1)*100))/100)}</p>
         <p>${language.instructionsSpanSpanPayment.remember.replace("{theBlueDigits}", theBlueDigits)}</p>
         <p>${language.instructionsSpanSpanPayment.clickNext}</p>`
     ];
@@ -427,7 +427,7 @@ const instructionsChoosingASetOfBoxes = {
         <br>
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
         <br>
         <p>${language.instructionsChoosingASetOfBoxes.clickNext}</p>`,
         ]
@@ -774,15 +774,15 @@ const comprehensionFailureTrial = {
         console.log("notUnderstoodPayment is", notUnderstoodPayment);
         console.log("actual_payment_calibration is", actual_payment_calibration);
         console.log("actual_payment_span_span is", actual_payment_span_span);
-        console.log("total payment is", Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, 6.25));
+        console.log("total payment is", Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.13*1.5)+0.85)));
         
         // Add data to trial object instead of data parameter
         trial.data = trial.data || {};
-        trial.data.totalPayment = Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, 6.25);
+        trial.data.totalPayment = Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.13*1.5)+0.85));
         trial.data.versionFirst = block_order_indicator_span_MPL;
         trial.data.treatment = treatment;
         trial.data.helpPageCounter = helpPageCounter;
-        trial.data.totalBonus = Math.min(actual_payment_calibration + actual_payment_span_span, 1.25) ;
+        trial.data.totalBonus = Math.min(actual_payment_calibration + actual_payment_span_span, ((1.13*1.5)+0.85)) ;
         trial.data.payment_span_span = actual_payment_span_span;
         trial.data.payment_calibration = actual_payment_calibration;
         trial.data.task = 'comprehensionFailure';
@@ -2103,8 +2103,10 @@ mpl_html_array_mirror = numbersArray_mirror.map(x => {
     console.log("MPLGenerator2 called with:", probability, type, "mirror", position);
     return mplGenerator2(probability, type, "mirror", position);
 });
-example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", 'low')];
-example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", 'low')];
+example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
+console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
+example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", mplPositionDict["G50"])];
+console.log(example_mpl_html_array_mirror, "is example_mpl_html_array_mirror");
 training_mpl_html_array1 = [mplGenerator3(1)];
 training_mpl_html_array2 = [mplGenerator3(2)];
 training_mpl_html_array = [mplGenerator3(1), mplGenerator3(2)];
@@ -4100,7 +4102,7 @@ const calibrationDebrief = {
     on_start: function(trial) {
 
     actual_payment_calibration = calibrationPayment * ((maximumSpanCalibration)/10)
-    actual_payment_calibration = Math.min(actual_payment_calibration, 0.75);
+    actual_payment_calibration = Math.min(actual_payment_calibration, 1.13*1.5);
     console.log(actual_payment_calibration, "is actual_payment_calibration")
 
     // Use the calculated payments
@@ -4142,8 +4144,8 @@ const spanSpanDebrief = {
     console.log("accuracyLetters1 is ", accuracyLetters1);
     let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
     console.log("accuracyLetters2 is ", accuracyLetters2);
-    actual_payment_span_span = (spanSpanPayment_hard * 0.75 * accuracyLetters1) + (spanSpanPayment_hard * 0.25 * accuracyLetters2);
-    actual_payment_span_span = Math.min(actual_payment_span_span, 0.5);
+    actual_payment_span_span = (spanSpanPayment_hard * 0.67 * accuracyLetters1) + (spanSpanPayment_hard * 0.33 * accuracyLetters2);
+    actual_payment_span_span = Math.min(actual_payment_span_span, 0.85);
 
     // Use the calculated payments
     trial.data = trial.data || {};
@@ -4176,7 +4178,7 @@ const feedbackExampleSpanMPL = {
     let answerSpan;
     let correctSpan;
     let accuracy;
-    if (treatment == "hard"){
+    // if (treatment == "hard"){
         let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
         });
@@ -4189,29 +4191,29 @@ const feedbackExampleSpanMPL = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
-    } 
-    else if (treatment == "easy") {
-        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-            return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
-        });
-        console.log("trialsSpanMPL is ", trialsSpanMpl);
-        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-        answerSpan = trialsSpanMpl.select('answer').values[0];
-        correctSpan = trialsSpanMpl.select('correct').values[0];
-        accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-        console.log("accuracy is ", accuracy);
-        actual_payment_span_mpl = spanMplPayment_easy * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
-    } 
-    let bonusSpan;
-    if (treatment == "hard") {
-        bonusSpan = spanMplPayment_hard}
-    else if (treatment == "easy") {
-        bonusSpan = spanMplPayment_easy}
-    console.log("bonusSpan is " + bonusSpan);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2.63);
+    // } 
+    // else if (treatment == "easy") {
+    //     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+    //         return trial.task == 'spanTest' && trial.block == 'example_span_mpl';
+    //     });
+    //     console.log("trialsSpanMPL is ", trialsSpanMpl);
+    //     console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+    //     answerSpan = trialsSpanMpl.select('answer').values[0];
+    //     correctSpan = trialsSpanMpl.select('correct').values[0];
+    //     accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+    //     console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+    //     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+    //     console.log("accuracy is ", accuracy);
+    //     actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+    //     actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
+    // } 
+    let bonusSpan = spanMplPayment_hard;
+    // if (treatment == "hard") {
+    //     bonusSpan = spanMplPayment_hard}
+    // else if (treatment == "easy") {
+    //     bonusSpan = spanMplPayment_easy}
+    // console.log("bonusSpan is " + bonusSpan);
 
     // mpl
     let actual_payment_mpl_example;
@@ -4247,7 +4249,7 @@ const feedbackExampleSpanMPL = {
     <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{correctSpan}', correctSpan).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
     <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}</p>
     <div class="important-note">                     
-    💡 ${language.feedbackExampleSpanMPL.remind.replace('{frequency}', propSelecForMPL)} 
+    💡 ${language.feedbackExampleSpanMPL.remind.replace('{propSelecForMPL}', propSelecForMPL)} 
     </div>
     <p>${language.feedbackExampleSpanMPL.instructionReminder}</p>
      <p>${language.feedbackExampleSpanMPL.clickNext}</p>
@@ -4275,7 +4277,7 @@ const incentives_span_mpl = {
     /******* span_mpl payment *********/
     let actual_payment_span_mpl;
     const subBlockIntegerSpanMpl = getRandomInt(1, 14)
-    if (treatment == "hard"){
+    // if (treatment == "hard"){
         let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
         });
@@ -4286,23 +4288,23 @@ const incentives_span_mpl = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2.63);
         console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
-    } 
-    else if (treatment == "easy") {
-        let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
-            return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
-        });
-        console.log("trialsSpanMPL is ", trialsSpanMpl);
-        console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
-        let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
-        console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
-        console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
-        console.log("accuracy is ", accuracy);
-        actual_payment_span_mpl = spanMplPayment_easy * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
-        console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
-    } 
+    // } 
+    // else if (treatment == "easy") {
+    //     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
+    //         return trial.task == 'spanTest' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
+    //     });
+    //     console.log("trialsSpanMPL is ", trialsSpanMpl);
+    //     console.log("trialsSpanMPL.count() is (should be 1) ", trialsSpanMpl.count());
+    //     let accuracy = accuracySpanSpan(trialsSpanMpl.select('answer').values[0], trialsSpanMpl.select('correct').values[0]);
+    //     console.log("trialsSpanMpl.select('answer').values[0] is ", trialsSpanMpl.select('answer').values[0]);
+    //     console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
+    //     console.log("accuracy is ", accuracy);
+    //     actual_payment_span_mpl = spanMplPayment_easy * accuracy;
+    //     actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 1);
+    //     console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
+    // } 
     console.log("actual_payement_span_mpl is " + actual_payment_span_mpl);
 
     // mpl
@@ -4342,7 +4344,7 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , 57.25); // cap total bonus at 57.25
+    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.13*1.5)+0.85+2.63+44.5)); // cap total bonus
     if (treatment == "hard") {
     trial.data.totalPayment = basePayment_hard + trial.data.totalBonus;}
     else if (treatment == "easy") {
@@ -4350,7 +4352,7 @@ const incentives_span_mpl = {
 }
 
     let html;
-    if (treatment == "hard"){
+    // if (treatment == "hard"){
         if (luckyPp == 1) {
                 html = 
             `<h2>${language.debrief_incentives_span_mpl.title}</h2>
@@ -4371,28 +4373,28 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
-    } else if (treatment == "easy"){
-        if (luckyPp == 1) {
-            html = 
-            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
-            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}',Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
-        }
-        else if (luckyPp != 1) {
-                html = 
-            `<h2>${language.debrief_incentives_span_mpl.title}</h2>
-            <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
-            <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
-        }
-    }
+    // } else if (treatment == "easy"){
+    //     if (luckyPp == 1) {
+    //         html = 
+    //         `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+    //         <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
+    //         <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}',Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
+    //     }
+    //     else if (luckyPp != 1) {
+    //             html = 
+    //         `<h2>${language.debrief_incentives_span_mpl.title}</h2>
+    //         <p>${language.debrief_incentives_span_mpl.calibrationPayment.replace('{trainingBonus}', Math.round(actual_payment_calibration*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
+    //         <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
+    //         <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
+    //     }
+    // }
 
     trial.stimulus = html; // set final display
 

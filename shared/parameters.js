@@ -3,15 +3,16 @@ const fixationDuration = 500; //500ms
 const letterDuration = 1500; //1500ms
 const feedBackDuration = 1000;//1000ms
 const payment = 0 // payment amount for the n-back nback task
-const basePayment_hard = 9.5; // Payment amount: = 8 euros
-const basePayment_easy = 8.5; // Payment amount: = 7 euros
-const notUnderstoodPayment = 5; // if the participant does not understand the comprehension questions,
-const spanMplPayment_hard = 2;
-const calibrationPayment = spanMplPayment_hard * 0.25;  // 1/4 of the MPL payment
-const spanSpanPayment_hard = spanMplPayment_hard * 0.25;
-const spanMplPayment_easy = 1;
+const basePayment_hard = 7; // Payment amount: = 8 euros
+const basePayment_easy = 7; // Payment amount: = 7 euros
+const notUnderstoodPayment = 6; // if the participant does not understand the comprehension questions,
+const basePaymentThird = 1; // additional base payment for the third part of the experiment (if they answer the comprehension questions correctly)
+const spanMplPayment_hard = 2.63;
+const calibrationPayment = 1.13; 
+const spanSpanPayment_hard = 0.85;
+const spanMplPayment_easy = spanMplPayment_hard;
 //const spanSpanPayment_easy = spanMplPayment_hard * 0.25; // NOT USED as it's the same as spanSpanPayment_hard
-const propSelecForMPL = 22; // 1 out of propSelecForMPL participants will be selected for the MPL payment : that makes an EV of around 1€.
+const propSelecForMPL = 16; // 1 out of propSelecForMPL participants will be selected for the MPL payment : that makes an EV of around 1.32€.
 const fds_letter_presentation = 500; //500ms
 const fds_post_trial_gap = 250; //250ms
 // Change default language to French
@@ -33,7 +34,6 @@ let blockEasy = 0;
 let totalFdsSpanMplTrials = 14;
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
-const basePaymentThird = (treatment === "hard") ? 4.5 : 3.5; // base payment for the third part of the experiment (if they answer the comprehension questions correctly)
 console.log("treatment is", treatment)
 console.log("not understood payment in parameters is", notUnderstoodPayment)
 console.log("base payment third in parameters is", basePaymentThird)

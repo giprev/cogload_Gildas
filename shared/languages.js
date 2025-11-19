@@ -646,10 +646,10 @@ const fr = {
         incentives: "Votre bonus (<b>{bonus}€</b> maximum) dépend de votre performance.",
         incentiveRule: `Votre bonus est calculé comme suit. L'ordinateur sélectionne un essai au hasard parmi les essais de la partie. Chaque essai a la même chance d'être sélectionné. Votre bonus dépend de votre précision dans cet essai, selon la formule suivante:
         <ul> 
-        <li> <b>75%</b> du bonus dépend de votre précision pour {theBlueDigits}. </li>
-        <li> <b>25%</b> du bonus dépend de votre précision pour les chiffres <span style='color:red'>rouges</span>.</li>
+        <li> <b>67%</b> du bonus dépend de votre précision pour {theBlueDigits}. </li>
+        <li> <b>33%</b> du bonus dépend de votre précision pour les chiffres <span style='color:red'>rouges</span>.</li>
         </ul>`,
-        incentiveRuleExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 100% sur {theBlueDigits} mais seulement 10% sur les chiffres <span style='color:red'>rouges</span>, votre bonus sera de {bonus}€ x (<span style='color:blue'>0.75 x 100%</span> + <span style='color:red'>0.25 x 10%</span>) = {examplePayment}€.",
+        incentiveRuleExample: "Par exemple, si à l'essai sélectionné vous obtenez une précision de 100% sur {theBlueDigits} mais seulement 10% sur les chiffres <span style='color:red'>rouges</span>, votre bonus sera de {bonus}€ x (<span style='color:blue'>0.67 x 100%</span> + <span style='color:red'>0.33 x 10%</span>) = {examplePayment}€.",
         remember1: "Le plus important pour maximiser votre bonus est donc de restituer correctement {theBlueDigits} !",
         remember:  `<div class="important-note">
                     💡 À retenir: Le plus important pour maximiser votre bonus est donc de restituer correctement {theBlueDigits} !
@@ -686,8 +686,8 @@ const fr = {
         title: "Exemple de paiement type à la troisième partie.",
         description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
-        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne {selectedRow}.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur {frequency}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix et la règle de paiement à la ligne {selectedRow}.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },    
@@ -695,8 +695,8 @@ const fr = {
         title: "Exemple de paiement type à la troisième partie.",
         description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient 1, 5, 3, 9, 4. Vous avez restitué les chiffres 5, 6, 9. Votre précision est de 0%. Votre bonus est de <b>2€ x 0% = 0€</b>.",
-        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Chaque ligne a la même chance d'être sélectionnée. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix à la ligne 15.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur 22</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix et la règle de paiement à la ligne 15.",
+        remind: "À retenir: en moyenne seulement <b>une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
@@ -797,15 +797,15 @@ const fr = {
         Les lignes suivantes présentent d'autres versions du <span style='color:blue'>lot B</span>.`,
         chooseSet: "Vous ferez un choix à chaque ligne en cliquant sur le tableau. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.",
         example2: `Dans l'exemple ci-dessus, vous sélectionnez le <span style='color:red'>lot A</span> dans les versions 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les versions 8, 9 et 10.`,
-        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau 
-        (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. 
+        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau
+        (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. Chaque ligne a la même chance d'être sélectionnée.
         Vous devez donc choisir chaque ligne comme si c'était celle qui allait être payée.`,
         computerOnlyOneChoice: `L'ordinateur ne vous autorise à passer du <span style='color:red'>lot A</span> au <span style='color:blue'>lot B</span> qu'une seule fois dans le tableau.
         Quand vous êtes sûr de votre choix, vous pouvez valider votre saisie avec le bouton "Suivant!"`,
         severalTables: "Plusieurs tableaux",
         severalTablesDescription: `Vous effectuerez cette tâche plusieurs fois pendant la troisième partie de l'expérience.
         Les tableaux varient dans leur contenu: les lignes et la répartition des boîtes dans les lots.`,
-        incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
+        incentivesMPL: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur {propSelecForMPL}), l'ordinateur sélectionnera <b>au hasard un tableau puis une ligne (version) de ce tableau</b> 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.
         Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour vous entraîner à sélectionner des lots de boîtes !",
@@ -877,13 +877,13 @@ const fr = {
     },
     debriefCalibration:{
         title: "Fin de la première partie",
-        performance: "La longueur finale (après la prise en compte de votre succès ou échel final) est de {maxSpan}.",
+        performance: "La longueur finale (après la prise en compte de votre succès ou échec final) est de {maxSpan}.",
         bonus: "Votre bonus pour cette partie est donc de {bonus}€ x {maxSpan}/10 = <b>{totalBonus}€</b>.",
     },
     debriefSpanSpan:{
         title: "Fin de la deuxième partie",
         performance: "Dans le bloc sélectionné, votre précision pour {theBlueDigits} est de {blueAccuracy}%, et votre précision pour les chiffres <span style='color:red'>rouges</span> est de {redAccuracy}%.",
-        bonus: "Votre bonus pour cette partie est donc de {bonus}€ x (0.75 x {blueAccuracy}% + 0.25 x {redAccuracy}%) = <b>{totalBonus}€</b>.",
+        bonus: "Votre bonus pour cette partie est donc de {bonus}€ x (0.67 x {blueAccuracy}% + 0.33 x {redAccuracy}%) = <b>{totalBonus}€</b>.",
         variableHard: {
             theBlueDigits: "les {startingSpan} chiffres <span style='color:blue'>bleus</span>",
         },
@@ -1332,7 +1332,7 @@ const fr = {
             "Quelle est la fourchette de votre revenu mensuel?",
             "Si vous avez eu ou si vous avez actuellement un parcours académique post-bac, la matière principale est-elle liée aux sciences, technologies, mathématiques, à l'ingénierie ou l'économie?",
             "Avez-vous suivi des cours universitaires (post-bac) en mathématiques, statistiques, probabilités ?",
-            "Globalement, à quel point êtes-vous satisfait·e de votre vie de nos jours?"
+            "Globalement, à quel point êtes-vous satisfait·e de votre vie de tous les jours?"
         ],
         options: {
             age: [
