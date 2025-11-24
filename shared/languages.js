@@ -685,7 +685,7 @@ const fr = {
     feedbackExampleSpanMPL: {
         title: "Exemple de paiement type à la troisième partie.",
         description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
-        paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient {correctSpan}. Vous avez restitué les chiffres {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
+        paymentSpan: "Pour la tâche de span de mémoire {thePresentedDigitWas} {correctSpan}. Vous avez restitué {theDigit} {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix et la règle de paiement à la ligne {selectedRow}.",
         remind: "À retenir: en moyenne seulement <b>une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',

@@ -4243,10 +4243,12 @@ const feedbackExampleSpanMPL = {
     trial.data.payment_span_mpl_exemple = actual_payment_span_mpl;
     trial.data.payment_mpl_exemple = actual_payment_mpl_example;
     let html;
+    let theDigit = (treatment == "hard") ? "les chiffres" : "le chiffre";
+    let thePresentedDigitWas = (treatment == "hard") ? "les chiffres présentés étaient" : "le chiffre présenté était";
     html = 
     `<h2>${language.feedbackExampleSpanMPL.title}</h2>
     <p>${language.feedbackExampleSpanMPL.description}<p>
-    <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{correctSpan}', correctSpan).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
+    <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{thePresentedDigitWas}', thePresentedDigitWas).replace('{correctSpan}', correctSpan).replace('{theDigit}', theDigit).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
     <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}</p>
     <div class="important-note">                     
     💡 ${language.feedbackExampleSpanMPL.remind.replace('{propSelecForMPL}', propSelecForMPL)} 
