@@ -659,7 +659,7 @@ const fr = {
     },
     instructionsThirdPart:{
         title: "Consignes pour la troisième partie.",
-        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dites \"Listes à Multiples Prix \" (LMP).",
+        description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dite \"Listes à Multiples Prix \" (LMP).",
         freqMPL: "En moyenne, <b>une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LMP !"
     },
@@ -1415,8 +1415,8 @@ const fr = {
     prolificID: "Veuillez saisir votre identifiant Prolific:",
     redirectProlific: "Vous allez être dirigé automatiquement sur Prolific dans 3 secondes...",
     feedback_span: {
-        hard: "<p><b>{fdb}</b><br>Votre réponse était {answer}, les bons chiffres étaient {fds_correct_ans}.</br></p>",
-        easy: "<p><b>{fdb}</b><br>Votre réponse était {answer}, le bon chiffre était {fds_correct_ans}.</br></p>",
+        hard: "<p><b>{fdb}</b><br>Votre réponse était {answer}, la réponse correcte était {fds_correct_ans}.</br></p>",
+        easy: "<p><b>{fdb}</b><br>Votre réponse était {answer}, la réponse correcte était {fds_correct_ans}.</br></p>",
     },
     instructionsMPL: {
             makeChoice: `Veuillez <span style="background-color: rgba(239, 243, 4, 1)">sélectionner</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque ligne (chaque \"version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,

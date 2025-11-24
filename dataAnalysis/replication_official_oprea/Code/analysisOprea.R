@@ -221,14 +221,16 @@ makeScatter<-function(s,lab){
 
 }
 
-
+# I added standard errors
 main_tests<-function(df){
   print(
     df%>%
       group_by(elicitation,taskName)%>%
       summarise(
         lottery_p=wilcox.test(lottery,pred,paired=TRUE)$p.value,
+        lottery_sd = sd(lottery),
         mirror_p=wilcox.test(mirror,pred,paired=TRUE)$p.value,
+        mirror_sd = sd(mirror),
         lottery5=wilcox.test(lottery,pred,paired=TRUE)$p.value<0.05,
         mirror5=wilcox.test(mirror,pred,paired=TRUE)$p.value<0.05,
         median_difference=median(lottery-mirror),
@@ -308,10 +310,13 @@ F_mpl<-T%>%filter(treatment=='main')%>%
       pred=mean(pred),
       n=length(unique(ID)),
       ceLotteryse=sd(lottery)/sqrt(n),
-      ceMirrorse=sd(mirror)/sqrt(n),      
+      ceLotterysd=sd(lottery),
+      ceMirrorse=sd(mirror)/sqrt(n),
+      ceMirrorsd=sd(mirror),
       lottery=mean(lottery),
       mirror=mean(mirror),      
   )
+F_mpl
 
 pdf(file.path(PATH_TO_DATA,"/Figures/Figure1.pdf"), width = 7.41, height = 8.31)
 mainPlot(F_mpl,'')

@@ -38,7 +38,7 @@ filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_resul
 
 
 
-text <- readLines(filePath_testGildas10_20251117)
+text <- readLines(filePath_testGildas06_20251105)
 
 nSub <- length(text)
 
@@ -95,6 +95,7 @@ accuracySpan <- function(answer, correct) {
     # Return the ratio of correct matches to the maximum number of positions
     return(correctMatches / maxPositions)
 }
+
 cat(accuracySpan(c(1,2,3,4), c(1,2,3,5)), "\n") # should be 0.75
 
 roundDownToFifth <- function(number) {
@@ -859,7 +860,81 @@ pdf(file.path(PATH_TO_DATA,"Figures/Figure1.pdf"), width = 7.41, height = 8.31)
 mainPlot(F = dfA_plot, F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 dev.off()
 
+# main tests
 
+main_tests_rounded<-function(df){
+  print(
+    df%>%
+      filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
+                             "LS10", "LS25", "LS50", "LS75", "LS90", 
+                             "AS10", "AS15")) %>%
+      group_by(mplType)%>%
+      summarise(
+        lottery_p=wilcox.test(round(lottery_ev, 6),pred,paired=TRUE)$p.value,
+        mirror_p=wilcox.test(round(mirror_ev, 6),pred,paired=TRUE)$p.value,
+        lottery5=wilcox.test(round(lottery_ev,6), pred,paired=TRUE)$p.value<0.05,
+        mirror5=wilcox.test(round(mirror_ev, 6) ,pred,paired=TRUE)$p.value<0.05,
+        median_difference=median(round(lottery_ev-mirror_ev,6)),
+        difference_test_p=wilcox.test(round(lottery_ev,6),round(mirror_ev,6),paired=TRUE)$p.value,
+        difference_test_sig=wilcox.test(round(lottery_ev,6),round(mirror_ev,6),paired=TRUE)$p.value<0.05    
+        )
+    )
+}
+main_tests<-function(df){
+  print(
+    df%>%
+      filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
+                             "LS10", "LS25", "LS50", "LS75", "LS90", 
+                             "AS10", "AS15")) %>%
+      group_by(mplType)%>%
+      summarise(
+        lottery_p=wilcox.test(lottery_ev,pred,paired=TRUE)$p.value,
+        mirror_p=wilcox.test(mirror_ev,pred,paired=TRUE)$p.value,
+        lottery5=wilcox.test(lottery_ev,pred,paired=TRUE)$p.value<0.05,
+        mirror5=wilcox.test(mirror_ev,pred,paired=TRUE)$p.value<0.05,
+        median_difference=median(lottery_ev-mirror_ev),
+        difference_test_p=wilcox.test(lottery_ev,mirror_ev,paired=TRUE)$p.value,
+        difference_test_sig=wilcox.test(lottery_ev,mirror_ev,paired=TRUE)$p.value<0.05    
+      )
+  )
+}
+
+main_tests_df<-data.frame(main_tests(dfA))
+main_tests_df$lottery_p[[4]]
+main_tests_rounded_df<-data.frame(main_tests_rounded(dfA))
+main_tests_rounded_df$lottery_p[[4]]
+
+view(dfA %>% filter(mplType == "G25"))
+
+G25_pred_values <- dfA %>% filter(mplType=="G25")%>%select(pred)
+G25_pred_values
+pred = c(6.3, 6.3, 6.3, 6.3, 6.3, 6.3)
+G25_pred_values==pred
+
+G25_mirror_ev_values <- dfA %>% filter(mplType=="G25")%>%select(mirror_ev)
+G25_mirror_ev_values
+mirror_ev <- c(6.5, 5.5, 5.5, 6.9, 7.1, 6.7)
+G25_mirror_ev_values[[1]]
+G25_mirror_ev_values[[1]]==mirror_ev
+round(G25_mirror_ev_values,6)==mirror_ev
+
+mirror <- wilcox.test(round(G25_mirror_ev_values[[1]],6),pred,paired=TRUE)
+mirror
+mirror <- wilcox.test(G25_mirror_ev_values[[1]],pred,paired=TRUE)
+mirror
+
+
+G25_mirror_ev_values[[1]]
+
+identical(mirror_ev, round(G25_mirror_ev_values[[1]],6))
+
+
+# Check for exact binary representation differences
+all.equal(lottery_ev, G25_lottery_ev_values[[1]])
+# Check individual elements with maximum precision
+options(digits = 22)
+print(lottery_ev)
+print(G25_lottery_ev_values[[1]])
 
 
 # Scatter plots of individual errors
