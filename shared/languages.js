@@ -560,7 +560,7 @@ const fr = {
         part3: "Dans la troisième partie, vous effectuerez la tâche de span de mémoire en combinaison avec une tâche de prise de décision.",
         payment: "Votre paiement de base pour les deux premières parties est de <b>{notUnderstoodPayment}€</b>. Le paiement de base pour la troisième partie est de <b>{basePaymentThird}€</b>. Vous recevrez ce dernier si vous répondez correctement aux <b>questions de compréhension</b>. Sinon vous quitterez l'expérience.",
         paymentBonus: "De plus vous pouvez gagner des bonus pour chaque partie, en fonction de vos performances et de vos choix.",
-        warningComprehensionQuestions: `Avant de commencer la troisième partie, vous devrez répondre à des questions de compréhension à propos des consignes la concernant.
+        warningComprehensionQuestions: `Pendant la troisième partie, vous devrez répondre deux fois à des questions de compréhension (qui concerneront les consignes de la troisième partie).
         Si vous répondez incorrectement à plus d'une question sur les cinq, l'expérience s'arrêtera et votre paiement de base ne sera que de {notUnderstoodPayment}€, auquel vous ajouterez les bonus de la première et de la deuxième partie.`,
         paymentAfter: "Pour que vous compreniez comment les bonus sont calculés, vous recevrez les explications des bonus après les consignes pour chaque partie.",
         instructionsAfter: "Vous recevrez les consignes de la première partie après cette page.",
@@ -817,7 +817,7 @@ const fr = {
     },
     comprehensionMPLIntro: "Questions de compréhension",
     comprehensionMPLExplanation: ` Si vous ne répondez pas correctement à au moins quatre des questions, 
-    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents. 
+    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus des deux premières parties. 
     Vous pouvez cliquer sur le bouton {buttonHelp} pour afficher les consignes.`,
     comprehensionFailure:{
         title: "Fin de l'expérience",
@@ -1312,13 +1312,13 @@ const fr = {
         success: "Toutes les réponses sont correctes. Appuyez sur une touche pour continuer."
     },
     loopAgain: {
-        failed: "Vous avez répondu incorrectement à au moins une des questions.",
+        failed: "Vous avez répondu incorrectement à une des questions.",
         viewInstructions: "Vous allez revoir les instructions.",
         surveyAgain: "Puis vous allez de nouveau répondre aux questions.",
         press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
     },
     loopAgainSpanMpl: {
-        failed: "Vous avez répondu incorrectement à au moins une des questions.",
+        failed: "Vous avez répondu incorrectement à une des questions.",
         surveyAgain: "Vous allez de nouveau répondre aux questions.",
         readInstructions: "Vous êtes invité à lire les consignes si vous avez un doute pour répondre aux questions.",
         clickNext: "Appuyez sur <strong>Suivant</strong> pour répondre de nouveau !",
