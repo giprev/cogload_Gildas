@@ -34,11 +34,13 @@ filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt"# trial with failure at the comprehension questions
 filePath_testGildas09_20251114 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251114111004.txt"
 filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251117123042.txt"
+filePath_testGildas11_20251125<- "/Users/domitilleprevost/Downloads/jatos_results_data_20251125093815.txt" # multiple trials taken from the last days (from 17/11 at 1:16 pm to 25/11 at 10:08am)
 
 
 
 
-text <- readLines(filePath_testGildas06_20251105)
+
+text <- readLines(filePath_testGildas11_20251125)
 
 nSub <- length(text)
 
@@ -330,10 +332,10 @@ for (iSub in 1:nSub) {
 
     # extract maximal span length achieved
     spanLength <- dataPerParticipant %>%
-        filter(task == "spanTest" & block == "spanSpan" & letterType == 2 & spanCounter == 13) %>%
+        filter(task == "spanTest" & block == "spanSpan" & spanCounter == 13 & letterType == 2) %>%
         select(span) %>%
         pull()
-    spanLength <- as.integer(spanLength + 1) # add 1 because one is retrieved after the maximum is achieved, to make the task easier
+    spanLength <- as.integer(spanLength)
     
     treatmentValue <- dataPerParticipant %>%
         filter (!is.na(treatment)) %>%

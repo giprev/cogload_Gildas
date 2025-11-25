@@ -167,6 +167,7 @@ const consentForm = {
                 <p>${language.overviewPage.credits}</p>
                 <p>${language.overviewPage.question}</p>
                 <p>${language.overviewPage.withdrawal}</p> 
+                <p>${language.overviewPage.phone}</p> 
                 <p>${language.overviewPage.clickNext}</p>`]
     ,
     show_clickable_nav: true,
@@ -217,8 +218,8 @@ const instructionsSpanSpan = {
     pages: function(){
         let someBlueDigits, theBlueDigits, the;
         if (treatment == "hard") {
-            someBlueDigits = language.instructionsSpanSpan.variableHard.someBlueDigits.replace("{startingSpan}", startingSpan).replace("{the}", the).replace("{startingSpan}",startingSpan);
-            theBlueDigits = language.instructionsSpanSpan.variableHard.theBlueDigits.replace("{startingSpan}", startingSpan);
+            someBlueDigits = language.instructionsSpanSpan.variableHard.someBlueDigits;
+            theBlueDigits = language.instructionsSpanSpan.variableHard.theBlueDigits;
             the = language.instructionsSpanSpan.variableHard.the;
             displayed = language.instructionsSpanSpan.variableHard.displayed;
         }
@@ -1552,16 +1553,16 @@ const demographics_age = {
         const ageStr = responses.Q0 || responses.age || '';
         const ageNum = parseInt(ageStr, 10);
         // Validate age: enforce 9..100 (inclusive)
-        if (!Number.isInteger(ageNum) || ageNum < 9 || ageNum > 100) {
+        if (!Number.isInteger(ageNum) || ageNum < 18 || ageNum > 100) {
             data.age = null;
             data.age_valid = false;
             console.log('Invalid age entry:', ageStr);
             // Show a blocking localized alert so the participant immediately knows what's wrong
             try {
                 if (language === fr) {
-                    window.alert('Entrée invalide. Veuillez indiquer votre âge en années (entre 9 et 100).');
+                    window.alert('Entrée invalide. Veuillez indiquer votre âge en années (entre 18 et 100).');
                 } else {
-                    window.alert('Invalid entry. Please enter your age in years (between 9 and 100).');
+                    window.alert('Invalid entry. Please enter your age in years (between 18 and 100).');
                 }
             } catch (e) {
                 // fallback to console log if alerts are disabled
@@ -4364,7 +4365,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', Math.round((actual_payment_span_mpl + actual_payment_mpl)*100)/100).replace('{spanMPL}', Math.round(actual_payment_span_mpl*100)/100).replace('{mplBonus}', Math.round(actual_payment_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(trial.data.totalBonus*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round(trial.data.totalBonus*100)/100).replace('{totalPayment}', Math.round(trial.data.totalPayment*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
         else if (luckyPp != 1){
@@ -4374,7 +4375,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', Math.round(actual_payment_span_span*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100)}</p>
+            <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', Math.round((trial.data.totalBonus)*100)/100).replace('{totalPayment}', Math.round(trial.data.totalPayment*100)/100)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
     // } else if (treatment == "easy"){

@@ -541,6 +541,7 @@ const fr = {
         credits: "Cette expérience est menée par l'étudiant en master Gildas Prévost sous la supervision du professeur Dr. Bastien Blain, tous deux à l'Université Paris 1 Panthéon-Sorbonne.",
         question: "Si vous avez des questions ou des demandes, veuillez envoyer un email à gildas.prevost@etu.univ-paris1.fr.",
         withdrawal: "Vous êtes libre de quitter l'expérience à tout moment, sans aucune conséquence.",
+        phone: "L'usage de tout objet pouvant servir à noter des informations (téléphone, montre connectée, stylo etc.) est interdit, sous peine d'exclusion de l'expérience.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer!"
     },
     descriptionExperimentNback: {
@@ -570,7 +571,7 @@ const fr = {
         description: "À chaque essai, une séquence de chiffres s'affichera. Vous devrez la restituer dans le même ordre à l'aide d'un clavier à l'écran.",
         examplePresentation: "Par exemple, si vous voyez les chiffres <b style=\"color:blue;\">1</b>, <b style=\"color:blue;\">2</b>, <b style=\"color:blue;\">3</b>, vous devrez répondre <b style=\"color:green;\">1</b>, <b style=\"color:green;\">2</b>, <b style=\"color:green;\">3</b>.",
         precision: "La <b>précision</b> pour un essai est calculée comme suit: la proportion de chiffres correctement restitués dans la bonne position. Si vous saisissez plus de chiffres que la séquence n’en contient, les chiffres supplémentaires comptent comme des erreurs.",
-        examplePrecision: `<ul> 
+        examplePrecision: `<ul>
         <li>Exemple 1: si vous avez vu <b style="color:blue;">1</b>, <b style="color:blue;">2</b>, <b style="color:blue;">3</b> 
         et que vous répondez <b style="color:green;">1</b>, <b style="color:red;">3</b>,  <b style="color:red;">2</b>, votre précision est de 1/3 = <b>33%</b>.
         </li>
@@ -626,8 +627,8 @@ const fr = {
         goal: "Pour maximiser votre bonus, la tâche source ({theBlueDigits}) est plus importante que la tâche cible.",
         sequenceNumber: "Vous ferez 6 essais.",
         variableHard: {
-            someBlueDigits: "{startingSpan} chiffres <span style='color:blue'>bleus</span>",
-            theBlueDigits: "les {startingSpan} chiffres <span style='color:blue'>bleus</span>",
+            someBlueDigits: "chiffres <span style='color:blue'>bleus</span>",
+            theBlueDigits: "les chiffres <span style='color:blue'>bleus</span>",
             the: "les",
             displayed: "affichés"
         },
@@ -660,7 +661,7 @@ const fr = {
     instructionsThirdPart:{
         title: "Consignes pour la troisième partie.",
         description: "Dans cette partie, vous effectuerez la tâche de span de mémoire combinée à une tâche de prise de décision, dite \"Listes à Multiples Prix \" (LMP).",
-        freqMPL: "En moyenne, <b>une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
+        freqMPL: "<b>En moyenne, une personne sur {frequency}</b> sera sélectionnée à la fin de l'expérience pour qu'<b>un de ses choix à la tâche de prise de décision (LMP) soit réellement payé</b>, selon les règles de paiement qui vont vous être présentées. Le bonus pour la tâche de span de mémoire est lui calculé <b>pour chaque personne</b>.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir les consignes des LMP !"
     },
     instructionsSpanInMPL: {
@@ -687,7 +688,7 @@ const fr = {
         description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire {thePresentedDigitWas} {correctSpan}. Vous avez restitué {theDigit} {answerSpan}. Votre précision est de {precision}%. Votre bonus est de <b>{bonusSpan}€ x {precision}% = {paymentSpan}€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne {selectedRow}. Pour cette ligne vous avez choisi le {chosenLot}. Après calcul, le paiement pour la LMP s’élèverait à <b>{paymentMPL}€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix et la règle de paiement à la ligne {selectedRow}.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: <b>en moyenne seulement une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },    
@@ -696,7 +697,7 @@ const fr = {
         description: "Voici comment vous seriez payé·e si cet essai avait été sélectionné pour le paiement de la tâche du span de mémoire et de LMP.",
         paymentSpan: "Pour la tâche de span de mémoire les chiffres présentés étaient 1, 5, 3, 9, 4. Vous avez restitué les chiffres 5, 6, 9. Votre précision est de 0%. Votre bonus est de <b>2€ x 0% = 0€</b>.",
         paymentMPL: "La ligne (version) du tableau sélectionnée au hasard est la ligne 15. Pour cette ligne vous avez choisi le <span style='color:blue'>lot B</span>. Après calcul, le paiement pour la LMP s’élèverait à <b>17,6€</b>: <span style='color:green'>5€ (la somme initiale)</span> plus le montant déterminé selon votre choix et la règle de paiement à la ligne 15.",
-        remind: "À retenir: en moyenne seulement <b>une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
+        remind: "À retenir: <b>en moyenne seulement une personne sur {propSelecForMPL}</b> est sélectionnée pour qu'un de ses choix à la tâche de LMP soit payé. Au contraire vous êtes <b>sûr·e d'être sélectionné·e</b> pour le bonus de la tâche de span de mémoire ! Correctement <b>restituer les chiffres est donc le plus important</b> pour maximiser votre gain total.",
         instructionReminder: 'Vous aurez la possibilité d\'afficher de nouveau les consignes pendant la troisième partie, en cliquant sur le bouton "Afficher les consignes".',
         clickNext: "Quand vous êtes prêt·e, cliquez sur <strong>Suivant</strong> pour commencer la troisième partie !"
     },
@@ -823,7 +824,7 @@ const fr = {
         description: `Malheureusement, vous n'avez pas répondu correctement aux questions de compréhension.
         L'expérience se termine ici. Vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
         thanks: "Merci beaucoup pour votre participation!",
-        clickNext: "Cliquez sur <strong>Suivant</strong> terminer l'expérience.",
+        clickNext: "Appuyez sur Entrée pour terminer l'expérience.",
     },
     comprehensionQMPL: {
         q1: {
@@ -1485,7 +1486,7 @@ const fr = {
         notSelectedForMPL: "Vous n'avez pas été sélectionné·e pour qu'un de vos choix aux tâches de prise de décision (LMP) soit payé.",
         bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour le choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
-        totalBonus: "Votre bonus total est donc de {totalBonus}€.",
+        totalBonus: "Votre bonus total est donc de {totalBonus}€ et votre paiement total est de {totalPayment}€.",
         thanksAgain: "Merci encore pour votre participation ! Vous pouvez appuyer sur Entrée pour quitter l'expérience.",
     },
     responseGrid: {
