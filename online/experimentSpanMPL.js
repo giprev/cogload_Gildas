@@ -790,7 +790,8 @@ const comprehensionFailureTrial = {
     on_finish: function() {
         // End the experiment
         //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
-        jatos.endStudy(jsPsych.data.get().json());
+        submitToJatos(jsPsych.data.get().json());
+        // jatos.endStudy(jsPsych.data.get().json());
     }
 };
 
@@ -1747,7 +1748,8 @@ const experimentStopTrial = {
         // End the experiment here
         console.log("Experiment ended due to practice failure");
         // You can redirect to a completion page or end JATOS study
-        jatos.endStudy(jsPsych.data.get().json());
+        submitToJatos(jsPsych.data.get().json());
+        // jatos.endStudy(jsPsych.data.get().json());
     }
 };
 
@@ -4748,7 +4750,8 @@ jatos.onLoad(() => {
     jsPsych.init({
         timeline: timeline,
         on_finish: function() {
-            jatos.endStudy(jsPsych.data.get().json());
+            submitToJatos(jsPsych.data.get().json());
+            // jatos.endStudy(jsPsych.data.get().json());
             //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
