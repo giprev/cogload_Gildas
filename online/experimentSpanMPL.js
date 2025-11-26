@@ -72,6 +72,12 @@ const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participan
 //let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
+let failedQLottery = 1; // number of times lottery comprehension questions were failed
+let incorrectQCountLottery = 0; // number of incorrect answers on the last lottery question trial
+let failedQMirror = 1; // number of times mirror comprehension questions were failed
+let incorrectQCountMirror = 0; // number of incorrect answers on the last mirror question trial
+let maxQTrials = 4;
+
 
 
 let taskEasy;
@@ -288,8 +294,8 @@ const instructionsSpanMPLMirror = {
         <p>${language.instructionsDecisionTable.description}</p>
         ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <!-- <p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')} -->
         <p>${language.instructionsDecisionTable.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsDecisionTable.clickNext}</p>`,
@@ -336,8 +342,8 @@ const instructionsSpanMPLLottery = {
         <p>${language.instructionsDecisionTable.description}</p>
         ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <!--<p>${language.instructionsDecisionTable.exampleBelow}</p>
+        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')} -->
         <p>${language.instructionsDecisionTable.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsDecisionTable.clickNext}</p>`,
@@ -483,7 +489,7 @@ const introductionFinalExampleSpanMPL = {
 }
 
 let correct_responses =[];
-
+let totalIncorrectResponses = 0;
 
 const comprehensionQuestionsMPLLottery = {
     type: "survey-multi-select",
@@ -491,57 +497,57 @@ const comprehensionQuestionsMPLLottery = {
     questions: [
         {
             prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPL.q1.prompt}</p>`,
+            <p>${language.comprehensionQMPLLottery.q1.prompt}</p>`,
             options: [
-                language.comprehensionQMPL.q1.options[0],
-                language.comprehensionQMPL.q1.options[1],
-                language.comprehensionQMPL.q1.options[2],
-                language.comprehensionQMPL.q1.options[3]
+                language.comprehensionQMPLLottery.q1.options[0],
+                language.comprehensionQMPLLottery.q1.options[1],
+                language.comprehensionQMPLLottery.q1.options[2],
+                language.comprehensionQMPLLottery.q1.options[3]
             ],
             required: true,
             correct_response: 3,
         },
         {
-            prompt: language.comprehensionQMPL.q2.prompt,
+            prompt: language.comprehensionQMPLLottery.q2.prompt,
             options: [
-                language.comprehensionQMPL.q2.options[0],
-                language.comprehensionQMPL.q2.options[1],
-                language.comprehensionQMPL.q2.options[2],
-                language.comprehensionQMPL.q2.options[3]
+                language.comprehensionQMPLLottery.q2.options[0],
+                language.comprehensionQMPLLottery.q2.options[1],
+                language.comprehensionQMPLLottery.q2.options[2],
+                language.comprehensionQMPLLottery.q2.options[3]
             ],
             required: true,
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPL.q3.prompt,
+            prompt: language.comprehensionQMPLLottery.q3.prompt,
             options: [
-                language.comprehensionQMPL.q3.options[0],
-                language.comprehensionQMPL.q3.options[1],
-                language.comprehensionQMPL.q3.options[2],
-                language.comprehensionQMPL.q3.options[3]
+                language.comprehensionQMPLLottery.q3.options[0],
+                language.comprehensionQMPLLottery.q3.options[1],
+                language.comprehensionQMPLLottery.q3.options[2],
+                language.comprehensionQMPLLottery.q3.options[3]
             ],
             required: true,
             correct_response: 3,
         },
         {
-            prompt: language.comprehensionQMPL.q4.prompt,
+            prompt: language.comprehensionQMPLLottery.q4.prompt,
             options: [
-                language.comprehensionQMPL.q4.options[0],
-                language.comprehensionQMPL.q4.options[1],
-                language.comprehensionQMPL.q4.options[2],
-                language.comprehensionQMPL.q4.options[3]
+                language.comprehensionQMPLLottery.q4.options[0],
+                language.comprehensionQMPLLottery.q4.options[1],
+                language.comprehensionQMPLLottery.q4.options[2],
+                language.comprehensionQMPLLottery.q4.options[3]
             ],
             required: true,
             correct_response: 1,
         },
         {
             prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPL.q5.prompt}</p>`,
+            <p>${language.comprehensionQMPLLottery.q5.prompt}</p>`,
             options: [
-                language.comprehensionQMPL.q5.options[0],
-                language.comprehensionQMPL.q5.options[1],
-                language.comprehensionQMPL.q5.options[2],
-                language.comprehensionQMPL.q5.options[3]
+                language.comprehensionQMPLLottery.q5.options[0],
+                language.comprehensionQMPLLottery.q5.options[1],
+                language.comprehensionQMPLLottery.q5.options[2],
+                language.comprehensionQMPLLottery.q5.options[3]
             ],
             required: true,
             correct_response: 3,
@@ -566,6 +572,8 @@ const comprehensionQuestionsMPLLottery = {
         let questions_incorrect = []; // Array to track which questions were incorrect
         let detailed_results = {}; // Object to store detailed results for each question
 
+        let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
+
         comprehensionQuestionsMPLLottery.questions.forEach((q, i) => {
             const given_answer = responses["Q" + i];
             const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
@@ -577,6 +585,9 @@ const comprehensionQuestionsMPLLottery = {
             } else {
                 questions_incorrect.push(i + 1);
                 all_correct = false;
+                totalIncorrectResponses += given_answer.filter(answer => answer !== correct_text).length;
+                console.log("is_correct is", is_correct)
+                console.log("totalIncorrectResponses is", totalIncorrectResponses)
             }
             
             // Store detailed results
@@ -590,6 +601,14 @@ const comprehensionQuestionsMPLLottery = {
             
             console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
         });
+        console.log("totalIncorrectResponses at the end is", totalIncorrectResponses)
+        incorrectQCountLottery = totalIncorrectResponses
+        console.log("incorrectQCountLottery is", incorrectQCountLottery, "and should be = to questions_incorrect.length =", questions_incorrect.length)
+
+        if (!all_correct) {
+            failedQLottery += 1;
+            console.log("is failed Q Lottery increased", failedQLottery)
+        }
 
         // Save comprehensive results to trial data
         data.all_correct = all_correct;
@@ -598,14 +617,21 @@ const comprehensionQuestionsMPLLottery = {
         data.num_correct = questions_correct.length;
         data.num_incorrect = questions_incorrect.length;
         data.detailed_results = detailed_results;
+        data.incorrectQCountLottery = incorrectQCountLottery;
+        if (!all_correct) {data.failedQuestionsCountLottery = failedQLottery-1;}
+        else {data.failedQuestionsCountLottery = failedQLottery;}
         
         console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLLottery.questions.length} correct`);
         console.log("Questions answered correctly:", questions_correct);
-        console.log("Questions answered incorrectly:", questions_incorrect);
+        console.log("Questions answered incorrectly:", questions_incorrect, "= to incorrecQCountLottery:", incorrectQCountLottery);
         console.log("All correct:", all_correct);
+        console.log("detailed_results:", detailed_results);
+        console.log( data.incorrectQCountLottery, "is data.incorrectQCountLottery" );
+        console.log( data.failedQuestionsCountLottery, "is data.failedQuestionsCountLottery" );
+
     },
     on_load: function() {
-                // Set statusMPL for the help modal
+        // Set statusMPL for the help modal
         
         // Add click handler for help button
         const helpButton = document.getElementById('help-button-comprehension');
@@ -628,57 +654,57 @@ const comprehensionQuestionsMPLMirror = {
         questions: [
         {
             prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPL.q1.prompt}</p>`,
+            <p>${language.comprehensionQMPLMirror.q1.prompt}</p>`,
             options: [
-                language.comprehensionQMPL.q1.options[0],
-                language.comprehensionQMPL.q1.options[1],
-                language.comprehensionQMPL.q1.options[2],
-                language.comprehensionQMPL.q1.options[3]
+                language.comprehensionQMPLMirror.q1.options[0],
+                language.comprehensionQMPLMirror.q1.options[1],
+                language.comprehensionQMPLMirror.q1.options[2],
+                language.comprehensionQMPLMirror.q1.options[3]
             ],
             required: true,
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPL.q2.prompt,
+            prompt: language.comprehensionQMPLMirror.q2.prompt,
             options: [
-                language.comprehensionQMPL.q2.options[0],
-                language.comprehensionQMPL.q2.options[1],
-                language.comprehensionQMPL.q2.options[2],
-                language.comprehensionQMPL.q2.options[3]
+                language.comprehensionQMPLMirror.q2.options[0],
+                language.comprehensionQMPLMirror.q2.options[1],
+                language.comprehensionQMPLMirror.q2.options[2],
+                language.comprehensionQMPLMirror.q2.options[3]
             ],
             required: true,
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPL.q3.prompt,
+            prompt: language.comprehensionQMPLMirror.q3.prompt,
             options: [
-                language.comprehensionQMPL.q3.options[0],
-                language.comprehensionQMPL.q3.options[1],
-                language.comprehensionQMPL.q3.options[2],
-                language.comprehensionQMPL.q3.options[3]
+                language.comprehensionQMPLMirror.q3.options[0],
+                language.comprehensionQMPLMirror.q3.options[1],
+                language.comprehensionQMPLMirror.q3.options[2],
+                language.comprehensionQMPLMirror.q3.options[3]
             ],
             required: true,
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPL.q4.prompt,
+            prompt: language.comprehensionQMPLMirror.q4.prompt,
             options: [
-                language.comprehensionQMPL.q4.options[0],
-                language.comprehensionQMPL.q4.options[1],
-                language.comprehensionQMPL.q4.options[2],
-                language.comprehensionQMPL.q4.options[3]
+                language.comprehensionQMPLMirror.q4.options[0],
+                language.comprehensionQMPLMirror.q4.options[1],
+                language.comprehensionQMPLMirror.q4.options[2],
+                language.comprehensionQMPLMirror.q4.options[3]
             ],
             required: true,
             correct_response: 4,
         },
         {
             prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPL.q5.prompt}</p>`,
+            <p>${language.comprehensionQMPLMirror.q5.prompt}</p>`,
             options: [
-                language.comprehensionQMPL.q5.options[0],
-                language.comprehensionQMPL.q5.options[1],
-                language.comprehensionQMPL.q5.options[2],
-                language.comprehensionQMPL.q5.options[3]
+                language.comprehensionQMPLMirror.q5.options[0],
+                language.comprehensionQMPLMirror.q5.options[1],
+                language.comprehensionQMPLMirror.q5.options[2],
+                language.comprehensionQMPLMirror.q5.options[3]
             ],
             required: true,
             correct_response: 3,
@@ -705,6 +731,9 @@ const comprehensionQuestionsMPLMirror = {
         let questions_incorrect = []; // Array to track which questions were incorrect
         let detailed_results = {}; // Object to store detailed results for each question
 
+        let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
+
+
         comprehensionQuestionsMPLMirror.questions.forEach((q, i) => {
             const given_answer = responses["Q" + i];
             const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
@@ -716,6 +745,9 @@ const comprehensionQuestionsMPLMirror = {
             } else {
                 questions_incorrect.push(i + 1);
                 all_correct = false;
+                totalIncorrectResponses += given_answer.filter(answer => answer !== correct_text).length;
+                console.log("is_correct is", is_correct)
+                console.log("totalIncorrectResponses is", totalIncorrectResponses)
             }
             
             // Store detailed results
@@ -730,6 +762,14 @@ const comprehensionQuestionsMPLMirror = {
             console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
         });
 
+        console.log("totalIncorrectResponses at the end is", totalIncorrectResponses)
+        incorrectQCountMirror = totalIncorrectResponses;
+
+        if (!all_correct) {
+            failedQMirror += 1;
+            console.log("is failed Q Mirror increased", failedQMirror)
+        }
+
         // Save comprehensive results to trial data
         data.all_correct = all_correct;
         data.questions_correct = questions_correct;
@@ -737,11 +777,16 @@ const comprehensionQuestionsMPLMirror = {
         data.num_correct = questions_correct.length;
         data.num_incorrect = questions_incorrect.length;
         data.detailed_results = detailed_results;
+        data.incorrectQCountMirror = incorrectQCountMirror;
+        if (!all_correct){data.failedQuestionsCountMirror = failedQMirror-1}
+        else {data.failedQuestionsCountMirror = failedQMirror}
         
         console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLMirror.questions.length} correct`);
         console.log("Questions answered correctly:", questions_correct);
         console.log("Questions answered incorrectly:", questions_incorrect);
         console.log("All correct:", all_correct);
+        console.log("data.incorrectQCountMirror:", data.incorrectQCountMirror);
+        console.log("data.failedQuestionsCountMirror:", data.failedQuestionsCountMirror);
     },
     on_load: function() {
         // Add click handler for help button
@@ -946,15 +991,44 @@ const loopAgain = {
     button_label_next: language.button.next,
     button_label_previous: language.button.previous,
 }
-const loopAgainSpanMpl = {
+const loopAgainSpanMplLottery = {
     type: "instructions",
-    pages: [
-        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed}</p>
+    pages: function () {
+        if (incorrectQCountLottery === 1) {
+            yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectSingular;
+        } else {
+            yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectPlural;
+        }
+        return[
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed.replace('{incorrectQCount}', incorrectQCountLottery).replace('{yourRAreIncorrect}', yourRAreIncorrect)}</p>
         <p>${language.loopAgainSpanMpl.surveyAgain}</p>
+        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQLottery).replace('{maxQTrials}', maxQTrials)}</p>
         <p>${language.loopAgainSpanMpl.readInstructions}</p>
         <p>${language.loopAgainSpanMpl.clickNext}</p>
         </div>`
-    ],
+    ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
+const loopAgainSpanMplMirror = {
+    type: "instructions",
+    pages: function () {
+        if (incorrectQCountMirror === 1) {
+            yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectSingular;
+        } else {
+            yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectPlural;
+        }
+        return [
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed.replace('{incorrectQCount}', incorrectQCountMirror).replace('{yourRAreIncorrect}', yourRAreIncorrect)}</p>
+        <p>${language.loopAgainSpanMpl.surveyAgain}</p>
+        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQMirror).replace('{maxQTrials}', maxQTrials)}</p>
+        <p>${language.loopAgainSpanMpl.readInstructions}</p>
+        <p>${language.loopAgainSpanMpl.clickNext}</p>
+        </div>`
+    ]
+    },
     show_clickable_nav: true,
     button_label_next: language.button.next,
     button_label_previous: language.button.previous,
@@ -4546,30 +4620,28 @@ const fds_span_span_proc = {
     },
 }
 
-
-
-
 const comprehensionQuestionsMPLLotteryWithCheck = {
     timeline: [
         comprehensionQuestionsMPLLottery,
             {
-            timeline: [loopAgainSpanMpl],
+            timeline: [loopAgainSpanMplLottery],
             conditional_function: function() {
                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
-                // Check if fewer than 4 questions were correct
-                return last && last.questions_correct.length == 4;
+                // Check if fewer than 5 questions were correct
+                return last && last.questions_correct.length < 5 && failedQLottery < 5;
             }
         },
         {
             timeline: [comprehensionFailureTrial],
             conditional_function: function() {
-                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
-                console.log("Checking comprehension results:", last);
-                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
+                // console.log("Checking comprehension results:", last);
+                // console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
-                return last && last.questions_correct.length < 4;
+                // return last && last.questions_correct.length < 4;
+                return failedQLottery >= 5;
             }
         }
     ],
@@ -4583,13 +4655,14 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
     timeline: [
         comprehensionQuestionsMPLMirror,
         {
-            timeline: [loopAgainSpanMpl],
+            timeline: [loopAgainSpanMplMirror],
             conditional_function: function() {
                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirror'}).last(1).values()[0];
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
-                return last && last.questions_correct.length == 4;
+                // return last && last.questions_correct.length == 4;
+                return last && last.questions_correct.length < 5 && failedQMirror < 5;
             }
         },
         {
@@ -4599,7 +4672,8 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
-                return last && last.questions_correct.length < 4;
+                // return last && last.questions_correct.length < 4;
+                return failedQMirror >= 5;
             }
         }
     ],

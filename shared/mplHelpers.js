@@ -762,7 +762,7 @@ function showInstructionModal() {
         <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
@@ -811,7 +811,7 @@ function showInstructionModal() {
         <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>

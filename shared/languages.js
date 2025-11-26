@@ -704,7 +704,7 @@ const fr = {
     instructionsDecisionTable:{
         title: "Consignes pour les Listes à Multiples Prix (LMP).",
         subTitle: "Choisir entre deux lots de boîtes",
-        description: "Dans chaque LMP, les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et la somme d'argent qu'elles contiennent.",
+        description: "Dans chaque LMP, les lots de boîtes sont présentés sous la forme d'un tableau. Il y a écrit la composition de chaque lot: le nombre de boîtes et l'argent qu'elles contiennent.",
         exampleAbove: "Dans l'exemple ci-dessus, le <span style='color:red'>lot A</span> est composé de 50 boîtes contenant 16€ et 50 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant 4€.",
         exampleBelow: "Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est composé de 25 boîtes contenant -12€ et 75 boîtes contenant 0€. Le <span style='color:blue'>lot B</span> est composé de 100 boîtes contenant -3€.",
         clickToChoose: `Vous devez cliquer sur le tableau pour choisir le lot que l’ordinateur sélectionnera afin de calculer votre bonus. Le lot sélectionné est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
@@ -717,7 +717,7 @@ const fr = {
         initialSum: "Au début de chaque LMP, vous recevez une somme d'argent (entre 5 et 30€).",
         chooseSet: "Vous devez ensuite choisir un lot de boîtes que vous voudriez que l'ordinateur sélectionne.",
         choice: "Vous aurez toujours le choix entre les lots <span style='color:red'>A</span> et <span style='color:blue'>B</span>, composés de 100 boîtes chacun.",
-        moneyInside: "Chaque boîte contient une certaine <b>somme d'argent</b> qui peut être négative ou positive. Votre bonus en dépend selon une règle de paiement qui va vous être expliquée.",
+        moneyInside: "Chaque boîte peut contenir <b>de l'argent</b>. Votre bonus dépend de cet argent selon une règle de paiement qui va vous être expliquée.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir comment sélectionner les lots !"
     },
     // instructionsRandomBox:{
@@ -731,29 +731,32 @@ const fr = {
     // },
     instructionsPaymentRuleMirror:{
         title: "Consignes pour les Listes à Multiples Prix (LMP).",
-        subTitle: "Règle de paiement: la boîte moyenne.",
-        paymentRule:`Votre bonus pour une LMP est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenue dans les boîtes du lot choisi.
-        Cela veut dire qu'il va additionner la somme d'argent de toutes les boîtes du lot, puis va la diviser par 100. 
-        Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
+        subTitle: "Règle de paiement: la moyenne des boîtes.",
+        // paymentRule:`Votre bonus pour une LMP est calculé comme suit: l'ordinateur calcule la <b>moyenne</b> de la somme d'argent contenue dans les boîtes du lot choisi.
+        // Cela veut dire qu'il va additionner la somme d'argent de toutes les boîtes du lot, puis va la diviser par 100. 
+        // Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
+        paymentRule:`Votre bonus pour une LMP est la <b>moyenne</b> de l'argent contenu dans les boîtes du lot choisi, plus la somme initiale d'argent.
+        Cela veut dire que l'ordinateur va additionner la somme d'argent de toutes les boîtes du lot, puis va la diviser par 100. Il ajoute ou retire cette quantité de votre somme initiale d'argent.
+        <!-- Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>. -->`,
         example1: `Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est sélectionné. `,
         example1Payment: `
         <ul>
-        <li>Le lot est composé de 100 boîtes en tout, 50 contiennent 16€ et 50 contiennent 0€. L'ordinateur calcule la moyenne: <span style='color:green'>(50€ x 50 + 0€ x 50)/100 = 8€</span>. Le résultat est ajouté à votre somme d'argent initiale.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la loterie sélectionnée:
+        <li>Le lot est composé de 100 boîtes en tout, 50 contiennent 16€ et 50 contiennent 0€. L'ordinateur calcule la moyenne: <span style='color:green'>(16€ x 50 + 0€ x 50)/100 = 8€</span>. Le résultat est ajouté à votre somme d'argent initiale pour sûr.</li>
+        <li>Pour vous aider à mieux comprendre les bonus possibles, voici 10 simulations de bonus pour le lot sélectionné (avec une somme initiale d'argent de 0€):
         <ul>
         ${generateRandomSimulations(['8€', '8€'], 10)}
         </ul></li>
-        <li> Si le <span style='color:blue'>lot B</span> avait été sélectionné, <span style='color:green'>(4€ x 100)/100 = 4€</span> auraient été ajoutés à votre somme initiale d'argent.</li>
+        <li> Si le <span style='color:blue'>lot B</span> avait été sélectionné, <span style='color:green'>(4€ x 100)/100 = 4€</span> auraient été ajoutés à votre somme initiale d'argent pour sûr.</li>
         </ul>`,
         example2: `Dans l'exemple ci-dessous, le <span style='color:blue'>lot B</span> est sélectionné.`,
         example2Payment: `
         <ul>
-        <li>Le lot est composé de 100 boîtes en tout, toutes contiennent -6€. L'ordinateur calcule la moyenne: <span style='color:green'>(-6€ x 100)/100 = -6€</span>. Le résultat est retiré de votre somme initiale d'argent.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations de moyenne pour la loterie sélectionnée:
+        <li>Le lot est composé de 100 boîtes en tout, toutes contiennent -6€. L'ordinateur calcule la moyenne: <span style='color:green'>(-6€ x 100)/100 = -6€</span>. Le résultat est retiré de votre somme initiale d'argent pour sûr.</li>
+        <li>Pour vous aider à mieux comprendre les bonus possibles, voici 10 simulations de bonus pour le lot sélectionné (avec une somme initiale d'argent de 0€):
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
-        <li>Si le <span style='color:red'>lot A</span> avait été sélectionné,  <span style='color:green'>(-8€ x 50 + 0€ x 50)/100 = -4€</span> auraient été retirés de votre somme initiale d'argent.</li>
+        <li>Si le <span style='color:red'>lot A</span> avait été sélectionné,  <span style='color:green'>(-8€ x 50 + 0€ x 50)/100 = -4€</span> auraient été retirés de votre somme initiale d'argent pour sûr.</li>
         </ul>`,
         remindNotEveryone: "Seulement une personne sur {frequency} est sélectionnée pour qu'un de ses choix soit réellement payé.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension!"
@@ -761,13 +764,13 @@ const fr = {
     instructionsPaymentRuleRandomBox:{
         title: "Consignes pour les Listes à Multiples Prix (LMP).",
         subTitle: "Règle de paiement: une boîte au hasard.",
-        paymentRule: `Votre bonus pour une LMP est calculé comme suit: l'ordinateur choisit <b>une boîte au hasard</b> parmi les 100 boîtes du lot que vous avez choisi. Chaque boîte a la même chance d'être sélectionnée.
-        Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>.`,
+        paymentRule: `Votre bonus pour une LMP est l'argent contenu dans <b>une boîte au hasard</b> parmi les 100 boîtes du lot choisi, plus la somme initiale d'argent. Chaque boîte a la même chance d'être sélectionnée.
+        <!-- Si cette quantité est positive, il <b>l'ajoute</b> à votre somme initiale d'argent, si elle est négative il la <b>retire</b>. -->`,
         example1: `Dans l'exemple ci-dessous, vous avez choisi le <span style='color:red'>lot A</span>.`,
         example1Payment: `
         <div><ul>
-        <li>Le lot se compose de 50 boîtes contenant 16€, et 50 boîtes contenant 0€. Il y a donc une probabilité de 50% que <span style='color: green'>16€</span> soient ajoutés à votre somme initiale d'argent, et une probabilité de 50% que <span style='color: green'>0€</span> soit ajouté.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations d'une boîte tirée au hasard pour la loterie sélectionnée:
+        <li>Le lot se compose de 50 boîtes contenant 16€, et 50 boîtes contenant 0€. Il y a donc 50% de chance que <span style='color: green'>16€</span> soient ajoutés à votre somme initiale d'argent, et 50% de chance que <span style='color: green'>0€</span> soit ajouté.</li>
+        <li>Pour vous aider à mieux comprendre les bonus possibles, voici 10 simulations de bonus pour le lot sélectionné (avec une somme initiale d'argent de 0€):
         <ul>
         ${generateRandomSimulations(['16€', '0€'], 10)}
         </ul></li>
@@ -777,7 +780,7 @@ const fr = {
         example2Payment: `
         <div><ul> 
         <li>Le lot se compose de 100 boîtes, toutes contenant -6€. Donc <span style='color: green'>6€</span> sont retirés de votre somme initiale d'argent pour sûr.</li>
-        <li>Pour vous aider à mieux comprendre les différents résultats, voici 10 simulations d'une boîte tirée au hasard pour la loterie sélectionnée:
+        <li>Pour vous aider à mieux comprendre les bonus possibles, voici 10 simulations de bonus pour le lot sélectionné (avec une somme initiale d'argent de 0€):
         <ul>
         ${generateRandomSimulations(['-6€', '-6€'], 10)}
         </ul></li>
@@ -816,8 +819,9 @@ const fr = {
         description: "Cliquer sur <b>Suivant</b> pour faire un exemple complet d'un essai de la troisième partie, combinant la tâche source (span de mémoire) et la tâche cible (LMP).",
     },
     comprehensionMPLIntro: "Questions de compréhension",
-    comprehensionMPLExplanation: ` Si vous ne répondez pas correctement à au moins quatre des questions, 
+    comprehensionMPLExplanation: `Vous devez réussir toutes les questions pour continuer l'expérience. Si vous échouez plus de quatre fois,
     l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus des deux premières parties. 
+    <br>
     Vous pouvez cliquer sur le bouton {buttonHelp} pour afficher les consignes.`,
     comprehensionFailure:{
         title: "Fin de l'expérience",
@@ -826,47 +830,52 @@ const fr = {
         thanks: "Merci beaucoup pour votre participation!",
         clickNext: "Appuyez sur Entrée pour terminer l'expérience.",
     },
-    comprehensionQMPL: {
+    comprehensionQMPLMirror: {
         q1: {
-            prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. <br> 
-            Quelle est la probabilité que exactement 20€ soient ajoutés à votre somme initiale d'argent ?`,
+            prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. 
+            La règle de paiement est "la moyenne des boîtes". 
+            Votre somme initiale d'argent est de 0€.<br><br>
+            Quelle est la chance que vous gagniez exactement 20€ ?`,
             options: [
-                "0 sur 100 (0%)",
-                "25 sur 100 (25%)",
-                "50 sur 100 (50%)",
-                "100 sur 100 (100%)",
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
             ],
         },
         q2: {
-            prompt: "Quelle est la probabilité que exactement 5€ soient ajoutés à votre somme initiale d'argent ?",
+            prompt: "Quelle est la chance que vous gagniez exactement 5€ ?",
             options: [
-                "0 sur 100 (0%)",
-                "25 sur 100 (25%)",
-                "50 sur 100 (50%)",
-                "100 sur 100 (100%)",
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
             ],
         },
         q3: {
-            prompt: "Quelle est la probabilité que exactement 0€ soit ajouté à votre somme initiale d'argent ?",
+            prompt: "Quelle est la chance que vous gagniez exactement 0€ ?",
             options: [
-                "0 sur 100 (0%)",
-                "25 sur 100 (25%)",
-                "50 sur 100 (50%)",
-                "100 sur 100 (100%)",
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
             ],
         },
         q4: {
-            prompt: "Quelle est la probabilité que exactement 10€ soient ajoutés à votre somme initiale d'argent ?",
+            prompt: "Quelle est la chance que vous gagniez exactement 10€ ?",
             options: [
-                "0 sur 100 (0%)",
-                "25 sur 100 (25%)",
-                "50 sur 100 (50%)",
-                "100 sur 100 (100%)",
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
             ],
         },
         q5: {
             prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
-            Vous êtes sélectionné·e pour que ce choix soit payé. Quelle(s) somme(s) d'argent pourrai(en)t être ajoutée(s) à ou retirée(s) de votre somme initiale d'argent ?`,
+            Vous êtes sélectionné·e pour que ce choix soit payé, toujours avec la règle de paiement "la moyenne des boîtes". 
+            Votre somme initiale d'argent est de 0€. 
+            <br>
+            Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
             options: [
                 "0€",
                 "-6€",
@@ -874,7 +883,60 @@ const fr = {
                 "-100€",
             ],
         },
-
+    },
+    comprehensionQMPLLottery: {
+         q1: {
+            prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. 
+            La règle de paiement est "une boîte au hasard". 
+            Votre somme initiale d'argent est de 0€.<br><br>
+            Quelle est la chance que vous gagniez exactement 20€ ?`,
+            options: [
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
+            ],
+        },
+        q2: {
+            prompt: "Quelle est la chance que vous gagniez exactement 5€ ?",
+            options: [
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
+            ],
+        },
+        q3: {
+            prompt: "Quelle est la chance que vous gagniez exactement 0€ ?",
+            options: [
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
+            ],
+        },
+        q4: {
+            prompt: "Quelle est la chance que vous gagniez exactement 10€ ?",
+            options: [
+                "0 chance sur 100 (0%)",
+                "25 chance sur 100 (25%)",
+                "50 chance sur 100 (50%)",
+                "100 chance sur 100 (100%)",
+            ],
+        },
+        q5: {
+            prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
+            Vous êtes sélectionné·e pour que ce choix soit payé, toujours avec la règle de paiement "une boîte au hasard". 
+            Votre somme initiale d'argent est de 0€. 
+            <br>
+            Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
+            options: [
+                "0€",
+                "-6€",
+                "-8€",
+                "-100€",
+            ],
+        },
     },
     debriefCalibration:{
         title: "Fin de la première partie",
@@ -1316,10 +1378,13 @@ const fr = {
         viewInstructions: "Vous allez revoir les instructions.",
         surveyAgain: "Puis vous allez de nouveau répondre aux questions.",
         press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
-    },
+    },      
     loopAgainSpanMpl: {
-        failed: "Vous avez répondu incorrectement à une des questions.",
+        failed: "{incorrectQCount} {yourRAreIncorrect}.",
+        yourRAreIncorrectPlural: "de vos réponses sont incorrectes",
+        yourRAreIncorrectSingular: "de vos réponses est incorrecte",
         surveyAgain: "Vous allez de nouveau répondre aux questions.",
+        maximumRepetition: "Ce sera votre tentative {trialQCount} sur {maxQTrials}.",
         readInstructions: "Vous êtes invité à lire les consignes si vous avez un doute pour répondre aux questions.",
         clickNext: "Appuyez sur <strong>Suivant</strong> pour répondre de nouveau !",
     },
@@ -1429,32 +1494,32 @@ const fr = {
     },
     endowmentsMPL: {
         lottery: {
-            G90: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G75: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G50: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G25: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            G10: `Vous serez payé·e 5€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L90: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L75: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L50: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L25: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            L10: `Vous serez payé·e 30€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A10: `Vous serez payé·e 15€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
-            A15: `Vous serez payé·e 20€ plus la valeur d'une boîte tirée au hasard du lot choisi.`,
+            G90: `Vous serez payé·e 5€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            G75: `Vous serez payé·e 5€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            G50: `Vous serez payé·e 5€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            G25: `Vous serez payé·e 5€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            G10: `Vous serez payé·e 5€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            L90: `Vous serez payé·e 30€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            L75: `Vous serez payé·e 30€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            L50: `Vous serez payé·e 30€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            L25: `Vous serez payé·e 30€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            L10: `Vous serez payé·e 30€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            A10: `Vous serez payé·e 15€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
+            A15: `Vous serez payé·e 20€ plus l'argent d'une boîte tirée au hasard du lot choisi.`,
         },
         mirror: {
-            G90: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G75: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G50: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G25: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            G10: `Vous serez payé·e 5€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L90: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L75: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L50: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L25: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            L10: `Vous serez payé·e 30€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A10: `Vous serez payé·e 15€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
-            A15: `Vous serez payé·e 20€ plus la somme divisée par 100 de la valeur de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G90: `Vous serez payé·e 5€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G75: `Vous serez payé·e 5€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G50: `Vous serez payé·e 5€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G25: `Vous serez payé·e 5€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            G10: `Vous serez payé·e 5€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L90: `Vous serez payé·e 30€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L75: `Vous serez payé·e 30€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L50: `Vous serez payé·e 30€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L25: `Vous serez payé·e 30€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            L10: `Vous serez payé·e 30€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            A10: `Vous serez payé·e 15€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
+            A15: `Vous serez payé·e 20€ plus la somme divisée par 100 de l'argent de toutes les boîtes du lot que vous avez choisi pour cette ligne.`,
     }
     },
     span_span: {
@@ -1496,8 +1561,8 @@ const fr = {
     choicesBefore: "Ce sont les choix que vous avez faits avant que la règle de paiement n'ait changé.",
     choicesAfter: "Ce sont les choix que vous avez faits après que la règle de paiement ait changé.",
     sliderTitle: "Questions finales sur vos choix",
-    sliderMirror: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"une boîte moyenne"</b> (la règle de paiement reposait sur la <b>moyenne</b> de la somme d'argent contenue dans les boîtes). {order}`,
-    sliderLottery: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"une boîte au hasard"</b> (la règle de paiement reposait sur une boîte <b>tirée au hasard</b>). {order}`,
+    sliderMirror: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"la moyenne des boîtes"</b>. {order}`,
+    sliderLottery: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision (LMP), quand la consigne était <b>"une boîte au hasard"</b>. {order}`,
     sliderHonest: "Vos réponses aux questions suivantes sont anonymes et ne seront pas liées à votre paiement. Veuillez répondre honnêtement.",
     sliderCognitiveUncertainty:{
         question: "Quelle est la probabilité selon vous (en %) que vos réponses aient maximisé vos bonus pour toutes les lignes de chaque tableau des LMP?",

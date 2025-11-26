@@ -35,12 +35,13 @@ filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas09_20251114 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251114111004.txt"
 filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251117123042.txt"
 filePath_testGildas11_20251125<- "/Users/domitilleprevost/Downloads/jatos_results_data_20251125093815.txt" # multiple trials taken from the last days (from 17/11 at 1:16 pm to 25/11 at 10:08am)
+filePath_testGildas12_20251125 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251126225013.txt"
+
+filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt"
 
 
 
-
-
-text <- readLines(filePath_testGildas11_20251125)
+text <- readLines(filePath_testGildas12_20251125)
 
 nSub <- length(text)
 
@@ -282,6 +283,7 @@ final_data <- data.frame()
 final_data_2 <- data.frame()
 
 for (iSub in 1:nSub) {
+  
     partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
   
     dataPerParticipant <- fromJSON(partDirectory)
@@ -522,6 +524,7 @@ for (iSub in 1:nSub) {
 
 view(dataPerParticipant_2)
 view(final_data_2)
+view(final_data)
 
 
 
@@ -657,12 +660,12 @@ p <- ggbarplot(
     size = 3.5
   ) +
   # Add statistical comparison
-  # stat_pvalue_manual(
-  #   plot_precision_cogload, 
-  #   label = "p = {p}",
-  #   tip.length = 0.01,
-  #   y.position = max(plot_data_nbackVisual$accuracy, na.rm = TRUE) + 0.05
-  # ) +
+  #  stat_pvalue_manual(
+  #    plot_precision_cogload, 
+  #    label = "p = {p}",
+  #    tip.length = 0.01,
+  #    y.position = max(plot_data_nbackVisual$accuracy, na.rm = TRUE) + 0.05
+  #    ) +
   # Customize appearance
   labs(
     title = "Accuracy target task (span): cogload vs baseline treatment",
