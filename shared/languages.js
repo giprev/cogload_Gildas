@@ -820,7 +820,7 @@ const fr = {
     },
     comprehensionMPLIntro: "Questions de compréhension",
     comprehensionMPLExplanation: `Vous devez réussir toutes les questions pour continuer l'expérience. Si vous échouez plus de quatre fois,
-    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus des deux premières parties. 
+    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€, en plus des bonus des deux premières parties. 
     <br>
     Vous pouvez cliquer sur le bouton {buttonHelp} pour afficher les consignes.`,
     comprehensionFailure:{
@@ -828,7 +828,7 @@ const fr = {
         description: `Malheureusement, vous n'avez pas répondu correctement aux questions de compréhension.
         L'expérience se termine ici. Vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
         thanks: "Merci beaucoup pour votre participation!",
-        clickNext: "Appuyez sur Entrée pour terminer l'expérience.",
+        clickNext: "Appuyez sur Entrée pour terminer l'expérience <b>et recevoir votre paiement!.</b>",
     },
     comprehensionQMPLMirror: {
         q1: {
@@ -1552,7 +1552,7 @@ const fr = {
         bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour la tâche de mémoire et de {mplBonus}€ pour le choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
         totalBonus: "Votre bonus total est donc de {totalBonus}€ et votre paiement total est de {totalPayment}€.",
-        thanksAgain: "Merci encore pour votre participation ! Vous pouvez appuyer sur Entrée pour quitter l'expérience.",
+        thanksAgain: "Merci encore pour votre participation ! <b>Appuyez sur Entrée pour recevoir votre paiement!.</b>",
     },
     responseGrid: {
         currentAnswer: "Réponse actuelle",

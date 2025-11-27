@@ -820,15 +820,15 @@ const comprehensionFailureTrial = {
         console.log("notUnderstoodPayment is", notUnderstoodPayment);
         console.log("actual_payment_calibration is", actual_payment_calibration);
         console.log("actual_payment_span_span is", actual_payment_span_span);
-        console.log("total payment is", Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.13*1.5)+0.85)));
+        console.log("total payment is", Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.8*1.5)+1.35)));
         
         // Add data to trial object instead of data parameter
         trial.data = trial.data || {};
-        trial.data.totalPayment = Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.13*1.5)+0.85));
+        trial.data.totalPayment = Math.min(notUnderstoodPayment + actual_payment_calibration + actual_payment_span_span, (6+(1.8*1.5)+1.35));
         trial.data.versionFirst = block_order_indicator_span_MPL;
         trial.data.treatment = treatment;
         trial.data.helpPageCounter = helpPageCounter;
-        trial.data.totalBonus = Math.min(actual_payment_calibration + actual_payment_span_span, ((1.13*1.5)+0.85)) ;
+        trial.data.totalBonus = Math.min(actual_payment_calibration + actual_payment_span_span, ((1.8*1.5)+1.35)) ;
         trial.data.payment_span_span = actual_payment_span_span;
         trial.data.payment_calibration = actual_payment_calibration;
         trial.data.task = 'comprehensionFailure';
@@ -2772,11 +2772,6 @@ const feedback_span ={
     choices: jsPsych.NO_KEYS,
     trial_duration: 2000,
     on_start: function (trial) {
-        console.log(jsPsych.data.get().last(1).values()[0], "is last 1")
-        console.log(jsPsych.data.get().last(2).values()[0], "is last 2")
-        console.log(jsPsych.data.get().last(3).values()[0], "is last 3")
-        console.log(jsPsych.data.get().last(4).values()[0], "is last 4")
-
 
         console.log(jsPsych.data.get().last(1).values()[0].was_correct)
         console.log(jsPsych.data.get().last(1).values()[0].answer, "is the answer")
@@ -4179,7 +4174,7 @@ const calibrationDebrief = {
     on_start: function(trial) {
 
     actual_payment_calibration = calibrationPayment * ((maximumSpanCalibration)/10)
-    actual_payment_calibration = Math.min(actual_payment_calibration, 1.13*1.5);
+    actual_payment_calibration = Math.min(actual_payment_calibration, 1.8*1.5);
     console.log(actual_payment_calibration, "is actual_payment_calibration")
 
     // Use the calculated payments
@@ -4222,7 +4217,7 @@ const spanSpanDebrief = {
     let accuracyLetters2 = accuracySpanSpan(trialsSpan2Letters.select('answer').values[0], trialsSpan2Letters.select('correct').values[0]);
     console.log("accuracyLetters2 is ", accuracyLetters2);
     actual_payment_span_span = (spanSpanPayment_hard * 0.67 * accuracyLetters1) + (spanSpanPayment_hard * 0.33 * accuracyLetters2);
-    actual_payment_span_span = Math.min(actual_payment_span_span, 0.85);
+    actual_payment_span_span = Math.min(actual_payment_span_span, 1.35);
 
     // Use the calculated payments
     trial.data = trial.data || {};
@@ -4268,7 +4263,7 @@ const feedbackExampleSpanMPL = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2.63);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 4.2);
     // } 
     // else if (treatment == "easy") {
     //     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
@@ -4367,7 +4362,7 @@ const incentives_span_mpl = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 2.63);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 4.2);
         console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
     // } 
     // else if (treatment == "easy") {
@@ -4423,7 +4418,7 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.13*1.5)+0.85+2.63+44.5)); // cap total bonus
+    trial.data.totalBonus = Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.8*1.5)+1.35+4.2+44.5)); // cap total bonus
     if (treatment == "hard") {
     trial.data.totalPayment = basePayment_hard + trial.data.totalBonus;}
     else if (treatment == "easy") {

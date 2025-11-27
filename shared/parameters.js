@@ -7,12 +7,12 @@ const basePayment_hard = 7; // Payment amount: = 8 euros
 const basePayment_easy = 7; // Payment amount: = 7 euros
 const notUnderstoodPayment = 6; // if the participant does not understand the comprehension questions,
 const basePaymentThird = 1; // additional base payment for the third part of the experiment (if they answer the comprehension questions correctly)
-const spanMplPayment_hard = 2.63;
-const calibrationPayment = 1.13; 
-const spanSpanPayment_hard = 0.85;
+const spanMplPayment_hard = 4.2;
+const calibrationPayment = 1.8; 
+const spanSpanPayment_hard = 1.35;
 const spanMplPayment_easy = spanMplPayment_hard;
 //const spanSpanPayment_easy = spanMplPayment_hard * 0.25; // NOT USED as it's the same as spanSpanPayment_hard
-const propSelecForMPL = 16; // 1 out of propSelecForMPL participants will be selected for the MPL payment : that makes an EV of around 1.32€.
+const propSelecForMPL = 10; // 1 out of propSelecForMPL participants will be selected for the MPL payment : that makes an EV of around 2.1€.
 const fds_letter_presentation = 500; //500ms
 const fds_post_trial_gap = 250; //250ms
 // Change default language to French
