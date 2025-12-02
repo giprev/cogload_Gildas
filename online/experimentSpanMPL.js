@@ -2327,8 +2327,8 @@ const mpl_trial = {
       choicesArray.push(choice);
       prevChoice = i > 0 ? choicesArray[i-1] : null;
       if (prevChoice && choice !== prevChoice) {
-        switchRow2 = i; // +1 for human-readable row index
-        switchRow1 = i - 1; // 0-based index
+        switchRow2 = i;
+        switchRow1 = i - 1;
         switchRow2Choice = responses_mpl[`row${i}`];
         switchRow1Choice = responses_mpl[`row${i - 1}`];
       }
@@ -4807,7 +4807,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_span_MPL, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl,

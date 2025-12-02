@@ -30,22 +30,28 @@ filePath_testGildas03_20251104 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas04_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121134.txt" # no special pattern
 filePath_testGildas05_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121317.txt" # choices up for high gains and small losses, choices down for small gains and large losses
 filePath_testGildas06_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105121734.txt" # multiple trials, some of which failed at comprehension questions
-filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105150400.txt"# trial with failure at the comprehension questions
-filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt"# trial with failure at the comprehension questions
+filePath_testGildas07_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251105150400.txt" # trial with failure at the comprehension questions
+filePath_testGildas08_20251105 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251106092713.txt" # trial with failure at the comprehension questions
 filePath_testGildas09_20251114 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251114111004.txt"
 filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251117123042.txt"
 filePath_testGildas11_20251125<- "/Users/domitilleprevost/Downloads/jatos_results_data_20251125093815.txt" # multiple trials taken from the last days (from 17/11 at 1:16 pm to 25/11 at 10:08am)
 filePath_testGildas12_20251125 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251126225013.txt"
+filePath_testGildas13_20251127 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251127132619.txt" # three test trials completed in the lab after updated payment rule. Only one until the end
 
-filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt"
+filePath_pilot_1And2FromJatos <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251201101543.txt" # two first pilots downloaded from jatos not reunited by hand
+
+filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt" # first pilot
+filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_1&2.txt" # first and second pilot pooled
+
+filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt" # 
 
 
-
-text <- readLines(filePath_testGildas12_20251125)
+text <- readLines(filePath_pilot_1And2FromJatos)
 
 nSub <- length(text)
 
- # length(text)
+ 
+# length(text)
 
 # Loop through each part of the text file and write it to a separate text file
 for(i in 1:nSub) {
@@ -99,12 +105,9 @@ accuracySpan <- function(answer, correct) {
     return(correctMatches / maxPositions)
 }
 
-cat(accuracySpan(c(1,2,3,4), c(1,2,3,5)), "\n") # should be 0.75
-
 roundDownToFifth <- function(number) {
   return(floor(number * 5) / 5)
 }
-
 
 createSequenceArray <- function(y, X, position) {
 
@@ -226,23 +229,68 @@ extractMplDataframes <- function(dataPerParticipant) {
             TRUE ~ NA_character_
           )
           surePayments <- createSequenceArray(y_value, X_value, position) # CAUTION if no switch sr1 = sr2 = -1 !!! Then need to see if choices only lotteries or only mirror
+          # cat("surePayments defined with position =", position)
           if (switch_row1 == -1 & switch_row2 == -1) {
-            if (all(choices == "lottery")) {
-              ev_value <- surePayments[length(surePayments)] + 0.1 # sure amount as if the switching point was on the line after the last line
-              cat("all choices lottery, ev is", ev_value, "\n")
+            noSwitchCounter <<- noSwitchCounter + 1
+            if ((isLotteryFirst == TRUE & status_mpl =="lottery") | (isLotteryFirst == FALSE & status_mpl =="mirror")) {
+              noSwitchCounterFirstPart <<- noSwitchCounterFirstPart + 1
+            }
+            else if ((isLotteryFirst == FALSE & status_mpl == "lottery") | (isLotteryFirst == TRUE & status_mpl =="mirror")) {
+              noSwitchCounterSecondPart <<- noSwitchCounterSecondPart + 1
+            }
+            if (status_mpl == "lottery"){ noSwitchCounterLottery <<- noSwitchCounterLottery + 1} 
+            if (status_mpl == "mirror"){noSwitchCounterMirror <<- noSwitchCounterMirror + 1}
+
+            varName <- paste0("noSwitchCounter_", mpl_type, "_", status_mpl)
+            noSwitchCounters[[varName]] <<- noSwitchCounters[[varName]] + 1
+            cat("noSwitchCounters[[varName]]=", noSwitchCounters[[varName]], " for ", varName, "\n")
+            #cat("noSwitchCounter updated and is now", noSwitchCounter, "\n")
+            if (X_value == "A") {
+              if (all(choices == "lottery")) {
+              noSwitchCounterRisky <<- noSwitchCounterRisky + 1
+              if (position == "high") {noSwitchCounterHighRisky <<- 1 + noSwitchCounterHighRisky}
+              else if (position == "low") {noSwitchCounterLowRisky <<- 1 + noSwitchCounterLowRisky}
+              ev_value <- (y_value - (surePayments[1] - 0.5))/2 # sure amount as if the switching point was on the line after the last line
+              # cat("all choices lottery in A",y_value, "lottery, ev is", ev_value, "\n")
             } else if (all(choices == "sure")) {
-              ev_value <- surePayments[1] - 0.1 # sure amount as if the switching point was on the line before the first line
-              cat("all choices sure, ev is", ev_value, "\n")
+              noSwitchCounterSure <<- noSwitchCounterSure + 1
+              if (position == "high") {noSwitchCounterHighSure <<- 1 + noSwitchCounterHighSure}
+              else if (position == "low") {noSwitchCounterLowSure <<- 1 + noSwitchCounterLowSure}
+              ev_value <- (y_value - (surePayments[length(surePayments)]+ 0.5))/2 # sure amount as if the switching point was on the line after the last line
+              # cat("all choices sure in A",y_value, "lottery, ev is", ev_value, "\n")
             } else {
               ev_value <- NA  # Undefined behavior
-              cat ("switch_row1 = -1 and switch_row2 = -1 but choices are mixed, ev is NA\n")
+              cat ("switch_row1 = -1 and switch_row2 = -1 but calculation failed, ev is NA\n")
             }
-          } else {
-            ev_value <- (surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1]) / 2 # last value of the function is assigned to ev in mutate. ADD 1 because R starts at 1 instead of 0 (js)
-            cat("calculated ev is", ev_value, "\n")
+            }
+            else{
+              if (all(choices == "lottery")) {
+                noSwitchCounterRisky <<- noSwitchCounterRisky + 1
+                if (position == "high") {noSwitchCounterHighRisky <<- 1 + noSwitchCounterHighRisky}
+                else if (position == "low") {noSwitchCounterLowRisky <<- 1 + noSwitchCounterLowRisky}
+                ev_value <- surePayments[length(surePayments)] + 0.1 # sure amount as if the switching point was on the line after the last line
+                # cat("all choices lottery, ev is", ev_value, "\n")
+              } else if (all(choices == "sure")) {
+                noSwitchCounterSure <<- noSwitchCounterSure + 1
+                if (position == "high") {noSwitchCounterHighSure <<- 1 + noSwitchCounterHighSure}
+                else if (position == "low") {noSwitchCounterLowSure <<- 1 + noSwitchCounterLowSure}
+                ev_value <- surePayments[1] - 0.1 # sure amount as if the switching point was on the line before the first line
+                # cat("all choices sure, ev is", ev_value, "\n")
+              } else {
+                ev_value <- NA  # Undefined behavior
+                cat ("switch_row1 = -1 and switch_row2 = -1 but calculation failed, ev is NA\n")
+              }
           }
-        ev_value
-        }
+          ev_value <- NA # if we trials without switching points
+          } else {
+            if (X_value == "A") {
+                ev_value <- (y_value - ((surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1])/2))/2 # 50% chance of positive amount and 50% chance of - 10
+                #cat("Calculated ev for A lottery mirror, mplType is", mplType, "y_value is", y_value, "X_value is", X_value, "ev_value is", ev_value, "position is" ,position, "surePayments[switch_row2 + 1] is ", surePayments[switch_row2 + 1], "switch_row2 is",switch_row2,"\n")
+              }
+            else ev_value <- (surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1]) / 2 # last value of the function is assigned to ev in mutate. ADD 1 because R starts at 1 instead of 0 (js)
+            }
+          ev_value
+          }
       ) %>%
       ungroup()
     
@@ -268,9 +316,9 @@ extractMplDataframes <- function(dataPerParticipant) {
   
   # Print summary of created dataframes
   cat("Created", length(dataframes_list), "dataframes:\n")
-  for(name in names(dataframes_list)) {
-    cat("- ", name, ": ", nrow(dataframes_list[[name]]), " rows\n")
-  }
+  #for(name in names(dataframes_list)) {
+  #  cat("- ", name, ": ", nrow(dataframes_list[[name]]), " rows\n")
+  #}
   
   return(dataframes_list)
 }
@@ -281,6 +329,28 @@ extractMplDataframes <- function(dataPerParticipant) {
 # Initialize final_data outside the loop
 final_data <- data.frame()
 final_data_2 <- data.frame()
+
+# Initialize noSwitchCounter : number of MPLs where the participants never switched
+noSwitchCounter <- 0
+noSwitchCounterRisky <- 0
+noSwitchCounterSure <- 0
+noSwitchCounterHighSure <- 0
+noSwitchCounterLowSure <- 0
+noSwitchCounterHighRisky <- 0
+noSwitchCounterLowRisky <- 0
+noSwitchCounters <- list()
+# Define all possible combinations
+mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", "L75", "L90", "A10", "A15",
+"GS10", "GS25", "GS50", "GS75", "GS90", "LS10", "LS25", "LS50", "LS75", "LS90", "AS10", "AS15")
+status_types <- c("mirror", "lottery")
+# Initialize ALL possible MPL columns with NA values first
+for(mpl_type in mpl_types) {
+    for(status_type in status_types) {
+            varName <- paste0("noSwitchCounter_",mpl_type, "_", status_type)
+            noSwitchCounters[[varName]] <- 0
+    }
+}
+
 
 for (iSub in 1:nSub) {
   
@@ -297,6 +367,17 @@ for (iSub in 1:nSub) {
     participant_id <- as.character(dataPerParticipant[1,'subject'])
 
     dataPerParticipant <- dataPerParticipant %>% rename_at('statusMPL', ~'statusMpl')
+    
+    completionCountLottery <- max(dataPerParticipant$failedQuestionsCountLottery, na.rm=TRUE)
+    completionCountMirror <- max(dataPerParticipant$failedQuestionsCountMirror, na.rm=TRUE)
+    wrongAnswerCountLottery <- sum(dataPerParticipant$incorrectQCountLottery, na.rm = TRUE)
+    wrongAnswerCountMirror <- sum(dataPerParticipant$incorrectQCountMirror, na.rm = TRUE)
+
+    noSwitchCounterBeginning <- noSwitchCounter
+    noSwitchCounterFirstPart <- 0
+    noSwitchCounterSecondPart <- 0
+    noSwitchCounterLottery <- 0
+    noSwitchCounterMirror <- 0
 
 
     # Extract the demographics cell
@@ -304,7 +385,6 @@ for (iSub in 1:nSub) {
         filter(task == "demographics") %>%
         select(responses) %>%
         pull()
-    cat(demo_values)
     #demographics age
     demo_age <- dataPerParticipant %>%
         filter(task== "demographics_age") %>%
@@ -352,15 +432,15 @@ for (iSub in 1:nSub) {
 
     isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", TRUE, FALSE)
 
-    numCorrectQuestionMirror <- dataPerParticipant %>%
-        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
-        select(num_correct) %>%
-        pull()
+#    numCorrectQuestionMirror <- dataPerParticipant %>%
+#        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
+#        select(num_correct) %>%
+#        pull()
     
-    numCorrectQuestionLottery <- dataPerParticipant %>%
-        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLLottery") %>%
-        select(num_correct) %>%
-        pull()
+#    numCorrectQuestionLottery <- dataPerParticipant %>%
+#        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLLottery") %>%
+#        select(num_correct) %>%
+#        pull()
 
     payment_spanMpl <- dataPerParticipant %>%
         filter(!is.na(payment_span_mpl)) %>%
@@ -437,8 +517,17 @@ for (iSub in 1:nSub) {
         spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
         treatment = treatmentValue,
         isLotteryFirst = isLotteryFirst,
-        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
-        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+#        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
+#        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+        completionCountLottery = ifelse(length(completionCountLottery)>0, completionCountLottery, NA),
+        completionCountMirror = ifelse(length(completionCountMirror)>0, completionCountMirror, NA),
+        wrongAnswerCountLottery = ifelse(length(wrongAnswerCountLottery)>0, wrongAnswerCountLottery, NA),
+        wrongAnswerCountMirror = ifelse(length(wrongAnswerCountMirror)>0,wrongAnswerCountMirror, NA),
+        noSwitchCounter = noSwitchCounter - noSwitchCounterBeginning,
+        noSwitchCounterFirstPart = noSwitchCounterFirstPart,
+        noSwitchCounterSecondPart = noSwitchCounterSecondPart,
+        noSwitchCounterLottery = noSwitchCounterLottery,
+        noSwitchCounterMirror = noSwitchCounterMirror,
         payment_spanMpl = payment_spanMpl,
         # payment_mpl = payment_mpl,
         payment_spanSpan = payment_spanSpan,
@@ -458,8 +547,13 @@ for (iSub in 1:nSub) {
         spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
         treatment = treatmentValue,
         isLotteryFirst = isLotteryFirst,
-        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
-        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+#        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
+#        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+        completionCountLottery = ifelse(length(completionCountLottery)>0, completionCountLottery, NA),
+        completionCountMirror = ifelse(length(completionCountMirror)>0, completionCountMirror, NA),
+        wrongAnswerCountLottery = ifelse(length(wrongAnswerCountLottery)>0, wrongAnswerCountLottery, NA),
+        wrongAnswerCountMirror = ifelse(length(wrongAnswerCountMirror)>0,wrongAnswerCountMirror, NA),
+        noSwitchCounter = noSwitchCounter - noSwitchCounterBeginning,
         payment_spanMpl = payment_spanMpl,
         # payment_mpl = payment_mpl,
         payment_spanSpan = payment_spanSpan,
@@ -502,6 +596,18 @@ for (iSub in 1:nSub) {
         }
     }
     
+    accuracyOverall <- participant_row %>%
+      summarise(
+        accuracyOverall = mean(c_across(ends_with("_accuracy")), na.rm=TRUE)
+      ) %>%
+      pull(accuracyOverall)
+
+    # Check if this participant has accuracy less than chance level (1/9 around 0.12)
+    if(accuracyOverall < 0.12) {
+        cat("Skipping participant", iSub, "due to chance level accuracy\n")
+        next  # Skip to the next iteration
+    }
+    
 
     # Add to final dataset
     if(nrow(final_data) == 0) {
@@ -519,12 +625,15 @@ for (iSub in 1:nSub) {
 
     cat("Processed participant", iSub, "\n")
 
-
 }
-
-view(dataPerParticipant_2)
-view(final_data_2)
+view(dataPerParticipant)
+#view(dataPerParticipant_2)
+#view(final_data_2)
 view(final_data)
+tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
+
+tableNoSwitchByPosition
+
 
 
 
@@ -591,7 +700,7 @@ dfA <- final_data %>%
 
 
 
-view(dfA)
+#view(dfA)
 dfA$mirror_accuracy
 dfA$lottery_accuracy
 sum(!is.na(dfA$mirror_accuracy))
@@ -699,9 +808,9 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, lab='', ylim=c(-3,3), posit
 
   colors <- if (position == 1 || cogload == 1) {
     list(
-      lottery_high = "darkgreen", mirror_high = "lightgreen",
+      lottery_high = "darkred", mirror_high = "lightcoral",
       lottery_low = "darkblue", mirror_low = "lightblue",
-      lottery_hard = "darkgreen", mirror_hard = "lightgreen",
+      lottery_hard = "darkred", mirror_hard = "lightcoral",
       lottery_easy = "darkblue", mirror_easy = "lightblue"
     )
   } else {
@@ -839,14 +948,21 @@ dfA_plot_maker = function (type = NULL) {
     group_by(prob,mplType)%>%
     summarise(
       n=length(unique(participant_id)),
+      
+      # Count valid observations for each measure IF removing no switch point
+      n_valid_lottery = sum(!is.na(lottery_ev)),
+      n_valid_mirror = sum(!is.na(mirror_ev)),
+      n_valid_both = sum(!is.na(lottery_ev) & !is.na(mirror_ev)),
+      
       medDiff=median(lottery_ev-mirror_ev),
       pred=mean(pred),
-      ceLotteryse=sd(lottery_ev)/sqrt(n),
-      ceMirrorse=sd(mirror_ev)/sqrt(n),
+      ceLotteryse=sd(lottery_ev, na.rm = TRUE)/sqrt(n_valid_lottery),
+      ceMirrorse=sd(mirror_ev, na.rm = TRUE)/sqrt(n_valid_mirror),
       #   ceLotteryse = pmax(sd(lottery_ev, na.rm = TRUE) / sqrt(n), 0.01),
       #   ceMirrorse = pmax(sd(mirror_ev, na.rm = TRUE) / sqrt(n), 0.01),   
-      lottery=mean(lottery_ev),
-      mirror=mean(mirror_ev),
+      lottery=mean(lottery_ev, na.rm = TRUE),
+      mirror=mean(mirror_ev, na.rm = TRUE),
+      .groups = 'drop'
     )
 }
 dfA_plot <- dfA_plot_maker()  # No filtering
@@ -855,7 +971,6 @@ dfA_plot_low <- dfA_plot_maker("low")
 dfA_plot_hard <- dfA_plot_maker("hard")
 dfA_plot_easy <- dfA_plot_maker("easy")
 
-  
 
 mainPlot(F = dfA_plot, lab = '', position=0)
 mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
@@ -904,6 +1019,7 @@ main_tests<-function(df){
   )
 }
 
+
 main_tests_df<-data.frame(main_tests(dfA))
 main_tests_df$lottery_p[[4]]
 main_tests_rounded_df<-data.frame(main_tests_rounded(dfA))
@@ -940,6 +1056,7 @@ all.equal(lottery_ev, G25_lottery_ev_values[[1]])
 options(digits = 22)
 print(lottery_ev)
 print(G25_lottery_ev_values[[1]])
+options(digits = 7)
 
 
 # Scatter plots of individual errors
@@ -947,7 +1064,7 @@ print(G25_lottery_ev_values[[1]])
 s_mpl<-dfA%>%
   filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
                          "LS10", "LS25", "LS50", "LS75", "LS90", 
-                         "AS10", "AS15")) %>%
+                         "AS10", "AS15")) %>% # put back A10 and A15 !
   filter(!grepl('50',mplType)) %>%
   group_by(isLotteryFirst, participant_id)%>%
   summarise(
@@ -966,20 +1083,20 @@ makeScatter<-function(s,lab){
   cat("nrow(x) in second plot for lottery first is", nrow(x), "\n")
   print(x$mirrorError)
   print(x$lotteryError)
-  plot(x$mirrorError,x$lotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(0,15),ylim=c(0,15),bty='n',main=paste(lab,'Absolute  Deviations'))
+  plot(x$mirrorError,x$lotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(0,6),ylim=c(0,6),bty='n',main=paste(lab,'Absolute  Deviations'))
   legend("topleft",legend=c("Lottery First",'Mirror First'),col=c('black','black'),pt.bg=c('gray','white'),pt.cex=1.5,pch=21,cex=1,bg=NA,box.lwd=NA)
-  points(x$mirrorError,x$lotteryError,col='black',bg='darkgray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(0,12),ylim=c(0,12),bty='n',main='Absolute Mean Error')
+  points(x$mirrorError,x$lotteryError,col='black',bg='darkgray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(0,6),ylim=c(0,6),bty='n',main='Absolute Mean Error')
   x<-s%>%filter(isLotteryFirst==FALSE)
   # points(x$mirrorError,x$lotteryError,col=rgb(1,0,0,0.35),pch=19,ylab='lottery Error')
   points(x$mirrorError,x$lotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
   abline('a'=0,'b'=1,lty=4)
 
   x<-s%>%filter(isLotteryFirst==TRUE)
-  plot(x$wmirrorError,x$wlotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(-10,15),ylim=c(-10,15),bty='n',main=paste(lab,'Normalized  Deviations'),xaxt='n',yaxt='n')
-  axis(1,at=seq(-10,16,2))
-  axis(2,at=seq(-10,16,2))
+  plot(x$wmirrorError,x$wlotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(-6,6),ylim=c(-6,6),bty='n',main=paste(lab,'Normalized  Deviations'),xaxt='n',yaxt='n')
+  axis(1,at=seq(-6,6,1))
+  axis(2,at=seq(-6,6,1))
   abline('h'=0);abline('v'=0)
-  points(x$wmirrorError,x$wlotteryError,col='black',bg='gray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(-10,16),ylim=c(-10,10),bty='n',main='Normalized Mean Error',xaxt='n',yaxt='n')
+  points(x$wmirrorError,x$wlotteryError,col='black',bg='gray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(-6,6),ylim=c(-6,6),bty='n',main='Normalized Mean Error',xaxt='n',yaxt='n')
   x<-s%>%filter(isLotteryFirst==FALSE)
   points(x$wmirrorError,x$wlotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
   abline('a'=0,'b'=1,lty=4)

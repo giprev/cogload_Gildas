@@ -715,7 +715,7 @@ const fr = {
         title: "Consignes pour les Listes à Multiples Prix (LMP).",
         subTitle: "Les boîtes contenant de l'argent",
         initialSum: "Au début de chaque LMP, vous recevez une somme d'argent (entre 5 et 30€).",
-        chooseSet: "Vous devez ensuite choisir un lot de boîtes que vous voudriez que l'ordinateur sélectionne.",
+        chooseSet: "Vous devez ensuite <b>choisir un lot de boîtes.</b>",
         choice: "Vous aurez toujours le choix entre les lots <span style='color:red'>A</span> et <span style='color:blue'>B</span>, composés de 100 boîtes chacun.",
         moneyInside: "Chaque boîte peut contenir <b>de l'argent</b>. Votre bonus dépend de cet argent selon une règle de paiement qui va vous être expliquée.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir comment sélectionner les lots !"
@@ -833,7 +833,7 @@ const fr = {
     comprehensionQMPLMirror: {
         q1: {
             prompt: `Pour les quatre prochaines questions, supposez que vous avez fait le choix du <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. 
-            La règle de paiement est "la moyenne des boîtes". 
+            La règle de paiement est "la moyenne des boîtes".
             Votre somme initiale d'argent est de 0€.<br><br>
             Quelle est la chance que vous gagniez exactement 20€ ?`,
             options: [
