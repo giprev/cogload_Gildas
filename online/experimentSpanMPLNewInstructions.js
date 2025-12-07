@@ -77,6 +77,9 @@ let incorrectQCountLottery = 0; // number of incorrect answers on the last lotte
 let failedQMirror = 1; // number of times mirror comprehension questions were failed
 let incorrectQCountMirror = 0; // number of incorrect answers on the last mirror question trial
 let maxQTrials = 4;
+let showExplanationsQuestionsMirrors = false;
+let showExplanationsQuestionsLotteries = false;
+
 
 
 
@@ -281,37 +284,55 @@ const instructionsSpanMPLMirror = {
         <p>${language.instructionsThirdPart.description}</p>
         <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p>
         <p>${language.instructionsThirdPart.clickNext}</p>`,
-               `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
-        <p>${language.instructionsBoxesWithMoney.clickNext}</p>`,
+
+        // <h2>${language.instructionsDecisionTable.title}</h2>
+        // <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        // <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        // <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        // ${generateHTML("Lot A", "Lot B")}
+        // <p>${language.instructionsBoxesWithMoney.choice}</p>
+        // <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        // <p>${language.instructionsBoxesWithMoney.clickNext}</p>, 
+
         `<h2>${language.instructionsDecisionTable.title}</h2>
         <h3>${language.instructionsDecisionTable.subTitle}</h3>
         <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <!-- <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')} -->
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.bonusAverageBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
+        </div></div>
         <p>${language.instructionsDecisionTable.clickNext}</p>`,
-        `<h2>${language.instructionsPaymentRuleMirror.title}</h2>
-        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example1}</p>
+
+        `<h2>${language.instructionsClickToChoose.title}</h2>
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
-        <p>${language.instructionsPaymentRuleMirror.clickNext}</p>
-        `
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        <p>${language.instructionsClickToChoose.clickNext}</p>`
+        // <h2>${language.instructionsPaymentRuleMirror.title}</h2>
+        // <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        // <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        // <br>
+        // <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        // ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        // <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        // <br>
+        // <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        // ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        // <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+        // <p>${language.instructionsPaymentRuleMirror.clickNext}</p>
+
     //         <p>${language.instructionsPaymentRuleMirror.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
 
     ];
@@ -325,41 +346,62 @@ const instructionsSpanMPLLottery = {
     type: "instructions",
     pages: function(){
 
-        return [`<h2>${language.instructionsThirdPart.title}</h2>
+ return [`<h2>${language.instructionsThirdPart.title}</h2>
         <p>${language.instructionsThirdPart.description}</p>
         <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p>
         <p>${language.instructionsThirdPart.clickNext}</p>`,
-        `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
-        <p>${language.instructionsBoxesWithMoney.clickNext}</p>`,
-        `<h2>${language.instructionsDecisionTable.title}</h2>
+
+        // <h2>${language.instructionsDecisionTable.title}</h2>
+        // <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+        // <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+        // <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+        // ${generateHTML("Lot A", "Lot B")}
+        // <p>${language.instructionsBoxesWithMoney.choice}</p>
+        // <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        // <p>${language.instructionsBoxesWithMoney.clickNext}</p>, 
+
+
+            `<h2>${language.instructionsDecisionTable.title}</h2>
         <h3>${language.instructionsDecisionTable.subTitle}</h3>
         <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <!--<p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')} -->
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsDecisionTable.bonusRandomBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationLottery}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationLottery}</p>
+        </div></div>
         <p>${language.instructionsDecisionTable.clickNext}</p>`,
-        `<h2>${language.instructionsPaymentRuleRandomBox.title}</h2>
-        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+
+        `<h2>${language.instructionsClickToChoose.title}</h2>
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
-        <p>${language.instructionsPaymentRuleRandomBox.clickNext}</p>`,
-        //         <p>${language.instructionsPaymentRuleRandomBox.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        <p>${language.instructionsClickToChoose.clickNext}</p>`
+
+        // <h2>${language.instructionsPaymentRuleMirror.title}</h2>
+        // <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+        // <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+        // <br>
+        // <p>${language.instructionsPaymentRuleMirror.example1}</p>
+        // ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        // <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+        // <br>
+        // <p>${language.instructionsPaymentRuleMirror.example2}</p>
+        // ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        // <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+        // <p>${language.instructionsPaymentRuleMirror.clickNext}</p>
+
+    //         <p>${language.instructionsPaymentRuleMirror.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
 
     ];
 
@@ -373,19 +415,25 @@ const instructionsSpanMPLLottery = {
 const instructionsPaymentRuleLottery = {
     type: "instructions",
     pages: function(){
+        return [
+        `<h2>${language.instructionsDecisionTable.titleSecondInstructions}</h2>
+        <p>${language.instructionsDecisionTable.bonusRandomBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationLottery}</p>
+        </div></div>
 
-        return [`<h2>${language.instructionsPaymentRuleRandomBox.title}</h2>
-        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
-        <p>${language.instructionsPaymentRuleRandomBox.clickNext}</p>`,
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationLottery}</p>
+        </div></div>
+        <p>${language.instructionsDecisionTable.clickNextSecond}</p>`,
     ];
     },
     show_clickable_nav: true,
@@ -397,18 +445,26 @@ const instructionsPaymentRuleMirror = {
     type: "instructions",
     pages: function(){
 
-        return [`<h2>${language.instructionsPaymentRuleMirror.title}</h2>
-        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
-        <p>${language.instructionsPaymentRuleMirror.clickNext}</p>`]
+        return [
+        `<h2>${language.instructionsDecisionTable.titleSecondInstructions}</h2>
+        <p>${language.instructionsDecisionTable.bonusAverageBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
+        </div></div>
+        <p>${language.instructionsDecisionTable.clickNextSecond}</p>`,
+    ];
     },
     show_clickable_nav: true,
     button_label_next: language.button.next,
@@ -430,11 +486,12 @@ const instructionsChoosingASetOfBoxes = {
         <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
         ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
-        <br>
+        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>`,
+        `<h2>${language.instructionsChoosingASetOfBoxes.title}</h2>
         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
         <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
+        <p>${language.instructionsChoosingASetOfBoxes.endowmentsMPL}</p>
         <br>
         <p>${language.instructionsChoosingASetOfBoxes.clickNext}</p>`,
         ]
@@ -456,13 +513,15 @@ const instructionsIncentivesSpanMPL= {
         <br>
         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
-        <p>${language.instructionsSpanInMPL.lettersOrder}</p>
-        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
-            <br>
+        <p>${language.instructionsSpanInMPL.lettersOrder}</p>`,
+
+        `<h2>${language.instructionsSpanInMPL.title}</h2>
         <h3>${language.instructionsSpanInMPL.incentives}</h3>
         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", bonusSpan)}</p>
-        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
-        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)}</p>
+        <ul>
+        <li>${language.instructionsSpanInMPL.incentivesSpanDetails}</li>
+        <li>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)}</li>
+        </ul>
         <p>${language.instructionsSpanInMPL.randomMechanism}</p>
         <p>${language.instructionsSpanInMPL.priority}</p>
         <br>
@@ -497,7 +556,7 @@ const comprehensionQuestionsMPLLottery = {
     questions: [
         {
             prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPLLottery.q1.prompt}</p>`,
+            <p>${language.comprehensionQMPLLottery.q1.promptMain}</p>`,
             options: [
                 language.comprehensionQMPLLottery.q1.options[0],
                 language.comprehensionQMPLLottery.q1.options[1],
@@ -508,7 +567,7 @@ const comprehensionQuestionsMPLLottery = {
             correct_response: 3,
         },
         {
-            prompt: language.comprehensionQMPLLottery.q2.prompt,
+            prompt: language.comprehensionQMPLLottery.q2.promptMain,
             options: [
                 language.comprehensionQMPLLottery.q2.options[0],
                 language.comprehensionQMPLLottery.q2.options[1],
@@ -519,7 +578,7 @@ const comprehensionQuestionsMPLLottery = {
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPLLottery.q3.prompt,
+            prompt: language.comprehensionQMPLLottery.q3.promptMain,
             options: [
                 language.comprehensionQMPLLottery.q3.options[0],
                 language.comprehensionQMPLLottery.q3.options[1],
@@ -530,7 +589,7 @@ const comprehensionQuestionsMPLLottery = {
             correct_response: 3,
         },
         {
-            prompt: language.comprehensionQMPLLottery.q4.prompt,
+            prompt: language.comprehensionQMPLLottery.q4.promptMain,
             options: [
                 language.comprehensionQMPLLottery.q4.options[0],
                 language.comprehensionQMPLLottery.q4.options[1],
@@ -541,16 +600,16 @@ const comprehensionQuestionsMPLLottery = {
             correct_response: 1,
         },
         {
-            prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            prompt: `<br><br>${example9MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPLLottery.q5.prompt}</p>`,
             options: [
-                language.comprehensionQMPLLottery.q5.options[0],
-                language.comprehensionQMPLLottery.q5.options[1],
-                language.comprehensionQMPLLottery.q5.options[2],
-                language.comprehensionQMPLLottery.q5.options[3]
+                language.comprehensionQMPLLottery.q5.optionsMain[0],
+                language.comprehensionQMPLLottery.q5.optionsMain[1],
+                language.comprehensionQMPLLottery.q5.optionsMain[2],
+                language.comprehensionQMPLLottery.q5.optionsMain[3]
             ],
             required: true,
-            correct_response: 3,
+            correct_response: 2,
         },
     ],
     button_label: language.button.next,
@@ -561,7 +620,7 @@ const comprehensionQuestionsMPLLottery = {
         ${language.button.help || "Help"}
     </button>
     </div>
-    <h2>${language.comprehensionMPLIntro}</h2>
+    <h2>${language.comprehensionMPLIntro.titleMain}</h2>
     <h3>${language.comprehensionMPLExplanation.replace('{notUnderstoodPayment}', Math.round(notUnderstoodPayment*100)/100).replace('{buttonHelp}', language.button.help)}</h3>
     <br><br>`,
     on_finish: function (data) {
@@ -648,13 +707,148 @@ const comprehensionQuestionsMPLLottery = {
 }
 };
 
+const comprehensionQuestionsMPLLotteryTraining = {
+    ...comprehensionQuestionsMPLLottery,
+    data: {task: 'comprehensionSurveyMPLLotteryTraining'},
+    // Provide placeholder prompts; real HTML will be set in on_start
+    questions: [
+        { prompt: "", options: [
+                language.comprehensionQMPLLottery.q1.options[0],
+                language.comprehensionQMPLLottery.q1.options[1],
+                language.comprehensionQMPLLottery.q1.options[2],
+                language.comprehensionQMPLLottery.q1.options[3]
+            ], required: true, correct_response: 3 },
+        { prompt: "", options: [
+                language.comprehensionQMPLLottery.q4.options[0],
+                language.comprehensionQMPLLottery.q4.options[1],
+                language.comprehensionQMPLLottery.q4.options[2],
+                language.comprehensionQMPLLottery.q4.options[3]
+            ], required: true, correct_response: 1 },
+        { prompt: "", options: [
+                language.comprehensionQMPLLottery.q2.options[0],
+                language.comprehensionQMPLLottery.q2.options[1],
+                language.comprehensionQMPLLottery.q2.options[2],
+                language.comprehensionQMPLLottery.q2.options[3]
+            ], required: true, correct_response: 1 },
+        { prompt: "", options: [
+                language.comprehensionQMPLLottery.q3.options[0],
+                language.comprehensionQMPLLottery.q3.options[1],
+                language.comprehensionQMPLLottery.q3.options[2],
+                language.comprehensionQMPLLottery.q3.options[3]
+            ], required: true, correct_response: 3 },
+        { prompt: "", options: [
+                language.comprehensionQMPLLottery.q5.optionsTraining[0],
+                language.comprehensionQMPLLottery.q5.optionsTraining[1],
+                language.comprehensionQMPLLottery.q5.optionsTraining[2],
+                language.comprehensionQMPLLottery.q5.optionsTraining[3]
+            ], required: true, correct_response: 2 }
+    ],
+    button_label: language.button.next,
+    randomize_question_order : false,
+    preamble: `
+    <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+    <button type="button" id="help-button-comprehension" style="padding: 16px 34px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px;">
+        ${language.button.help || "Help"}
+    </button>
+    </div>
+    <h2>${language.comprehensionMPLIntro.titleTraining}</h2>
+    <br><br>`,
+    on_start: function(trial) {
+        // Build each prompt as a string (functions in question.prompt are not executed)
+        let q = trial.questions;
+
+        q[0].prompt = `${example8MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p>${language.comprehensionQMPLLottery.q1.promptTraining}</p>`;
+        if (showExplanationsQuestionsLotteries) {
+            q[0].prompt += `
+            <div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLLottery.q1.explanation || "The correct answer is option 1 because the mirror boxes contain the same amount as the sure option."}
+            </div>`;
+        }
+
+        q[1].prompt = `${language.comprehensionQMPLLottery.q4.promptTraining}`;
+        if (showExplanationsQuestionsLotteries) {
+            q[1].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLLottery.q4.explanation}</div>`;
+        }
+
+        q[2].prompt = `${language.comprehensionQMPLLottery.q2.promptTraining}`;
+        if (showExplanationsQuestionsLotteries) {
+            q[2].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLLottery.q2.explanation}</div>`;
+        }
+
+        q[3].prompt = `${language.comprehensionQMPLLottery.q3.promptTraining}`;
+        if (showExplanationsQuestionsLotteries) {
+            q[3].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLLottery.q3.explanation}</div>`;
+        }
+
+        q[4].prompt = `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+                <p>${language.comprehensionQMPLLottery.q5.prompt}</p>`;
+        if (showExplanationsQuestionsLotteries) {
+            q[4].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                        ${language.comprehensionQMPLLottery.q5.explanation}
+                    </div>`;
+        }
+
+        // ensure trial.questions updated
+        trial.questions = q;
+    },
+    on_finish: function (data) {
+        const responses = JSON.parse(data.responses);
+        
+        let all_correct = true;
+        let questions_correct = []; // Array to track which questions were correct
+        let questions_incorrect = []; // Array to track which questions were incorrect
+
+        comprehensionQuestionsMPLLotteryTraining.questions.forEach((q, i) => {
+            const given_answer = responses["Q" + i];
+            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
+            const is_correct = given_answer == correct_text;
+            
+            if (is_correct) {
+                questions_correct.push(i + 1); // Store 1-based question numbers
+                console.log("question ", i + 1, " is correct");
+            } else {
+                questions_incorrect.push(i + 1);
+                all_correct = false;
+                console.log("question ", i + 1, " is incorrect");
+            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`); }
+        });
+
+        // Save comprehensive results to trial data
+        data.all_correct = all_correct;
+        data.questions_correct = questions_correct;
+        data.questions_incorrect = questions_incorrect;
+        data.num_correct = questions_correct.length;
+        console.log("data.num_correct at comprehension questions lottery training is ", data.num_correct);
+        data.num_incorrect = questions_incorrect.length;
+
+    },
+    on_load: function() {
+        // Add click handler for help button
+        const helpButton = document.getElementById('help-button-comprehension');
+        if (helpButton) {
+        helpButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+
+                // Check if modal is already open
+                if (!document.getElementById('instruction-modal')) {
+                    showInstructionModalForQuestions("lottery"); // or "mirror"
+                }
+            });
+        }
+    }
+}
+
 const comprehensionQuestionsMPLMirror = {
     ...comprehensionQuestionsMPLLottery,
     data: {task: 'comprehensionSurveyMPLMirror'},
         questions: [
         {
             prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPLMirror.q1.prompt}</p>`,
+            <p>${language.comprehensionQMPLMirror.q1.promptMain}</p>`,
             options: [
                 language.comprehensionQMPLMirror.q1.options[0],
                 language.comprehensionQMPLMirror.q1.options[1],
@@ -665,7 +859,7 @@ const comprehensionQuestionsMPLMirror = {
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPLMirror.q2.prompt,
+            prompt: language.comprehensionQMPLMirror.q2.promptMain,
             options: [
                 language.comprehensionQMPLMirror.q2.options[0],
                 language.comprehensionQMPLMirror.q2.options[1],
@@ -676,7 +870,7 @@ const comprehensionQuestionsMPLMirror = {
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPLMirror.q3.prompt,
+            prompt: language.comprehensionQMPLMirror.q3.promptMain,
             options: [
                 language.comprehensionQMPLMirror.q3.options[0],
                 language.comprehensionQMPLMirror.q3.options[1],
@@ -687,7 +881,7 @@ const comprehensionQuestionsMPLMirror = {
             correct_response: 1,
         },
         {
-            prompt: language.comprehensionQMPLMirror.q4.prompt,
+            prompt: language.comprehensionQMPLMirror.q4.promptMain,
             options: [
                 language.comprehensionQMPLMirror.q4.options[0],
                 language.comprehensionQMPLMirror.q4.options[1],
@@ -698,16 +892,16 @@ const comprehensionQuestionsMPLMirror = {
             correct_response: 4,
         },
         {
-            prompt: `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            prompt: `<br><br>${example9MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p>${language.comprehensionQMPLMirror.q5.prompt}</p>`,
             options: [
-                language.comprehensionQMPLMirror.q5.options[0],
-                language.comprehensionQMPLMirror.q5.options[1],
-                language.comprehensionQMPLMirror.q5.options[2],
-                language.comprehensionQMPLMirror.q5.options[3]
+                language.comprehensionQMPLMirror.q5.optionsMain[0],
+                language.comprehensionQMPLMirror.q5.optionsMain[1],
+                language.comprehensionQMPLMirror.q5.optionsMain[2],
+                language.comprehensionQMPLMirror.q5.optionsMain[3]
             ],
             required: true,
-            correct_response: 3,
+            correct_response: 2,
         },
 
     ],
@@ -720,7 +914,7 @@ const comprehensionQuestionsMPLMirror = {
         ${language.button.help || "Help"}
     </button>
     </div>
-    <h2>${language.comprehensionMPLIntro}</h2>
+    <h2>${language.comprehensionMPLIntro.titleMain}</h2>
     <h3>${language.comprehensionMPLExplanation.replace('{notUnderstoodPayment}', Math.round(notUnderstoodPayment*100)/100).replace('{buttonHelp}', language.button.help)}</h3>
     <br><br>`,
     on_finish: function (data) {
@@ -803,6 +997,142 @@ const comprehensionQuestionsMPLMirror = {
         }
 }
 }
+
+const comprehensionQuestionsMPLMirrorTraining = {
+    ...comprehensionQuestionsMPLLottery,
+    data: {task: 'comprehensionSurveyMPLMirrorTraining'},
+    // Provide placeholder prompts; real HTML will be set in on_start
+    questions: [
+        { prompt: "", options: [
+                language.comprehensionQMPLMirror.q1.options[0],
+                language.comprehensionQMPLMirror.q1.options[1],
+                language.comprehensionQMPLMirror.q1.options[2],
+                language.comprehensionQMPLMirror.q1.options[3]
+            ], required: true, correct_response: 1 },
+        { prompt: "", options: [
+                language.comprehensionQMPLMirror.q4.options[0],
+                language.comprehensionQMPLMirror.q4.options[1],
+                language.comprehensionQMPLMirror.q4.options[2],
+                language.comprehensionQMPLMirror.q4.options[3]
+            ], required: true, correct_response: 4 },
+        { prompt: "", options: [
+                language.comprehensionQMPLMirror.q2.options[0],
+                language.comprehensionQMPLMirror.q2.options[1],
+                language.comprehensionQMPLMirror.q2.options[2],
+                language.comprehensionQMPLMirror.q2.options[3]
+            ], required: true, correct_response: 1 },
+        { prompt: "", options: [
+                language.comprehensionQMPLMirror.q3.options[0],
+                language.comprehensionQMPLMirror.q3.options[1],
+                language.comprehensionQMPLMirror.q3.options[2],
+                language.comprehensionQMPLMirror.q3.options[3]
+            ], required: true, correct_response: 1 },
+        { prompt: "", options: [
+                language.comprehensionQMPLMirror.q5.optionsTraining[0],
+                language.comprehensionQMPLMirror.q5.optionsTraining[1],
+                language.comprehensionQMPLMirror.q5.optionsTraining[2],
+                language.comprehensionQMPLMirror.q5.optionsTraining[3]
+            ], required: true, correct_response: 2 }
+    ],
+    button_label: language.button.next,
+    randomize_question_order : false,
+    preamble: `
+    <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+    <button type="button" id="help-button-comprehension" style="padding: 16px 34px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px;">
+        ${language.button.help || "Help"}
+    </button>
+    </div>
+    <h2>${language.comprehensionMPLIntro.titleTraining}</h2>
+    <br><br>`,
+    on_start: function(trial) {
+        // Build each prompt as a string (functions in question.prompt are not executed)
+        let q = trial.questions;
+
+        q[0].prompt = `${example8MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p>${language.comprehensionQMPLMirror.q1.promptTraining}</p>`;
+        if (showExplanationsQuestionsMirrors) {
+            q[0].prompt += `
+            <div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLMirror.q1.explanation || "The correct answer is option 1 because the mirror boxes contain the same amount as the sure option."}
+            </div>`;
+        }
+
+        q[1].prompt = `${language.comprehensionQMPLMirror.q4.promptTraining}`;
+        if (showExplanationsQuestionsMirrors) {
+            q[1].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLMirror.q4.explanation}</div>`;
+        }
+
+        q[2].prompt = `${language.comprehensionQMPLMirror.q2.promptTraining}`;
+        if (showExplanationsQuestionsMirrors) {
+            q[2].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLMirror.q2.explanation}</div>`;
+        }
+
+        q[3].prompt = `${language.comprehensionQMPLMirror.q3.promptTraining}`;
+        if (showExplanationsQuestionsMirrors) {
+            q[3].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                ${language.comprehensionQMPLMirror.q3.explanation}</div>`;
+        }
+
+        q[4].prompt = `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+                <p>${language.comprehensionQMPLMirror.q5.prompt}</p>`;
+        if (showExplanationsQuestionsMirrors) {
+            q[4].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
+                        ${language.comprehensionQMPLMirror.q5.explanation || "The correct answer is option 3."}
+                    </div>`;
+        }
+
+        // ensure trial.questions updated
+        trial.questions = q;
+    },
+    on_finish: function (data) {
+        const responses = JSON.parse(data.responses);
+        
+        let all_correct = true;
+        let questions_correct = []; // Array to track which questions were correct
+        let questions_incorrect = []; // Array to track which questions were incorrect
+
+        comprehensionQuestionsMPLMirrorTraining.questions.forEach((q, i) => {
+            const given_answer = responses["Q" + i];
+            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
+            const is_correct = given_answer == correct_text;
+            
+            if (is_correct) {
+                questions_correct.push(i + 1); // Store 1-based question numbers
+                console.log("question ", i + 1, " is correct");
+            } else {
+                questions_incorrect.push(i + 1);
+                all_correct = false;
+                console.log("question ", i + 1, " is incorrect");
+            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`); }
+        });
+
+        // Save comprehensive results to trial data
+        data.all_correct = all_correct;
+        data.questions_correct = questions_correct;
+        data.questions_incorrect = questions_incorrect;
+        data.num_correct = questions_correct.length;
+        console.log("data.num_correct at comprehension questions mirror training is ", data.num_correct);
+        data.num_incorrect = questions_incorrect.length;
+
+    },
+    on_load: function() {
+        // Add click handler for help button
+        const helpButton = document.getElementById('help-button-comprehension');
+        if (helpButton) {
+        helpButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+
+                // Check if modal is already open
+                if (!document.getElementById('instruction-modal')) {
+                    showInstructionModalForQuestions("mirror"); // or "lottery"
+                }
+            });
+        }
+    }
+}
+
 
 const comprehensionFailureTrial = {
     type: "html-keyboard-response",
@@ -1033,7 +1363,34 @@ const loopAgainSpanMplMirror = {
     button_label_next: language.button.next,
     button_label_previous: language.button.previous,
 }
-
+const loopAgainSpanMplTraining = {
+    type: "instructions",
+    pages: function () {
+        return [
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMplTraining.title}</p>
+        <p>${language.loopAgainSpanMplTraining.surveyAgain}</p>
+        <p>${language.loopAgainSpanMplTraining.readInstructions}</p>
+        <p>${language.loopAgainSpanMplTraining.clickNext}</p>
+        </div>`
+    ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
+const continueToComprehensionQuestions = {
+    type: "instructions",
+    pages: function () {
+        return [
+        `<div style="max-width: 1200px"> <p>${language.continueToComprehensionQuestions.title}</p>
+        <p>${language.continueToComprehensionQuestions.clickNext}</p>
+        </div>`
+    ]
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+}
 
 const instructions_flanker_1 = {
 	type: "html-button-response",
@@ -4320,8 +4677,10 @@ const feedbackExampleSpanMPL = {
     html = 
     `<h2>${language.feedbackExampleSpanMPL.title}</h2>
     <p>${language.feedbackExampleSpanMPL.description}<p>
-    <p>${language.feedbackExampleSpanMPL.paymentSpan.replace('{thePresentedDigitWas}', thePresentedDigitWas).replace('{correctSpan}', correctSpan).replace('{theDigit}', theDigit).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</p>
-    <p>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}</p>
+    <ul>
+    <li>${language.feedbackExampleSpanMPL.paymentSpan.replace('{thePresentedDigitWas}', thePresentedDigitWas).replace('{correctSpan}', correctSpan).replace('{theDigit}', theDigit).replace('{answerSpan}', answerSpan).replace('{precision}', Math.round(accuracy*100)).replace('{bonusSpan}',bonusSpan).replace('{precision}', Math.round(accuracy*100)).replace('{paymentSpan}', Math.round(actual_payment_span_mpl*100)/100)}</li>
+    <li>${language.feedbackExampleSpanMPL.paymentMPL.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}</li>
+    </ul>
     <div class="important-note">                     
     💡 ${language.feedbackExampleSpanMPL.remind.replace('{propSelecForMPL}', propSelecForMPL)} 
     </div>
@@ -4646,6 +5005,41 @@ const comprehensionQuestionsMPLLotteryWithCheck = {
     }
 };
 
+const comprehensionQuestionsMPLLotteryTrainingWithCheck = {
+    timeline: [
+        comprehensionQuestionsMPLLotteryTraining,
+        {
+            timeline: [loopAgainSpanMplTraining],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                // return last && last.questions_correct.length == 4;
+                showExplanationsQuestionsLotteries = true;
+                return last && last.questions_correct.length < 5;
+            }
+        },
+        {
+            timeline: [continueToComprehensionQuestions],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                // return last && last.questions_correct.length == 4;
+                return last && last.questions_correct.length == 5;
+            }
+        },
+
+    ],
+        loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
+        return !(last && last.questions_correct.length === 5);
+    }
+};
+
+
 const comprehensionQuestionsMPLMirrorWithCheck = {
     timeline: [
         comprehensionQuestionsMPLMirror,
@@ -4678,6 +5072,40 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
     }
 };
 
+const comprehensionQuestionsMPLMirrorTrainingWithCheck = {
+    timeline: [
+        comprehensionQuestionsMPLMirrorTraining,
+        {
+            timeline: [loopAgainSpanMplTraining],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                // return last && last.questions_correct.length == 4;
+                showExplanationsQuestionsMirrors = true;
+                return last && last.questions_correct.length < 5;
+            }
+        },
+        {
+            timeline: [continueToComprehensionQuestions],
+            conditional_function: function() {
+                const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
+                console.log("Checking comprehension results:", last);
+                console.log("last.questions_correct.length is ", last.questions_correct.length);
+                // Check if fewer than 4 questions were correct
+                // return last && last.questions_correct.length == 4;
+                return last && last.questions_correct.length == 5;
+            }
+        },
+
+    ],
+        loop_function: function() {
+        const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
+        return !(last && last.questions_correct.length === 5);
+    }
+};
+
 const timelineTrainingSpanMPLTrial= {
     timeline : [blockIsTraining, mpl_trial_training],
     timeline_variables: training_mpl_html_array,
@@ -4691,19 +5119,19 @@ const timelineExampleSpanMPLTrialLottery= {
     timeline_variables: example_mpl_html_array_lottery,
 }
 const timelineFirstInstructionsLottery = {
-    timeline: [instructionsSpanMPLLottery, comprehensionQuestionsMPLLotteryWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialLottery],
+    timeline: [instructionsSpanMPLLottery, comprehensionQuestionsMPLLotteryTrainingWithCheck, comprehensionQuestionsMPLLotteryWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialLottery],
     conditional_function: function() { return fdsTrialNum == 1; }
 }
 const timelineFirstInstructionsMirror = {
-    timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirrorWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialMirror],
+    timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirrorTrainingWithCheck, comprehensionQuestionsMPLMirrorWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialMirror],
     conditional_function: function() { return fdsTrialNum == 1; }
 }
 const timelineSecondInstructionsLottery = {
-    timeline: [changePaymentRule, instructionsPaymentRuleLottery, comprehensionQuestionsMPLLotteryWithCheck],
+    timeline: [changePaymentRule, instructionsPaymentRuleLottery, comprehensionQuestionsMPLLotteryTrainingWithCheck, comprehensionQuestionsMPLLotteryWithCheck],
     conditional_function: function() { return fdsTrialNum == 1; }
 };
 const timelineSecondInstructionsMirror = {
-    timeline: [changePaymentRule, instructionsPaymentRuleMirror, comprehensionQuestionsMPLMirrorWithCheck],
+    timeline: [changePaymentRule, instructionsPaymentRuleMirror, comprehensionQuestionsMPLMirrorTrainingWithCheck, comprehensionQuestionsMPLMirrorWithCheck],
     conditional_function: function() { return fdsTrialNum == 1; }
 };
 const timeline_spanMPL_lottery = {
@@ -4724,14 +5152,13 @@ if (Math.random() < 0.5) {
     timeline_spanMPL_lottery.timeline.splice(1, 0, timelineFirstInstructionsLottery);
     timeline_spanMPL_mirror.timeline.splice(1, 0, timelineSecondInstructionsMirror);
     console.log(block_order_indicator_span_MPL)
-    
 } else {
     experimentBlocks_span_MPL = [timeline_spanMPL_mirror, timeline_spanMPL_lottery /*, timeline_spanMPL_easy_mirror, timeline_spanMPL_easy_lottery*/];
     block_order_indicator_span_MPL = "mirror_first";
     timeline_spanMPL_mirror.timeline.splice(1, 0, timelineFirstInstructionsMirror);
     timeline_spanMPL_lottery.timeline.splice(1, 0, timelineSecondInstructionsLottery);
     console.log(block_order_indicator_span_MPL);
-}
+ }
 
 const experiment_span_MPL = {
     timeline: experimentBlocks_span_MPL,
@@ -4807,7 +5234,7 @@ randomize_order: true,
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push({type: "fullscreen", fullscreen_mode: true}, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push({type: "fullscreen", fullscreen_mode: true}, experiment_span_MPL, welcome, consentForm, demographics_age_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl, /* 
 descriptionExperimentNback, instructions_NbackVisual, startPractice, loopPracticeNbackVisual_nback_nback, passPracAndPracIndReset, experiment_nback_nback, */
     /*instructions_span, experiment_nback_span, incentives_span_mpl,

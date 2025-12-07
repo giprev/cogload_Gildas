@@ -8,6 +8,7 @@ library(rstatix)
 library(estimatr)
 library(ggplot2)
 library(purrr)
+
 rm(list = ls())
 
 setwd("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis")
@@ -182,8 +183,13 @@ extractMplDataframes <- function(dataPerParticipant) {
 
   # Filter data for the conditions you specified
   mpl_data <- dataPerParticipant %>%
+      mutate(rtSpanMpl = case_when(
+          (block == "span_mpl" & task == "mpl") ~ lead(rt),
+          TRUE ~ NA
+        )
+      ) %>%
     filter(!is.na(mplType) & !is.null(mplType) & mplType != "" & block == "span_mpl" & task == "mpl")
-
+  
   # Check if we have any data
   if(nrow(mpl_data) == 0) {
     warning("No data found matching the criteria")
@@ -230,6 +236,7 @@ extractMplDataframes <- function(dataPerParticipant) {
           )
           surePayments <- createSequenceArray(y_value, X_value, position) # CAUTION if no switch sr1 = sr2 = -1 !!! Then need to see if choices only lotteries or only mirror
           # cat("surePayments defined with position =", position)
+          
           if (switch_row1 == -1 & switch_row2 == -1) {
             noSwitchCounter <<- noSwitchCounter + 1
             if ((isLotteryFirst == TRUE & status_mpl =="lottery") | (isLotteryFirst == FALSE & status_mpl =="mirror")) {
@@ -243,7 +250,7 @@ extractMplDataframes <- function(dataPerParticipant) {
 
             varName <- paste0("noSwitchCounter_", mpl_type, "_", status_mpl)
             noSwitchCounters[[varName]] <<- noSwitchCounters[[varName]] + 1
-            cat("noSwitchCounters[[varName]]=", noSwitchCounters[[varName]], " for ", varName, "\n")
+            #cat("noSwitchCounters[[varName]]=", noSwitchCounters[[varName]], " for ", varName, "\n")
             #cat("noSwitchCounter updated and is now", noSwitchCounter, "\n")
             if (X_value == "A") {
               if (all(choices == "lottery")) {
@@ -281,7 +288,8 @@ extractMplDataframes <- function(dataPerParticipant) {
                 cat ("switch_row1 = -1 and switch_row2 = -1 but calculation failed, ev is NA\n")
               }
           }
-          ev_value <- NA # if we trials without switching points
+          #ev_value <- NA # if we trials without switching points
+          #cat("ev_value is NA/n")
           } else {
             if (X_value == "A") {
                 ev_value <- (y_value - ((surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1])/2))/2 # 50% chance of positive amount and 50% chance of - 10
@@ -298,11 +306,13 @@ extractMplDataframes <- function(dataPerParticipant) {
     final_subset <- subset_data %>%
       select(
         ev = ev,
-        rt = rt,
+        rtChoice = rt,
+        rtSpanMpl = rtSpanMpl,
         subBlockNumber = subBlock,
         accuracy = accuracy,
         position = position
       )
+    
     
     # Create dataframe name
     df_name <- paste0(mpl_type, "_", status_mpl)
@@ -352,6 +362,7 @@ for(mpl_type in mpl_types) {
 }
 
 
+
 for (iSub in 1:nSub) {
   
     partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
@@ -367,6 +378,7 @@ for (iSub in 1:nSub) {
     participant_id <- as.character(dataPerParticipant[1,'subject'])
 
     dataPerParticipant <- dataPerParticipant %>% rename_at('statusMPL', ~'statusMpl')
+    
     
     completionCountLottery <- max(dataPerParticipant$failedQuestionsCountLottery, na.rm=TRUE)
     completionCountMirror <- max(dataPerParticipant$failedQuestionsCountMirror, na.rm=TRUE)
@@ -554,6 +566,10 @@ for (iSub in 1:nSub) {
         wrongAnswerCountLottery = ifelse(length(wrongAnswerCountLottery)>0, wrongAnswerCountLottery, NA),
         wrongAnswerCountMirror = ifelse(length(wrongAnswerCountMirror)>0,wrongAnswerCountMirror, NA),
         noSwitchCounter = noSwitchCounter - noSwitchCounterBeginning,
+        noSwitchCounterFirstPart = noSwitchCounterFirstPart,
+        noSwitchCounterSecondPart = noSwitchCounterSecondPart,
+        noSwitchCounterLottery = noSwitchCounterLottery,
+        noSwitchCounterMirror = noSwitchCounterMirror,
         payment_spanMpl = payment_spanMpl,
         # payment_mpl = payment_mpl,
         payment_spanSpan = payment_spanSpan,
@@ -565,7 +581,7 @@ for (iSub in 1:nSub) {
     mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", "L75", "L90", "A10", "A15",
                     "GS10", "GS25", "GS50", "GS75", "GS90", "LS10", "LS25", "LS50", "LS75", "LS90", "AS10", "AS15")
     status_types <- c("mirror", "lottery")
-    column_types <- c("ev", "rt", "subBlockNumber", "accuracy", "position")
+    column_types <- c("ev", "rtChoice", "subBlockNumber", "accuracy", "position", "rtSpanMpl")
 
     # Initialize ALL possible MPL columns with NA values first
     for(mpl_type in mpl_types) {
@@ -582,7 +598,7 @@ for (iSub in 1:nSub) {
         df_data <- mpl_dataframes[[df_name]]
         
         # Get all column names from this dataframe
-        col_names <- names(df_data) # ev, rt, subBlockNumber, accuracy
+        col_names <- names(df_data) # ev, rtChoice, subBlockNumber, accuracy, rtSpanMpl
         
         # For each column in the dataframe, update the corresponding column in participant_row
         for(col_name in col_names) {
@@ -608,13 +624,14 @@ for (iSub in 1:nSub) {
         next  # Skip to the next iteration
     }
     
-
+    
     # Add to final dataset
     if(nrow(final_data) == 0) {
         final_data <- participant_row
     } else {
         final_data <- rbind(final_data, participant_row)
     }
+    
     
     # Add to final dataset 2
     if(nrow(final_data_2) == 0) {
@@ -626,13 +643,13 @@ for (iSub in 1:nSub) {
     cat("Processed participant", iSub, "\n")
 
 }
-view(dataPerParticipant)
-#view(dataPerParticipant_2)
-#view(final_data_2)
-view(final_data)
-tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
 
+#view(final_data_2)
+
+tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
 tableNoSwitchByPosition
+
+
 
 
 
@@ -641,7 +658,7 @@ tableNoSwitchByPosition
 dfA <- final_data %>%
   # Keep all demographic/payment columns as-is, pivot only MPL columns
   pivot_longer(
-    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_(ev|rt|subBlockNumber|accuracy)$"),  # Match MPL pattern
+    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_(ev|rtChoice|rtSpanMpl|subBlockNumber|accuracy)$"),  # Match MPL pattern
     names_to = c("mplType", "status", "measure"),
     names_sep = "_" # Split at the first underscore
   ) %>%
@@ -700,17 +717,326 @@ dfA <- final_data %>%
 
 
 
-#view(dfA)
-dfA$mirror_accuracy
-dfA$lottery_accuracy
-sum(!is.na(dfA$mirror_accuracy))
 
 
+  
 
 
 #------------- Data analysis -----------#
 
-plot_precision_cogload <- final_data_2 %>%
+
+
+
+# Cognitive load analysis (on span)
+#view(dfA)
+
+#Distribution of maximum span length
+spanLengthData <- final_data %>%
+  pull(spanLength)
+spanLengthData
+
+df_span <- tibble::tibble(spanLength = spanLengthData)
+
+p_span <- ggplot(df_span, aes(x = spanLength)) +
+  geom_histogram(binwidth = 1, boundary = 0.5, colour = "white", fill = "#2c7fb8") +
+  scale_x_continuous(breaks = seq(min(spanLengthData, na.rm = TRUE),
+                                  max(spanLengthData, na.rm = TRUE), by = 1)) +
+  labs(#title = "Distribution of maximum span length",
+       x = "Span length",
+       y = "Count") +
+  theme_minimal(base_size = 14)
+p_span<-annotate_figure(p_span, top = text_grob("Distribution of maximum span length", face = "bold", size = 14))
+
+
+print(p_span)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "p_span.pdf"),
+       plot = p_span, device = "pdf", width = 6, height = 4)
+
+
+
+# Distribution of mean accuracy in source vs target span
+
+# table of mean accuracy in source vs target span
+mean_accuracy_perParticipants <- final_data_2 %>%
+  filter(block == "spanSpan" & task == "spanTest") %>%
+  group_by(subject, treatment, letterType) %>%
+  summarise(
+    mean_accuracy_pp = mean(accuracy, na.rm = TRUE),
+    spanLength = unique(spanLength)[[1]],
+    rt_r = mean(rt),
+    .groups = "drop") %>%
+  mutate(
+    letterType = dplyr::recode(letterType, `1` = "source", `2` = "target"),
+    treatment = dplyr::recode(treatment, `easy` = "control", `hard` = "cognitive load")) %>%
+  #group_by(treatment)%>%
+  pivot_wider(
+    names_from = letterType, 
+    values_from = c(mean_accuracy_pp, rt_r),
+    names_glue = "{.value}_{letterType}"
+  ) %>% 
+  ungroup() %>%
+  rename(
+    accuracy_source = mean_accuracy_pp_source,
+    accuracy_target = mean_accuracy_pp_target,
+    rt_target = rt_r_target
+  ) %>%    
+  left_join( # add rt_m_source separately
+    final_data_2 %>%
+      filter(
+        str_detect(stimulus, regex("Vous allez voir les chiffres <span style='color: red'>rouges</span>\\.", ignore_case = TRUE)) 
+        & trial_type == "html-button-response") %>%
+      group_by(subject, treatment) %>%
+      summarise(rt_m_source = mean(rt), .groups= "drop") %>%
+      mutate(treatment = dplyr::recode(treatment, `easy` = "control", `hard` = "cognitive load")),
+    by = c("subject", "treatment")
+  ) %>%
+  rowwise() %>%
+  mutate(
+    accuracy_difference = accuracy_source - accuracy_target,
+    rt_difference = rt_r_source - rt_target
+  ) %>% ungroup()
+
+mean_accuracy_perParticipants
+
+# impact of memory load on memory performance check
+
+# Create the plot: accuracy source vs target in cog load vs control condition
+makePlotAccuracySourceVsTarget <- function (data) {
+  
+  data <- data %>% 
+    group_by(treatment) %>%
+    summarise(
+    n = sum(!is.na(accuracy_source) & !is.na(accuracy_target)),
+    mean_source = mean(accuracy_source, na.rm = TRUE),
+    se_source = sd(accuracy_source)/sqrt(n),
+    mean_target = mean(accuracy_target, na.rm = TRUE),
+    se_target = sd(accuracy_target)/sqrt(n),
+    p_value = ifelse(n >= 2, t.test(accuracy_source, accuracy_target, paired = TRUE)$p.value),
+    .groups = "drop"
+  )
+  
+  plots <- list()
+
+  for (i in 1:nrow(data)){
+    
+    row <-  data[i, ]
+    
+    df_plot <- tibble::tibble(
+      letterType = c("source", "target"), accuracy=c(row$mean_source, row$mean_target), se=c(row$se_source, row$se_target)
+      )
+    
+    manual_p <- tibble(
+      group1 = "source", group2 = "target", 
+      p= round(row$p_value,3))
+
+    p_i <- ggbarplot(
+      df_plot, 
+      x = "letterType", 
+      y = "accuracy",
+      color = "letterType",
+      fill = "letterType",
+      palette = c("#00AFBB", "#E7B800"),  # 
+      position = position_dodge(0.8),
+      alpha = 0.2,
+      size = 0.8,
+      width = 0.6,
+    ) +
+      geom_errorbar(
+        aes(ymin = accuracy - se, ymax = accuracy + se),
+        width = 0.2,
+        position = position_dodge(0.8)
+      ) +
+      # Add horizontal line for chance level
+      geom_hline(
+        yintercept = 1/9, 
+        linetype = "dashed", 
+        color = "red", 
+        linewidth = 1
+      ) +
+      # Add chance level annotation
+      annotate(
+        "text", 
+        x = 1.5, 
+        y = 1/9 + 0.02, 
+        label = paste0("Chance level = ", round(1/9, 3)), 
+        color = "red", 
+        size = 3.5
+      ) +
+      # Add statistical comparison
+      stat_pvalue_manual(
+        manual_p, 
+        label = "p = {p}",
+        tip.length = -0.01,
+        y.position = max(df_plot$accuracy, na.rm = TRUE) - 0.2
+      ) +
+      # Customize appearance
+      labs(
+        #title = "Accuracy in source vs target task",
+        #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+        x = data$treatment[[i]],
+        y = "Accuracy",
+        caption = "Error bars = s.e. of the mean on each side"
+      ) +
+      theme_pubr() +
+      theme(
+        legend.position = "none",
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)
+      ) +
+      scale_y_continuous(
+        limits = c(0, 1),
+        breaks = seq(0, 1, 0.1),
+        labels = scales::percent_format(accuracy = 1)
+      )
+    plots[[i]] <- p_i
+  }
+  # arrange side-by-side (will handle 1 or 2 rows automatically)
+  ncol <- min(2, length(plots))
+  combined <- ggpubr::ggarrange(plotlist = plots, ncol = ncol, nrow = ceiling(length(plots)/ncol))
+  combined<-annotate_figure(combined, top = text_grob("Accuracy in source vs target task depending on cognitive load", face = "bold", size = 14))
+  return(combined)
+}
+barPlotAccuracySourceVsTarget <- makePlotAccuracySourceVsTarget(mean_accuracy_perParticipants)
+barPlotAccuracySourceVsTarget
+
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "barPlotAccuracySourceVsTarget.pdf"),
+       plot = barPlotAccuracySourceVsTarget, device = "pdf", width = 8, height = 5)
+
+
+
+
+makeScatterPlotAccuracyOnSpan <- function (data, acc) {
+  plots <- list()
+  
+  for (i in acc){
+    ac <- i
+    
+    if (!ac %in% names(data)) {
+      plots[[i]] <- ggplot() + labs(title = paste0("variable '", ac, "' not found")) 
+      next
+    }
+  
+  if (ac == "accuracy_difference") {
+    y_limit <- c(-1, 1)
+    y_break <- seq(-1, 1, 0.2)
+    cat(y_limit, "is y_limit \n")
+  } else {
+    y_limit <- c(0, 1)
+    y_break <- seq(0, 1, 0.1)
+    cat(y_limit, "is y_limit \n")
+  }
+  
+    p <- ggscatter(
+      data, 
+      x = "spanLength", 
+      y = ac,
+      #color = "letterType",
+      #fill = "letterType",
+      #palette = c("#00AFBB", "#E7B800"),  # Easy = blue, Hard = yellow
+      add = "reg.line",
+      add.params = list(color = "blue"),
+      alpha = 0
+    ) +
+      geom_count(aes(x = spanLength, y = .data[[ac]]), colour = "black", fill = "#2c7fb8",
+                 show.legend = FALSE, alpha = 0.75) +
+      scale_size_area(max_size = 10) +
+      # Add horizontal line 
+      geom_hline(
+        yintercept = 0, 
+        linetype =  "solid", 
+        color = "black", 
+        linewidth = 0.5
+      ) +
+      # Customize appearance
+      labs(
+        #title = "Accuracy depending on maxSpan",
+        #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+        x = "maximum span achieved at calibration",
+        y = ac
+      ) +
+      theme_pubr() +
+      theme(
+        legend.position = "none",
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)
+      ) +
+      scale_y_continuous(
+        limits = y_limit,
+        breaks = y_break,
+        labels = scales::percent_format(accuracy = 1)
+      )
+    plots[[i]] <- p
+  }
+  combined <- ggpubr::ggarrange(plotlist = plots, ncol = length(plots), nrow = 1)
+  combined <- annotate_figure(combined, top = text_grob("Accuracies on maximum span achieved", face = "bold", size = 14)) # ))color = "red",
+  return(combined)
+}
+scatterAccuracyOnSpan <- makeScatterPlotAccuracyOnSpan(mean_accuracy_perParticipants, c("accuracy_source", "accuracy_target", "accuracy_difference"))
+scatterAccuracyOnSpan
+
+
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "scatterAccuracyOnSpan.pdf"),
+       plot = scatterAccuracyOnSpan, device = "pdf", width = 12, height = 8)
+
+makeScatterRTOnCogLoad <- function (data) {
+  
+      plotFunction <- function (acc, rt){
+      p <- ggscatter(
+      data, 
+      x = rt, 
+      y = acc,
+      #color = "letterType",
+      #fill = "letterType",
+      #palette = c("#00AFBB", "#E7B800"),  # Easy = blue, Hard = yellow
+      add = "reg.line",
+      add.params = list(color = "blue"),
+    ) +
+      # Customize appearance
+      labs(
+        #title = "accuracy on rt",
+        #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+        x = rt,
+        y = acc,
+        #caption = "Error bars = s.e. of the mean on each side"
+      ) +
+      theme_pubr() +
+      theme(
+        legend.position = "none",
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)
+      ) +
+      scale_y_continuous(
+        limits = c(0, 1),
+        breaks = seq(0, 1, 0.2),
+        labels = scales::percent_format(accuracy = 1)
+      )
+     
+      }
+  
+  accuracy_names <- c("accuracy_target", "accuracy_source")
+  rt_names <- c("rt_r_source", "rt_m_source", "rt_target")
+  plots <- vector("list", length(accuracy_names) * length(rt_names))
+  counter = 1
+  for (acc in accuracy_names){
+    for (rt in rt_names){
+      plots[[counter]] <- plotFunction(acc,rt)
+      counter <- counter + 1
+    }
+  }
+  
+  combined <- ggpubr::ggarrange(plotlist = plots, ncol = 3, nrow = 2)
+  combined <- annotate_figure(combined, top = text_grob("Accuracies on RT", face = "bold", size = 14))
+  
+}
+scatterRTOnCogLoad <- makeScatterRTOnCogLoad(mean_accuracy_perParticipants)
+scatterRTOnCogLoad
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "scatterRTOnCogLoad.pdf"),
+       plot = scatterRTOnCogLoad, device = "pdf", width = 12, height = 6)
+
+
+
+
+data_plot_precision_cogload <- final_data_2 %>%
 filter(
     block == "spanSpan" & task == "spanTest"
   ) %>%
@@ -725,18 +1051,24 @@ filter(
   ) %>%
   group_by(treatment)%>%
   summarise(
+    n = n(),
     accuracy = mean(accuracy_mean_participant),
-    se = sd(accuracy_mean_participant),
+    se = sd(accuracy_mean_participant)/sqrt(n),
     p.value = difference[[1]]
   ) %>% ungroup()
 
-plot_precision_cogload
+data_plot_precision_cogload
 
-# impact of memory load on memory performance check
 
-# Create the plot
-p <- ggbarplot(
-  plot_precision_cogload, 
+# comparison cogload vs control on target task (span)
+makeBarPlotCogLoadOnTargetAccuracy <- function (data) {
+  
+  manual_p <- tibble(
+    group1 = "easy", group2 = "hard", 
+    p= round(data$p.value[[1]],3))
+  
+  plot <- ggbarplot(
+  data, 
   x = "treatment", 
   y = "accuracy",
   color = "treatment",
@@ -769,19 +1101,19 @@ p <- ggbarplot(
     size = 3.5
   ) +
   # Add statistical comparison
-  #  stat_pvalue_manual(
-  #    plot_precision_cogload, 
-  #    label = "p = {p}",
-  #    tip.length = 0.01,
-  #    y.position = max(plot_data_nbackVisual$accuracy, na.rm = TRUE) + 0.05
-  #    ) +
+   stat_pvalue_manual(
+     manual_p, 
+     label = "p = {p}",
+     tip.length = -0.01,
+     y.position = max(data$accuracy, na.rm = TRUE) - 0.2
+     ) +
   # Customize appearance
   labs(
-    title = "Accuracy target task (span): cogload vs baseline treatment",
+    #title = "Accuracy target task (span): cogload vs baseline treatment",
     #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
     x = "Block Difficulty",
     y = "Accuracy",
-    caption = "Error bars represent standard error of the mean\nRed dashed line shows theoretical chance level"
+    caption = "Error bars represent s.e. of the mean\nRed dashed line shows theoretical chance level"
   ) +
   theme_pubr() +
   theme(
@@ -794,8 +1126,222 @@ p <- ggbarplot(
     breaks = seq(0, 1, 0.1),
     labels = scales::percent_format(accuracy = 1)
   )
+  plot <- annotate_figure(plot, top = text_grob("Accuracy target task (span): cogload vs baseline treatment", face = "bold", size = 14))
+  return(plot)
 
-print(p)
+}
+
+barPlotCogLoadOnTargetAccuracy <- makeBarPlotCogLoadOnTargetAccuracy(data_plot_precision_cogload)
+barPlotCogLoadOnTargetAccuracy
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "barPlotCogLoadOnTargetAccuracy.pdf"),
+       plot = barPlotCogLoadOnTargetAccuracy, device = "pdf", width = 6, height = 5)
+
+
+# analysis of the RT of choice on accuracy
+makeScatterRTOnAccuracy <- function (data) {
+  
+  plots <- list()
+  
+  makeDataForPlotFunction <- function (df, treatment_filter=NULL) {
+    
+    newDf <- df %>%
+      filter(!is.na(mplType) & !grepl("^(GS|AS|LS)", mplType)) %>% # starts_with doesn't work in filter, only for select
+      {if (!is.null(treatment_filter)) filter(., treatment == treatment_filter) else . }%>%
+      select(participant_id, mirror_rtChoice, lottery_rtChoice, mirror_rtSpanMpl, lottery_rtSpanMpl, mirror_accuracy, lottery_accuracy) %>%
+      # Pivot RTs only
+      pivot_longer(
+        cols = matches("_rt"),
+        names_to = c("condition", "rtType"),
+        names_pattern = "(mirror|lottery)_rt(.*)",
+        values_to = "rt"
+      ) %>%
+      # Pivot accuracy only
+      pivot_longer(
+        cols = ends_with("accuracy"),
+        names_to = "condition_acc",
+        names_pattern = "(mirror|lottery)_accuracy",
+        values_to = "accuracy"
+      ) %>%
+      # Keep matching accuracy per condition
+      filter(condition == condition_acc) %>%
+      select(-condition_acc)
+  }
+  
+  plotFunctionRT <- function (df, ii){
+    title_string <- {
+      if (is.null(treatment_wanted) & ii == "Choice"){paste0("accuracy on RT memorization/choice")}
+      else if (is.null(treatment_wanted) & ii == "SpanMpl"){paste0("accuracy on RT restitution")}
+      else if(ii == "Choice" & treatment_wanted == "hard"){ paste0("accuracy on RT memorization/choice, cognitive load" )}
+      else if (ii == "SpanMpl" & treatment_wanted == "hard"){ paste0("accuracy on RT restitution, cognitive load" )}
+      else if (ii == "SpanMpl" & treatment_wanted == "easy"){ paste0("accuracy on RT restitution, control" )}
+      else if (ii == "Choice" & treatment_wanted == "easy"){ paste0("accuracy on RT memorization/choice, control" )}
+    }
+    cat("title_string", title_string, " with treatment_wanted =", treatment_wanted, " and ii = ", ii , "\n")
+    dfB <- df %>%
+      filter(rtType == ii)
+    cat("colnames(dfB) inside plotFunctionRT is", colnames(dfB), "\n" )
+    cat("nrow(dfB) inside plotFunctionRT is", nrow(dfB), "\n" )
+    cat("rt is", ii, "\n")
+    p <- ggscatter(
+      dfB, 
+      x = "rt", 
+      y = "accuracy",
+      #color = "letterType",
+      #fill = "letterType",
+      add = "reg.line",
+      add.params = list(color = "blue"),
+    ) +
+      # Customize appearance
+      labs(
+        title = title_string,
+        #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+        x = paste0("reaction time"),
+        y = "accuracy",
+        #caption = "Error bars = s.e. of the mean on each side"
+      ) +
+      theme_pubr() +
+      theme(
+        legend.position = "none",
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)
+      ) +
+      scale_y_continuous(
+        limits = c(0, 1),
+        breaks = seq(0, 1, 0.2),
+        labels = scales::percent_format(accuracy = 1)
+      )
+    
+  }
+
+  accuracy_names <- c("accuracy")
+  treatments_wanted <- list(NULL, "hard", "easy")
+  plots <- list()
+  counter = 1
+  for (treatment_wanted in treatments_wanted) {
+    tidy_data <- makeDataForPlotFunction(data, treatment_wanted)
+    cat("tidy_data is created with treatment", treatment_wanted, "\n")
+    rt_names <- unique(tidy_data$rtType)
+    for (acc in accuracy_names){
+      for (rt_name in rt_names){
+        plots[[counter]] <- plotFunctionRT(tidy_data, rt_name)
+        counter <- counter + 1
+      }
+    }
+  }
+  
+  combined <- ggpubr::ggarrange(plotlist = plots, ncol = 2, nrow = 3)
+  combined <- annotate_figure(combined, top = text_grob("Accuracy on RT with MPL as target", face = "bold", size = 14))
+}
+scatterRTOnAccuracy <- makeScatterRTOnAccuracy(dfA)
+scatterRTOnAccuracy
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "scatterRTOnAccuracy.pdf"),
+       plot = scatterRTOnAccuracy, device = "pdf", width = 12, height = 10)
+
+
+
+
+
+
+
+
+
+# Choices analysis
+
+# rt choices analysis
+makeDataForRTChoice <- function (df, treatment_filter=NULL) {
+  
+  newDf <- df %>%
+    filter(!is.na(mplType) & !grepl("^(GS|AS|LS)", mplType)) %>% # starts_with doesn't work in filter, only for select
+    {if (!is.null(treatment_filter)) filter(., treatment == treatment_filter) else . }%>%
+    select(participant_id, mirror_rtChoice, lottery_rtChoice, mirror_rtSpanMpl, lottery_rtSpanMpl, mirror_accuracy, lottery_accuracy, treatment) %>%
+    # Pivot RTs only
+    pivot_longer(
+      cols = matches("_rt"),
+      names_to = c("condition", "rtType"),
+      names_pattern = "(mirror|lottery)_rt(.*)",
+      values_to = "rt"
+    ) %>%
+    # Pivot accuracy only
+    pivot_longer(
+      cols = ends_with("accuracy"),
+      names_to = "condition_acc",
+      names_pattern = "(mirror|lottery)_accuracy",
+      values_to = "accuracy"
+    ) %>%
+    # Keep matching accuracy per condition
+    filter(condition == condition_acc) %>%
+    select(-condition_acc)
+}
+dataForRTChoice <-makeDataForRTChoice(dfA)
+dataForRTChoice
+
+
+# Create 4 density panels (hard/ easy × Choice / SpanMpl)
+makeRTDensities <- function(data_for_rt) {
+  
+  df <- data_for_rt %>%
+    mutate(
+      treatment = factor(treatment, levels = c("hard", "easy")),
+      rtType = factor(rtType, levels = c("Choice", "SpanMpl")),
+      panel = paste(treatment, rtType, sep = " | ")
+    ) %>%
+    # keep only the four combinations (order ensured by factor levels)
+    filter(treatment %in% c("hard","easy") & rtType %in% c("Choice","SpanMpl"))
+  
+  if (nrow(df) == 0) stop("No RT data available for plotting.")
+  
+  # compute summary + peak density for placing annotations
+  dens_info <- df %>%
+    group_by(treatment, rtType) %>%
+    summarise(
+      mean_rt = mean(rt, na.rm = TRUE),
+      median_rt = median(rt, na.rm = TRUE),
+      sd_rt   = sd(rt, na.rm = TRUE),
+      n       = sum(!is.na(rt)),
+      max_dens = max(density(rt, na.rm = TRUE)$y),
+      right_x = max(rt, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(panel = paste(treatment, rtType, sep = " | "))
+  
+  # ensure panels appear in the requested order:
+  panel_levels <- c("hard | Choice", "hard | SpanMpl", "easy | Choice", "easy | SpanMpl")
+  df$panel <- factor(df$panel, levels = panel_levels)
+  dens_info$panel <- factor(dens_info$panel, levels = panel_levels)
+  
+  p <- ggplot(df, aes(x = rt)) +
+    geom_density(aes(y = ..density..), fill = "#2c7fb8", alpha = 0.45, colour = NA, adjust = 1) +
+    # mean and ±1 sd lines (solid = mean, dashed = mean ± sd)
+    geom_vline(data = dens_info, aes(xintercept = mean_rt), colour = "black", size = 0.6) +
+    geom_vline(data = dens_info, aes(xintercept = mean_rt + sd_rt), linetype = "dashed", colour = "black", size = 0.4) +
+    geom_vline(data = dens_info, aes(xintercept = mean_rt - sd_rt), linetype = "dashed", colour = "black", size = 0.4) +
+    # annotation with n, mean and sd
+    geom_text(
+      data = dens_info,
+      aes(x = Inf, y = Inf,
+          label = paste0("n=", n, "\nmean=", round(mean_rt, 1), " ms\nmedian=",
+                         round(median_rt,1), "ms\nsd=", round(sd_rt, 1), " ms")),
+      inherit.aes = FALSE,
+      #linewidth = 3,
+      hjust = 1,
+      vjust = 1
+    ) +
+    facet_wrap(~ panel, ncol = 2, scales = "free_x") +
+    labs(x = "Reaction time (ms)", y = "Density",
+         title = "RT densities by treatment and rtType\n(black solid = mean, dashed = ±1 sd)") +
+    theme_minimal(base_size = 12) +
+    theme(
+      strip.text = element_text(face = "bold"),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+    )
+  
+
+}
+rtDensityPlot <- makeRTDensities(dataForRTChoice)
+print(rtDensityPlot)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "rtDensityPlot.pdf"),
+       plot = rtDensityPlot, device = "pdf", width = 12, height = 10)
 
 
 # deviation from expected value plots
@@ -1050,13 +1596,6 @@ G25_mirror_ev_values[[1]]
 identical(mirror_ev, round(G25_mirror_ev_values[[1]],6))
 
 
-# Check for exact binary representation differences
-all.equal(lottery_ev, G25_lottery_ev_values[[1]])
-# Check individual elements with maximum precision
-options(digits = 22)
-print(lottery_ev)
-print(G25_lottery_ev_values[[1]])
-options(digits = 7)
 
 
 # Scatter plots of individual errors

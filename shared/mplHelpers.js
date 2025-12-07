@@ -882,64 +882,66 @@ function showInstructionModalForQuestions(instructionType) {
     if (instructionType === "mirror") {
         console.log("Generating help content for mirror condition");
         helpContent = 
-        `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        `<h2>${language.instructionsThirdPart.title}</h2>
+        <p>${language.instructionsThirdPart.description}</p>
+        <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p>
+        <br><br>
+
+        <h2>${language.instructionsDecisionTable.title}</h2>
         <h3>${language.instructionsDecisionTable.subTitle}</h3>
         <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        <p>${language.instructionsDecisionTable.bonusAverageBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
+        </div></div><br><br>
+
+        <h2>${language.instructionsClickToChoose.title}</h2>
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
-         `;
-//<p>${language.instructionsPaymentRuleMirror.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>`;
 
     } else if (instructionType === "lottery") {
-        console.log("Generating help content for lottery condition");
-        helpContent = 
-        `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+        `<h2>${language.instructionsThirdPart.title}</h2>
+        <p>${language.instructionsThirdPart.description}</p>
+        <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p><br><br>
+
+        <h2>${language.instructionsDecisionTable.title}</h2>
         <h3>${language.instructionsDecisionTable.subTitle}</h3>
         <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
+        <p>${language.instructionsDecisionTable.bonusRandomBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationLottery}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationLottery}</p>
+        </div></div><br><br>
+
+        <h2>${language.instructionsClickToChoose.title}</h2>
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
         `;
-// <p>${language.instructionsPaymentRuleRandomBox.remindNotEveryone.replace('{frequency}', propSelecForMPL)}</p>
 
     }
     
@@ -1453,7 +1455,68 @@ const example5MPLSelected = `
         `;
 
 
-const example6MPLSelected = `
+const example6MPLSelected = // exemple for the first four comprehension questions
+`
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice selected" data-row="1" data-choice="lottery" style="color: red">
+            10€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice selected" data-row="1" style="color: red">0€</td>
+            <td class="choice" data-row="1" data-choice="sure" style="color: blue">
+            3€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+
+const example7MPLSelected = // exemple for the last training comprehension questions
+`
+        <div style="width: 50vw; margin: auto;">
+        <table class="mpl">
+            <tr>
+            <th></th>
+            <th colspan="2" style="color: red">Lot A</th>
+            <th style="color: blue">Lot B</th>
+            </tr>
+            <tr>
+            <th>Version</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: red"> 50 boîtes</th>
+            <th style="color: blue">100 boîtes</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td class="choice" data-row="1" data-choice="lottery" style="color: red">
+            -20€
+            <input type="radio" name="row1" value="lottery" checked>
+            </td>
+            <td class="choice" data-row="1" style="color: red">0€</td>
+            <td class="choice selected" data-row="1" data-choice="sure" style="color: blue">
+            -5€
+            <input type="radio" name="row1" value="sure">
+            </td>
+        </tr>
+        </table>
+        `;
+
+const example8MPLSelected = // exemple for the first four training comprehension questions 
+`
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -1482,7 +1545,8 @@ const example6MPLSelected = `
         </table>
         `;
 
-const example7MPLSelected = `
+const example9MPLSelected = // exemple for the last comprehension question 
+`
         <div style="width: 50vw; margin: auto;">
         <table class="mpl">
             <tr>
@@ -1499,16 +1563,14 @@ const example7MPLSelected = `
             <tr>
             <td>1</td>
             <td class="choice" data-row="1" data-choice="lottery" style="color: red">
-            -12€
+            -10€
             <input type="radio" name="row1" value="lottery" checked>
             </td>
             <td class="choice" data-row="1" style="color: red">0€</td>
             <td class="choice selected" data-row="1" data-choice="sure" style="color: blue">
-            -8€
+            -3€
             <input type="radio" name="row1" value="sure">
             </td>
         </tr>
         </table>
         `;
-
-
