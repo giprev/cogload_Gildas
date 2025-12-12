@@ -8,6 +8,9 @@ library(rstatix)
 library(estimatr)
 library(ggplot2)
 library(purrr)
+library(patchwork)
+library(ggtext)
+
 
 rm(list = ls())
 
@@ -294,11 +297,74 @@ extractMplDataframes <- function(dataPerParticipant) {
             if (X_value == "A") {
                 ev_value <- (y_value - ((surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1])/2))/2 # 50% chance of positive amount and 50% chance of - 10
                 #cat("Calculated ev for A lottery mirror, mplType is", mplType, "y_value is", y_value, "X_value is", X_value, "ev_value is", ev_value, "position is" ,position, "surePayments[switch_row2 + 1] is ", surePayments[switch_row2 + 1], "switch_row2 is",switch_row2,"\n")
-              }
+                }
             else ev_value <- (surePayments[switch_row2 + 1] + surePayments[switch_row1 + 1]) / 2 # last value of the function is assigned to ev in mutate. ADD 1 because R starts at 1 instead of 0 (js)
             }
           ev_value
-          }
+          },
+        EGEmpirical= {
+            y_value <- as.numeric(gsub("[^0-9]", "", mplType))
+            X_value <- case_when(
+              str_starts(mplType, "G") ~ "G",
+              str_starts(mplType, "L") ~ "L",
+              str_starts(mplType, "A") ~ "A",
+              TRUE ~ NA_character_
+            )
+            endowment <- case_when(
+              X_value == "G" ~ 5,
+              X_value == "L" ~ 30,
+              (X_value == "A" & y_value == 10) ~ 15,
+              (X_value == "A" & y_value == 15) ~ 20
+            )
+            surePayments <- createSequenceArray(y_value, X_value, position)
+            spLength <- length(surePayments)
+            if (switch_row1 == -1 & switch_row2 == -1) {
+              if(X_value=="G" | X_value=="L"){
+                if(all(choices == "lottery")){
+                  if(X_value=="G"){EG <- 25*y_value/100 + endowment}
+                  else if(X_value=="L"){EG <- -25*y_value/100 + endowment}
+                }
+                else if(all(choices == "sure")){
+                  EG <-(surePayments[1] + surePayments[spLength])/2 + endowment
+                }
+                else { cat("Error in calculating EGEmpirical when no switch and X is G or L\n")}
+              }
+              else if(X_value=="A"){
+                if(all(choices == "lottery")){
+                  EG <- ((((surePayments[1]-y_value)/2 + (surePayments[spLength]-y_value)/2))/2) + endowment
+                }
+                else if(all(choices=="sure")){
+                  EG <- 0 + endowment
+                }
+                else { cat("Error in calculating EGEmpirical when no switch and X is A\n")}
+              }
+            }
+            else if (!(switch_row1==-1 & switch_row2==-1)){
+              if(X_value=="G"){
+                EG <- (25*y_value/100)*(switch_row1/spLength) + ((surePayments[switch_row2]+surePayments[spLength])/2)*((spLength-switch_row1)/spLength) + endowment
+              }
+              else if (X_value=="L"){
+                EG <- -(25*y_value/100)*(switch_row1/spLength) + ((surePayments[switch_row2]+surePayments[spLength])/2)*((spLength-switch_row1)/spLength) + endowment
+              }
+              else if (X_value=="A"){
+                EG <- 0 + ((((surePayments[switch_row2]-y_value)/2)+((surePayments[spLength]-y_value)/2))/2)*((spLength-switch_row1)/spLength) + endowment
+              }
+            }
+          cat("EG is ", EG, " with X_value=", X_value," y=", y_value, " switch_row1=",switch_row1, "all(choices == `lottery`) is ", all(choices == "lottery"), " position is ", position, "\n")
+          EG
+          },
+        noSwitchSure = case_when(
+          (switch_row1 == -1 & switch_row2 == -1 & all(choices=="sure")) ~ 1,
+          TRUE ~ 0
+        ),
+        noSwitchLottery = case_when(
+          (switch_row1 == -1 & switch_row2 == -1 & all(choices=="lottery")) ~ 1, # lotteries stand for "not sure amount", they can be mirrors
+          TRUE ~ 0
+        ),
+        noSwitch = case_when(
+          (switch_row1 == -1 & switch_row2 == -1) ~ 1,
+          TRUE ~ 0
+        )
       ) %>%
       ungroup()
     
@@ -306,11 +372,15 @@ extractMplDataframes <- function(dataPerParticipant) {
     final_subset <- subset_data %>%
       select(
         ev = ev,
+        EGEmpirical = EGEmpirical,
         rtChoice = rt,
         rtSpanMpl = rtSpanMpl,
         subBlockNumber = subBlock,
         accuracy = accuracy,
-        position = position
+        position = position,
+        noSwitch = noSwitch,
+        noSwitchSure = noSwitchSure,
+        noSwitchLottery = noSwitchLottery
       )
     
     
@@ -360,6 +430,7 @@ for(mpl_type in mpl_types) {
             noSwitchCounters[[varName]] <- 0
     }
 }
+inversionCounter <- 0
 
 
 
@@ -578,10 +649,14 @@ for (iSub in 1:nSub) {
       )
 
     # Define all possible combinations
-    mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", "L75", "L90", "A10", "A15",
-                    "GS10", "GS25", "GS50", "GS75", "GS90", "LS10", "LS25", "LS50", "LS75", "LS90", "AS10", "AS15")
+    mpl_types <- c("G10", "G25", "G50", "G75", "G90", "L10", "L25", "L50", 
+                   "L75", "L90", "A10", "A15",
+                    "GS10", "GS25", "GS50", "GS75", "GS90", "LS10", "LS25", 
+                   "LS50", "LS75", "LS90", "AS10", "AS15")
     status_types <- c("mirror", "lottery")
-    column_types <- c("ev", "rtChoice", "subBlockNumber", "accuracy", "position", "rtSpanMpl")
+    column_types <- c("ev", "rtChoice", "subBlockNumber", "accuracy", 
+                      "position", "rtSpanMpl", "EGEmpirical", "noSwitch",
+                      "noSwitchSure", "noSwitchLottery")
 
     # Initialize ALL possible MPL columns with NA values first
     for(mpl_type in mpl_types) {
@@ -598,7 +673,7 @@ for (iSub in 1:nSub) {
         df_data <- mpl_dataframes[[df_name]]
         
         # Get all column names from this dataframe
-        col_names <- names(df_data) # ev, rtChoice, subBlockNumber, accuracy, rtSpanMpl
+        col_names <- names(df_data) # ev, rtChoice, subBlockNumber, accuracy, rtSpanMpl, EGEmpirical, noSwitch, noSwitchSure, noSwitchLottery
         
         # For each column in the dataframe, update the corresponding column in participant_row
         for(col_name in col_names) {
@@ -645,9 +720,29 @@ for (iSub in 1:nSub) {
 }
 
 #view(final_data_2)
+view(final_data)
 
 tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
 tableNoSwitchByPosition
+
+
+rtBetweenRoundsMplHard <- final_data_2 %>%
+  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
+  filter(treatment=="hard")%>%
+  pull(rt)
+rtBetweenRoundsMplEasy <- final_data_2 %>%
+  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
+  filter(treatment=="easy")%>%
+  pull(rt)
+
+hist(rtBetweenRoundsMpl, breaks = 100)
+meanRTHard <- mean(rtBetweenRoundsMplHard)
+medianRTHard <- median(rtBetweenRoundsMplHard)
+meanRTEasy <- mean(rtBetweenRoundsMplEasy)
+medianRTEasy <- median(rtBetweenRoundsMplEasy)
+timeRT <- tibble::tibble(treatment=c("hard", "easy"), meanRT=c(meanRTHard, meanRTEasy), medianRT=c(medianRTHard, medianRTEasy))
+timeRT
+
 
 
 
@@ -658,7 +753,7 @@ tableNoSwitchByPosition
 dfA <- final_data %>%
   # Keep all demographic/payment columns as-is, pivot only MPL columns
   pivot_longer(
-    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_(ev|rtChoice|rtSpanMpl|subBlockNumber|accuracy)$"),  # Match MPL pattern
+    cols = matches("^(A|G|L)S?(10|15|25|50|75|90)_(mirror|lottery)_(ev|rtChoice|rtSpanMpl|subBlockNumber|accuracy|EGEmpirical|noSwitch|noSwitchSure|noSwitchLottery)$"),  # Match MPL pattern
     names_to = c("mplType", "status", "measure"),
     names_sep = "_" # Split at the first underscore
   ) %>%
@@ -719,10 +814,22 @@ dfA <- final_data %>%
 
 
 
-  
-
 
 #------------- Data analysis -----------#
+
+
+
+
+
+rtCalibration <- final_data_2 %>%
+  filter(task == "spanTest" & block == "calibration") %>%
+  group_by(subject) %>%
+  summarise(
+    mean_rt_perParticipant = mean(rt),
+    span_max = mean(spanLength)
+  )
+rtCalibration
+
 
 
 
@@ -734,6 +841,7 @@ dfA <- final_data %>%
 spanLengthData <- final_data %>%
   pull(spanLength)
 spanLengthData
+mean(spanLengthData)
 
 df_span <- tibble::tibble(spanLength = spanLengthData)
 
@@ -797,6 +905,26 @@ mean_accuracy_perParticipants <- final_data_2 %>%
   ) %>% ungroup()
 
 mean_accuracy_perParticipants
+
+accuraciesPerParticipants <- mean_accuracy_perParticipants %>% 
+  group_by(treatment) %>%
+  summarise(
+    n = sum(!is.na(accuracy_source) & !is.na(accuracy_target)),
+    mean_source = mean(accuracy_source, na.rm = TRUE),
+    se_source = sd(accuracy_source)/sqrt(n),
+    mean_target = mean(accuracy_target, na.rm = TRUE),
+    se_target = sd(accuracy_target)/sqrt(n),
+    p_value = ifelse(n >= 2, t.test(accuracy_source, accuracy_target, paired = TRUE)$p.value),
+    .groups = "drop"
+  )
+accuraciesPerParticipants
+
+meanAccuracyPerTargetSource <- mean_accuracy_perParticipants %>%
+  summarise(
+    meanAccuracySource = mean(accuracy_source, na.rm = TRUE),
+    meanAccuracyTarget = mean(accuracy_target, na.rm = TRUE)
+  )
+meanAccuracyPerTargetSource
 
 # impact of memory load on memory performance check
 
@@ -1034,6 +1162,121 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures", "scatterRTOnCogLoad.pdf"),
        plot = scatterRTOnCogLoad, device = "pdf", width = 12, height = 6)
 
 
+# see if people in cognitive load take more time to memorize their source span (rt_m_source)
+dataRtMSourcePerTreatment <- mean_accuracy_perParticipants %>%
+  group_by(treatment) %>%
+  summarise(
+    n = n(),
+    mean_rt_m_source = mean(rt_m_source),
+    median_rt_m_source = median(rt_m_source),
+    sd_rt_m_source = sd(rt_m_source),
+    se_rt_m_source = sd(rt_m_source)/sqrt(n())
+  ) %>%
+  ungroup()
+dataRtMSourcePerTreatment
+
+
+makeRtMSourcePerTreatment <- function(data){
+  
+  p <- ggbarplot(
+    data, 
+    x = "treatment", 
+    y = "median_rt_m_source",
+    color = "treatment",
+    fill = "treatment",
+    palette = c("#00AFBB", "#E7B800"),
+    position = position_dodge(0.8),
+    alpha = 0.2,
+    size = 0.8,
+    width = 0.6,
+  ) +
+    geom_errorbar(
+      aes(ymin = median_rt_m_source - se_rt_m_source, ymax = median_rt_m_source + se_rt_m_source),
+      width = 0.2,
+      position = position_dodge(0.8)
+    ) +
+    # Add statistical comparison
+    #stat_pvalue_manual(
+    #  manual_p,
+     # label = "p = {p}",
+    #  tip.length = -0.01,
+    #  y.position = max(df_plot$accuracy, na.rm = TRUE) - 0.2
+    #) +
+    # Customize appearance
+    labs(
+      #title = "",
+      #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+      x = "treatment",
+      y = "median time for memorizing the source span (ms)",
+      caption = "Error bars = s.e. of the mean on each side"
+    ) +
+    theme_pubr() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(hjust = 0.5)
+    ) #+
+   # scale_y_continuous(
+      #limits = c(0, 1),
+     # breaks = seq(0, 1, 0.1),
+     # labels = scales::percent_format(accuracy = 1)
+    #)
+}
+rtMSourcePerTreatment <-makeRtMSourcePerTreatment(dataRtMSourcePerTreatment)
+rtMSourcePerTreatment
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "rtMSourcePerTreatment.pdf"),
+       plot = rtMSourcePerTreatment, device = "pdf", width = 12, height = 6)
+makeRtMSourcePerTreatment <- function(data){
+  
+  p <- ggbarplot(
+    data, 
+    x = "treatment", 
+    y = "mean_rt_m_source",
+    color = "treatment",
+    fill = "treatment",
+    palette = c("#00AFBB", "#E7B800"),
+    position = position_dodge(0.8),
+    alpha = 0.2,
+    size = 0.8,
+    width = 0.6,
+  ) +
+    geom_errorbar(
+      aes(ymin = mean_rt_m_source - se_rt_m_source, ymax = mean_rt_m_source + se_rt_m_source),
+      width = 0.2,
+      position = position_dodge(0.8)
+    ) +
+    # Add statistical comparison
+    #stat_pvalue_manual(
+    #  manual_p,
+    # label = "p = {p}",
+    #  tip.length = -0.01,
+    #  y.position = max(df_plot$accuracy, na.rm = TRUE) - 0.2
+    #) +
+    # Customize appearance
+    labs(
+      #title = "",
+      #subtitle = paste0("n = ", desc_stats$n[1], " participants"),
+      x = "treatment",
+      y = "mean time for memorizing the source span (ms)",
+      caption = "Error bars = s.e. of the mean on each side"
+    ) +
+    theme_pubr() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(hjust = 0.5)
+    ) #+
+  # scale_y_continuous(
+  #limits = c(0, 1),
+  # breaks = seq(0, 1, 0.1),
+  # labels = scales::percent_format(accuracy = 1)
+  #)
+}
+rtMSourcePerTreatment <-makeRtMSourcePerTreatment(dataRtMSourcePerTreatment)
+rtMSourcePerTreatment
+ggsave(filename = file.path(PATH_TO_DATA, "Figures", "rtMSourcePerTreatment.pdf"),
+       plot = rtMSourcePerTreatment, device = "pdf", width = 12, height = 6)
+
 
 
 data_plot_precision_cogload <- final_data_2 %>%
@@ -1247,6 +1490,172 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures", "scatterRTOnAccuracy.pdf"),
 
 # Choices analysis
 
+
+
+# empirical EV of the MPL
+empiricalEVMpls <- dfA %>%
+  pull(mirror_EGEmpirical, lottery_EGEmpirical)%>%
+  mean(., na.rm=TRUE)
+empiricalEVMpls # 18.07418
+
+accuraciesMpls <- dfA %>%
+  pull(mirror_accuracy, lottery_accuracy) %>%
+  mean(., na.rm = TRUE)
+accuraciesMpls
+
+
+# inversions of switching pattern 
+final_data_2 <- final_data_2 %>%
+  filter(block == "span_mpl" & task == "mpl") %>%
+  mutate(
+    switchInversion = case_when(
+      (str_starts(mplType,"G") | str_starts(mplType,"L")) & switchRow1Choice == "sure" & switchRow2Choice == "lottery" ~ 1,
+      str_starts(mplType,"A") & switchRow1Choice == "lottery" & switchRow2Choice == "sure" ~ 1,
+      TRUE ~ 0
+    ),
+    .after = switchRow1Choice
+  )
+view(final_data_2)
+
+#do inversions of switching patterns are influenced by training or cognitive load?
+invSubject <- final_data_2 %>%
+  group_by(subject)%>%
+  summarise(
+    inversionCount = sum(switchInversion)
+  )
+invSubject
+invTable <- final_data_2 %>%
+  group_by(mplType)%>%
+  summarise(
+    inversionCount = sum(switchInversion)
+  )
+invTable
+invTreatment <- final_data_2 %>%
+  group_by(treatment)%>%
+  summarise(
+    inversionCount = sum(switchInversion)
+  )
+invTreatment
+
+makeInversionPlots <- function(invSubject, invTable, invTreatment) {
+  # compute common y limit
+  max_count <- max(c(invSubject$inversionCount, invTable$inversionCount, invTreatment$inversionCount), na.rm = TRUE)
+  y_max <- ifelse(is.finite(max_count), ceiling(max_count * 1.1), 1)
+  y_lim <- c(0, y_max)
+
+  p_subj <- ggplot(invSubject, aes(x = factor(subject), y = inversionCount)) +
+    geom_col(fill = "#2c7fb8") +
+    labs(title = "Inversions per subject", x = "Subject", y = "Inversion count") +
+    theme_pubr() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    scale_y_continuous(limits = c(0, max(invSubject$inversionCount)*1.1), expand = c(0, 0))
+
+  p_table <- ggplot(invTable, aes(x = factor(mplType), y = inversionCount)) +
+    geom_col(fill = "#E7B800") +
+    labs(title = "Inversions per MPL type", x = "MPL type", y = "Inversion count") +
+    theme_pubr() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    scale_y_continuous(limits = c(0, max(invTable$inversionCount)*1.1), expand = c(0, 0))
+
+  p_treat <- ggplot(invTreatment, aes(x = factor(treatment), y = inversionCount)) +
+    geom_col(fill = "#4CAF50") +
+    labs(title = "Inversions by treatment", x = "Treatment", y = "Inversion count") +
+    theme_pubr() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 0.5)) +
+    scale_y_continuous(limits = c(0, max(invTreatment$inversionCount)*1.1), expand = c(0, 0))
+
+  combined <- ggpubr::ggarrange(p_subj, p_table, p_treat, ncol = 1, nrow = 3, heights = c(1, 1, 0.7))
+
+  return(combined)
+}
+
+# Example call (after invSubject, invTable, invTreatment exist)
+invPlot <- makeInversionPlots(invSubject, invTable, invTreatment)
+print(invPlot)
+
+# merged table: remove an "S" immediately after the first letter, then sum
+noSwitchTable <- dfA %>%
+  mutate(mpl_base = sub("^([A-Z])S", "\\1", mplType)) %>%   # GS25 -> G25 ; AS10 -> A10 ; LS90 -> L90
+  group_by(mpl_base) %>%
+  summarise(
+    noSwitchCount = sum(mirror_noSwitch, na.rm = TRUE) + sum(lottery_noSwitch, na.rm = TRUE),
+    noSwitchCountSure = sum(mirror_noSwitchSure, na.rm = TRUE) + sum(lottery_noSwitchSure, na.rm = TRUE),
+    noSwitchCountLottery = sum(mirror_noSwitchLottery, na.rm = TRUE) + sum(lottery_noSwitchLottery, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  rename(mplType = mpl_base) %>%
+  arrange(mplType)
+noSwitchTable
+  
+
+noSwitchSubject <- dfA %>%
+  group_by(participant_id) %>%
+  summarise(
+    noSwitchCount = sum(mirror_noSwitch, na.rm=TRUE) + sum(lottery_noSwitch, na.rm=TRUE),
+    noSwitchCountSure = sum(mirror_noSwitchSure, na.rm=TRUE) + sum(lottery_noSwitchSure, na.rm=TRUE),
+    noSwitchCountLottery = sum(mirror_noSwitchLottery, na.rm=TRUE) + sum(lottery_noSwitchLottery, na.rm=TRUE)
+  )
+noSwitchStatus <- tibble::tibble(status = c("mirror", "lottery"), 
+                                 noSwitchCount = c(sum(dfA$mirror_noSwitch, na.rm=TRUE), sum(dfA$lottery_noSwitch, na.rm=TRUE)),
+                                 noSwitchCountSure = c(sum(dfA$mirror_noSwitchSure, na.rm = TRUE), sum(dfA$lottery_noSwitchSure, na.rm = TRUE)),
+                                 noSwitchCountLottery = c(sum(dfA$mirror_noSwitchLottery, na.rm = TRUE), sum(dfA$lottery_noSwitchLottery, na.rm=TRUE))
+                                   )
+noSwitchStatus
+
+noSwitchTreatment <- dfA %>%
+  group_by(treatment) %>%
+  summarise(
+    noSwitchCount = sum(mirror_noSwitch, na.rm=TRUE) + sum(lottery_noSwitch, na.rm=TRUE),
+    noSwitchCountSure = sum(mirror_noSwitchSure, na.rm=TRUE) + sum(lottery_noSwitchSure, na.rm=TRUE),
+    noSwitchCountLottery = sum(mirror_noSwitchLottery, na.rm=TRUE) + sum(lottery_noSwitchLottery, na.rm=TRUE),
+  )
+noSwitchTreatment
+
+
+makeNoSwitchPanels <- function(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment) {
+
+  # helper to create plots with two stacked geom_col layers (sure bottom, lottery top)
+  make_plot_two_layer <- function(df, x_col, xlab = "") {
+    
+    df <- df %>%
+      mutate(x = as.character(.data[[x_col]])) %>%
+      arrange(desc(noSwitchCountLottery)) %>%
+      mutate(x = factor(x, levels = unique(x)))
+    ggplot(df) +
+      geom_col(aes(x = x, y = noSwitchCountSure), fill = "#0D47A1", colour = "black", width = 0.7) +   # bottom
+      geom_col(aes(x = x, y = noSwitchCountLottery), fill = "#8B0000", colour = "black", width = 0.7, position = "stack") + # top
+      labs(x = xlab, y = "No-switch count") +
+      theme_pubr() +
+      theme(axis.text.x = element_text(angle = ifelse(nlevels(df$x) > 10, 90, 45), hjust = 1))
+      # no coord_cartesian / scale_y_continuous -> each plot has its own y scale
+  }
+
+  p1 <- make_plot_two_layer(noSwitchTable, "mplType", "MPL type")
+  p2 <- make_plot_two_layer(noSwitchSubject, "participant_id", "Subject") + theme(axis.text.x = element_blank())
+  p3 <- make_plot_two_layer(noSwitchStatus, "status", "Status")
+  p4 <- make_plot_two_layer(noSwitchTreatment, "treatment", "Treatment")
+
+ caption_html <- paste0(
+    "Sure amounts selected : <span style='color:#0D47A1;font-weight:600;'>blue</span><br>",
+    "Lotteries/mirrors selected : <span style='color:#8B0000;font-weight:600;'>red</span>"
+  )
+
+  combined <- (p1) / (p2) / (p3 | p4) + plot_layout(heights = c(1, 1, 0.8)) + plot_annotation(
+    title = "noSwitch behaviors counts",
+    caption = caption_html,
+  ) & theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.caption = ggtext::element_markdown(size = 12, hjust = 0)
+  )
+  return(combined)
+}
+makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment)
+
+
+
+
+
+
 # rt choices analysis
 makeDataForRTChoice <- function (df, treatment_filter=NULL) {
   
@@ -1274,7 +1683,6 @@ makeDataForRTChoice <- function (df, treatment_filter=NULL) {
 }
 dataForRTChoice <-makeDataForRTChoice(dfA)
 dataForRTChoice
-
 
 # Create 4 density panels (hard/ easy × Choice / SpanMpl)
 makeRTDensities <- function(data_for_rt) {
@@ -1342,6 +1750,20 @@ rtDensityPlot <- makeRTDensities(dataForRTChoice)
 print(rtDensityPlot)
 ggsave(filename = file.path(PATH_TO_DATA, "Figures", "rtDensityPlot.pdf"),
        plot = rtDensityPlot, device = "pdf", width = 12, height = 10)
+
+
+dataRTCalibrateChoice <- dataForRTChoice %>%
+  filter(rtType== "Choice") %>%
+  pull(rt)
+
+mean(dataRTCalibrateChoice<30000)
+
+
+
+
+
+
+
 
 
 # deviation from expected value plots
@@ -1501,6 +1923,7 @@ dfA_plot_maker = function (type = NULL) {
       n_valid_both = sum(!is.na(lottery_ev) & !is.na(mirror_ev)),
       
       medDiff=median(lottery_ev-mirror_ev),
+      meanEVLoss1=mean(abs(pred-((lottery_ev+mirror_ev)/2))),
       pred=mean(pred),
       ceLotteryse=sd(lottery_ev, na.rm = TRUE)/sqrt(n_valid_lottery),
       ceMirrorse=sd(mirror_ev, na.rm = TRUE)/sqrt(n_valid_mirror),
@@ -1509,8 +1932,12 @@ dfA_plot_maker = function (type = NULL) {
       lottery=mean(lottery_ev, na.rm = TRUE),
       mirror=mean(mirror_ev, na.rm = TRUE),
       .groups = 'drop'
+    )%>%
+    mutate(
+      meanEVLoss2=abs(abs(pred)-abs(lottery+mirror)/2)
     )
 }
+
 dfA_plot <- dfA_plot_maker()  # No filtering
 dfA_plot_high <- dfA_plot_maker("high")
 dfA_plot_low <- dfA_plot_maker("low") 
@@ -1526,7 +1953,14 @@ pdf(file.path(PATH_TO_DATA,"Figures/Figure1.pdf"), width = 7.41, height = 8.31)
 mainPlot(F = dfA_plot, F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 dev.off()
 
+view(dfA_plot)
+meanEVLoss <- dfA_plot %>%
+  pull(meanEVLoss)%>%
+  mean(.)
+meanEVLoss
+
 # main tests
+
 
 main_tests_rounded<-function(df){
   print(
@@ -1660,5 +2094,58 @@ pdf(file.path(PATH_TO_DATA,"/Figures/Figure4.pdf"), width = 13.05, height = 7.14
 makeScatter(s_mpl,"")
 dev.off()
 layout(matrix(1))
+
+
+
+dataOprea <- read.csv("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/replication_official_oprea/Data/DATA.csv")
+rts <- dataOprea %>%
+  select(time_mirror, time_lottery, ID, treatment) %>%
+  filter(treatment == "main")%>%
+  pull(time_mirror)
+
+rts <- rts[rts < 400]
+mean(rts[rts < 400], na.rm=TRUE)
+mean(rts<35, na.rm=TRUE)
+hist(rts, breaks=1000, xlim = range(0:200))
+
+
+
+# Overlayed density plot of time_mirror and time_lottery from rts
+plot_rts_mirror_lottery_densities <- function(rts_df) {
+  
+  df_long <- rts_df %>%
+    select(time_mirror, time_lottery) %>%
+    pivot_longer(cols = everything(), names_to = "which", values_to = "rt") %>%
+    filter(!is.na(rt))
+  
+  if (nrow(df_long) == 0) stop("No RT data available to plot.")
+  
+  means <- df_long %>% group_by(which) %>% summarise(mean_rt = mean(rt, na.rm = TRUE), .groups = "drop")
+  
+  colours <- c(time_mirror = "#2c7fb8", time_lottery = "#E7B800")
+  
+  p <- ggplot(df_long, aes(x = rt, color = which, fill = which)) +
+    geom_density(alpha = 0.35, size = 0.6, bw = "nrd0") +
+    geom_vline(data = means, aes(xintercept = mean_rt, color = which), linetype = "solid", size = 0.7) +
+    scale_color_manual(values = colours, labels = c(time_mirror = "Mirror", time_lottery = "Lottery")) +
+    scale_fill_manual(values = colours, labels = c(time_mirror = "Mirror", time_lottery = "Lottery")) +
+    labs(title = "RT density: mirror vs lottery",
+         x = "Reaction time (ms)",
+         y = "Density",
+         color = NULL, fill = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(plot.title = element_text(hjust = 0.5))
+
+  
+  return(p)
+}
+
+# Example call (uses rts from your script)
+rts_density_plot <- plot_rts_mirror_lottery_densities(rts)
+print(rts_density_plot)
+# ...existing code...
+  
+
+
 
 

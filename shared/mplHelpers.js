@@ -443,7 +443,7 @@ function mplGenerator3(number) {
 
         mpl_html = `
         <div style="width: 50vw; margin: auto;">
-        <h2>${language.instructionsMPL.trainingTitle}</h2>
+        <h3>${language.instructionsMPL.trainingTitle}</h3>
         <p>${explanation}</p>
         <p>${language.instructionsMPL.trainingClickNext}</p>
         </ul></div>
@@ -493,57 +493,63 @@ function generateShuffledArray() {
 
 function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
     console.log("Beginning of calculateMPLPayment with parameters: mplType is", mplType, "rowNumber is", rowNumber, "choices are", choices, "chosenStatus is", chosenStatus, "position is", mplPositionDict[mplType]);
-    const type = mplType.charAt(0);
-    const probability = parseInt(mplType.substring(1));
-    let sure = choices[rowNumber]; // either "sure" or "lottery"
-    let position = mplPositionDict[mplType];
-    let surePayments = createSequenceArray(probability, type, position);
-    if (sure == "sure") {
-        if (type == "G") {
-            return surePayments[rowNumber] + 5;
-        } else if (type == "L") {
-            return surePayments[rowNumber] + 30;
-        }
-        else if (type == "A") {
-            return probability + 5;
-        }
-    } else if (sure == "lottery") {
-            if (chosenStatus == "lottery") {
-            let randomDraw = Math.random(); // Random number between 0 and 1
+    if(choices.every(choice => choice === undefined)) {
+        console.log("No choices due to time limit exceeded.");
+        return 0; // or handle the error as needed
+    }
+        else {
+        const type = mplType.charAt(0);
+        const probability = parseInt(mplType.substring(1));
+        let sure = choices[rowNumber]; // either "sure" or "lottery"
+        let position = mplPositionDict[mplType];
+        let surePayments = createSequenceArray(probability, type, position);
+        if (sure == "sure") {
             if (type == "G") {
-                if (randomDraw <= (probability / 100)) {
-                    return 25 + 5;
-                }
-                else if (randomDraw > (probability / 100)) {
-                    return 0 + 5;
-                }
+                return surePayments[rowNumber] + 5;
             } else if (type == "L") {
-                if (randomDraw <= (probability / 100)) {
-                    return -25 + 30;
-                } 
-                else if (randomDraw > (probability / 100)) {
-                    return 0 + 30;
-                }
-            } else if (type == "A") {
-                if (randomDraw <= 0.5) {
-                    return surePayments[rowNumber] + probability + 5;
-                } else if (randomDraw > 0.5) {
-                    return 5; // = - probability + endowment
+                return surePayments[rowNumber] + 30;
+            }
+            else if (type == "A") {
+                return probability + 5;
+            }
+        } else if (sure == "lottery") {
+                if (chosenStatus == "lottery") {
+                let randomDraw = Math.random(); // Random number between 0 and 1
+                if (type == "G") {
+                    if (randomDraw <= (probability / 100)) {
+                        return 25 + 5;
+                    }
+                    else if (randomDraw > (probability / 100)) {
+                        return 0 + 5;
+                    }
+                } else if (type == "L") {
+                    if (randomDraw <= (probability / 100)) {
+                        return -25 + 30;
+                    } 
+                    else if (randomDraw > (probability / 100)) {
+                        return 0 + 30;
+                    }
+                } else if (type == "A") {
+                    if (randomDraw <= 0.5) {
+                        return surePayments[rowNumber] + probability + 5;
+                    } else if (randomDraw > 0.5) {
+                        return 5; // = - probability + endowment
+                    }
                 }
             }
+            else if (chosenStatus == "mirror") {
+                if (type == "G") {
+                    return (probability/100) * 25 + 5;
+                } else if (type == "L") {
+                    return - (probability/100) * 25 + 30;
+                } else if (type == "A") {
+                    let endow = 0;
+                    if (probability == 10) { endow  = 15;}
+                    else if (probability == 15) { endow = 20;}
+                    return (((surePayments[rowNumber] - probability)/2) + endow);
+                }
+            } 
         }
-        else if (chosenStatus == "mirror") {
-            if (type == "G") {
-                return (probability/100) * 25 + 5;
-            } else if (type == "L") {
-                return - (probability/100) * 25 + 30;
-            } else if (type == "A") {
-                let endow = 0;
-                if (probability == 10) { endow  = 15;}
-                else if (probability == 15) { endow = 20;}
-                return (((surePayments[rowNumber] - probability)/2) + endow);
-            }
-        } 
     }
 }
 
@@ -841,7 +847,7 @@ function showInstructionModal() {
         document.body.removeChild(modal);
     });
 }
-function showInstructionModalForQuestions(instructionType) {
+function showInstructionModalForQuestions(instructionType, isPaymentRulePhase) {
 
     // Check if modal already exists - prevent duplicates
     if (document.getElementById('instruction-modal')) {
@@ -879,17 +885,15 @@ function showInstructionModalForQuestions(instructionType) {
     document.addEventListener('keydown', preventEnterSubmission);
     
     let helpContent = '';
-    if (instructionType === "mirror") {
+    if (instructionType === "mirror" && !isPaymentRulePhase) {
         console.log("Generating help content for mirror condition");
         helpContent = 
-        `<h2>${language.instructionsThirdPart.title}</h2>
-        <p>${language.instructionsThirdPart.description}</p>
-        <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p>
-        <br><br>
-
-        <h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        ` <h2>${language.instructionsDecisionTable.title}</h2>
         <p>${language.instructionsDecisionTable.description}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
+        <p>${language.instructionsDecisionTable.descriptionMoney}</p>
+        <p>${language.instructionsDecisionTable.optionsDiffer}</p>
         <p>${language.instructionsDecisionTable.bonusAverageBox}</p>
         <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
          <br>
@@ -897,29 +901,56 @@ function showInstructionModalForQuestions(instructionType) {
         <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
             <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
             ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
+            <br><p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
         </div></div>
 
         <!-- Example 2 (separate box, same style) -->
         <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
             <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
             ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
-        </div></div><br><br>
+            <br><p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
+        </div></div><br>
 
-        <h2>${language.instructionsClickToChoose.title}</h2>
+        <!-- <h2>${language.instructionsClickToChoose.title}</h2> --> 
         <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>`;
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        `;
 
-    } else if (instructionType === "lottery") {
-        `<h2>${language.instructionsThirdPart.title}</h2>
-        <p>${language.instructionsThirdPart.description}</p>
-        <p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p><br><br>
-
-        <h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+    } else if (instructionType === "lottery" && !isPaymentRulePhase) {
+        helpContent=
+        `<h2>${language.instructionsDecisionTable.title}</h2>
         <p>${language.instructionsDecisionTable.description}</p>
+        <h3>${language.instructionsDecisionTable.subTitle}</h3>
+        <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
+        <p>${language.instructionsDecisionTable.descriptionMoney}</p>
+        <p>${language.instructionsDecisionTable.optionsDiffer}</p>
+        <p>${language.instructionsDecisionTable.bonusRandomBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationLottery}</p>
+        </div></div><br>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationLottery}</p>
+        </div></div>
+
+        <!--<h2>${language.instructionsClickToChoose.title}</h2>-->
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        `;
+    }
+    else if (instructionType === "lottery" && isPaymentRulePhase) {
+        helpContent =
+                `<h2>${language.instructionsDecisionTable.titleSecondInstructions}</h2>
         <p>${language.instructionsDecisionTable.bonusRandomBox}</p>
         <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
          <br>
@@ -935,14 +966,31 @@ function showInstructionModalForQuestions(instructionType) {
             <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
             ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
             <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationLottery}</p>
-        </div></div><br><br>
+        </div></div>
+        `
+        ;
+    }
+    else if (instructionType === "mirror" && isPaymentRulePhase) {
+        helpContent =
+        `<h2>${language.instructionsDecisionTable.titleSecondInstructions}</h2>
+        <p>${language.instructionsDecisionTable.bonusAverageBox}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example1ExplanationMirror}</p>
+        </div></div>
 
-        <h2>${language.instructionsClickToChoose.title}</h2>
-        <p>${language.instructionsClickToChoose.clickToChoose}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
-        `;
-
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <p style="margin:8px 0 0 0; color:#333;">${language.instructionsDecisionTable.example2ExplanationMirror}</p>
+        </div></div>
+        `
+        ;
     }
     
     modalContent.innerHTML = `

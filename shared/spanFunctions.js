@@ -105,8 +105,8 @@ function updateSpan() {
 	} else if (arrSum(staircaseChecker) == 0) {
 		if(staircaseChecker.length == 2) {
 			currentSpan -= 1; //lower the span if last two trials were incorrect
-			if (currentSpan == 0) {
-				currentSpan = 1; //make sure the experiment cannot break with exceptionally poor performance (floor of 1 digit)
+			if (currentSpan == 5) {
+				currentSpan = 6; //make sure the experiment cannot break with exceptionally poor performance (floor of 1 digit)
 			}
 			staircaseChecker = []; //reset the staircase checker
 			staircaseIndex = 0; //reset the staircase index
