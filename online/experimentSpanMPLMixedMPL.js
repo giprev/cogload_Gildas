@@ -3215,8 +3215,8 @@ const timelineUncertainty = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( /*{type: "fullscreen", fullscreen_mode: true},*/ consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
+timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, */fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
