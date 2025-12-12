@@ -559,7 +559,7 @@ const fr = {
         // part1: 'Dans la première partie, vous effectuerez une tâche de mémoire appelée "span de mémoire".',
         // part2: "Dans la deuxième partie, vous effectuerez une variation de la tâche de span de mémoire.",
         // part3: "Dans la troisième partie, vous effectuerez la tâche de span de mémoire en combinaison avec une tâche de prise de décision.",
-        payment: "Votre gain final pour l’expérience sera un paiement fixe de <b>{notUnderstoodPayment}€</b> plus la somme des gains réalisés dans chaque partie.",
+        payment: "Votre gain final pour l’expérience sera un paiement fixe de <b>{notUnderstoodPayment}€ plus la somme des gains réalisés dans chaque partie</b>.",
        // paymentBonus: "De plus vous pouvez gagner des bonus pour chaque partie, en fonction de vos performances et de vos choix.",
         warningComprehensionQuestions: `Pendant la troisième partie, vous devrez répondre deux fois à des questions de compréhension (qui concerneront les instructions de la troisième partie).
         Si vous répondez incorrectement à plus d'une question sur les cinq, l'expérience s'arrêtera et votre paiement de base ne sera que de {notUnderstoodPayment}€, auquel vous ajouterez les bonus de la première et de la deuxième partie.`,
@@ -931,13 +931,13 @@ const fr = {
     instructionsChoosingASetOfBoxes: {
         title: "Instructions pour les Listes à Multiples Prix (LMP).",
         subTitle: "Choisir un lot de boîtes",
-        description: `Dans la Partie 3, vous devrez choisir entre différentes versions du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>.`,
+        description: `Dans la Partie 3, vous devrez choisir entre différentes lignes ("versions") du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>.`,
         example1: ` 
-        Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est le même pour toutes les versions du tableau. Cependant le <span style='color:blue'>lot B</span> change : à chaque version, l'argent dans chacune de ses boîtes augmente de 1€.`,
+        Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est le même pour toutes les lignes ("versions") du tableau. Cependant le <span style='color:blue'>lot B</span> change : à chaque version, l'argent dans chacune de ses boîtes augmente de 1€.`,
         chooseSet: `Vous choisirez le lot qui vous plaît le plus à chaque ligne. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
-        Dans l'exemple ci-dessous, vous sélectionnez le <span style='color:red'>lot A</span> dans les versions 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les versions 8, 9 et 10.`,
-        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau
-        (une version des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. Chaque ligne a la même chance d'être sélectionnée.
+        Dans l'exemple ci-dessous, vous sélectionnez le <span style='color:red'>lot A</span> dans les lignes ("versions") 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les lignes ("versions") 8, 9 et 10.`,
+        pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez en moyenne une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau
+        (une lignes("version") des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. Chaque ligne a la même chance d'être sélectionnée.
         Vous devez donc choisir chaque ligne comme si c'était celle qui allait être payée.`,
         computerOnlyOneChoice: `L'ordinateur ne vous autorise à passer du <span style='color:red'>lot A</span> au <span style='color:blue'>lot B</span> qu'une seule fois dans le tableau.`,
         severalTables: "Plusieurs tableaux",
@@ -956,7 +956,7 @@ const fr = {
         incentiveSpanExample: "Par exemple, si au tour sélectionné vous obtenez une précision de 80%, votre bonus sera de <b>{bonusSpan}€ x 0.8 = {examplePaymentSpan}€.</b>",
         randomMechanism: "Puisque le bonus dépend d'un tour tiré au hasard, veuillez considérer chaque tour comme si c’était celui qui allait être payé.",
         severalTablesDescription: `<b>Le bonus pour la tâche des choix</b> sera calculé de la manière suivante :`,
-        incentivesMPL1: `Vous avez une chance sur {propSelecForMPL} d'être sélectionné·e au hasard pour avoir ce bonus. Si c'est le cas l'ordinateur sélectionnera <b>au hasard un tour puis une ligne (version) du tableau que vous avez vu ce tour-là</b>, 
+        incentivesMPL1: `Vous avez en moyenne {propSelecForMPL} d'être sélectionné·e au hasard pour avoir ce bonus. Si c'est le cas l'ordinateur sélectionnera <b>au hasard un tour puis une ligne (version) du tableau que vous avez vu ce tour-là</b>, 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.`,
         incentivesMPL2: `L'ordinateur rajoutera une somme initiale d'argent au bonus du choix (si il y en a un). Cette somme dépend du tableau sélectionné. Elle est indiquée en <span style='color:green'>vert</span> en haut de chaque tableau.`,
         timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableaux. Si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
@@ -1142,8 +1142,8 @@ const fr = {
             makeChoice: `Veuillez <span style="background-color: rgba(239, 243, 4, 1)">choisir</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque ligne (chaque \"version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,
             computerChooses: 'Si cet tour est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
             trainingTitle: "Entraînement à choisir les lots",
-            explanation1: "Sélectionnez le <span style=\"color: red\">lot A</span> pour les versions 1 à 6 et le <span style=\"color: blue\">lot B</span> pour les versions 7 à 18.",
-            explanation2: "Sélectionnez le <span style=\"color: blue\">lot B</span> pour les versions 1 à 8 et le <span style=\"color: red\">lot A</span> pour les versions 9 à 18.",
+            explanation1: "Sélectionnez le <span style=\"color: red\">lot A</span> pour les lignes (\"versions\") 1 à 6 et le <span style=\"color: blue\">lot B</span> pour les lignes (\"versions\") 7 à 18.",
+            explanation2: "Sélectionnez le <span style=\"color: blue\">lot B</span> pour les lignes (\"versions\") 1 à 8 et le <span style=\"color: red\">lot A</span> pour les lignes (\"versions\") 9 à 18.",
             trainingClickNext: "Quand vous l'avez fait, cliquez sur <strong>Suivant</strong> pour continuer."
     },
     endowmentsMPL: {

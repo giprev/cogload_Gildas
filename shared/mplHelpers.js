@@ -263,7 +263,6 @@ function mplGenerator2(y, X, condition, position) {
     }
 
     let sure_payments2 = createSequenceArray(y, X, position);
-    console.log("sure_payements2 is", sure_payments2);
 
     // Dynamically assign endowmentsMPL based on parameters
     let Xy = X + y; // e.g., "G75" or "L75"

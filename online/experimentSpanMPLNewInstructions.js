@@ -1377,7 +1377,6 @@ mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
-    console.log("MPLGenerator2 called with:", probability, type, "mirror", position);
     return mplGenerator2(probability, type, "mirror", position);
 });
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
@@ -2470,6 +2469,8 @@ const feedbackExampleSpanMPL = {
     },
 };
 
+let actual_payment_span_span = 0;
+
 const incentives_span_mpl = {
     type: "html-keyboard-response",
     choices: ['Enter'],
@@ -2902,7 +2903,7 @@ const cognitiveUncertaintyLottery = {
 let block_order_indicator;
 
 
-let actual_payment_span_span = 0;
+//let actual_payment_span_span = 0;
 
 
 
@@ -3214,8 +3215,8 @@ const timelineUncertainty = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, */consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
+timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, */fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
