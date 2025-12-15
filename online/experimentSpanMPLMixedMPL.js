@@ -303,7 +303,9 @@ const instructionsSpanMPLMirror = {
         <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        <p>${language.instructionsClickToChoose.comprehensionQuestionsFirstAfter}</p>
         <p>${language.instructionsClickToChoose.clickNext}</p>`
+
 
     ];
     },
@@ -350,6 +352,7 @@ const instructionsSpanMPLLottery = {
         <p>${language.instructionsClickToChoose.clickToChoose}</p>
         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
         <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        <p>${language.instructionsClickToChoose.comprehensionQuestionsFirstAfter}</p>
         <p>${language.instructionsClickToChoose.clickNext}</p>`
 
     ];
@@ -889,6 +892,7 @@ const instructionsChoosingASetOfBoxes = {
         return [`<!-- <h2>${language.instructionsChoosingASetOfBoxes.title}</h2>-->
         <br>
          <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+        <p>${language.instructionsChoosingASetOfBoxes.comprehensionChecked}</p>
         <p>${language.instructionsChoosingASetOfBoxes.description}</p>
         <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
         ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}

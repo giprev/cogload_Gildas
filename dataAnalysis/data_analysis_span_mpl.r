@@ -48,7 +48,7 @@ filePath_pilot_1And2FromJatos <- "/Users/domitilleprevost/Downloads/jatos_result
 filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt" # first pilot
 filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_1&2.txt" # first and second pilot pooled
 
-filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt" # 
+filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt"  
 
 
 text <- readLines(filePath_testGildas14_20251213)

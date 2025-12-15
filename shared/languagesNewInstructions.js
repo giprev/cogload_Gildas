@@ -700,13 +700,13 @@ const fr = {
         <br>Si vous choisissez le <span style='color:blue'>lot B</span>, comme toutes les boîtes contiennent -3€, la moyenne est de -3€, vous êtes <b>sûr·e d'avoir <span style='color:green'>-3€</span></b> (100% de chance).
         <br>Ici, le <span style='color:red'>lot A</span> et le <span style='color:blue'>lot B</span> vous rapportent le même bonus, car ils ont la même moyenne.`,
         clickNext: "Cliquez sur <strong>Suivant</strong> pour découvrir comment choisir un lot.",
-        clickNextSecond: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension."
+        clickNextSecond: "Cliquez sur <strong>Suivant</strong> pour répondre à la dernière partie des questions de compréhension."
     },
     instructionsClickToChoose:{
         title: "Instructions pour la tâche des choix.",
         clickToChoose: `Pour choisir un lot vous devez cliquer sur le tableau. Le lot choisi est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.`,
         clickToChooseExample: `Ici le lot choisi est le <span style='color:red'>lot A</span>.`,
-        comprehensionQuestionsFirstAfter: "La prochaine page vous montrera la première partie des questions de compréhension.",
+        comprehensionQuestionsFirstAfter: "La prochaine page vous montrera la première partie des questions de compréhension. La deuxième partie des questions de compréhension se trouve au milieu de cette partie de l'expérience.",
         comprehensionQuestionsSecondAfter: "La prochaine page vous montrera la deuxième et dernière partie des questions de compréhension.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour répondre aux questions de compréhension."
     },
@@ -775,7 +775,7 @@ const fr = {
         titleMain: "Questions de compréhension",
         titleTraining: "Questions de compréhension (entraînement)",
     },
-    comprehensionMPLExplanation: `Vous devez réussir toutes les questions pour continuer l'expérience. Si vous échouez plus de quatre fois,
+    comprehensionMPLExplanation: `Vous devez réussir toutes les questions des deux parties des questions de compréhension pour continuer l'expérience. Si vous échouez plus de quatre fois à l'une des parties,
     l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€, en plus des bonus des deux premières parties. 
     <br>
     Vous pouvez cliquer sur le bouton en haut à droite pour afficher les instructions.`,
@@ -931,6 +931,7 @@ const fr = {
     instructionsChoosingASetOfBoxes: {
         title: "Instructions pour les Listes à Multiples Prix (LMP).",
         subTitle: "Choisir un lot de boîtes",
+        comprehensionChecked: "Vous avez correctement répondu à la première partie des questions de compréhension.",
         description: `Dans la Partie 3, vous devrez choisir entre différentes lignes ("versions") du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>.`,
         example1: ` 
         Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est le même pour toutes les lignes ("versions") du tableau. Cependant le <span style='color:blue'>lot B</span> change : à chaque version, l'argent dans chacune de ses boîtes augmente de 1€.`,
@@ -959,7 +960,7 @@ const fr = {
         incentivesMPL1: `Vous avez en moyenne une chance sur {propSelecForMPL} d'être sélectionné·e au hasard pour avoir ce bonus. Si c'est le cas l'ordinateur sélectionnera <b>au hasard un tour puis une ligne (version) du tableau que vous avez vu ce tour-là</b>, 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.`,
         incentivesMPL2: `L'ordinateur rajoutera une somme initiale d'argent au bonus du choix (si il y en a un). Cette somme dépend du tableau sélectionné. Elle est indiquée en <span style='color:green'>vert</span> en haut de chaque tableau.`,
-        timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableau. Si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
+        timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableau (même sans cliquer sur le bouton Suivant ils seront pris en compte). Cependant si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
         incentivesMPL3: `Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         priority: "Retenez les chiffres même pendant la tâche des choix, le bonus du jeu des chiffres est en moyenne supérieur à celui de la tâche des choix !",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour effectuer un exemple final."
