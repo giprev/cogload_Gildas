@@ -41,6 +41,7 @@ filePath_testGildas10_20251117 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas11_20251125<- "/Users/domitilleprevost/Downloads/jatos_results_data_20251125093815.txt" # multiple trials taken from the last days (from 17/11 at 1:16 pm to 25/11 at 10:08am)
 filePath_testGildas12_20251125 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251126225013.txt"
 filePath_testGildas13_20251127 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251127132619.txt" # three test trials completed in the lab after updated payment rule. Only one until the end
+filePath_testGildas14_20251213 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251214152013.txt" # one trial with the two new tables from Oprea
 
 filePath_pilot_1And2FromJatos <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251201101543.txt" # two first pilots downloaded from jatos not reunited by hand
 
@@ -50,9 +51,25 @@ filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Sta
 filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt" # 
 
 
-text <- readLines(filePath_pilot_1And2FromJatos)
+text <- readLines(filePath_testGildas14_20251213)
 
 nSub <- length(text)
+
+
+
+
+## test to convert in csv
+
+exampleCSV <- fromJSON(text)
+write.csv(exampleCSV, "/Users/domitilleprevost/Downloads/exampleCSV1.csv")
+
+##
+
+
+
+
+
+
 
  
 # length(text)

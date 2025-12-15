@@ -5,7 +5,7 @@ const feedBackDuration = 1000;//1000ms
 const basePayment_hard = 6; //
 const basePayment_easy = 6; // 
 const notUnderstoodPayment = 6; 
-const spanMplPayment_hard = 3.2;
+const spanMplPayment_hard = 3.3;
 const calibrationPayment = 1; // 1.03€ rounded
 const spanSpanPayment_hard = 1;// 1.03€ rounded
 const spanMplPayment_easy = spanMplPayment_hard;
@@ -15,10 +15,11 @@ const fds_letter_presentation = 500; //500ms
 const fds_post_trial_gap = 250; //250ms
 // Change default language to French
 
-const practice_duration = 30; //= 30000; // duration of practice flanker
-const main_duration = 150; //= 15000; // duration of main task flanker
+const practice_duration = 30000; //= 30000; // duration of practice flanker
+const main_duration = 15000; //= 15000; // duration of main task flanker
 const mplTimeLimit = 30000; // time limit for the MPL task in ms
-const betweenSpanTimeInterval = 3000; // time interval between blue (source) and red (target) letters in ms
+const betweenSpanTimeInterval = 4500; // time interval between blue (source) and red (target) letters in ms (add 500 with post trial)
+const setup_fds_trial_duration = 4500// 4500 // time interval between the answers to the span and the beginning of a new one in spanMPL + 500ms post_trial
 let total_flanker = 0;
 let total_flanker_easy = 0;
 let total_flanker_hard = 0;
@@ -31,9 +32,9 @@ let items_flanker = Array.from(Array(16).keys()); // Array from 0-15
 let blockEasy = 0;
 
 
-let totalFdsSpanMplTrials = 14;
+let totalFdsSpanMplTrials = 16; // 14 of Oprea plus two originals from Oprea
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
 console.log("treatment is", treatment)
 console.log("not understood payment in parameters is", notUnderstoodPayment)
-let totalFdsTrainingTrials = 9; // 12 in the main experiment // number of rounds of the calibration
+let totalFdsTrainingTrials = 9; // number of rounds of the calibration

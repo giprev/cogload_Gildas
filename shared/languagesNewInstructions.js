@@ -593,7 +593,7 @@ const fr = {
         rounds: "Dans cette partie, vous allez jouer 9 tours du jeu des chiffres.",
         //description: "À chaque tour, vous verrez une séquence de chiffres et vous devrez la retaper dans le même ordre dans lequel elle a été vue.",
         bonus: "<b>Calcul du bonus dans la Partie 1 :</b> dans cette partie, la longueur des séquences de chiffres augmentera après une réussite (100% de précision) et diminuera après deux échecs consécutifs.",
-        incentiveRule: "Votre but est d'atteindre la <b>plus longue séquence possible</b> à la fin des 9 tours. En effet, si votre dernière séquence dépasse 6 unités, chaque unité à partir de la 7ème (inclus) vous rapporte {partBonus}€.</b>",
+        incentiveRule: "Votre but est d'atteindre la <b>plus longue séquence possible</b> à la fin des 9 tours. En effet, si votre dernière séquence dépasse 6 unités, chaque unité à partir de la 7ème (inclus) vous rapporte <b>{partBonus}€.</b>",
         incentiveRuleExample: "Par exemple, si vous atteignez une longueur de 8 après le dernier tour, votre bonus sera de {partBonus}€ x 2 = <b>{examplePayment}€</b>.",
         meanDuration: "Cette partie dure environ 3 minutes.",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour commencer la première partie."
@@ -653,9 +653,9 @@ const fr = {
         clickNext: "Cliquez sur <strong>Suivant</strong> pour commencer la Partie 2.",
     },
     spanTrials: {
-        theBlueDigitsWillBePresented: "Les chiffres bleus vont être présentés.",
-        theBlueDigitWillBePresented: "Le chiffre bleu va être présenté.",
-        theRedDigitsWillBePresented: "Les chiffres rouges vont être présentés.",
+        theBlueDigitsWillBePresented: "Les chiffres <span style='color:blue'>bleus</span> vont être présentés.",
+        theBlueDigitWillBePresented: "Le chiffre <span style='color:blue'>bleu</span> va être présenté.",
+        theRedDigitsWillBePresented: "Les chiffres <span style='color:red'>rouges</span> vont être présentés.",
     },
     debriefSpanSpan:{
         title: "Fin de la deuxième partie",
@@ -956,10 +956,10 @@ const fr = {
         incentiveSpanExample: "Par exemple, si au tour sélectionné vous obtenez une précision de 80%, votre bonus sera de <b>{bonusSpan}€ x 0.8 = {examplePaymentSpan}€.</b>",
         randomMechanism: "Puisque le bonus dépend d'un tour tiré au hasard, veuillez considérer chaque tour comme si c’était celui qui allait être payé.",
         severalTablesDescription: `<b>Le bonus pour la tâche des choix</b> sera calculé de la manière suivante :`,
-        incentivesMPL1: `Vous avez en moyenne {propSelecForMPL} d'être sélectionné·e au hasard pour avoir ce bonus. Si c'est le cas l'ordinateur sélectionnera <b>au hasard un tour puis une ligne (version) du tableau que vous avez vu ce tour-là</b>, 
+        incentivesMPL1: `Vous avez en moyenne une chance sur {propSelecForMPL} d'être sélectionné·e au hasard pour avoir ce bonus. Si c'est le cas l'ordinateur sélectionnera <b>au hasard un tour puis une ligne (version) du tableau que vous avez vu ce tour-là</b>, 
         puis déterminera votre paiement <b>selon votre choix pour cette ligne</b>.`,
         incentivesMPL2: `L'ordinateur rajoutera une somme initiale d'argent au bonus du choix (si il y en a un). Cette somme dépend du tableau sélectionné. Elle est indiquée en <span style='color:green'>vert</span> en haut de chaque tableau.`,
-        timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableaux. Si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
+        timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableau. Si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
         incentivesMPL3: `Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         priority: "Retenez les chiffres même pendant la tâche des choix, le bonus du jeu des chiffres est en moyenne supérieur à celui de la tâche des choix !",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour effectuer un exemple final."
@@ -1140,7 +1140,7 @@ const fr = {
     },
     instructionsMPL: {
             makeChoice: `Veuillez <span style="background-color: rgba(239, 243, 4, 1)">choisir</span> quel lot (<span style="color: red">A</span> ou <span style="color: blue">B</span>) vous préférez pour chaque ligne (chaque \"version\") du tableau ci-dessous. Vous pouvez ensuite cliquer sur 'Suivant'.`,
-            computerChooses: 'Si cet tour est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
+            computerChooses: 'Si ce tour est choisi pour le paiement, l\'ordinateur choisira une ligne (\"version\") au hasard et utilisera votre <span style="background-color:  rgba(239, 243, 4, 1)">choix</span> (<span  style="color: red">lot A</span> ou <span style="color: blue"> lot B</span>) à cette ligne pour déterminer votre paiement.',
             trainingTitle: "Entraînement à choisir les lots",
             explanation1: "Sélectionnez le <span style=\"color: red\">lot A</span> pour les lignes (\"versions\") 1 à 6 et le <span style=\"color: blue\">lot B</span> pour les lignes (\"versions\") 7 à 18.",
             explanation2: "Sélectionnez le <span style=\"color: blue\">lot B</span> pour les lignes (\"versions\") 1 à 8 et le <span style=\"color: red\">lot A</span> pour les lignes (\"versions\") 9 à 18.",

@@ -1,7 +1,9 @@
 const sure_payments = [25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
 const Y_valuesMPL = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
 let helpPageCounter = 0;
 let lengthSurePayments = 17;
+
 
 function createMPLPositionDictionaryFromList() {
     const mplPositions = {};
@@ -85,7 +87,7 @@ function mplGenerator(y, X, condition) {
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
         </ul></div>
 
-        <table class="mpl" data-mpl-type="${X}${y}">
+        <table class="mpl" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -128,7 +130,7 @@ function mplGenerator(y, X, condition) {
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
         </ul></div>
 
-        <table class="mpl" data-mpl-type="${X}${y}">
+        <table class="mpl" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -170,7 +172,7 @@ function mplGenerator(y, X, condition) {
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
         </ul></div>
 
-        <table class="mpl" data-mpl-type="${X}${y}">
+        <table class="mpl" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -215,31 +217,31 @@ function createSequenceArray(y, X, position) {
         EV = 14.5 ;}
 
     if (X == "G") {
-        console.log("y is", y, "X is", X, "position is", position);
-        console.log("EV in G is", EV);
-        console.log("pos in G is", pos);
+        // console.log("y is", y, "X is", X, "position is", position);
+        // console.log("EV in G is", EV);
+        // console.log("pos in G is", pos);
         const startValue = EV - (pos * 0.2); // Calculate starting value
-        console.log("startValue in G is", startValue);
+        // console.log("startValue in G is", startValue);
         for (let i = 0; i < lengthSurePayments + 1; i++) {
             array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
         }
     }
     else if (X == "L") {
-        console.log("y is", y, "X is", X, "position is", position);
-        console.log("EV in L is", EV);
-        console.log("pos in L is", pos);
+        // console.log("y is", y, "X is", X, "position is", position);
+        // console.log("EV in L is", EV);
+        // console.log("pos in L is", pos);
         const startValue = EV - (pos * 0.2);
-        console.log("startValue in L is", startValue);
+        // console.log("startValue in L is", startValue);
         for (let i = 0; i < lengthSurePayments + 1; i++) {
             array.push(Math.round((startValue + (i * 0.2)) * 10) / 10);
         }
     }
     else if (X == "A") {
-        console.log("y is", y, "X is", X, "position is", position);
-        console.log("EV in A is", EV);
-        console.log("pos in A is", pos);
+        // console.log("y is", y, "X is", X, "position is", position);
+        // console.log("EV in A is", EV);
+        // console.log("pos in A is", pos);
         const startValue = EV - pos;
-        console.log("startValue in A is", startValue);
+        // console.log("startValue in A is", startValue);
         for (let i = 0; i < lengthSurePayments + 1; i++) {
             array.push(startValue + i);
         }
@@ -497,11 +499,21 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
         return 0; // or handle the error as needed
     }
         else {
-        const type = mplType.charAt(0);
-        const probability = parseInt(mplType.substring(1));
-        let sure = choices[rowNumber]; // either "sure" or "lottery"
+        let type = "";
+        let probability = 0;
+        let surePayments=[];
+        if (mplType == "GO90" || mplType == "GO10") {
+        type = "G";
+        probability = parseInt(mplType.substring(2, 4));
+         surePayments = sure_payments.slice().reverse();
+        } else {
+        type = mplType.charAt(0);
+        probability = parseInt(mplType.substring(1));
         let position = mplPositionDict[mplType];
-        let surePayments = createSequenceArray(probability, type, position);
+        surePayments = createSequenceArray(probability, type, position);
+        }
+        let sure = choices[rowNumber]; // either "sure" or "lottery"
+        console.log("Parsed values: type is", type, "probability is", probability, "sure (choice[rowNumber]) is", sure ,"\n surePayments is ", surePayments);
         if (sure == "sure") {
             if (type == "G") {
                 return surePayments[rowNumber] + 5;

@@ -61,8 +61,8 @@ let actual_payment_calibration = 0;
 let spanCounter = 0; // the counter for each n-back trial
 let mplCounter = 0; // the counter for each mpl trial
 
-const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
-//let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
+//const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
+let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
 let failedQLottery = 1; // number of times lottery comprehension questions were failed
@@ -611,141 +611,6 @@ const comprehensionQuestionsMPLLottery = {
 
 };
 
-// const comprehensionQuestionsMPLLotteryTraining = {
-//     ...comprehensionQuestionsMPLLottery,
-//     data: {task: 'comprehensionSurveyMPLLotteryTraining'},
-//     // Provide placeholder prompts; real HTML will be set in on_start
-//     questions: [
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLLottery.q1.options[0],
-//                 language.comprehensionQMPLLottery.q1.options[1],
-//                 language.comprehensionQMPLLottery.q1.options[2],
-//                 language.comprehensionQMPLLottery.q1.options[3]
-//             ], required: true, correct_response: 3 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLLottery.q4.options[0],
-//                 language.comprehensionQMPLLottery.q4.options[1],
-//                 language.comprehensionQMPLLottery.q4.options[2],
-//                 language.comprehensionQMPLLottery.q4.options[3]
-//             ], required: true, correct_response: 1 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLLottery.q2.options[0],
-//                 language.comprehensionQMPLLottery.q2.options[1],
-//                 language.comprehensionQMPLLottery.q2.options[2],
-//                 language.comprehensionQMPLLottery.q2.options[3]
-//             ], required: true, correct_response: 1 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLLottery.q3.options[0],
-//                 language.comprehensionQMPLLottery.q3.options[1],
-//                 language.comprehensionQMPLLottery.q3.options[2],
-//                 language.comprehensionQMPLLottery.q3.options[3]
-//             ], required: true, correct_response: 3 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLLottery.q5.optionsTraining[0],
-//                 language.comprehensionQMPLLottery.q5.optionsTraining[1],
-//                 language.comprehensionQMPLLottery.q5.optionsTraining[2],
-//                 language.comprehensionQMPLLottery.q5.optionsTraining[3]
-//             ], required: true, correct_response: 2 }
-//     ],
-//     button_label: language.button.next,
-//     randomize_question_order : false,
-//     preamble: `
-//     <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
-//     <button type="button" id="help-button-comprehension" style="padding: 16px 34px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px;">
-//         ${language.button.help || "Help"}
-//     </button>
-//     </div>
-//     <h2>${language.comprehensionMPLIntro.titleTraining}</h2>
-//     <br><br>`,
-//     on_start: function(trial) {
-//         // Build each prompt as a string (functions in question.prompt are not executed)
-//         let q = trial.questions;
-
-//         q[0].prompt = `${example8MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-//             <p>${language.comprehensionQMPLLottery.q1.promptTraining}</p>`;
-//         if (showExplanationsQuestionsLotteries) {
-//             q[0].prompt += `
-//             <div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLLottery.q1.explanation || "The correct answer is option 1 because the mirror boxes contain the same amount as the sure option."}
-//             </div>`;
-//         }
-
-//         q[1].prompt = `${language.comprehensionQMPLLottery.q4.promptTraining}`;
-//         if (showExplanationsQuestionsLotteries) {
-//             q[1].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLLottery.q4.explanation}</div>`;
-//         }
-
-//         q[2].prompt = `${language.comprehensionQMPLLottery.q2.promptTraining}`;
-//         if (showExplanationsQuestionsLotteries) {
-//             q[2].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLLottery.q2.explanation}</div>`;
-//         }
-
-//         q[3].prompt = `${language.comprehensionQMPLLottery.q3.promptTraining}`;
-//         if (showExplanationsQuestionsLotteries) {
-//             q[3].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLLottery.q3.explanation}</div>`;
-//         }
-
-//         q[4].prompt = `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-//                 <p>${language.comprehensionQMPLLottery.q5.prompt}</p>`;
-//         if (showExplanationsQuestionsLotteries) {
-//             q[4].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                         ${language.comprehensionQMPLLottery.q5.explanation}
-//                     </div>`;
-//         }
-
-//         // ensure trial.questions updated
-//         trial.questions = q;
-//     },
-//     on_finish: function (data) {
-//         const responses = JSON.parse(data.responses);
-        
-//         let all_correct = true;
-//         let questions_correct = []; // Array to track which questions were correct
-//         let questions_incorrect = []; // Array to track which questions were incorrect
-
-//         comprehensionQuestionsMPLLotteryTraining.questions.forEach((q, i) => {
-//             const given_answer = responses["Q" + i];
-//             const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
-//             const is_correct = given_answer == correct_text;
-            
-//             if (is_correct) {
-//                 questions_correct.push(i + 1); // Store 1-based question numbers
-//                 console.log("question ", i + 1, " is correct");
-//             } else {
-//                 questions_incorrect.push(i + 1);
-//                 all_correct = false;
-//                 console.log("question ", i + 1, " is incorrect");
-//             console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`); }
-//         });
-
-//         // Save comprehensive results to trial data
-//         data.all_correct = all_correct;
-//         data.questions_correct = questions_correct;
-//         data.questions_incorrect = questions_incorrect;
-//         data.num_correct = questions_correct.length;
-//         console.log("data.num_correct at comprehension questions lottery training is ", data.num_correct);
-//         data.num_incorrect = questions_incorrect.length;
-
-//     },
-//     on_load: function() {
-//         // Add click handler for help button
-//         const helpButton = document.getElementById('help-button-comprehension');
-//         if (helpButton) {
-//         helpButton.addEventListener('click', function(e) {
-//                 e.preventDefault(); // Prevent any default behavior
-
-//                 // Check if modal is already open
-//                 if (!document.getElementById('instruction-modal')) {
-//                     showInstructionModalForQuestions("lottery"); // or "mirror"
-//                 }
-//             });
-//         }
-    
-//     }
-// }
 
 const comprehensionQuestionsMPLMirror = {
     ...comprehensionQuestionsMPLLottery,
@@ -937,140 +802,6 @@ const comprehensionQuestionsMPLMirror = {
     }
 }
 
-// const comprehensionQuestionsMPLMirrorTraining = {
-//     ...comprehensionQuestionsMPLLottery,
-//     data: {task: 'comprehensionSurveyMPLMirrorTraining'},
-//     // Provide placeholder prompts; real HTML will be set in on_start
-//     questions: [
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLMirror.q1.options[0],
-//                 language.comprehensionQMPLMirror.q1.options[1],
-//                 language.comprehensionQMPLMirror.q1.options[2],
-//                 language.comprehensionQMPLMirror.q1.options[3]
-//             ], required: true, correct_response: 1 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLMirror.q4.options[0],
-//                 language.comprehensionQMPLMirror.q4.options[1],
-//                 language.comprehensionQMPLMirror.q4.options[2],
-//                 language.comprehensionQMPLMirror.q4.options[3]
-//             ], required: true, correct_response: 4 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLMirror.q2.options[0],
-//                 language.comprehensionQMPLMirror.q2.options[1],
-//                 language.comprehensionQMPLMirror.q2.options[2],
-//                 language.comprehensionQMPLMirror.q2.options[3]
-//             ], required: true, correct_response: 1 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLMirror.q3.options[0],
-//                 language.comprehensionQMPLMirror.q3.options[1],
-//                 language.comprehensionQMPLMirror.q3.options[2],
-//                 language.comprehensionQMPLMirror.q3.options[3]
-//             ], required: true, correct_response: 1 },
-//         { prompt: "", options: [
-//                 language.comprehensionQMPLMirror.q5.optionsTraining[0],
-//                 language.comprehensionQMPLMirror.q5.optionsTraining[1],
-//                 language.comprehensionQMPLMirror.q5.optionsTraining[2],
-//                 language.comprehensionQMPLMirror.q5.optionsTraining[3]
-//             ], required: true, correct_response: 2 }
-//     ],
-//     button_label: language.button.next,
-//     randomize_question_order : false,
-//     preamble: `
-//     <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
-//     <button type="button" id="help-button-comprehension" style="padding: 16px 34px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px;">
-//         ${language.button.help || "Help"}
-//     </button>
-//     </div>
-//     <h2>${language.comprehensionMPLIntro.titleTraining}</h2>
-//     <br><br>`,
-//     on_start: function(trial) {
-//         // Build each prompt as a string (functions in question.prompt are not executed)
-//         let q = trial.questions;
-
-//         q[0].prompt = `${example8MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-//             <p>${language.comprehensionQMPLMirror.q1.promptTraining}</p>`;
-//         if (showExplanationsQuestionsMirrors) {
-//             q[0].prompt += `
-//             <div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLMirror.q1.explanation || "The correct answer is option 1 because the mirror boxes contain the same amount as the sure option."}
-//             </div>`;
-//         }
-
-//         q[1].prompt = `${language.comprehensionQMPLMirror.q4.promptTraining}`;
-//         if (showExplanationsQuestionsMirrors) {
-//             q[1].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLMirror.q4.explanation}</div>`;
-//         }
-
-//         q[2].prompt = `${language.comprehensionQMPLMirror.q2.promptTraining}`;
-//         if (showExplanationsQuestionsMirrors) {
-//             q[2].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLMirror.q2.explanation}</div>`;
-//         }
-
-//         q[3].prompt = `${language.comprehensionQMPLMirror.q3.promptTraining}`;
-//         if (showExplanationsQuestionsMirrors) {
-//             q[3].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                 ${language.comprehensionQMPLMirror.q3.explanation}</div>`;
-//         }
-
-//         q[4].prompt = `<br><br>${example7MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-//                 <p>${language.comprehensionQMPLMirror.q5.prompt}</p>`;
-//         if (showExplanationsQuestionsMirrors) {
-//             q[4].prompt += `<div style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0;">
-//                         ${language.comprehensionQMPLMirror.q5.explanation || "The correct answer is option 3."}
-//                     </div>`;
-//         }
-
-//         // ensure trial.questions updated
-//         trial.questions = q;
-//     },
-//     on_finish: function (data) {
-//         const responses = JSON.parse(data.responses);
-        
-//         let all_correct = true;
-//         let questions_correct = []; // Array to track which questions were correct
-//         let questions_incorrect = []; // Array to track which questions were incorrect
-
-//         comprehensionQuestionsMPLMirrorTraining.questions.forEach((q, i) => {
-//             const given_answer = responses["Q" + i];
-//             const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
-//             const is_correct = given_answer == correct_text;
-            
-//             if (is_correct) {
-//                 questions_correct.push(i + 1); // Store 1-based question numbers
-//                 console.log("question ", i + 1, " is correct");
-//             } else {
-//                 questions_incorrect.push(i + 1);
-//                 all_correct = false;
-//                 console.log("question ", i + 1, " is incorrect");
-//             console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`); }
-//         });
-
-//         // Save comprehensive results to trial data
-//         data.all_correct = all_correct;
-//         data.questions_correct = questions_correct;
-//         data.questions_incorrect = questions_incorrect;
-//         data.num_correct = questions_correct.length;
-//         console.log("data.num_correct at comprehension questions mirror training is ", data.num_correct);
-//         data.num_incorrect = questions_incorrect.length;
-
-//     },
-//     on_load: function() {
-//         // Add click handler for help button
-//         const helpButton = document.getElementById('help-button-comprehension');
-//         if (helpButton) {
-//         helpButton.addEventListener('click', function(e) {
-//                 e.preventDefault(); // Prevent any default behavior
-
-//                 // Check if modal is already open
-//                 if (!document.getElementById('instruction-modal')) {
-//                     showInstructionModalForQuestions("mirror"); // or "lottery"
-//                 }
-//             });
-//         }
-//     }
-// }
 const loopAgainSpanMplLottery = {
     type: "instructions",
     pages: function () {
@@ -1338,9 +1069,7 @@ var response_grid =
 
 
 let numbersArray_lottery = generateShuffledArray();
-console.log(numbersArray_lottery, "is numbersArray_lottery");
 let numbersArray_mirror = generateShuffledArray();
-console.log(numbersArray_mirror, "is numbersArray_mirror");
 let mpl_html_array_lottery = [];
 let mpl_html_array_mirror = [];
 let example_mpl_html_array_lottery = [];
@@ -1368,9 +1097,15 @@ mpl_html_array_lottery = numbersArray_lottery.map(x => {
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     const position = mplPositionDict[tableType]; // Get the position from dictionary
-    console.log("MPLGenerator2 called with:", probability, type, "lottery", position);
+    // console.log("MPLGenerator2 called with:", probability, type, "lottery", position);
     return mplGenerator2(probability, type, "lottery", position);
 });
+if (Math.random() < 0.5){
+    mpl_html_array_lottery.splice(mpl_html_array_lottery.length, 0, mplGenerator(10, "G", "lottery"), mplGenerator(90, "G", "lottery"));}
+else {
+    mpl_html_array_lottery.splice(mpl_html_array_lottery.length, 0, mplGenerator(90, "G", "lottery"), mplGenerator(10, "G", "lottery"));}
+    console.log("is mpl_html_array_lottery after adding two examples at start", mpl_html_array_lottery);
+
 mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const tableType = list_mpl_tables[x];
     // Extract the probability and type from the table identifier
@@ -1379,22 +1114,28 @@ mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
     return mplGenerator2(probability, type, "mirror", position);
 });
+if (Math.random() < 0.5){
+    mpl_html_array_mirror.splice(mpl_html_array_mirror.length, 0, mplGenerator(10, "G", "mirror"), mplGenerator(90, "G", "mirror"));}
+else {
+    mpl_html_array_mirror.splice(mpl_html_array_mirror.length, 0, mplGenerator(90, "G", "mirror"), mplGenerator(10, "G", "mirror"));}
+    console.log("is mpl_html_array_mirror after adding two examples at start", mpl_html_array_mirror);
+    
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
-console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
+// console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
 example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", mplPositionDict["G50"])];
-console.log(example_mpl_html_array_mirror, "is example_mpl_html_array_mirror");
+// console.log(example_mpl_html_array_mirror, "is example_mpl_html_array_mirror");
 training_mpl_html_array1 = [mplGenerator3(1)];
 training_mpl_html_array2 = [mplGenerator3(2)];
 training_mpl_html_array = [mplGenerator3(1), mplGenerator3(2)];
 training_mpl_html_array1 = training_mpl_html_array1.map(html => ({html: html, statusMPL: "mirror"}));
 training_mpl_html_array2 = training_mpl_html_array2.map(html => ({html: html, statusMPL: "mirror"}));
 training_mpl_html_array = training_mpl_html_array.map(html => ({html: html, statusMPL: "mirror"}));
-console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
+// console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
 mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
 example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 example_mpl_html_array_mirror = example_mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
-console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery with generated HTML");
+// console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery with generated HTML");
 // console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
 
 
@@ -1415,6 +1156,20 @@ const mpl_trial = {
     return jsPsych.timelineVariable("html", true);  
   },
   on_load: function() {
+
+    let numRows = null;
+    try {
+      const rowNodes = Array.from(document.querySelectorAll('.choice[data-row]'));
+      if (rowNodes.length > 0) {
+        const rows = rowNodes.map(n => parseInt(n.dataset.row, 10)).filter(x => !isNaN(x));
+        if (rows.length > 0) numRows = Math.max(...rows) + 1;
+      }
+    } catch (e) {
+      console.error("Error determining number of rows in MPL table:", e);
+    }
+    console.log("numRows detected as:", numRows);
+    // expose on trial object so on_finish can also read it if needed
+    this._mpl_num_rows = numRows;
 
     // Disable the submit button initially
     const submitButton = document.querySelector('input[type="submit"]');
@@ -1497,7 +1252,7 @@ const mpl_trial = {
         }
         // Fill from clicked row+1 to end with the opposite choice
         let otherChoice = (choice === 'sure') ? 'lottery' : 'sure';
-        for (let r = row + 1; r < lengthSurePayments + 1; r++) {
+        for (let r = row + 1; r < numRows; r++) {
           selectRow(r, otherChoice);
           if (choice == "lottery"){
             document.querySelector(`.mirror[data-row="${r}"]`).classList.remove('selected')
@@ -1584,6 +1339,9 @@ const mpl_trial = {
   
   on_finish: function(data) {
 
+    let numRows = (this && this._mpl_num_rows)
+    console.log("numRows on finish is ", numRows)
+
     if(block_type == "span_mpl"){
         // clear any timers that might still be pending (safety)
     try {
@@ -1619,7 +1377,7 @@ const mpl_trial = {
     let choicesArray = [];
 
 
-    for (var i = 0; i < lengthSurePayments + 1; i++) {
+    for (var i = 0; i < numRows; i++) {
       let choice = responses_mpl[`row${i}`];
       choicesArray.push(choice);
       prevChoice = i > 0 ? choicesArray[i-1] : null;
@@ -1654,6 +1412,7 @@ const mpl_trial = {
 
     let html = jsPsych.timelineVariable("html", true);
     // statusMPL = jsPsych.timelineVariable("statusMPL", true);
+
     let mplTypeMatch = html.match(/data-mpl-type="([^"]+)"/);
             if (mplTypeMatch && mplTypeMatch[1]) {
                 data.mplType = mplTypeMatch[1];
@@ -1672,10 +1431,11 @@ const mpl_trial = {
     mplCounter++;
     data.mplCounter = mplCounter;
     data.subBlock = subBlock;
-    data.statusMPL = statusMPL
+    data.statusMPL = statusMPL;
     data.block = block_type;
     data.switch_row2 = switchRow2; // null means no switch
     data.switch_row1 = switchRow1; // null means no switch
+    console.log("data.switch_row1 is ", data.switch_row1, "and data.switch_row2 is ", data.switch_row2)
     data.switchRow2Choice = switchRow2Choice;
     data.switchRow1Choice = switchRow1Choice;
     console.log("data.switchRow2Choice is ", data.switchRow2Choice, "and data.switchRow1Choice is ", data.switchRow1Choice)
@@ -1683,8 +1443,10 @@ const mpl_trial = {
     console.log("choicesArray is ", choicesArray)
     console.log("status of mpl is", data.statusMPL)
     data.task = "mpl";
-    data.position = mplPositionDict[data.mplType]
-    console.log("data.position is ", data.position)
+    if(data.mplType !== "GO90" && data.mplType !== "GO10"){
+        data.position = mplPositionDict[data.mplType]
+        console.log("data.position is ", data.position)
+    };
     let exampleLine = getRandomInt(0, lengthSurePayments);
     console.log("calculateMPLPayment with line ", exampleLine, " is", calculateMPLPayment(data.mplType, exampleLine, data.choices, data.statusMPL));
   }
@@ -1961,7 +1723,7 @@ const setup_fds = {
         return trialInfo;
     },
     choices: [],
-    trial_duration: 4500,
+    trial_duration: setup_fds_trial_duration,
     post_trial_gap: 500,
     // on_load: function() {
         // Add click handler for help button
@@ -2000,7 +1762,7 @@ const before_span_span1 = {
     },
     choices: [],
     post_trial_gap: 500,
-    trial_duration: 2500,
+    trial_duration: betweenSpanTimeInterval,
     on_finish: function(){
         if (treatment == 'hard') {
             stimList = getStimuliFirstLetters(startingSpan),
@@ -2025,7 +1787,7 @@ const before_span_span2 = {
     //     <p>${language.span_span.second_letters_give_back.replace("{theBlueDigits}", theBlueDigits)}</p>`;},
     choices: [], //[`${language.button.next}`],
     post_trial_gap: 500,
-    trial_duration: betweenSpanTimeInterval - 500,
+    trial_duration: betweenSpanTimeInterval,
         on_finish: function(){
             stimList = getStimuliSecondLetters(startingSpan);
             spanHistory[fdsTrialNum-1]=startingSpan;
@@ -2033,7 +1795,6 @@ const before_span_span2 = {
             exitLetters = 0; //reset the exit letter variable
         }
 };
-
 const letter_fds_vis = {
     type: 'html-keyboard-response',
     stimulus: function(){return stimList[idx];},
@@ -2055,7 +1816,6 @@ const letter_fds_vis = {
         }
     }
 }
-
 const fds_response_screen = {
     type: 'html-keyboard-response',
     stimulus: response_grid.replace('{instructions}', language.response_grid_instructions),
@@ -2231,32 +1991,8 @@ const feedback_span ={
     },
 }
 
-// const afterEasyBlock_span = {
-//     ... trialStructure,
-//     stimulus: "",
-//     trial_duration:0,
-//     on_start: function () {
-//       console.log("afterEasyBlock activated")
-//       fdsTrialNum = 1;
-//       nbackCounter = 0;
-//       block_order++;
-//     }
-//   }
 
-// const afterHardBlock_span = {
-//     ... trialStructure,
-//     stimulus: "",
-//     trial_duration: 0,
-//     on_start: function () {
-//       console.log("afterHardBlock activated")
-//       fdsTrialNum = 1;
-//       nbackCounter = 0;
-//       block_order++;
-//     }
-//   }
-
-
-/************ define the some reset trials ***************/
+/************ define some reset trials ***************/
 
 const fdsTrialNumReset = {
     type: "call-function",
@@ -2265,7 +2001,6 @@ const fdsTrialNumReset = {
         console.log("fdsTrialNumReset, fdsTrialNum is " + fdsTrialNum);
     },
 };
-
 const fdsTrialNumResetAndSubBlockReset = {
     type: "call-function",
     func: function() {
@@ -2275,7 +2010,6 @@ const fdsTrialNumResetAndSubBlockReset = {
         console.log("fdsTrialNumReset, subBlock is " + subBlock);
     },
 };
-
 const fdsBlockToSpanMplAndSubBlockIncrementLottery = {
     type: "call-function",
     func: function() {
@@ -2297,7 +2031,6 @@ const fdsBlockToSpanMplAndSubBlockIncrementMirror = {
         correct_responses = [1,1,1,4,3];
     },
 };
-
 const blockIsExample = {
     type: "call-function",
     func: function() {
@@ -2325,7 +2058,30 @@ const blockIsspan_mPLAndFdsTrialNumReset = {
         console.log("block_type is " + block_type + ", fdsTrialNum is " + fdsTrialNum);
     },
 };
+const calibrationDebrief = {
+    type: "html-button-response",
+    choices: [`${language.button.next}`],
+    stimulus: "",
+    on_start: function(trial) {
 
+    actual_payment_calibration = (Math.round((calibrationPayment/2) * 100)/100) * ((maximumSpanCalibration-6))
+    actual_payment_calibration = Math.min(actual_payment_calibration, 1.03*4); // cap at maxSpan = 14. Probably already cheating
+    console.log(actual_payment_calibration, "is actual_payment_calibration")
+
+    // Use the calculated payments
+    trial.data = trial.data || {};
+    trial.data.payment_calibration = actual_payment_calibration;
+    trial.data.maximumSpan = maximumSpanCalibration;
+
+    let html;
+    html = 
+    `<h2>${language.debriefCalibration.title}</h2>
+    <p>${language.debriefCalibration.performance.replace('{maxSpan}', maximumSpanCalibration)}</p>
+    <p>${language.debriefCalibration.bonus.replace('{bonus}', Math.round((calibrationPayment/2) * 100)/100).replace('{units}', maximumSpanCalibration-6).replace('{totalBonus}', actual_payment_calibration)}</p>
+    `
+    trial.stimulus = html; // set final display
+    },
+};
 const spanSpanDebrief = {
     type: "html-button-response",
     choices: [`${language.button.next}`],
@@ -2376,7 +2132,6 @@ const spanSpanDebrief = {
         console.log("actual_payment_span_span is ", actual_payment_span_span);
     }
 };
-
 const feedbackExampleSpanMPL = {
     type: "html-button-response",
     choices: [`${language.button.next}`],
@@ -2400,7 +2155,7 @@ const feedbackExampleSpanMPL = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = spanMplPayment_hard * accuracy;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 3.21);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 3.3);
     // } 
     // else if (treatment == "easy") {
     //     let trialsSpanMpl = jsPsych.data.get().filterCustom(function(trial){
@@ -2438,7 +2193,7 @@ const feedbackExampleSpanMPL = {
     let choices = selectedTrial.select('choices').values[0]; // should be the same for all trials in the subBlock
     console.log(choices, "is the choices for the selected trial");
     let chosenStatusExample = block_order_indicator_span_MPL == "mirror_first" ? "mirror" : "lottery";
-    actual_payment_mpl_example = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample);
+    actual_payment_mpl_example = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample); 
     actual_payment_mpl_example = Math.min(actual_payment_mpl_example, 30);
     console.log(actual_payment_mpl_example)
     let chosenLot = "";
@@ -2499,7 +2254,7 @@ const incentives_span_mpl = {
         console.log("trialsSpanMpl.select('correct').values[0] is ", trialsSpanMpl.select('correct').values[0]);
         console.log("accuracy is ", accuracy);
         actual_payment_span_mpl = Math.round((spanMplPayment_hard * accuracy)*100)/100;
-        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 3.21);
+        actual_payment_span_mpl = Math.min(actual_payment_span_mpl, 3.3);
         console.log("subBlock chosen for payment span_mpl is", subBlockIntegerSpanMpl, "and accuracy is ", accuracy);
     // } 
     // else if (treatment == "easy") {
@@ -2522,8 +2277,7 @@ const incentives_span_mpl = {
     let actual_payment_mpl = 0;
 
     if (luckyPp == 1) { // 1 in propSelecForMPL chance of being selected for MPL payment
-        const selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 18 rows
-        console.log("selectedRow is ", selectedRow);
+        let selectedRow =0; 
         let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
             return trial.task == 'mpl' && trial.block == 'span_mpl' && trial.subBlock == subBlockIntegerSpanMpl && trial.statusMPL == chosenStatus;
         });
@@ -2531,6 +2285,11 @@ const incentives_span_mpl = {
         console.log(selectedTrial.count(), "is selectedTrial count for mpl payment");
         let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
         console.log(mplType, "is the mplType for the selected trial");
+        if (mplType == "GO90"|| mplType=="GO10"){
+            selectedRow = getRandomInt(0, sure_payments.length()-1) // select one of the 25 rows. has to be from 0 to length-1 (indces start at 0)
+        } else {
+            selectedRow = getRandomInt(0, lengthSurePayments); // select one of the 18 rows. has to be from 0 to length-1 (indces start at 0)
+        }
         let choices = selectedTrial.select('choices').values[0];
         console.log(choices, "is the choices for the selected trial");
         actual_payment_mpl = Math.round(calculateMPLPayment(mplType, selectedRow, choices, chosenStatus)*100)/100;
@@ -2555,13 +2314,18 @@ const incentives_span_mpl = {
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = Math.round(Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.03*4)+1.03+3.21+44.5))*100)/100; // cap total bonus
+    trial.data.totalBonus = Math.round(Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.03*4)+1.03+3.3+44.5))*100)/100; // cap total bonus
     if (treatment == "hard") {
     trial.data.totalPayment = Math.round((basePayment_hard + trial.data.totalBonus)*100)/100;
     }
     else if (treatment == "easy") {
     trial.data.totalPayment = Math.round((basePayment_easy + trial.data.totalBonus)*100)/100;
     }
+    trial.data.propSelecForMPL = propSelecForMPL;
+    trial.data.fds_letter_presentation = fds_letter_presentation;
+    trial.data.betweenSpanTimeInterval = betweenSpanTimeInterval;
+    trial.data.fds_post_trial_gap = fds_post_trial_gap;
+    trial.data.mplTimeLimit = mplTimeLimit;
 
     let html;
     // if (treatment == "hard"){
@@ -2591,29 +2355,6 @@ const incentives_span_mpl = {
      },
 };
 
-const calibrationDebrief = {
-    type: "html-button-response",
-    choices: [`${language.button.next}`],
-    stimulus: "",
-    on_start: function(trial) {
-
-    actual_payment_calibration = (Math.round((calibrationPayment/2) * 100)/100) * ((maximumSpanCalibration-6))
-    actual_payment_calibration = Math.min(actual_payment_calibration, 1.03*4); // cap at maxSpan = 14. Probably already cheating
-    console.log(actual_payment_calibration, "is actual_payment_calibration")
-
-    // Use the calculated payments
-    trial.data = trial.data || {};
-    trial.data.payment_calibration = actual_payment_calibration;
-
-    let html;
-    html = 
-    `<h2>${language.debriefCalibration.title}</h2>
-    <p>${language.debriefCalibration.performance.replace('{maxSpan}', maximumSpanCalibration)}</p>
-    <p>${language.debriefCalibration.bonus.replace('{bonus}', Math.round((calibrationPayment/2) * 100)/100).replace('{units}', maximumSpanCalibration-6).replace('{totalBonus}', actual_payment_calibration)}</p>
-    `
-    trial.stimulus = html; // set final display
-    },
-};
 
 const changePaymentRule = {
     type: "html-keyboard-response",
@@ -2897,7 +2638,9 @@ const cognitiveUncertaintyLottery = {
 
 
 
-/*************** TIMELINE ***************/
+
+
+/*************** TIMELINES ***************/
 
 
 let block_order_indicator;
@@ -2916,8 +2659,6 @@ const subBlockInteger = getRandomInt(1, 12);
 //getRandomInt(1, totSubBlocks);
 console.log(subBlockInteger, "selected subBlock for payment"); // Output: random integer between 2 and 11
 
-
-
 const letter_proc = {
     timeline: [letter_fds_vis],
     loop_function: function(){
@@ -2932,7 +2673,6 @@ const letter_proc = {
 const staircase = {
     timeline: [setup_fds, letter_proc, fds_response_screen]
 };
-
 
 const fds_calibration = {
     timeline: [fdsTotalTrialsTraining_update, staircase, feedback_span, staircase_assess],
@@ -2960,7 +2700,6 @@ const fds_calibration = {
     },
 };
 
-
 const fds_span_span_proc = {
     timeline: [ before_span_span1, letter_proc, before_span_span2, letter_proc, fds_response_screen_span_span1, fds_response_screen_span_span2],
     loop_function: function() {
@@ -2982,7 +2721,6 @@ const fds_span_span_proc = {
         }
     },
 };
-// const continueToComprehensionQuestions = {
 //     type: "instructions",
 //     pages: function () {
 //         return [
@@ -3027,40 +2765,6 @@ const comprehensionQuestionsMPLLotteryWithCheck = {
     }
 };
 
-// const comprehensionQuestionsMPLLotteryTrainingWithCheck = {
-//     timeline: [
-//         comprehensionQuestionsMPLLotteryTraining,
-//         {
-//             timeline: [loopAgainSpanMplTraining],
-//             conditional_function: function() {
-//                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
-//                 console.log("Checking comprehension results:", last);
-//                 console.log("last.questions_correct.length is ", last.questions_correct.length);
-//                 // Check if fewer than 4 questions were correct
-//                 // return last && last.questions_correct.length == 4;
-//                 showExplanationsQuestionsLotteries = true;
-//                 return last && last.questions_correct.length < 5;
-//             }
-//         },
-//         {
-//             timeline: [continueToComprehensionQuestions],
-//             conditional_function: function() {
-//                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
-//                 console.log("Checking comprehension results:", last);
-//                 console.log("last.questions_correct.length is ", last.questions_correct.length);
-//                 // Check if fewer than 4 questions were correct
-//                 // return last && last.questions_correct.length == 4;
-//                 return last && last.questions_correct.length == 5;
-//             }
-//         },
-
-//     ],
-//         loop_function: function() {
-//         const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLotteryTraining'}).last(1).values()[0];
-//         return !(last && last.questions_correct.length === 5);
-//     }
-// };
-
 const comprehensionQuestionsMPLMirrorWithCheck = {
     timeline: [
         comprehensionQuestionsMPLMirror,
@@ -3092,40 +2796,6 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
         return !(last && last.questions_correct.length === 5);
     }
 };
-
-// const comprehensionQuestionsMPLMirrorTrainingWithCheck = {
-//     timeline: [
-//         comprehensionQuestionsMPLMirrorTraining,
-//         {
-//             timeline: [loopAgainSpanMplTraining],
-//             conditional_function: function() {
-//                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
-//                 console.log("Checking comprehension results:", last);
-//                 console.log("last.questions_correct.length is ", last.questions_correct.length);
-//                 // Check if fewer than 4 questions were correct
-//                 // return last && last.questions_correct.length == 4;
-//                 showExplanationsQuestionsMirrors = true;
-//                 return last && last.questions_correct.length < 5;
-//             }
-//         },
-//         {
-//             timeline: [continueToComprehensionQuestions],
-//             conditional_function: function() {
-//                 const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
-//                 console.log("Checking comprehension results:", last);
-//                 console.log("last.questions_correct.length is ", last.questions_correct.length);
-//                 // Check if fewer than 4 questions were correct
-//                 // return last && last.questions_correct.length == 4;
-//                 return last && last.questions_correct.length == 5;
-//             }
-//         },
-
-//     ],
-//         loop_function: function() {
-//         const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirrorTraining'}).last(1).values()[0];
-//         return !(last && last.questions_correct.length === 5);
-//     }
-// };
 
 const timelineTrainingSpanMPLTrial= {
     timeline : [blockIsTraining, mpl_trial_training],
@@ -3160,10 +2830,13 @@ const timeline_spanMPL_lottery = {
     timeline_variables: mpl_html_array_lottery,
     // conditional_function: function() { return treatment == "hard"; }
 };
+const timelineTESTLotteryMixedMpl={
+    timeline: [fdsBlockToSpanMplAndSubBlockIncrementLottery, mpl_trial, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]}],
+    timeline_variables: mpl_html_array_lottery,
+}
 const timeline_spanMPL_mirror = {
     timeline: [fdsBlockToSpanMplAndSubBlockIncrementMirror, setup_fds, letter_proc, mpl_trial, fds_response_screen, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]}],
     timeline_variables: mpl_html_array_mirror,
-    // conditional_function: function() { return treatment == "hard"; }
 };
 
 
@@ -3215,8 +2888,8 @@ const timelineUncertainty = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, */fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
+timeline.push( /*{type: "fullscreen", fullscreen_mode: true},*/ consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
@@ -3227,7 +2900,7 @@ jatos.onLoad(() => {
         on_finish: function() {
             submitToJatos(jsPsych.data.get().json());
             // jatos.endStudy(jsPsych.data.get().json());
-            //jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });
