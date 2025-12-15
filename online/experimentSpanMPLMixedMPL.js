@@ -61,8 +61,8 @@ let actual_payment_calibration = 0;
 let spanCounter = 0; // the counter for each n-back trial
 let mplCounter = 0; // the counter for each mpl trial
 
-//const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
-let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
+const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participant is selected to be paid a random draw of an MPL
+// let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
 let failedQLottery = 1; // number of times lottery comprehension questions were failed
@@ -2900,7 +2900,7 @@ jatos.onLoad(() => {
         on_finish: function() {
             submitToJatos(jsPsych.data.get().json());
             // jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            // jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });
