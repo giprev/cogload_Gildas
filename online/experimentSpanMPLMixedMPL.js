@@ -1070,20 +1070,27 @@ const instructionsChoosingASetOfBoxes = {
 const instructionsIncentivesSpanMPL= {
     type: "instructions",
     pages: function(){
-        if (treatment === "hard") {bonusSpan = spanMplPayment_hard}
-        else {bonusSpan = spanMplPayment_easy}
+        if (treatment === "hard") {
+            bonusSpan = spanMplPayment_hard
+            incentiveSpanExample = language.instructionsSpanInMPL.incentiveSpanExampleHard.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)
+            lettersOrder = language.instructionsSpanInMPL.lettersOrderHard
+        }
+        else {bonusSpan = spanMplPayment_easy
+            incentiveSpanExample = language.instructionsSpanInMPL.incentiveSpanExampleEasy.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)
+            lettersOrder = language.instructionsSpanInMPL.lettersOrderEasy
+        }
 
         return [
         `<h2>${language.instructionsSpanInMPL.title}</h2>
         <!--<h3>${language.instructionsSpanInMPL.subTitle}</h3>-->
         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
-        <p>${language.instructionsSpanInMPL.lettersOrder}</p>
+        <p>${lettersOrder}</p>
         <p>${language.instructionsSpanInMPL.timeLimit.replace("{mplTimeLimit}", (mplTimeLimit/1000))}</p>
         <br>
         <p>${language.instructionsSpanInMPL.incentives}</p>
         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", bonusSpan)}</p>
         <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
-        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", bonusSpan).replace("{examplePaymentSpan}", Math.round((bonusSpan * 0.8)*100)/100)}<p>
+        <p>${incentiveSpanExample}</p>
         <!--<p>${language.instructionsSpanInMPL.randomMechanism}</p>-->
         <br>
         <p>${language.instructionsSpanInMPL.severalTablesDescription.replace("{bonusMPL}", bonusSpan)}</p>

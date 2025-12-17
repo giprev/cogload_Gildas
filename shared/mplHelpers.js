@@ -716,149 +716,149 @@ function generateHTML(setALabel = "Set A", setBLabel = "Set B") {
 //     console.log("=== calculateMPLPayment DEBUG END ===");
 //     return undefined;
 // }
-function showInstructionModal() {
-    helpPageCounter ++;
-    console.log("helpPageCounter is ", helpPageCounter);
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background-color: rgba(0,0,0,0.5); z-index: 2000; 
-        display: flex; justify-content: center; align-items: center;
-    `;
+// function showInstructionModal() {
+//     helpPageCounter ++;
+//     console.log("helpPageCounter is ", helpPageCounter);
+//     const modal = document.createElement('div');
+//     modal.style.cssText = `
+//         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+//         background-color: rgba(0,0,0,0.5); z-index: 2000; 
+//         display: flex; justify-content: center; align-items: center;
+//     `;
     
-    const modalContent = document.createElement('div');
-    modalContent.style.cssText = `
-        background: white; padding: 20px; border-radius: 8px; 
-        max-width: 80%; max-height: 80%; overflow-y: auto;
-        position: relative;
-    `;
+//     const modalContent = document.createElement('div');
+//     modalContent.style.cssText = `
+//         background: white; padding: 20px; border-radius: 8px; 
+//         max-width: 80%; max-height: 80%; overflow-y: auto;
+//         position: relative;
+//     `;
     
-    // You can customize the help content based on the current block type
-    let helpContent = '';
-    let spanPayment = 0;
-    console.log("treatment is " + treatment);
-    if (treatment == "hard"){
-        spanPayment = spanMplPayment_hard;
-    }
-    else if (treatment == "easy"){
-        spanPayment = spanMplPayment_easy;
-    }
-    if (statusMPL === "mirror") {
-        helpContent = 
-        `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
-        <h3>${language.instructionsDecisionTable.subTitle}</h3>
-        <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleMirror.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
-         <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
-        <p>${language.instructionsChoosingASetOfBoxes.description}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
-        ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
-        ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
-        <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
-        <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
-        <h3>${language.instructionsSpanInMPL.subTitle}</h3>
-        <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
-        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
-        <p>${language.instructionsSpanInMPL.priority}</p>
-        <h3>${language.instructionsSpanInMPL.incentives}</h3>
-        <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
-        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
-        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
-        <p>${language.instructionsSpanInMPL.randomMechanism}</p>
-         `;
+//     // You can customize the help content based on the current block type
+//     let helpContent = '';
+//     let spanPayment = 0;
+//     console.log("treatment is " + treatment);
+//     if (treatment == "hard"){
+//         spanPayment = spanMplPayment_hard;
+//     }
+//     else if (treatment == "easy"){
+//         spanPayment = spanMplPayment_easy;
+//     }
+//     if (statusMPL === "mirror") {
+//         helpContent = 
+//         `<h2>${language.instructionsDecisionTable.title}</h2>
+//         <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+//         <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+//         <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+//         ${generateHTML("Lot A", "Lot B")}
+//         <p>${language.instructionsBoxesWithMoney.choice}</p>
+//         <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+//         <h3>${language.instructionsDecisionTable.subTitle}</h3>
+//         <p>${language.instructionsDecisionTable.description}</p>
+//         ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsDecisionTable.exampleAbove}</p>
+//         <p>${language.instructionsDecisionTable.exampleBelow}</p>
+//         ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsDecisionTable.clickToChoose}</p>
+//         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <h3>${language.instructionsPaymentRuleMirror.subTitle}</h3>
+//         <p>${language.instructionsPaymentRuleMirror.paymentRule}</p>
+//         <br>
+//         <p>${language.instructionsPaymentRuleMirror.example1}</p>
+//         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsPaymentRuleMirror.example1Payment}</p>
+//         <br>
+//         <p>${language.instructionsPaymentRuleMirror.example2}</p>
+//         ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsPaymentRuleMirror.example2Payment}</p>
+//          <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+//         <p>${language.instructionsChoosingASetOfBoxes.description}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
+//         ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
+//         ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+//         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
+//         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
+//         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
+//         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+//         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+//         <p>${language.instructionsSpanInMPL.priority}</p>
+//         <h3>${language.instructionsSpanInMPL.incentives}</h3>
+//         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
+//         <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
+//         <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
+//         <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+//          `;
         
-    } else if (statusMPL === "lottery") {
-        helpContent = 
-        `<h2>${language.instructionsDecisionTable.title}</h2>
-        <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
-        <p>${language.instructionsBoxesWithMoney.initialSum}</p>
-        <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
-        ${generateHTML("Lot A", "Lot B")}
-        <p>${language.instructionsBoxesWithMoney.choice}</p>
-        <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
-        <h3>${language.instructionsDecisionTable.subTitle}</h3>
-        <p>${language.instructionsDecisionTable.description}</p>
-        ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.exampleAbove}</p>
-        <p>${language.instructionsDecisionTable.exampleBelow}</p>
-        ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsDecisionTable.clickToChoose}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
-        <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
-        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
-        <br>
-        <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
-        ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
-        <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
-        <p>${language.instructionsChoosingASetOfBoxes.description}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
-        ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
-        ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-        <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
-        <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
-        <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
-        <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
-        <h3>${language.instructionsSpanInMPL.subTitle}</h3>
-        <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
-        <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
-        <p>${language.instructionsSpanInMPL.priority}</p>
-        <h3>${language.instructionsSpanInMPL.incentives}</h3>
-        <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
-        <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
-        <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
-        <p>${language.instructionsSpanInMPL.randomMechanism}</p>
-        `;
-    }
+//     } else if (statusMPL === "lottery") {
+//         helpContent = 
+//         `<h2>${language.instructionsDecisionTable.title}</h2>
+//         <h3>${language.instructionsBoxesWithMoney.subTitle}</h3>
+//         <p>${language.instructionsBoxesWithMoney.initialSum}</p>
+//         <p>${language.instructionsBoxesWithMoney.chooseSet}</p>
+//         ${generateHTML("Lot A", "Lot B")}
+//         <p>${language.instructionsBoxesWithMoney.choice}</p>
+//         <p>${language.instructionsBoxesWithMoney.moneyInside}</p>
+//         <h3>${language.instructionsDecisionTable.subTitle}</h3>
+//         <p>${language.instructionsDecisionTable.description}</p>
+//         ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsDecisionTable.exampleAbove}</p>
+//         <p>${language.instructionsDecisionTable.exampleBelow}</p>
+//         ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsDecisionTable.clickToChoose}</p>
+//         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <h3>${language.instructionsPaymentRuleRandomBox.subTitle}</h3>
+//         <p>${language.instructionsPaymentRuleRandomBox.paymentRule}</p>
+//         <br>
+//         <p>${language.instructionsPaymentRuleRandomBox.example1}</p>
+//         ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsPaymentRuleRandomBox.example1Payment}</p>
+//         <br>
+//         <p>${language.instructionsPaymentRuleRandomBox.example2}</p>
+//         ${example3MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsPaymentRuleRandomBox.example2Payment}</p>
+//         <h3>${language.instructionsChoosingASetOfBoxes.subTitle}</h3>
+//         <p>${language.instructionsChoosingASetOfBoxes.description}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.example1}</p>
+//         ${example5MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsChoosingASetOfBoxes.chooseSet}</p>
+//         ${example5MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//         <p>${language.instructionsChoosingASetOfBoxes.example2}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.computerOnlyOneChoice}</p>
+//         <h3>${language.instructionsChoosingASetOfBoxes.severalTables}</h3>
+//         <p>${language.instructionsChoosingASetOfBoxes.severalTablesDescription}</p>
+//         <p>${language.instructionsChoosingASetOfBoxes.incentivesMPL.replace("{propSelecForMPL}", propSelecForMPL)}</p>
+//         <h3>${language.instructionsSpanInMPL.subTitle}</h3>
+//         <p>${language.instructionsSpanInMPL.MPLInSpan}</p>
+//         <p>${language.instructionsSpanInMPL.MPLInSpanRepeat}</p>
+//         <p>${language.instructionsSpanInMPL.priority}</p>
+//         <h3>${language.instructionsSpanInMPL.incentives}</h3>
+//         <p>${language.instructionsSpanInMPL.incentivesSpan.replace("{bonusSpan}", spanPayment)}</p>
+//         <p>${language.instructionsSpanInMPL.incentivesSpanDetails}</p>
+//         <p>${language.instructionsSpanInMPL.incentiveSpanExample.replace("{bonusSpan}", spanPayment).replace("{examplePaymentSpan}", Math.round((spanPayment * 0.8)*100)/100)}</p>
+//         <p>${language.instructionsSpanInMPL.randomMechanism}</p>
+//         `;
+//     }
     
-    modalContent.innerHTML = `
-        ${helpContent}
-        <div style="margin-top: 20px; text-align: center;">
-            <button id="close-modal" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                ${language.button.close || "Close"}
-            </button>
-        </div>
-    `;
+//     modalContent.innerHTML = `
+//         ${helpContent}
+//         <div style="margin-top: 20px; text-align: center;">
+//             <button id="close-modal" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+//                 ${language.button.close || "Close"}
+//             </button>
+//         </div>
+//     `;
     
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
+//     modal.appendChild(modalContent);
+//     document.body.appendChild(modal);
     
-    // Close button handler
-    document.getElementById('close-modal').addEventListener('click', function() {
-        document.body.removeChild(modal);
-    });
-}
+//     // Close button handler
+//     document.getElementById('close-modal').addEventListener('click', function() {
+//         document.body.removeChild(modal);
+//     });
+// }
 function showInstructionModalForQuestions(instructionType, isPaymentRulePhase) {
 
     // Check if modal already exists - prevent duplicates
