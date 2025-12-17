@@ -85,7 +85,7 @@ let isPaymentRulePhase = false;
 
 const consentForm = {
     type: "instructions", 
-    pages: [`<h1>${language.welcomePage.welcome.replace("{treatment}", `${treatment}, urlQueryParameters ${jatos.urlQueryParameters}`)}</h1>
+    pages: [`<h1>${language.welcomePage.welcome.replace("{treatment}", `${treatment}, label ${jatos.urlQueryParameters===undefined ? "---" : jatos.urlQueryParameters.label}`)}</h1>
                 <p>${language.overviewPage.thanks}</p>
                 <p>${language.overviewPage.anonimity}</p>
                 <p>${language.overviewPage.question}</p>
