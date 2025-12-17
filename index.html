@@ -44,8 +44,8 @@
             const results = JSON.parse(final_results);
             const final_payoff = results.slice(-1)[0].totalPayment;
             jatos.submitResultData(final_results, function () {
-                if(jatos.urlQueryParameters.label===undefined) {jatos.endStudy()}
-                if(jatos.urlQueryParameters.label!==undefined) {
+                if(jatos.urlQueryParameters == undefined || jatos.urlQueryParameters.label===undefined) {jatos.endStudy()}
+                else {
                     // console.log(jatos.urlQueryParameters.label,final_payoff)
                     // alert(final_payoff+", "+final_gain)
                     let sitestart='https://leep-redirect-iban.s2ch.fr/room/CES2025N2';
