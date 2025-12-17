@@ -736,6 +736,7 @@ function showInstructionModal() {
     // You can customize the help content based on the current block type
     let helpContent = '';
     let spanPayment = 0;
+    console.log("treatment is " + treatment);
     if (treatment == "hard"){
         spanPayment = spanMplPayment_hard;
     }
