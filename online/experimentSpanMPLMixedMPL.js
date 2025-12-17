@@ -65,10 +65,13 @@ const luckyPp = getRandomInt(1, propSelecForMPL); // determine if the participan
 // let luckyPp = 1; // for testing purposes, set to 1 so that everyone is selected for MPL payment
 console.log("luckyPp is ", luckyPp)
 
-let failedQLottery = 1; // number of times lottery comprehension questions were failed
+let failedQLottery = 0; // number of times lottery comprehension questions were failed
 let incorrectQCountLottery = 0; // number of incorrect answers on the last lottery question trial
-let failedQMirror = 1; // number of times mirror comprehension questions were failed
+let missedQCountLottery = 0; // number of missed incorrect answers on the last lottery question trial
+let failedQMirror = 0; // number of times mirror comprehension questions were failed
 let incorrectQCountMirror = 0; // number of incorrect answers on the last mirror question trial
+let missedQCountMirror = 0; // number of missed incorrect answers on the last mirror question trial
+
 let maxQTrials = 4;
 let showExplanationsQuestionsMirrors = false;
 let showExplanationsQuestionsLotteries = false;
@@ -424,6 +427,179 @@ const secondInstructionsPaymentRuleMirror = {
     button_label_previous: language.button.previous,
     allow_backward: true,
 }
+// const OriginalComprehensionQuestionsMPLLottery = {
+//     type: "survey-multi-select",
+//     data: {task: 'comprehensionSurveyMPLLottery'},
+//     questions: [
+//         {
+//             prompt: `${example6MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//             <p>${language.comprehensionQMPLLottery.q1.promptMain}</p>`,
+//             options: [
+//                 language.comprehensionQMPLLottery.q1.options[0],
+//                 language.comprehensionQMPLLottery.q1.options[1],
+//                 language.comprehensionQMPLLottery.q1.options[2],
+//                 language.comprehensionQMPLLottery.q1.options[3]
+//             ],
+//             required: true,
+//             correct_response: [0,3],
+//         },
+//         {
+//             prompt: `<br><br>${example9MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+//             <p>${language.comprehensionQMPLLottery.q2.prompt}</p>`,
+//             options: [
+//                 language.comprehensionQMPLLottery.q2.optionsMain[0],
+//                 language.comprehensionQMPLLottery.q2.optionsMain[1],
+//                 language.comprehensionQMPLLottery.q2.optionsMain[2],
+//                 language.comprehensionQMPLLottery.q2.optionsMain[3]
+//             ],
+//             required: true,
+//             correct_response: 2,
+//         },
+//     ],
+//     button_label: language.button.next,
+//     randomize_question_order : false,
+//     preamble: `
+//     <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+//     <button type="button" id="help-button-comprehension" style="padding: 16px 34px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px;">
+//         ${language.button.help || "Help"}
+//     </button>
+//     </div>
+//     <h2>${language.comprehensionMPLIntro.titleMain}</h2>
+//     <h3>${language.comprehensionMPLExplanation.replace('{notUnderstoodPayment}', Math.round(notUnderstoodPayment*100)/100).replace('{buttonHelp}', language.button.help)}</h3>
+//     <br><br>`,
+//     on_finish: function (data) {
+//         const responses = JSON.parse(data.responses);
+        
+//         let all_correct = true;
+//         let questions_correct = []; // Array to track which questions were correct
+//         let questions_incorrect = []; // Array to track which questions were incorrect
+//         let detailed_results = {}; // Object to store detailed results for each question
+
+//         let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
+//         comprehensionQuestionsMPLLottery.questions.forEach((q, i) => {
+//             const given_answer = responses["Q" + i];
+//             let correct_text = [];
+//             let matched_count=0;
+//             if (i == 0){
+//                 correct_text = [q.options[q.correct_response[0]], q.options[q.correct_response[1]]];
+//                 for (let k = 0; k < length(correct_text); k++) {
+//                     if (given_answer[k] === correct_text[k]) {
+//                         matched_count++;
+//                         questions_correct.push(i + 1); // correct text (1-based index)
+//                     } // correct text (1-based index)
+//                 }
+//             }
+//             else if (i == 1){
+//                 correct_text = q.options[q.correct_response-1];
+//                 if (correct_text === given_answer) {
+//                     matched_count++;}
+//                 }
+            
+
+//             const is_correct = matched_count == 3; // for lotteries, 2 for mirrors
+            
+//             // Track results
+//             if (is_correct) {
+//                 questions_correct.push(i + 1); // Store 1-based question numbers
+//             } else {
+//                 questions_incorrect.push(i + 1);
+//                 all_correct = false;
+//                 totalIncorrectResponses += given_answer.filter(answer => answer !== correct_text).length;
+//                 console.log("is_correct is", is_correct)
+//                 console.log("totalIncorrectResponses is", totalIncorrectResponses)
+//             }
+            
+//             // Store detailed results
+//             detailed_results[`q${i + 1}`] = {
+//                 question_number: i + 1,
+//                 given_answer: given_answer,
+//                 correct_answer: correct_text,
+//                 is_correct: is_correct,
+//                 correct_option_index: q.correct_response // 0-based index
+//             };
+            
+//             console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
+//         });
+//         console.log("totalIncorrectResponses at the end is", totalIncorrectResponses)
+//         incorrectQCountLottery = totalIncorrectResponses
+//         console.log("incorrectQCountLottery is", incorrectQCountLottery, "and should be = to questions_incorrect.length =", questions_incorrect.length)
+
+//         if (!all_correct) {
+//             failedQLottery += 1;
+//             console.log("is failed Q Lottery increased", failedQLottery)
+//         }
+
+//         // Save comprehensive results to trial data
+//         data.all_correct = all_correct;
+//         data.questions_correct = questions_correct;
+//         data.questions_incorrect = questions_incorrect;
+//         data.num_correct = questions_correct.length;
+//         data.num_incorrect = questions_incorrect.length;
+//         data.detailed_results = detailed_results;
+//         data.incorrectQCountLottery = incorrectQCountLottery;
+//         if (!all_correct) {data.failedQuestionsCountLottery = failedQLottery-1;}
+//         else {data.failedQuestionsCountLottery = failedQLottery;}
+        
+//         console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLLottery.questions.length} correct`);
+//         console.log("Questions answered correctly:", questions_correct);
+//         console.log("Questions answered incorrectly:", questions_incorrect, "= to incorrecQCountLottery:", incorrectQCountLottery);
+//         console.log("All correct:", all_correct);
+//         console.log("detailed_results:", detailed_results);
+//         console.log( data.incorrectQCountLottery, "is data.incorrectQCountLottery" );
+//         console.log( data.failedQuestionsCountLottery, "is data.failedQuestionsCountLottery" );
+
+//     },
+//     // on_start: function(){
+//     //     // Delegated handler: works with jsPsych survey-multi-select naming (e.g. jspsych-survey-multi-select-response-0)
+//     //     function delegatedSingleChoiceHandler(e) {
+//     //         const el = e.target;
+//     //         if (!el || el.tagName !== 'INPUT') return;
+
+//     //         // try to extract question index from common patterns:
+//     //         // - jsPsych multi-select plugin: name="jspsych-survey-multi-select-response-<qIndex>"
+//     //         // - older code: name="Q<qIndex>" or name="Q<qIndex>[]"
+//     //         const name = el.name || '';
+//     //         let m = name.match(/jspsych-survey-multi-select-response-(\d+)/);
+//     //         let qIndex = null;
+//     //         if (m) qIndex = parseInt(m[1], 10);
+//     //         else {
+//     //             m = name.match(/^Q(\d+)/);
+//     //             if (m) qIndex = parseInt(m[1], 10);
+//     //         }
+//     //         if (qIndex === null || Number.isNaN(qIndex)) return;
+
+//     //         // enforce single selection only for questions 0..3; leave question 4 (index 4) multi-select
+//     //         if (qIndex >= 0 && qIndex <= 3) {
+//     //             if (el.checked) {
+//     //                 // uncheck all other inputs with the same name (same question)
+//     //                 document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
+//     //                     if (inp !== el) inp.checked = false;
+//     //                 });
+//     //             }
+//     //         }
+//     //     }
+
+//     //     // Attach once (use capture so we get the event early); remove previous if any to avoid duplicates
+//     //     document.body.removeEventListener('change', delegatedSingleChoiceHandler, true);
+//     //     document.body.addEventListener('change', delegatedSingleChoiceHandler, true);
+//     // },
+//     on_load: function() {
+//         // Add click handler for help button
+//         const helpButton = document.getElementById('help-button-comprehension');
+//         if (helpButton) {
+//         helpButton.addEventListener('click', function(e) {
+//                 e.preventDefault(); // Prevent any default behavior
+
+//                 // Check if modal is already open
+//                 if (!document.getElementById('instruction-modal')) {
+//                     showInstructionModalForQuestions("lottery", isPaymentRulePhase); // 
+//                 }
+//             });
+//         }
+//     },
+
+// };
+
 const comprehensionQuestionsMPLLottery = {
     type: "survey-multi-select",
     data: {task: 'comprehensionSurveyMPLLottery'},
@@ -438,52 +614,19 @@ const comprehensionQuestionsMPLLottery = {
                 language.comprehensionQMPLLottery.q1.options[3]
             ],
             required: true,
-            correct_response: 3,
-        },
-        {
-            prompt: language.comprehensionQMPLLottery.q2.promptMain,
-            options: [
-                language.comprehensionQMPLLottery.q2.options[0],
-                language.comprehensionQMPLLottery.q2.options[1],
-                language.comprehensionQMPLLottery.q2.options[2],
-                language.comprehensionQMPLLottery.q2.options[3]
-            ],
-            required: true,
-            correct_response: 1,
-        },
-        {
-            prompt: language.comprehensionQMPLLottery.q3.promptMain,
-            options: [
-                language.comprehensionQMPLLottery.q3.options[0],
-                language.comprehensionQMPLLottery.q3.options[1],
-                language.comprehensionQMPLLottery.q3.options[2],
-                language.comprehensionQMPLLottery.q3.options[3]
-            ],
-            required: true,
-            correct_response: 3,
-        },
-        {
-            prompt: language.comprehensionQMPLLottery.q4.promptMain,
-            options: [
-                language.comprehensionQMPLLottery.q4.options[0],
-                language.comprehensionQMPLLottery.q4.options[1],
-                language.comprehensionQMPLLottery.q4.options[2],
-                language.comprehensionQMPLLottery.q4.options[3]
-            ],
-            required: true,
-            correct_response: 1,
+            correct_response: [0,3],
         },
         {
             prompt: `<br><br>${example9MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPLLottery.q5.prompt}</p>`,
+            <p>${language.comprehensionQMPLLottery.q2.prompt}</p>`,
             options: [
-                language.comprehensionQMPLLottery.q5.optionsMain[0],
-                language.comprehensionQMPLLottery.q5.optionsMain[1],
-                language.comprehensionQMPLLottery.q5.optionsMain[2],
-                language.comprehensionQMPLLottery.q5.optionsMain[3]
+                language.comprehensionQMPLLottery.q2.optionsMain[0],
+                language.comprehensionQMPLLottery.q2.optionsMain[1],
+                language.comprehensionQMPLLottery.q2.optionsMain[2],
+                language.comprehensionQMPLLottery.q2.optionsMain[3]
             ],
             required: true,
-            correct_response: 2,
+            correct_response: 1,
         },
     ],
     button_label: language.button.next,
@@ -506,33 +649,57 @@ const comprehensionQuestionsMPLLottery = {
         let detailed_results = {}; // Object to store detailed results for each question
 
         let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
-
         comprehensionQuestionsMPLLottery.questions.forEach((q, i) => {
-            const given_answer = responses["Q" + i];
-            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
-            const is_correct = given_answer == correct_text;
-            
-            // Track results
-            if (is_correct) {
-                questions_correct.push(i + 1); // Store 1-based question numbers
+            // normalize given_answer to an array of strings (may be undefined/null or a string/array)
+            const raw_given = responses["Q" + i];
+            const givenArr = Array.isArray(raw_given) ? raw_given.map(String) : (raw_given == null ? [] : [String(raw_given)]);
+
+            // build correctArr as array of strings (handles multi-select indices or single index)
+            let correctArr = [];
+            if (Array.isArray(q.correct_response)) {
+              // correct_response holds indices (0-based) for multi-select
+              correctArr = q.correct_response.map(idx => String(q.options[idx]));
+            } else if (typeof q.correct_response === "number") {
+              // single-index (likely 1-based in some definitions) -> try both conventions safely
+              const idx0 = (q.correct_response >= 0 && q.correct_response < q.options.length) ? q.correct_response
+                          : (q.correct_response > 0 && q.correct_response <= q.options.length ? q.correct_response - 1 : null);
+              if (idx0 !== null) correctArr = [String(q.options[idx0])];
             } else {
-                questions_incorrect.push(i + 1);
-                all_correct = false;
-                totalIncorrectResponses += given_answer.filter(answer => answer !== correct_text).length;
-                console.log("is_correct is", is_correct)
-                console.log("totalIncorrectResponses is", totalIncorrectResponses)
+              correctArr = [String(q.options[q.correct_response])];
             }
-            
-            // Store detailed results
+
+            // compute number of common elements (by value, not position)
+            const matched_count = correctArr.filter(ans => givenArr.includes(ans)).length;
+
+            // compute missing (correct answers not provided) and extra (given answers not in correct)
+            const missing = Math.max(0, correctArr.length - matched_count);
+            const non_common_count = Math.max(0, givenArr.length - matched_count);
+
+
+            // decide correctness: true only if exact set match (no missing and no extra)
+            const is_correct = (matched_count === correctArr.length && non_common_count === 0 && givenArr.length === correctArr.length);
+
+            // bookkeeping
+            if (is_correct) {
+              questions_correct.push(i + 1);
+            } else {
+              questions_incorrect.push(i + 1);
+              all_correct = false;
+            }
+            totalIncorrectResponses += non_common_count;
+
+            // store detailed results
             detailed_results[`q${i + 1}`] = {
-                question_number: i + 1,
-                given_answer: given_answer,
-                correct_answer: correct_text,
-                is_correct: is_correct,
-                correct_option_index: q.correct_response - 1 // 0-based index
+              question_number: i + 1,
+              given_answer: givenArr,
+              correct_answer: correctArr,
+              is_correct: is_correct,
+              matched_count: matched_count,
+              non_common_count: non_common_count,
+              correct_option_index: q.correct_response
             };
-            
-            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
+
+            console.log(`Q${i+1} given:`, givenArr, "correct:", correctArr, "matched:", matched_count, "non_common:", non_common_count, "is_correct:", is_correct);
         });
         console.log("totalIncorrectResponses at the end is", totalIncorrectResponses)
         incorrectQCountLottery = totalIncorrectResponses
@@ -551,8 +718,7 @@ const comprehensionQuestionsMPLLottery = {
         data.num_incorrect = questions_incorrect.length;
         data.detailed_results = detailed_results;
         data.incorrectQCountLottery = incorrectQCountLottery;
-        if (!all_correct) {data.failedQuestionsCountLottery = failedQLottery-1;}
-        else {data.failedQuestionsCountLottery = failedQLottery;}
+        data.failedQuestionsCountLottery = failedQLottery;
         
         console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLLottery.questions.length} correct`);
         console.log("Questions answered correctly:", questions_correct);
@@ -563,40 +729,40 @@ const comprehensionQuestionsMPLLottery = {
         console.log( data.failedQuestionsCountLottery, "is data.failedQuestionsCountLottery" );
 
     },
-    on_start: function(){
-        // Delegated handler: works with jsPsych survey-multi-select naming (e.g. jspsych-survey-multi-select-response-0)
-        function delegatedSingleChoiceHandler(e) {
-            const el = e.target;
-            if (!el || el.tagName !== 'INPUT') return;
+    // on_start: function(){
+    //     // Delegated handler: works with jsPsych survey-multi-select naming (e.g. jspsych-survey-multi-select-response-0)
+    //     function delegatedSingleChoiceHandler(e) {
+    //         const el = e.target;
+    //         if (!el || el.tagName !== 'INPUT') return;
 
-            // try to extract question index from common patterns:
-            // - jsPsych multi-select plugin: name="jspsych-survey-multi-select-response-<qIndex>"
-            // - older code: name="Q<qIndex>" or name="Q<qIndex>[]"
-            const name = el.name || '';
-            let m = name.match(/jspsych-survey-multi-select-response-(\d+)/);
-            let qIndex = null;
-            if (m) qIndex = parseInt(m[1], 10);
-            else {
-                m = name.match(/^Q(\d+)/);
-                if (m) qIndex = parseInt(m[1], 10);
-            }
-            if (qIndex === null || Number.isNaN(qIndex)) return;
+    //         // try to extract question index from common patterns:
+    //         // - jsPsych multi-select plugin: name="jspsych-survey-multi-select-response-<qIndex>"
+    //         // - older code: name="Q<qIndex>" or name="Q<qIndex>[]"
+    //         const name = el.name || '';
+    //         let m = name.match(/jspsych-survey-multi-select-response-(\d+)/);
+    //         let qIndex = null;
+    //         if (m) qIndex = parseInt(m[1], 10);
+    //         else {
+    //             m = name.match(/^Q(\d+)/);
+    //             if (m) qIndex = parseInt(m[1], 10);
+    //         }
+    //         if (qIndex === null || Number.isNaN(qIndex)) return;
 
-            // enforce single selection only for questions 0..3; leave question 4 (index 4) multi-select
-            if (qIndex >= 0 && qIndex <= 3) {
-                if (el.checked) {
-                    // uncheck all other inputs with the same name (same question)
-                    document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
-                        if (inp !== el) inp.checked = false;
-                    });
-                }
-            }
-        }
+    //         // enforce single selection only for questions 0..3; leave question 4 (index 4) multi-select
+    //         if (qIndex >= 0 && qIndex <= 3) {
+    //             if (el.checked) {
+    //                 // uncheck all other inputs with the same name (same question)
+    //                 document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
+    //                     if (inp !== el) inp.checked = false;
+    //                 });
+    //             }
+    //         }
+    //     }
 
-        // Attach once (use capture so we get the event early); remove previous if any to avoid duplicates
-        document.body.removeEventListener('change', delegatedSingleChoiceHandler, true);
-        document.body.addEventListener('change', delegatedSingleChoiceHandler, true);
-    },
+    //     // Attach once (use capture so we get the event early); remove previous if any to avoid duplicates
+    //     document.body.removeEventListener('change', delegatedSingleChoiceHandler, true);
+    //     document.body.addEventListener('change', delegatedSingleChoiceHandler, true);
+    // },
     on_load: function() {
         // Add click handler for help button
         const helpButton = document.getElementById('help-button-comprehension');
@@ -614,7 +780,6 @@ const comprehensionQuestionsMPLLottery = {
 
 };
 
-
 const comprehensionQuestionsMPLMirror = {
     ...comprehensionQuestionsMPLLottery,
     data: {task: 'comprehensionSurveyMPLMirror'},
@@ -629,52 +794,19 @@ const comprehensionQuestionsMPLMirror = {
                 language.comprehensionQMPLMirror.q1.options[3]
             ],
             required: true,
-            correct_response: 1,
-        },
-        {
-            prompt: language.comprehensionQMPLMirror.q2.promptMain,
-            options: [
-                language.comprehensionQMPLMirror.q2.options[0],
-                language.comprehensionQMPLMirror.q2.options[1],
-                language.comprehensionQMPLMirror.q2.options[2],
-                language.comprehensionQMPLMirror.q2.options[3]
-            ],
-            required: true,
-            correct_response: 1,
-        },
-        {
-            prompt: language.comprehensionQMPLMirror.q3.promptMain,
-            options: [
-                language.comprehensionQMPLMirror.q3.options[0],
-                language.comprehensionQMPLMirror.q3.options[1],
-                language.comprehensionQMPLMirror.q3.options[2],
-                language.comprehensionQMPLMirror.q3.options[3]
-            ],
-            required: true,
-            correct_response: 1,
-        },
-        {
-            prompt: language.comprehensionQMPLMirror.q4.promptMain,
-            options: [
-                language.comprehensionQMPLMirror.q4.options[0],
-                language.comprehensionQMPLMirror.q4.options[1],
-                language.comprehensionQMPLMirror.q4.options[2],
-                language.comprehensionQMPLMirror.q4.options[3]
-            ],
-            required: true,
-            correct_response: 4,
+            correct_response: 2,
         },
         {
             prompt: `<br><br>${example9MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-            <p>${language.comprehensionQMPLMirror.q5.prompt}</p>`,
+            <p>${language.comprehensionQMPLMirror.q2.prompt}</p>`,
             options: [
-                language.comprehensionQMPLMirror.q5.optionsMain[0],
-                language.comprehensionQMPLMirror.q5.optionsMain[1],
-                language.comprehensionQMPLMirror.q5.optionsMain[2],
-                language.comprehensionQMPLMirror.q5.optionsMain[3]
+                language.comprehensionQMPLMirror.q2.optionsMain[0],
+                language.comprehensionQMPLMirror.q2.optionsMain[1],
+                language.comprehensionQMPLMirror.q2.optionsMain[2],
+                language.comprehensionQMPLMirror.q2.optionsMain[3]
             ],
             required: true,
-            correct_response: 2,
+            correct_response: 1,
         },
 
     ],
@@ -697,40 +829,65 @@ const comprehensionQuestionsMPLMirror = {
         let questions_correct = []; // Array to track which questions were correct
         let questions_incorrect = []; // Array to track which questions were incorrect
         let detailed_results = {}; // Object to store detailed results for each question
+        let missing = 0;
 
         let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
-
-
         comprehensionQuestionsMPLMirror.questions.forEach((q, i) => {
-            const given_answer = responses["Q" + i];
-            const correct_text = q.options[q.correct_response-1]; // correct text (1-based index)
-            const is_correct = given_answer == correct_text;
-            
-            // Track results
-            if (is_correct) {
-                questions_correct.push(i + 1); // Store 1-based question numbers
-            } else {
-                questions_incorrect.push(i + 1);
-                all_correct = false;
-                totalIncorrectResponses += given_answer.filter(answer => answer !== correct_text).length;
-                console.log("is_correct is", is_correct)
-                console.log("totalIncorrectResponses is", totalIncorrectResponses)
-            }
-            
-            // Store detailed results
-            detailed_results[`q${i + 1}`] = {
-                question_number: i + 1,
-                given_answer: given_answer,
-                correct_answer: correct_text,
-                is_correct: is_correct,
-                correct_option_index: q.correct_response - 1 // 0-based index
-            };
-            
-            console.log(`Question ${i + 1}: Given="${given_answer}", Correct="${correct_text}", Is Correct=${is_correct}`);
-        });
+            // normalize given_answer to an array of strings (may be undefined/null or a string/array)
+            const raw_given = responses["Q" + i];
+            const givenArr = Array.isArray(raw_given) ? raw_given.map(String) : (raw_given == null ? [] : [String(raw_given)]);
 
+            // build correctArr as array of strings (handles multi-select indices or single index)
+            let correctArr = [];
+            if (Array.isArray(q.correct_response)) {
+              // correct_response holds indices (0-based) for multi-select
+              correctArr = q.correct_response.map(idx => String(q.options[idx]));
+            } else if (typeof q.correct_response === "number") {
+              // single-index (likely 1-based in some definitions) -> try both conventions safely
+              const idx0 = (q.correct_response >= 0 && q.correct_response < q.options.length) ? q.correct_response
+                          : (q.correct_response > 0 && q.correct_response <= q.options.length ? q.correct_response - 1 : null);
+              if (idx0 !== null) correctArr = [String(q.options[idx0])];
+            } else {
+              correctArr = [String(q.options[q.correct_response])];
+            }
+
+            // compute number of common elements (by value, not position)
+            const matched_count = correctArr.filter(ans => givenArr.includes(ans)).length;
+
+            // compute missing (correct answers not provided) and extra (given answers not in correct)
+            missing = Math.max(0, correctArr.length - matched_count);
+            const non_common_count = Math.max(0, givenArr.length - matched_count);
+
+
+            // decide correctness: true only if exact set match (no missing and no extra)
+            const is_correct = (matched_count === correctArr.length && non_common_count === 0 && givenArr.length === correctArr.length);
+
+            // bookkeeping
+            if (is_correct) {
+              questions_correct.push(i + 1);
+            } else {
+              questions_incorrect.push(i + 1);
+              all_correct = false;
+            }
+            totalIncorrectResponses += non_common_count;
+
+            // store detailed results
+            detailed_results[`q${i + 1}`] = {
+              question_number: i + 1,
+              given_answer: givenArr,
+              correct_answer: correctArr,
+              is_correct: is_correct,
+              matched_count: matched_count,
+              non_common_count: non_common_count,
+              correct_option_index: q.correct_response
+            };
+
+            console.log(`Q${i+1} given:`, givenArr, "correct:", correctArr, "matched:", matched_count, "non_common:", non_common_count, "is_correct:", is_correct);
+        });
         console.log("totalIncorrectResponses at the end is", totalIncorrectResponses)
-        incorrectQCountMirror = totalIncorrectResponses;
+        incorrectQCountMirror = totalIncorrectResponses
+        missedQCountMirror = missing
+        console.log("incorrectQCountMirror is", incorrectQCountMirror, "and should be = to questions_incorrect.length =", questions_incorrect.length)
 
         if (!all_correct) {
             failedQMirror += 1;
@@ -745,15 +902,15 @@ const comprehensionQuestionsMPLMirror = {
         data.num_incorrect = questions_incorrect.length;
         data.detailed_results = detailed_results;
         data.incorrectQCountMirror = incorrectQCountMirror;
-        if (!all_correct){data.failedQuestionsCountMirror = failedQMirror-1}
-        else {data.failedQuestionsCountMirror = failedQMirror}
+        data.failedQuestionsCountMirror = failedQMirror;
         
         console.log(`MPL Comprehension Results: ${questions_correct.length}/${comprehensionQuestionsMPLMirror.questions.length} correct`);
         console.log("Questions answered correctly:", questions_correct);
-        console.log("Questions answered incorrectly:", questions_incorrect);
+        console.log("Questions answered incorrectly:", questions_incorrect, "= to incorrecQCountMirror:", incorrectQCountMirror);
         console.log("All correct:", all_correct);
-        console.log("data.incorrectQCountMirror:", data.incorrectQCountMirror);
-        console.log("data.failedQuestionsCountMirror:", data.failedQuestionsCountMirror);
+        console.log("detailed_results:", detailed_results);
+        console.log( data.incorrectQCountMirror, "is data.incorrectQCountMirror" );
+        console.log( data.failedQuestionsCountMirror, "is data.failedQuestionsCountMirror" );
     },
     on_load: function() {
         // Add click handler for help button
@@ -769,40 +926,40 @@ const comprehensionQuestionsMPLMirror = {
             });
         }
     },
-    on_start: function(){
-        // Delegated handler: works with jsPsych survey-multi-select naming (e.g. jspsych-survey-multi-select-response-0)
-        function delegatedSingleChoiceHandler(e) {
-            const el = e.target;
-            if (!el || el.tagName !== 'INPUT') return;
+    // on_start: function(){
+    //     // Delegated handler: works with jsPsych survey-multi-select naming (e.g. jspsych-survey-multi-select-response-0)
+    //     function delegatedSingleChoiceHandler(e) {
+    //         const el = e.target;
+    //         if (!el || el.tagName !== 'INPUT') return;
 
-            // try to extract question index from common patterns:
-            // - jsPsych multi-select plugin: name="jspsych-survey-multi-select-response-<qIndex>"
-            // - older code: name="Q<qIndex>" or name="Q<qIndex>[]"
-            const name = el.name || '';
-            let m = name.match(/jspsych-survey-multi-select-response-(\d+)/);
-            let qIndex = null;
-            if (m) qIndex = parseInt(m[1], 10);
-            else {
-                m = name.match(/^Q(\d+)/);
-                if (m) qIndex = parseInt(m[1], 10);
-            }
-            if (qIndex === null || Number.isNaN(qIndex)) return;
+    //         // try to extract question index from common patterns:
+    //         // - jsPsych multi-select plugin: name="jspsych-survey-multi-select-response-<qIndex>"
+    //         // - older code: name="Q<qIndex>" or name="Q<qIndex>[]"
+    //         const name = el.name || '';
+    //         let m = name.match(/jspsych-survey-multi-select-response-(\d+)/);
+    //         let qIndex = null;
+    //         if (m) qIndex = parseInt(m[1], 10);
+    //         else {
+    //             m = name.match(/^Q(\d+)/);
+    //             if (m) qIndex = parseInt(m[1], 10);
+    //         }
+    //         if (qIndex === null || Number.isNaN(qIndex)) return;
 
-            // enforce single selection only for questions 0..3; leave question 4 (index 4) multi-select
-            if (qIndex >= 0 && qIndex <= 3) {
-                if (el.checked) {
-                    // uncheck all other inputs with the same name (same question)
-                    document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
-                        if (inp !== el) inp.checked = false;
-                    });
-                }
-            }
-        }
+    //         // enforce single selection only for questions 0..3; leave question 4 (index 4) multi-select
+    //         if (qIndex >= 0 && qIndex <= 3) {
+    //             if (el.checked) {
+    //                 // uncheck all other inputs with the same name (same question)
+    //                 document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
+    //                     if (inp !== el) inp.checked = false;
+    //                 });
+    //             }
+    //         }
+    //     }
 
-        // Attach once (use capture so we get the event early); remove previous if any to avoid duplicates
-        document.body.removeEventListener('change', delegatedSingleChoiceHandler, true);
-        document.body.addEventListener('change', delegatedSingleChoiceHandler, true);
-    }
+    //     // Attach once (use capture so we get the event early); remove previous if any to avoid duplicates
+    //     document.body.removeEventListener('change', delegatedSingleChoiceHandler, true);
+    //     document.body.addEventListener('change', delegatedSingleChoiceHandler, true);
+    // }
 }
 
 const loopAgainSpanMplLottery = {
@@ -814,9 +971,9 @@ const loopAgainSpanMplLottery = {
             yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectPlural;
         }
         return[
-        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed.replace('{incorrectQCount}', incorrectQCountLottery).replace('{yourRAreIncorrect}', yourRAreIncorrect)}</p>
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed}</p>
         <p>${language.loopAgainSpanMpl.surveyAgain}</p>
-        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQLottery).replace('{maxQTrials}', maxQTrials)}</p>
+        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQLottery+1).replace('{maxQTrials}', maxQTrials)}</p>
         <p>${language.loopAgainSpanMpl.readInstructions}</p>
         <p>${language.loopAgainSpanMpl.clickNext}</p>
         </div>`
@@ -831,13 +988,16 @@ const loopAgainSpanMplMirror = {
     pages: function () {
         if (incorrectQCountMirror === 1) {
             yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectSingular;
+            missCorrectAnswer = fr.loopAgainSpanMpl.missCorrectAnswerSingular;
         } else {
             yourRAreIncorrect = fr.loopAgainSpanMpl.yourRAreIncorrectPlural;
+            missCorrectAnswer = fr.loopAgainSpanMpl.missCorrectAnswerPlural;
         }
+
         return [
-        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed.replace('{incorrectQCount}', incorrectQCountMirror).replace('{yourRAreIncorrect}', yourRAreIncorrect)}</p>
+        `<div style="max-width: 1200px"> <p>${language.loopAgainSpanMpl.failed}</p>
         <p>${language.loopAgainSpanMpl.surveyAgain}</p>
-        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQMirror).replace('{maxQTrials}', maxQTrials)}</p>
+        <p>${language.loopAgainSpanMpl.maximumRepetition.replace('{trialQCount}', failedQMirror+1).replace('{maxQTrials}', maxQTrials)}</p>
         <p>${language.loopAgainSpanMpl.readInstructions}</p>
         <p>${language.loopAgainSpanMpl.clickNext}</p>
         </div>`
@@ -2748,7 +2908,7 @@ const comprehensionQuestionsMPLLotteryWithCheck = {
                 console.log("Checking comprehension results:", last);
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 5 questions were correct
-                return last && last.questions_correct.length < 5 && failedQLottery < 5;
+                return last && last.questions_correct.length < 2 && failedQLottery < maxQTrials;
             }
         },
         {
@@ -2759,13 +2919,13 @@ const comprehensionQuestionsMPLLotteryWithCheck = {
                 // console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 // return last && last.questions_correct.length < 4;
-                return failedQLottery >= 5;
+                return failedQLottery >= maxQTrials;
             }
         }
     ],
     loop_function: function() {
         const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLLottery'}).last(1).values()[0];
-        return !(last && last.questions_correct.length === 5);
+        return !(last && last.questions_correct.length === 2);
     }
 };
 
@@ -2780,7 +2940,7 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 // return last && last.questions_correct.length == 4;
-                return last && last.questions_correct.length < 5 && failedQMirror < 5;
+                return last && last.questions_correct.length < 2 && failedQMirror < maxQTrials;
             }
         },
         {
@@ -2791,13 +2951,13 @@ const comprehensionQuestionsMPLMirrorWithCheck = {
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 // return last && last.questions_correct.length < 4;
-                return failedQMirror >= 5;
+                return failedQMirror >= maxQTrials;
             }
         }
     ],
         loop_function: function() {
         const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLMirror'}).last(1).values()[0];
-        return !(last && last.questions_correct.length === 5);
+        return !(last && last.questions_correct.length === 2);
     }
 };
 

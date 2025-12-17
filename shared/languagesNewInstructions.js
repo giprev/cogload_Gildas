@@ -530,7 +530,7 @@ const en = {
 
 const fr = {
     welcomePage: {
-        welcome: "Bienvenue!",
+        welcome: "Bienvenue !",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer."
     },
     overviewPage: {
@@ -775,80 +775,36 @@ const fr = {
         titleMain: "Questions de compréhension",
         titleTraining: "Questions de compréhension (entraînement)",
     },
-    comprehensionMPLExplanation: `Vous devez réussir toutes les questions des deux parties des questions de compréhension pour continuer l'expérience. Si vous échouez plus de quatre fois à l'une des parties,
-    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€, en plus des bonus des deux premières parties. 
+    comprehensionMPLExplanation: `Vous devez réussir les deux questions des deux parties des questions de compréhension pour continuer l'expérience. Si vous échouez plus de quatre fois à l'une des deux parties,
+    l'expérience se terminera et vous serez payé·e {notUnderstoodPayment}€, en plus des bonus des deux premières parties de l'expérience. 
     <br>
     Vous pouvez cliquer sur le bouton en haut à droite pour afficher les instructions.`,
     comprehensionFailure:{
         title: "Fin de l'expérience",
         description: `Malheureusement, vous n'avez pas répondu correctement aux questions de compréhension.
         L'expérience se termine ici. Vous serez payé·e {notUnderstoodPayment}€ pour votre temps, en plus des bonus précédents ({actual_payment_calibration}€ pour la première partie et {actual_payment_span_span}€ pour la deuxième partie).`,
-        thanks: "Merci beaucoup pour votre participation !",
+        thanks: "Merci beaucoup pour votre participation.",
         clickNext: "Appuyez sur Entrée pour terminer l'expérience <b>et recevoir votre paiement</b>.",
     },
     comprehensionQMPLMirror: {
         q1: {
-            promptTraining: `Pour les quatre prochaines questions, supposez que vous avez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus. 
+            promptMain: `Pour la prochaine question, supposez que vous ayez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus,
+            et que vous êtes sélectionné·e pour être payé·e. 
             <b>La règle de paiement est "la moyenne des boîtes"</b>.
             <br><br>
-            Quelle est la chance que vous gagniez 20€ ?`,
-            promptMain: `Pour les quatre prochaines questions, supposez que vous avez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. 
-            La règle de paiement est <b>"la moyenne des boîtes"</b>.
-            <br><br>
-            Quelle est la chance que vous gagniez 10€ ?`,
-            explanation: "💡 Explications: La moitié des 100 boîtes du lot A (choisi) contiennent 20€, donc la moyenne est de 10€ ((50 x 20€ + 50 x 0€) divisé par 100). Vous êtes payé·e la moyenne. Donc vous ne pouvez pas gagner 20€ (0% de chance).",
+            Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
             options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
+                "0€",
+                "1€",
+                "5€",
+                "10€",
             ],
         },
         q2: {
-            promptTraining: "Quelle est la chance que vous gagniez 5€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 1€ ?",
-            explanation: "💡 Explications: La moitié des 100 boîtes du lot A (choisi) contiennent 20€, donc la moyenne est de 10€ ((50 x 20€ + 50 x 0€) divisé par 100). Vous êtes payé·e la moyenne.  Donc vous ne pouvez pas gagner 5€ (0% de chance)",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q3: {
-            promptTraining: "Quelle est la chance que vous gagniez 0€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 0€ ?",
-            explanation: "💡 Explications: La moitié des 100 boîtes du lot A (choisi) contiennent 20€, donc la moyenne est de 10€ ((50 x 20€ + 50 x 0€) divisé par 100). Vous êtes payé·e la moyenne. Donc vous ne pouvez pas gagner 0€ (0% de chance).",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q4: {
-            promptTraining: "Quelle est la chance que vous gagniez 10€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 5€ ?",
-            explanation: "💡 Explications: La moitié des 100 boîtes du lot A (choisi) contiennent 20€, donc la moyenne est de 10€ ((50 x 20€ + 50 x 0€) divisé par 100). Vous êtes payé·e la moyenne. Donc vous êtes sûr·e de gagner 10€ (100% de chance).",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q5: {
-            prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
+            prompt: `Pour cette deuxième question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
             Vous êtes sélectionné·e pour que ce choix soit payé, toujours avec la règle de paiement <b>"la moyenne des boîtes"</b>. 
             <br>
             Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
-            explanation: "💡 Explications: Chacunes des boîtes du lot B (choisi) contiennent -5€, donc la moyenne est de -5€ ((50 x -5€ + 50 x 0€) divisé par 100). Vous ne pouvez pas gagner autre chose.",
-            optionsTraining: [
-                "0€",
-                "-5€",
-                "-20€",
-                "-100€",
-            ],
             optionsMain: [
                 "0€",
                 "-3€",
@@ -859,67 +815,23 @@ const fr = {
     },
     comprehensionQMPLLottery: {
         q1: {
-            promptTraining: `Pour les quatre prochaines questions, supposez que vous avez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus. 
-            La règle de paiement est "une boîte au hasard".
+            promptMain: `Pour la prochaine question, supposez que vous ayez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus,
+            et que vous êtes sélectionné·e pour être payé·e. 
+            <b>La règle de paiement est "une boîte au hasard"</b>.
             <br><br>
-            Quelle est la chance que vous gagniez 20€ ?`,
-            promptMain: `Pour les quatre prochaines questions, supposez que vous avez choisi le <span style='color:red'>lot A</span> dans le tableau ci-dessus et que vous êtes sélectionné·e pour que ce choix soit payé. 
-            La règle de paiement est <b>"une boîte au hasard"</b>.
-            <br><br>
-            Quelle est la chance que vous gagniez 10€ ?`,
-            explanation: "💡 Explications: 50 boîtes du lot choisi contiennent 20€, sur les 100 du lot. Vous avez donc 50 chance sur 100 (50%) de gagner 20€.",
+            Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
             options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
+                "0€",
+                "1€",
+                "5€",
+                "10€",
             ],
         },
         q2: {
-            promptTraining: "Quelle est la chance que vous gagniez 5€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 1€ ?",
-            explanation: "💡 Explications: aucune boîte du lot choisi ne contient 5€. Vous ne pouvez donc pas gagner 5€ (0 chance sur 100).",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q3: {
-            promptTraining: "Quelle est la chance que vous gagniez 0€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 0€ ?",
-            explanation: "💡 Explications: 50 boîtes du lot choisi contiennent 0€, sur les 100 du lot. Vous avez donc 50 chance sur 100 (50%) de gagner 0€.",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q4: {
-            promptTraining: "Quelle est la chance que vous gagniez 10€ ?",
-            promptMain: "Quelle est la chance que vous gagniez 5€ ?",
-            explanation: "💡 Explications: aucune boîte du lot choisi ne contient 10€. Vous ne pouvez donc pas gagner 10€ (0 chance sur 100).",
-            options: [
-                "0 chance sur 100 (0%)",
-                "25 chances sur 100 (25%)",
-                "50 chances sur 100 (50%)",
-                "100 chances sur 100 (100%)",
-            ],
-        },
-        q5: {
             prompt: `Pour cette dernière question, supposez que vous ayez fait le choix du <span style='color:blue'>lot B</span> dans le tableau ci-dessus. 
             Vous êtes sélectionné·e pour que ce choix soit payé, toujours avec la règle de paiement <b>"une boîte au hasard"</b>. 
             <br>
             Quel(s) montant(s) d'argent pouvez-vous gagner ou perdre ?`,
-            explanation: "💡 Explications: Toutes les boîtes du lot B (choisi) contiennent -5€. Donc si vous en tirez une au hasard vous ne pouvez pas gagner autre chose.",
-            optionsTraining: [
-                "0€",
-                "-5€",
-                "-20€",
-                "-100€",
-            ],
             optionsMain: [
                 "0€",
                 "-3€",
@@ -1025,12 +937,14 @@ const fr = {
         press: "Appuyez sur <strong>Suivant</strong> pour continuer !",
     },      
     loopAgainSpanMpl: {
-        failed: "{incorrectQCount} {yourRAreIncorrect}.",
+        failed: "Une ou plusieurs réponses sont incorrectes ou n’ont pas été sélectionnées correctement.",
         yourRAreIncorrectPlural: "de vos réponses sont incorrectes",
         yourRAreIncorrectSingular: "de vos réponses est incorrecte",
+        missCorrectAnswerPlural: "Il vous manque {missedCorrectCount} bonnes réponses.",
+        missCorrectAnswerSingular: "Il vous manque {missedCorrectCount} bonne réponse.",
         surveyAgain: "Vous allez de nouveau répondre aux questions.",
         maximumRepetition: "Ce sera votre tentative {trialQCount} sur {maxQTrials}.",
-        readInstructions: "Vous êtes invité à lire les instructions si vous avez un doute pour répondre aux questions.",
+        readInstructions: "Vous êtes invité·e à lire les instructions si vous avez un doute pour répondre aux questions.",
         clickNext: "Appuyez sur <strong>Suivant</strong> pour répondre de nouveau !",
     },
     loopAgainSpanMplTraining: {

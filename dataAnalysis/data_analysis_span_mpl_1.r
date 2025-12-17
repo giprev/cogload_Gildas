@@ -1,3 +1,10 @@
+# This code parses and analyses data from the two first pilots
+
+
+
+
+
+
 #install.packages("jsonlite")
 library(jsonlite)
 library(tidyverse)
@@ -18,6 +25,7 @@ setwd("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/st
 PATH_TO_DATA <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis"
 dir.create(file.path(PATH_TO_DATA, "Figures"), showWarnings = FALSE, recursive = TRUE)
 getwd()
+
 
 
 
@@ -753,30 +761,213 @@ for (iSub in 1:nSub) {
     cat("Processed participant", iSub, "\n")
 
 }
+final_data_2 <- final_data_2 %>%
+  mutate(
+    switchInversion = case_when(
+      block == "span_mpl" & task == "mpl" &
+        ( (str_starts(mplType, "G") | str_starts(mplType, "L")) &
+            switchRow1Choice == "sure" & switchRow2Choice == "lottery"
+        ) ~ 1L,
+      block == "span_mpl" & task == "mpl" &
+        ( str_starts(mplType, "A") &
+            switchRow1Choice == "lottery" & switchRow2Choice == "sure"
+        ) ~ 1L,
+      block == "span_mpl" & task == "mpl" ~ 0L,
+      TRUE ~ NA_integer_
+    ),
+    .after = switchRow1Choice
+  )
 
 #view(final_data_2)
-view(final_data)
+#view(final_data)
 
 tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
 tableNoSwitchByPosition
 
 
-rtBetweenRoundsMplHard <- final_data_2 %>%
-  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
-  filter(treatment=="hard")%>%
-  pull(rt)
-rtBetweenRoundsMplEasy <- final_data_2 %>%
-  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
-  filter(treatment=="easy")%>%
-  pull(rt)
 
-hist(rtBetweenRoundsMpl, breaks = 100)
-meanRTHard <- mean(rtBetweenRoundsMplHard)
-medianRTHard <- median(rtBetweenRoundsMplHard)
-meanRTEasy <- mean(rtBetweenRoundsMplEasy)
-medianRTEasy <- median(rtBetweenRoundsMplEasy)
-timeRT <- tibble::tibble(treatment=c("hard", "easy"), meanRT=c(meanRTHard, meanRTEasy), medianRT=c(medianRTHard, medianRTEasy))
-timeRT
+
+final_data_desc <- data.frame()
+
+for (iSub in 1:nSub) {
+  
+  partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
+  
+  dataPerParticipant <- fromJSON(partDirectory)
+  
+  
+  # Check if this participant has comprehensionFailure 
+  if(any(dataPerParticipant$task == "comprehensionFailure", na.rm = TRUE)){
+    understood <- FALSE
+    cat("participant ", iSub, " didn't understand \n")}
+    else {
+      understood <- TRUE
+      cat("participant ", iSub, " understood \n")
+    }
+  
+  participant_id <- as.character(dataPerParticipant[1,'subject'])
+  
+  dataPerParticipant <- dataPerParticipant %>% rename_at('statusMPL', ~'statusMpl')
+  
+  
+  if (understood == TRUE){
+  completionCountLottery <- max(dataPerParticipant$failedQuestionsCountLottery, na.rm=TRUE)
+  completionCountMirror <- max(dataPerParticipant$failedQuestionsCountMirror, na.rm=TRUE)
+  wrongAnswerCountLottery <- sum(dataPerParticipant$incorrectQCountLottery, na.rm = TRUE)
+  wrongAnswerCountMirror <- sum(dataPerParticipant$incorrectQCountMirror, na.rm = TRUE)
+  }
+  else {
+  completionCountLottery <- NA
+  completionCountMirror <- NA
+  wrongAnswerCountLottery <- NA
+  wrongAnswerCountMirror <- NA
+  }
+  
+  
+  # Extract the demographics cell
+  demo_values <- dataPerParticipant%>%
+    filter(task == "demographics") %>%
+    select(responses) %>%
+    pull()
+  #demographics age
+  demo_age <- dataPerParticipant %>%
+    filter(task== "demographics_age") %>%
+    select(responses) %>%
+    pull()
+  
+  
+  # Create a demographics data frame
+  demo_data_age <- fromJSON(demo_age)
+  demo_data <- fromJSON(demo_values)
+  
+  demographics_df <- data.frame(
+    demo_gend = as.character(demo_data$Q0),
+    demo_educ = as.character(demo_data$Q1),
+    demo_occu = as.character(demo_data$Q2),
+    demo_reve = as.character(demo_data$Q3),
+    demo_lsat = as.character(demo_data$Q4),
+    demo_age = as.integer(demo_data_age),
+    stringsAsFactors = TRUE # Convert to factors
+  )
+  # ensure we don't keep the letters used to help participants to understand
+  demographics_df$demo_lsat <- case_when(
+    demographics_df$demo_lsat == "10 (très)" ~ "10",
+    demographics_df$demo_lsat == "0 (pas du tout)" ~ "0",
+    TRUE ~ demographics_df$demo_lsat  # Keep original value for all others
+  )
+  
+  # extract maximal span length achieved
+  spanLength <- dataPerParticipant %>%
+    filter(task == "spanTest" & block == "spanSpan" & spanCounter == 13 & letterType == 2) %>%
+    select(span) %>%
+    pull()
+  spanLength <- as.integer(spanLength)
+  
+  treatmentValue <- dataPerParticipant %>%
+    filter (!is.na(treatment)) %>%
+    select(treatment) %>%
+    pull()
+  treatmentValue <- as.character(treatmentValue)
+  
+  isLotteryFirst <- dataPerParticipant %>%
+    filter(!is.na(versionFirst)) %>%
+    select(versionFirst) %>%
+    pull()
+  
+  isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", TRUE, FALSE)
+  
+  #    numCorrectQuestionMirror <- dataPerParticipant %>%
+  #        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
+  #        select(num_correct) %>%
+  #        pull()
+  
+  #    numCorrectQuestionLottery <- dataPerParticipant %>%
+  #        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLLottery") %>%
+  #        select(num_correct) %>%
+  #        pull()
+  
+  if (understood ==TRUE){
+  payment_spanMpl <- dataPerParticipant %>%
+    filter(!is.na(payment_span_mpl)) %>%
+    select(payment_span_mpl) %>%
+    pull()
+  
+  payment_mpl <- dataPerParticipant %>%
+    filter(!is.na(payment_mpl)) %>%
+    select(payment_mpl) %>%
+    pull()
+  
+  } else {
+  payment_spanMpl <- NA
+  payment_mpl <- NA
+  }
+
+  payment_spanSpan <- dataPerParticipant %>%
+    filter(!is.na(payment_span_span)) %>%
+    select(payment_span_span) %>%
+    pull()
+  payment_spanSpan <- ifelse(length(payment_spanSpan) > 0, as.numeric(payment_spanSpan[1]), NA)
+  
+  payment_calibration <- dataPerParticipant %>%
+    filter(!is.na(payment_calibration)) %>%
+    select(payment_calibration) %>%
+    pull()
+  payment_calibration <- ifelse(length(payment_calibration) > 0, as.numeric(payment_calibration[1]), NA)
+  
+  payment_total <- dataPerParticipant %>%
+    filter(!is.na(totalPayment)) %>%
+    select(totalPayment) %>%
+    pull()
+  
+  participant_row <- data.frame(
+    participant_id = participant_id,
+    demo_gend = demographics_df$demo_gend,
+    demo_educ = demographics_df$demo_educ,
+    demo_occu = demographics_df$demo_occu,
+    demo_reve = demographics_df$demo_reve,
+    demo_lsat = demographics_df$demo_lsat,
+    demo_age = as.integer(demo_data_age),
+    understood = understood,
+      spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
+      treatment = treatmentValue,
+      isLotteryFirst = isLotteryFirst,
+      #        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
+      #        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+      completionCountLottery = ifelse(length(completionCountLottery)>0, completionCountLottery, NA),
+      completionCountMirror = ifelse(length(completionCountMirror)>0, completionCountMirror, NA),
+      wrongAnswerCountLottery = ifelse(length(wrongAnswerCountLottery)>0, wrongAnswerCountLottery, NA),
+      wrongAnswerCountMirror = ifelse(length(wrongAnswerCountMirror)>0,wrongAnswerCountMirror, NA),
+      payment_spanMpl = payment_spanMpl,
+      # payment_mpl = payment_mpl,
+      payment_spanSpan = payment_spanSpan,
+      payment_calibration = payment_calibration,
+      payment_total = payment_total
+    )
+  
+  
+  
+  # Add to final dataset
+  if(nrow(participant_row) == 0) {
+    final_data_desc <- participant_row
+  } else {
+    final_data_desc <- rbind(final_data_desc, participant_row)
+  }
+  
+
+  cat("Processed participant", iSub, "\n")
+  
+}
+view(final_data_desc)
+
+
+ageComprehension <- final_data_desc%>%
+  group_by(understood) %>%
+  summarise(
+    mean_age = mean(demo_age),
+    median_age = median(demo_age)
+  )%>%
+    ungroup()
+ageComprehension
 
 
 
@@ -898,6 +1089,15 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures", "p_span.pdf"),
 
 
 # Distribution of mean accuracy in source vs target span
+final_data_2 %>%
+  filter(block == "spanSpan" & task == "spanTest") %>%
+  group_by(subject, treatment, letterType) %>%
+  summarise(
+    n = n(),
+    n_span_non_na = sum(!is.na(spanLength)),
+    span_values = list(unique(spanLength)),
+    .groups = "drop"
+  )
 
 # table of mean accuracy in source vs target span
 mean_accuracy_perParticipants <- final_data_2 %>%
@@ -1539,36 +1739,24 @@ accuraciesMpls <- dfA %>%
 accuraciesMpls
 
 
-# inversions of switching pattern 
-final_data_2 <- final_data_2 %>%
-  filter(block == "span_mpl" & task == "mpl") %>%
-  mutate(
-    switchInversion = case_when(
-      (str_starts(mplType,"G") | str_starts(mplType,"L")) & switchRow1Choice == "sure" & switchRow2Choice == "lottery" ~ 1,
-      str_starts(mplType,"A") & switchRow1Choice == "lottery" & switchRow2Choice == "sure" ~ 1,
-      TRUE ~ 0
-    ),
-    .after = switchRow1Choice
-  )
-view(final_data_2)
 
 #do inversions of switching patterns are influenced by training or cognitive load?
 invSubject <- final_data_2 %>%
   group_by(subject)%>%
   summarise(
-    inversionCount = sum(switchInversion)
+    inversionCount = sum(switchInversion, na.rm = TRUE)
   )
 invSubject
 invTable <- final_data_2 %>%
   group_by(mplType)%>%
   summarise(
-    inversionCount = sum(switchInversion)
+    inversionCount = sum(switchInversion, na.rm = TRUE)
   )
 invTable
 invTreatment <- final_data_2 %>%
   group_by(treatment)%>%
   summarise(
-    inversionCount = sum(switchInversion)
+    inversionCount = sum(switchInversion, na.rm = TRUE)
   )
 invTreatment
 
@@ -1607,6 +1795,11 @@ makeInversionPlots <- function(invSubject, invTable, invTreatment) {
 # Example call (after invSubject, invTable, invTreatment exist)
 invPlot <- makeInversionPlots(invSubject, invTable, invTreatment)
 print(invPlot)
+pdf(file.path(PATH_TO_DATA,"Figures/inversionPlot.pdf"), width = 7.41, height = 8.31)
+makeInversionPlots(invSubject, invTable, invTreatment)
+dev.off()
+
+
 
 # merged table: remove an "S" immediately after the first letter, then sum
 noSwitchTable <- dfA %>%
@@ -1686,6 +1879,9 @@ makeNoSwitchPanels <- function(noSwitchTable, noSwitchSubject, noSwitchStatus, n
 }
 makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment)
 
+pdf(file.path(PATH_TO_DATA,"Figures/noSwitchPanels.pdf"), width = 7.41, height = 8.31)
+makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment)
+dev.off()
 
 
 
@@ -1984,8 +2180,14 @@ mainPlot(F = dfA_plot, lab = '', position=0)
 mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 mainPlot(F_hard = dfA_plot_hard, F_easy = dfA_plot_easy, lab = '', cogload=1)
 
-pdf(file.path(PATH_TO_DATA,"Figures/Figure1.pdf"), width = 7.41, height = 8.31)
-mainPlot(F = dfA_plot, F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
+pdf(file.path(PATH_TO_DATA,"Figures/mainPlot.pdf"), width = 7.41, height = 8.31)
+mainPlot(F = dfA_plot, lab = '', position=0)
+dev.off()
+pdf(file.path(PATH_TO_DATA,"Figures/mainPlot_position.pdf"), width = 7.41, height = 8.31)
+mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
+dev.off()
+pdf(file.path(PATH_TO_DATA,"Figures/mainPlot_cogload.pdf"), width = 7.41, height = 8.31)
+mainPlot(F_hard = dfA_plot_hard, F_easy = dfA_plot_easy, lab = '', cogload=1)
 dev.off()
 
 view(dfA_plot)
@@ -2136,13 +2338,14 @@ dataOprea <- read.csv("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage
 rts <- dataOprea %>%
   select(time_mirror, time_lottery, ID, treatment) %>%
   filter(treatment == "main")%>%
-  pull(time_mirror)
+  pull(time_lottery)
 
 rts <- rts[rts < 400]
 mean(rts[rts < 400], na.rm=TRUE)
 mean(rts<35, na.rm=TRUE)
 hist(rts, breaks=1000, xlim = range(0:200))
-
+mean(rts, na.rm = TRUE) # mirror 23.5 # 21.31408
+median(rts, na.rm = TRUE) # mirror 14.85 # 13.7
 
 
 # Overlayed density plot of time_mirror and time_lottery from rts
