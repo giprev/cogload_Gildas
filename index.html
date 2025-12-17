@@ -64,8 +64,9 @@
     <!-- <script src="online/experimentSpanMPL.js" type='text/javascript'> </script> -->
     <!-- <script src="online/experimentSpanMPLMixedMPL.js" type='text/javascript'> </script> -->
     <script>
-        $(document).ready(function() {
-           if (jatos!==undefined && jatos.urlQueryParameters !== undefined && jatos.urlQueryParameters.label !== undefined) {
+        $(document).on('jatos:ready', function() {
+            console.log("jatos.urlQueryParameters is", jatos.urlQueryParameters);
+            if (jatos!==undefined && jatos.urlQueryParameters !== undefined && jatos.urlQueryParameters.label !== undefined) {
                 console.log("label is", jatos.urlQueryParameters.label)
                 if (["MOS", "SOF", "ROM", "HEL", "BRU", "BUD", "VAR", "PRA", "ZUR", "RIG", "LAB", "BOX1"].includes(jatos.urlQueryParameters.label)) {
                     treatment = "easy"
