@@ -530,7 +530,7 @@ const en = {
 
 const fr = {
     welcomePage: {
-        welcome: "Bienvenue !",
+        welcome: "Bienvenue ! Traitement {treatment}",
         clickNext: "Cliquez sur <strong>Suivant</strong> pour continuer."
     },
     overviewPage: {

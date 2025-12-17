@@ -35,6 +35,12 @@ let blockEasy = 0;
 let totalFdsSpanMplTrials = 16; // 14 of Oprea plus two originals from Oprea
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
+if (jatos!==undefined && jatos.urlQueryParameters !== undefined && jatos.urlQueryParameters.label !== undefined) {
+    if (["MOS", "SOF", "ROM", "HEL", "BRU", "BUD", "VAR", "PRA", "ZUR", "RIG", "LAB", "BOX1"].includes(jatos.urlQueryParameters.label)) {
+        treatment = "easy"
+    }
+    else {treatment = "hard"}
+}
 console.log("treatment is", treatment)
 console.log("not understood payment in parameters is", notUnderstoodPayment)
 let totalFdsTrainingTrials = 9; // number of rounds of the calibration

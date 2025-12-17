@@ -85,7 +85,7 @@ let isPaymentRulePhase = false;
 
 const consentForm = {
     type: "instructions", 
-    pages: [`<h1>${language.welcomePage.welcome}</h1>
+    pages: [`<h1>${language.welcomePage.welcome.replace("{treatment}", treatment)}</h1>
                 <p>${language.overviewPage.thanks}</p>
                 <p>${language.overviewPage.anonimity}</p>
                 <p>${language.overviewPage.question}</p>
