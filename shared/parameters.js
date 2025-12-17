@@ -36,6 +36,7 @@ let totalFdsSpanMplTrials = 16; // 14 of Oprea plus two originals from Oprea
 let treatment = "";
 if (Math.random() < 0.5) { treatment = "hard"; } else { treatment = "easy"; }
 if (jatos!==undefined && jatos.urlQueryParameters !== undefined && jatos.urlQueryParameters.label !== undefined) {
+    console.log("label is", jatos.urlQueryParameters.label)
     if (["MOS", "SOF", "ROM", "HEL", "BRU", "BUD", "VAR", "PRA", "ZUR", "RIG", "LAB", "BOX1"].includes(jatos.urlQueryParameters.label)) {
         treatment = "easy"
     }
