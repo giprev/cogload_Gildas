@@ -64,7 +64,7 @@
     <!-- <script src="online/experimentSpanMPL.js" type='text/javascript'> </script> -->
     <!-- <script src="online/experimentSpanMPLMixedMPL.js" type='text/javascript'> </script> -->
     <script>
-        $(document).on('jatos:ready', function() {
+        $(window).on('load', function() {
             console.log("jatos.urlQueryParameters is", jatos.urlQueryParameters);
             if (jatos!==undefined && jatos.urlQueryParameters !== undefined && jatos.urlQueryParameters.label !== undefined) {
                 console.log("label is", jatos.urlQueryParameters.label)
