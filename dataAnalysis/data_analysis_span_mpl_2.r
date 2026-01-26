@@ -23,7 +23,7 @@ rm(list = ls())
 
 setwd("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis")
 PATH_TO_DATA <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis"
-dir.create(file.path(PATH_TO_DATA, "Figures_pilot3"), showWarnings = FALSE, recursive = TRUE)
+dir.create(file.path(PATH_TO_DATA, "Figures_pilot4"), showWarnings = FALSE, recursive = TRUE)
 getwd()
 
 
@@ -50,6 +50,7 @@ filePath_testGildas12_20251125 <- "/Users/domitilleprevost/Downloads/jatos_resul
 filePath_testGildas13_20251127 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251127132619.txt" # three test trials completed in the lab after updated payment rule. Only one until the end
 filePath_testGildas14_20251213 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251214152013.txt" # one trial with the two new tables from Oprea
 filePath_testGildas15_20251215 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251215140202.txt" # two trials (one from 12/12 and 12/15) with the two new tables from Oprea 
+filePath_testGildas16_20251216 <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251217144226.txt" # three test trials from the lab
 
 
 
@@ -57,12 +58,13 @@ filePath_pilot_1And2FromJatos <- "/Users/domitilleprevost/Downloads/jatos_result
 
 filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt" # first pilot
 filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_1&2.txt" # first and second pilot pooled
-
 filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt"  
 filePath_pilot3_20251215 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot3_20251215.txt"
+filePath_pilot4_20251217 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot4_20251217.txt"
+filePath_pilot_3And4<- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_3&4.txt"
 
 
-text <- readLines(filePath_pilot3_20251215)
+text <- readLines(filePath_pilot_3And4)
 
 nSub <- length(text)
 
@@ -193,7 +195,6 @@ createSequenceArray <- function(y, X, position) {
   }
   return(array)
 }
-
 
 extractMplDataframes <- function(dataPerParticipant) {
   
@@ -437,7 +438,6 @@ extractMplDataframes <- function(dataPerParticipant) {
   
   return(dataframes_list)
 }
-
 
 
 
@@ -794,6 +794,190 @@ medianRTEasy <- median(rtBetweenRoundsMplEasy)
 timeRT <- tibble::tibble(treatment=c("hard", "easy"), meanRT=c(meanRTHard, meanRTEasy), medianRT=c(medianRTHard, medianRTEasy))
 timeRT
 
+final_data_desc <- data.frame()
+
+
+for (iSub in 1:nSub) {
+  
+  partDirectory <- paste("part", as.character(iSub), ".txt", sep = "")
+  
+  dataPerParticipant <- fromJSON(partDirectory)
+  
+  
+  # Check if this participant has comprehensionFailure 
+  if(any(dataPerParticipant$task == "comprehensionFailure", na.rm = TRUE)){
+    understood <- FALSE
+    cat("participant ", iSub, " didn't understand \n")}
+  else {
+    understood <- TRUE
+    cat("participant ", iSub, " understood \n")
+  }
+  
+  participant_id <- as.character(dataPerParticipant[1,'subject'])
+  
+  dataPerParticipant <- dataPerParticipant %>% rename_at('statusMPL', ~'statusMpl')
+  
+  
+  # return NA when input is NULL/length 0 or all NA
+  # NA-safe helpers: return NA when input is NULL/length 0 or all NA
+  safe_max <- function(x) {
+    if (is.null(x) || length(x) == 0) return(NA_integer_)
+    xx <- x[!is.na(x)]
+    if (length(xx) == 0) return(NA_integer_)
+    return(max(xx))
+  }
+  safe_sum <- function(x) {
+    if (is.null(x) || length(x) == 0) return(NA_real_)
+    xx <- x[!is.na(x)]
+    if (length(xx) == 0) return(NA_real_)
+    return(sum(xx))
+  }
+  
+  # compute these four values regardless of 'understood'; return NA if column entirely missing/NA
+  completionCountLottery <- safe_max(dataPerParticipant$failedQuestionsCountLottery)
+  completionCountMirror  <- safe_max(dataPerParticipant$failedQuestionsCountMirror)
+  wrongAnswerCountLottery <- safe_sum(dataPerParticipant$incorrectQCountLottery)
+  wrongAnswerCountMirror  <- safe_sum(dataPerParticipant$incorrectQCountMirror)
+  
+  # Extract the demographics cell
+  demo_values <- dataPerParticipant%>%
+    filter(task == "demographics") %>%
+    select(responses) %>%
+    pull()
+  
+  # Create a demographics data frame
+  demo_data <- fromJSON(demo_values)
+  
+  demographics_df <- data.frame(
+    demo_age = as.integer(demo_data$age),
+    demo_gend = as.character(demo_data$gender),
+    demo_educ = as.character(demo_data$education),
+    demo_occu = as.character(demo_data$work),
+    demo_reve = as.character(demo_data$income),
+    demo_degre = as.character(demo_data$collegeDegree),
+    demo_cours = as.character(demo_data$collegeCourse),
+    demo_lsat = as.character(demo_data$life),
+    stringsAsFactors = TRUE # Convert to factors
+  )
+  # ensure we don't keep the letters used to help participants to understand
+  demographics_df$demo_lsat <- case_when(
+    demographics_df$demo_lsat == "10 (très)" ~ "10",
+    demographics_df$demo_lsat == "0 (pas du tout)" ~ "0",
+    TRUE ~ demographics_df$demo_lsat  # Keep original value for all others
+  )
+  
+  # extract maximal span length achieved
+  maximumSpan <- dataPerParticipant %>%
+    filter(!is.na(maximumSpan)) %>%
+    select(maximumSpan) %>%
+    pull()
+  spanLength <- as.integer(maximumSpan)
+  
+  # extract maximal span length achieved
+  spanLength <- dataPerParticipant %>%
+    filter(task == "spanTest" & block == "spanSpan" & spanCounter == 13 & letterType == 2) %>%
+    select(span) %>%
+    pull()
+  spanLength <- as.integer(spanLength)
+  
+  treatmentValue <- dataPerParticipant %>%
+    filter (!is.na(treatment)) %>%
+    select(treatment) %>%
+    pull()
+  treatmentValue <- as.character(treatmentValue)
+  
+  isLotteryFirst <- dataPerParticipant %>%
+    filter(!is.na(versionFirst)) %>%
+    select(versionFirst) %>%
+    pull()
+  
+  isLotteryFirst <- ifelse(length(isLotteryFirst) > 0 & isLotteryFirst[1] == "lottery_first", TRUE, FALSE)
+  
+  #    numCorrectQuestionMirror <- dataPerParticipant %>%
+  #        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLMirror") %>%
+  #        select(num_correct) %>%
+  #        pull()
+  
+  #    numCorrectQuestionLottery <- dataPerParticipant %>%
+  #        filter( !is.na(num_correct) & task == "comprehensionSurveyMPLLottery") %>%
+  #        select(num_correct) %>%
+  #        pull()
+  
+  if (understood ==TRUE){
+    payment_spanMpl <- dataPerParticipant %>%
+      filter(!is.na(payment_span_mpl)) %>%
+      select(payment_span_mpl) %>%
+      pull()
+    
+    payment_mpl <- dataPerParticipant %>%
+      filter(!is.na(payment_mpl)) %>%
+      select(payment_mpl) %>%
+      pull()
+    
+  } else {
+    payment_spanMpl <- NA
+    payment_mpl <- NA
+  }
+  
+  payment_spanSpan <- dataPerParticipant %>%
+    filter(!is.na(payment_span_span)) %>%
+    select(payment_span_span) %>%
+    pull()
+  payment_spanSpan <- ifelse(length(payment_spanSpan) > 0, as.numeric(payment_spanSpan[1]), NA)
+  
+  payment_calibration <- dataPerParticipant %>%
+    filter(!is.na(payment_calibration)) %>%
+    select(payment_calibration) %>%
+    pull()
+  payment_calibration <- ifelse(length(payment_calibration) > 0, as.numeric(payment_calibration[1]), NA)
+  
+  payment_total <- dataPerParticipant %>%
+    filter(!is.na(totalPayment)) %>%
+    select(totalPayment) %>%
+    pull()
+  
+  participant_row <- data.frame(
+    participant_id = participant_id,
+    demo_gend = demographics_df$demo_gend,
+    demo_educ = demographics_df$demo_educ,
+    demo_occu = demographics_df$demo_occu,
+    demo_reve = demographics_df$demo_reve,
+    demo_lsat = demographics_df$demo_lsat,
+    demo_age =  demographics_df$demo_age,
+    understood = understood,
+    spanLength = ifelse(length(spanLength) > 0, spanLength, NA),
+    treatment = treatmentValue,
+    isLotteryFirst = isLotteryFirst,
+    #        numCorrectQuestionMirror = ifelse(length(numCorrectQuestionMirror) > 0, numCorrectQuestionMirror[1], NA),
+    #        numCorrectQuestionLottery = ifelse(length(numCorrectQuestionLottery) > 0, numCorrectQuestionLottery[1], NA),
+    completionCountLottery = ifelse(length(completionCountLottery)>0, completionCountLottery, NA),
+    completionCountMirror = ifelse(length(completionCountMirror)>0, completionCountMirror, NA),
+    wrongAnswerCountLottery = ifelse(length(wrongAnswerCountLottery)>0, wrongAnswerCountLottery, NA),
+    wrongAnswerCountMirror = ifelse(length(wrongAnswerCountMirror)>0,wrongAnswerCountMirror, NA),
+    payment_spanMpl = payment_spanMpl,
+    # payment_mpl = payment_mpl,
+    payment_spanSpan = payment_spanSpan,
+    payment_calibration = payment_calibration,
+    payment_total = payment_total
+  )
+  
+  
+  
+  # Add to final dataset
+  if(nrow(participant_row) == 0) {
+    final_data_desc <- participant_row
+  } else {
+    final_data_desc <- rbind(final_data_desc, participant_row)
+  }
+  
+  
+  cat("Processed participant", iSub, "\n")
+  
+}
+view(final_data_desc)
+
+
+
 
 
 
@@ -909,7 +1093,7 @@ p_span<-annotate_figure(p_span, top = text_grob("Distribution of maximum span le
 
 
 print(p_span)
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "p_span.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "p_span.pdf"),
        plot = p_span, device = "pdf", width = 6, height = 4)
 
 
@@ -1069,7 +1253,7 @@ makePlotAccuracySourceVsTarget <- function (data) {
 barPlotAccuracySourceVsTarget <- makePlotAccuracySourceVsTarget(mean_accuracy_perParticipants)
 barPlotAccuracySourceVsTarget
 
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "barPlotAccuracySourceVsTarget.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "barPlotAccuracySourceVsTarget.pdf"),
        plot = barPlotAccuracySourceVsTarget, device = "pdf", width = 8, height = 5)
 
 
@@ -1143,24 +1327,24 @@ makeScatterPlotAccuracyOnSpan <- function (data, acc) {
 }
 scatterAccuracyOnSpan <- makeScatterPlotAccuracyOnSpan(mean_accuracy_perParticipants, c("accuracy_source", "accuracy_target", "accuracy_difference"))
 scatterAccuracyOnSpan
+mean_accuracy_perParticipantsWithoutSpan14 <- mean_accuracy_perParticipants[-c(8),]
+scatterAccuracyOnSpanWithoutSpan14 <- makeScatterPlotAccuracyOnSpan(mean_accuracy_perParticipantsWithoutSpan14, c("accuracy_source", "accuracy_target", "accuracy_difference"))
+scatterAccuracyOnSpanWithoutSpan14
 
-
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "scatterAccuracyOnSpan.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "scatterAccuracyOnSpan.pdf"),
        plot = scatterAccuracyOnSpan, device = "pdf", width = 12, height = 8)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "scatterAccuracyOnSpanWithoutSpan14.pdf"),
+       plot = scatterAccuracyOnSpanWithoutSpan14, device = "pdf", width = 12, height = 8)
 
 makeScatterRTOnCogLoad <- function (data) {
   
   plotFunction <- function (acc, rt){
-    p <- ggscatter(
-      data, 
-      x = rt, 
-      y = acc,
-      #color = "letterType",
-      #fill = "letterType",
-      #palette = c("#00AFBB", "#E7B800"),  # Easy = blue, Hard = yellow
-      add = "reg.line",
-      add.params = list(color = "blue"),
+    p <- ggplot(
+      data, aes(x = .data[[rt]], y = .data[[acc]], fill = treatment, alpha = 0.9)
     ) +
+    geom_point(shape = 21, colour = "black", size = 3, stroke = 0.5) + #, position = position_jitter(width = 0.1, height = 0)
+      geom_smooth(method = "lm", se = FALSE, colour = "blue", na.rm = TRUE) +
+      scale_fill_manual(values = c("control" = "#00AFBB", "cognitive load" = "#E7B800"), na.value = "grey70") +
       # Customize appearance
       labs(
         #title = "accuracy on rt",
@@ -1195,12 +1379,12 @@ makeScatterRTOnCogLoad <- function (data) {
   }
   
   combined <- ggpubr::ggarrange(plotlist = plots, ncol = 3, nrow = 2)
-  combined <- annotate_figure(combined, top = text_grob("Accuracies on RT", face = "bold", size = 14))
+  combined <- annotate_figure(combined, top = text_grob("Accuracies on RT. Red=cogload", face = "bold", size = 14))
   
 }
 scatterRTOnCogLoad <- makeScatterRTOnCogLoad(mean_accuracy_perParticipants)
 scatterRTOnCogLoad
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "scatterRTOnCogLoad.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "scatterRTOnCogLoad.pdf"),
        plot = scatterRTOnCogLoad, device = "pdf", width = 12, height = 6)
 
 
@@ -1343,7 +1527,7 @@ mean_accuracy_perParticipants_withMPL <- final_data_2 %>% # per participant to c
   
   plotAccuracySourceSpanVsMpl <- makePlotAccuracySourceSpanVsMpl(mean_accuracy_perParticipants_withMPL)
   plotAccuracySourceSpanVsMpl
-  ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "plotAccuracySourceSpanVsMpl.pdf"),
+  ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "plotAccuracySourceSpanVsMpl.pdf"),
          plot = plotAccuracySourceSpanVsMpl, device = "pdf", width = 12, height = 6)
   
   
@@ -1563,7 +1747,7 @@ makeBarPlotCogLoadAccuracy <- function (data) {
 
 barPlotCogLoadAccuracy <- makeBarPlotCogLoadAccuracy(data_plot_precision_cogload)
 barPlotCogLoadAccuracy
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "barPlotCogLoadAccuracy.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "barPlotCogLoadAccuracy.pdf"),
        plot = barPlotCogLoadAccuracy, device = "pdf", width = 6, height = 5)
 
 
@@ -1572,11 +1756,11 @@ makeScatterRTOnAccuracy <- function (data) {
   
   plots <- list()
   
-  makeDataForPlotFunction <- function (df, treatment_filter=NULL) {
+  makeDataForPlotFunction <- function (df, treatment_filter=NULL) { # REMOVE THE TRAINING ONES (TABLES TO SELECT AND EXAMPLE)
     
     newDf <- df %>%
       filter(!is.na(mplType) & !grepl("^(GS|AS|LS)", mplType)) %>% # starts_with doesn't work in filter, only for select
-      {if (!is.null(treatment_filter)) filter(., treatment == treatment_filter) else . }%>%
+      {if (!is.null(treatment_filter)) filter(., treatment == treatment_filter) else . }%>% 
       select(participant_id, mirror_rtChoice, lottery_rtChoice, mirror_rtSpanMpl, lottery_rtSpanMpl, mirror_accuracy, lottery_accuracy) %>%
       # Pivot RTs only
       pivot_longer(
@@ -1664,7 +1848,7 @@ makeScatterRTOnAccuracy <- function (data) {
 }
 scatterRTOnAccuracy <- makeScatterRTOnAccuracy(dfA)
 scatterRTOnAccuracy
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "scatterRTOnAccuracy.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "scatterRTOnAccuracy.pdf"),
        plot = scatterRTOnAccuracy, device = "pdf", width = 12, height = 10)
 
 
@@ -1683,18 +1867,21 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "scatterRTOnAccuracy
 empiricalEVMpls <- dfA %>%
   pull(mirror_EGEmpirical, lottery_EGEmpirical)%>%
   mean(., na.rm=TRUE)
-empiricalEVMpls # 17.64586
+empiricalEVMpls # 18.09747
 
 accuraciesMpls <- dfA %>%
   pull(mirror_accuracy, lottery_accuracy) %>%
   mean(., na.rm = TRUE)
-accuraciesMpls # 0.9419643
+accuraciesMpls # 0.7997203
 
 
 
 
 #are inversions of switching patterns influenced by training or cognitive load?
 invSubject <- final_data_2 %>%
+  filter(block=="span_mpl")%>% 
+  # removes the training mpl ERROR in my code: I count in mplCounter the tables that train to selecet cells, but not the one of the complete example...
+  # I prefer not to use mplCounter thus because I will likely modify it later
   group_by(subject)%>%
   summarise(
     inversionCount = sum(switchInversion, na.rm=TRUE) # look at why I need to put na.rm now but not in data_analysis_span_mpl_1.r
@@ -1702,12 +1889,15 @@ invSubject <- final_data_2 %>%
 
 invSubject
 invTable <- final_data_2 %>%
+  filter(block=="span_mpl")%>% 
   group_by(mplType)%>%
   summarise(
     inversionCount = sum(switchInversion, na.rm = TRUE)
   )
 invTable
+
 invTreatment <- final_data_2 %>%
+  filter(block=="span_mpl")%>% 
   group_by(treatment)%>%
   summarise(
     inversionCount = sum(switchInversion, na.rm = TRUE)
@@ -1749,11 +1939,12 @@ makeInversionPlots <- function(invSubject, invTable, invTreatment) {
 # Example call (after invSubject, invTable, invTreatment exist)
 invPlot <- makeInversionPlots(invSubject, invTable, invTreatment)
 print(invPlot)
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/inversionPlot.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/inversionPlot.pdf"), width = 7.41, height = 8.31)
 makeInversionPlots(invSubject, invTable, invTreatment)
 dev.off()
 
-
+choiceInversionRatio = sum(final_data_2$switchInversion, na.rm = TRUE)/(length(unique(final_data_2$subject))*32) # number of inversion divided by number of choices
+choiceInversionRatio # 0.07118056
 
 # merged table: remove an "S" immediately after the first letter, then sum
 noSwitchTable <- dfA %>%
@@ -1834,7 +2025,7 @@ makeNoSwitchPanels <- function(noSwitchTable, noSwitchSubject, noSwitchStatus, n
 }
 makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment)
 
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/noSwitchPanels.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/noSwitchPanels.pdf"), width = 7.41, height = 8.31)
 makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment)
 dev.off()
 
@@ -1891,7 +2082,7 @@ makeRTDensities <- function(data_for_rt) {
       mean_rt = mean(rt, na.rm = TRUE),
       median_rt = median(rt, na.rm = TRUE),
       sd_rt   = sd(rt, na.rm = TRUE),
-      n       = sum(!is.na(rt)),
+      n       = length(unique(participant_id)),
       max_dens = max(density(rt, na.rm = TRUE)$y),
       right_x = max(rt, na.rm = TRUE),
       .groups = "drop"
@@ -1934,7 +2125,7 @@ makeRTDensities <- function(data_for_rt) {
 }
 rtDensityPlot <- makeRTDensities(dataForRTChoice)
 print(rtDensityPlot)
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3", "rtDensityPlot.pdf"),
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot4", "rtDensityPlot.pdf"),
        plot = rtDensityPlot, device = "pdf", width = 12, height = 10)
 
 
@@ -2135,22 +2326,18 @@ mainPlot(F = dfA_plot, lab = '', position=0)
 mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 mainPlot(F_hard = dfA_plot_hard, F_easy = dfA_plot_easy, lab = '', cogload=1)
 
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/mainPlot1.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/mainPlot1.pdf"), width = 7.41, height = 8.31)
 mainPlot(F = dfA_plot, lab = '', position=0)
 dev.off()
 
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/mainPlot1_position.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/mainPlot1_position.pdf"), width = 7.41, height = 8.31)
 mainPlot(F_high = dfA_plot_high, F_low = dfA_plot_low, lab = '', position=1)
 dev.off()
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/mainPlot1_cogload.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/mainPlot1_cogload.pdf"), width = 7.41, height = 8.31)
 mainPlot(F_hard = dfA_plot_hard, F_easy = dfA_plot_easy, lab = '', cogload=1)
 dev.off()
 
-view(dfA_plot)
-meanEVLoss <- dfA_plot %>%
-  pull(meanEVLoss)%>%
-  mean(.)
-meanEVLoss
+
 
 mainPlotComparisonGo<-function(F, F_hard, F_easy, lab='', ylim=c(-14,14), position = 0, cogload = 0){
   
@@ -2273,6 +2460,7 @@ dfA_plot_maker_comparison_GO = function (type = NULL) {
 
 
 dfA_plot_comparison_GO <- dfA_plot_maker_comparison_GO()
+dfA_plot_comparison_GO
 dfA_plot_comparison_GO_hard <- dfA_plot_maker_comparison_GO("hard")
 dfA_plot_comparison_GO_hard
 dfA_plot_comparison_GO_easy <- dfA_plot_maker_comparison_GO("easy")
@@ -2283,11 +2471,11 @@ mainPlotComparisonGo(dfA_plot_comparison_GO)
 mainPlotComparisonGo(F_hard = dfA_plot_comparison_GO_hard, F_easy = dfA_plot_comparison_GO_easy, lab = '', cogload=1)
 
 
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/Figure1GO.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/Figure1GO.pdf"), width = 7.41, height = 8.31)
 mainPlotComparisonGo(dfA_plot_comparison_GO)
 dev.off()
 
-pdf(file.path(PATH_TO_DATA,"Figures_pilot3/Figure1GO_treatment.pdf"), width = 7.41, height = 8.31)
+pdf(file.path(PATH_TO_DATA,"Figures_pilot4/Figure1GO_treatment.pdf"), width = 7.41, height = 8.31)
 mainPlotComparisonGo(F_hard = dfA_plot_comparison_GO_hard, F_easy = dfA_plot_comparison_GO_easy, lab = '', cogload=1)
 dev.off()
 
@@ -2424,7 +2612,7 @@ cor.test(s_mpl$wmirrorError,s_mpl$wlotteryError)
 
 makeScatter(s_mpl,"")
 
-pdf(file.path(PATH_TO_DATA,"/Figures_pilot3/scatter.pdf"), width = 13.05, height = 7.14)
+pdf(file.path(PATH_TO_DATA,"/Figures_pilot4/scatter.pdf"), width = 13.05, height = 7.14)
 makeScatter(s_mpl,"")
 dev.off()
 layout(matrix(1))

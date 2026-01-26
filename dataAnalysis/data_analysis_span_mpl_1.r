@@ -787,7 +787,7 @@ tableNoSwitchByPosition
 
 
 
-final_data_desc <- data.frame()
+final_data_desc <- data.frame() # descriptive data including pp who failed the comprehension questions
 
 for (iSub in 1:nSub) {
   
