@@ -29,8 +29,8 @@ library(fixest) # to fit fixed effects
 
 rm(list = ls())
 
-setwd("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis")
-PATH_TO_DATA <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis"
+setwd("/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis")
+PATH_TO_DATA <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis"
 dir.create(file.path(PATH_TO_DATA, "Figures_pilot3&4&5"), showWarnings = FALSE, recursive = TRUE)
 getwd()
 
@@ -64,14 +64,14 @@ filePath_testGildas16_20251216 <- "/Users/domitilleprevost/Downloads/jatos_resul
 
 filePath_pilot_1And2FromJatos <- "/Users/domitilleprevost/Downloads/jatos_results_data_20251201101543.txt" # two first pilots downloaded from jatos not reunited by hand
 
-filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot1_20251126.txt" # first pilot
-filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_1&2.txt" # first and second pilot pooled
-filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot2_20251127.txt"  
-filePath_pilot3_20251215 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot3_20251215.txt"
-filePath_pilot4_20251217 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot4_20251217.txt"
-filePath_pilot_3And4<- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_3&4.txt"
-filePath_pilot5_20251219 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot5_20251219.txt"
-filePath_pilot_3And4And5 <- "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/dataExperiment/results_pilot_3&4&5.txt"
+filePath_pilot1_20251126 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot1_20251126.txt" # first pilot
+filePath_pilot_1And2 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot_1&2.txt" # first and second pilot pooled
+filePath_pilot2_20251127 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot2_20251127.txt"  
+filePath_pilot3_20251215 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot3_20251215.txt"
+filePath_pilot4_20251217 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot4_20251217.txt"
+filePath_pilot_3And4<- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot_3&4.txt"
+filePath_pilot5_20251219 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot5_20251219.txt"
+filePath_pilot_3And4And5 <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/dataExperiment/results_pilot_3&4&5.txt"
 
 
 text <- readLines(filePath_pilot_3And4And5)
@@ -279,7 +279,7 @@ extractMplDataframes <- function(dataPerParticipant) {
             else if ((isLotteryFirst == FALSE & status_mpl == "lottery") | (isLotteryFirst == TRUE & status_mpl =="mirror")) {
               noSwitchCounterSecondPart <<- noSwitchCounterSecondPart + 1
             }
-            if (status_mpl == "lottery"){ noSwitchCounterLottery <<- noSwitchCounterLottery + 1} 
+            if (status_mpl == "lottery"){noSwitchCounterLottery <<- noSwitchCounterLottery + 1} 
             if (status_mpl == "mirror"){noSwitchCounterMirror <<- noSwitchCounterMirror + 1}
             
             varName <- paste0("noSwitchCounter_", mpl_type, "_", status_mpl)
@@ -816,11 +816,11 @@ final_data_2 <- final_data_2 %>%
     .after = switchRow1Choice
   )
 
- final_data_wide <- write.csv(final_data, "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_wide.csv", row.names = FALSE)
+ final_data_wide <- write.csv(final_data, "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_wide.csv", row.names = FALSE)
 final_data_2_toShare <- final_data_2[] <- lapply(final_data_2, function(x) {
   if (is.list(x)) as.character(x) else x
 })
-data_concatenated <- write.csv(final_data_2_toShare, "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/data_concatenated.csv", row.names = FALSE)
+data_concatenated <- write.csv(final_data_2_toShare, "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/data_concatenated.csv", row.names = FALSE)
 
 
 #view(final_data_2)
@@ -829,15 +829,6 @@ data_concatenated <- write.csv(final_data_2_toShare, "/Users/domitilleprevost/Do
 tableNoSwitchByPosition <- data.frame(choices = c("risky", "sure", "ratio"), high = c(noSwitchCounterHighRisky, noSwitchCounterHighSure, noSwitchCounterHighRisky/noSwitchCounterHighSure), low = c(noSwitchCounterLowRisky, noSwitchCounterLowSure, noSwitchCounterLowRisky/noSwitchCounterLowSure))
 tableNoSwitchByPosition
 
-
-rtBetweenRoundsMplHard <- final_data_2 %>%
-  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
-  filter(treatment=="hard")%>%
-  pull(rt)
-rtBetweenRoundsMplEasy <- final_data_2 %>%
-  filter(grepl("<div style=\"position: fixed; top: 10px", stimulus)) %>%
-  filter(treatment=="easy")%>%
-  pull(rt)
 
 #hist(rtBetweenRoundsMpl, breaks = 100)
 #meanRTHard <- mean(rtBetweenRoundsMplHard)
@@ -1096,7 +1087,7 @@ dfA <- final_data %>%
       (prob %in% c(50, 75, 90) & str_starts(mplType, "L")) ~ 1,
       (prob %in% c(10, 25) & str_starts(mplType, "L")) ~ -1,
       (str_starts(mplType, "A")) ~ -1,
-    ),
+    )
   )
 
 medRt <- dfA %>%
@@ -1145,7 +1136,22 @@ dfA <- dfA %>%
 
     
 
-final_data_long <- write.csv(dfA, "/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_long.csv", row.names = FALSE)
+final_data_long <- write.csv(dfA, "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_long.csv", row.names = FALSE)
+
+
+mean(dfA%>%filter(treatment=="hard")%>%pull(mirror_rtChoice, lottery_rtChoice), na.rm=TRUE)
+mean(dfA%>%filter(treatment=="easy")%>%pull(mirror_rtChoice, lottery_rtChoice), na.rm=TRUE)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1178,6 +1184,7 @@ spanLengthData
 mean(spanLengthData)
 
 df_span <- tibble::tibble(spanLength = spanLengthData)
+
 
 p_span <- ggplot(df_span, aes(x = spanLength)) +
   geom_histogram(binwidth = 1, boundary = 0.5, colour = "white", fill = "#2c7fb8") +
@@ -2191,9 +2198,15 @@ makeNoSwitchPanels <- function(noSwitchTable, noSwitchSubject, noSwitchStatus, n
     "Sure amounts selected : <span style='color:#0D47A1;font-weight:600;'>blue</span><br>",
     "Lotteries/mirrors selected : <span style='color:#8B0000;font-weight:600;'>red</span>"
   )
+  if(valueType=="count"){
+    title_string <- "noSwitch counts"
+  }
+  else if(valueType=="share"){
+    title_string <- "noSwitch shares"
+  }
   
   combined <- (p1) / (p2) / (p3 | p4) + plot_layout(heights = c(1, 1, 0.8)) + plot_annotation(
-    title = "noSwitch behaviors counts",
+    title = title_string,
     caption = caption_html,
   ) & theme(
     plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
@@ -2201,12 +2214,12 @@ makeNoSwitchPanels <- function(noSwitchTable, noSwitchSubject, noSwitchStatus, n
   )
   return(combined)
 }
-print(makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "count"))
+makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "count")
 pdf(file.path(PATH_TO_DATA,"Figures_pilot3&4&5/noSwitchPanels.pdf"), width = 7.41, height = 8.31)
 makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "count")
 dev.off()
 
-print(makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "share"))
+makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "share")
 pdf(file.path(PATH_TO_DATA,"Figures_pilot3&4&5/noSwitchPanelsShares.pdf"), width = 7.41, height = 8.31)
 makeNoSwitchPanels(noSwitchTable, noSwitchSubject, noSwitchStatus, noSwitchTreatment, "share")
 dev.off()
@@ -2345,10 +2358,10 @@ makeRTDensities <- function(data_for_rt) {
   
 }
 rtDensityPlot <- makeRTDensities(dataForRTChoice)
+rtDensityPlot
 print(rtDensityPlot)
 ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "rtDensityPlot.pdf"),
        plot = rtDensityPlot, device = "pdf", width = 12, height = 10)
-
 
 dataRTCalibrateChoice <- dataForRTChoice %>%
   filter(rtType== "Choice") %>%
@@ -2385,16 +2398,16 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
     list(lottery = "gray", mirror = "white")
   }
   if (position == 1) {
-    x<-F_high %>%filter(grepl('G',mplType))#%>%filter(prob!=50)
+    x<-F_high %>%filter(grepl('G',mplType))%>%filter(prob!=50)
   }
   else if (cogload == 1) {
-    x<-F_hard %>%filter(grepl('G',mplType))#%>%filter(prob!=50)
+    x<-F_hard %>%filter(grepl('G',mplType))%>%filter(prob!=50)
   }
   else if (median == 1) {
-    x<-F_above %>%filter(grepl('G',mplType))#%>%filter(prob!=50)
+    x<-F_above %>%filter(grepl('G',mplType))%>%filter(prob!=50)
   }
   else {
-    x<-F %>%filter(grepl('G',mplType))#%>%filter(prob!=50)
+    x<-F %>%filter(grepl('G',mplType))%>%filter(prob!=50)
   }
   plot(x$prob-0.5,x$lottery-x$pred,type='n',xlim=c(0,100), ylim=ylim,ylab='Deviation from Expected Value',xlab='Probability',yaxt='n',bty='n',xaxt='n',main=lab) # type='n' to create an empty plot
   axis(1,at=seq(0,100,10),labels=seq(0,1,0.1))
@@ -2462,49 +2475,49 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
   
   # Plot G types
   if (position == 1) {
-    x_high <- F_high %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
-    x_low <- F_low %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
+    x_high <- F_high %>% filter(grepl('G', mplType))%>% filter(prob != 50)
+    x_low <- F_low %>% filter(grepl('G', mplType))%>% filter(prob != 50)
     plot_points(x_high, lottery_color = colors$lottery_high, mirror_color = colors$mirror_high, pch_type = 21, show_labels = TRUE)
     plot_points(x_low, lottery_color = colors$lottery_low, mirror_color = colors$mirror_low, pch_type = 21, show_labels = TRUE)
   } 
   else if (cogload == 1) {
-    x_hard <- F_hard %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
-    x_easy <- F_easy %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
+    x_hard <- F_hard %>% filter(grepl('G', mplType))%>% filter(prob != 50)
+    x_easy <- F_easy %>% filter(grepl('G', mplType))%>% filter(prob != 50)
     plot_points(x_hard, lottery_color = colors$lottery_hard, mirror_color = colors$mirror_hard, pch_type = 21, show_labels = TRUE)
     plot_points(x_easy, lottery_color = colors$lottery_easy, mirror_color = colors$mirror_easy, pch_type = 21, show_labels = TRUE)
   }
   else if (median == 1) {
-    x_above <- F_above %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
-    x_below <- F_below %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
+    x_above <- F_above %>% filter(grepl('G', mplType))%>% filter(prob != 50)
+    x_below <- F_below %>% filter(grepl('G', mplType))%>% filter(prob != 50)
     plot_points(x_above, lottery_color = colors$lottery_above, mirror_color = colors$mirror_above, pch_type = 21, show_labels = TRUE)
     plot_points(x_below, lottery_color = colors$lottery_below, mirror_color = colors$mirror_below, pch_type = 21, show_labels = TRUE)
   }
   else if (position == 0 && cogload == 0 && median == 0) {
-    x <- F %>% filter(grepl('G', mplType))# %>% filter(prob != 50)
+    x <- F %>% filter(grepl('G', mplType))%>% filter(prob != 50)
     plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 21, show_labels = TRUE)
   }
   
   # Plot L types
   if (position == 1) {
-    x_high <- F_high %>% filter(grepl('L', mplType))# %>% filter(prob != 50) 
-    x_low <- F_low %>% filter(grepl('L', mplType))# %>% filter(prob != 50)
+    x_high <- F_high %>% filter(grepl('L', mplType))%>% filter(prob != 50) 
+    x_low <- F_low %>% filter(grepl('L', mplType))%>% filter(prob != 50)
     plot_points(x_high, lottery_color = colors$lottery_high, mirror_color = colors$mirror_high, pch_type = 21, show_labels = TRUE)
     plot_points(x_low, lottery_color = colors$lottery_low, mirror_color = colors$mirror_low, pch_type = 21, show_labels = TRUE)
   } 
   else if (cogload == 1) {
-    x_hard <- F_hard %>% filter(grepl('L', mplType))# %>% filter(prob != 50) 
-    x_easy <- F_easy %>% filter(grepl('L', mplType))# %>% filter(prob != 50)
+    x_hard <- F_hard %>% filter(grepl('L', mplType))%>% filter(prob != 50) 
+    x_easy <- F_easy %>% filter(grepl('L', mplType))%>% filter(prob != 50)
     plot_points(x_hard, lottery_color = colors$lottery_hard, mirror_color = colors$mirror_hard, pch_type = 21, show_labels = TRUE)
     plot_points(x_easy, lottery_color = colors$lottery_easy, mirror_color = colors$mirror_easy, pch_type = 21, show_labels = TRUE)
   }
   else if (median == 1) {
-    x_above <- F_above %>% filter(grepl('L', mplType))# %>% filter(prob != 50) 
-    x_below <- F_below %>% filter(grepl('L', mplType))# %>% filter(prob != 50)
+    x_above <- F_above %>% filter(grepl('L', mplType))%>% filter(prob != 50) 
+    x_below <- F_below %>% filter(grepl('L', mplType))%>% filter(prob != 50)
     plot_points(x_above, lottery_color = colors$lottery_above, mirror_color = colors$mirror_above, pch_type = 21, show_labels = TRUE)
     plot_points(x_below, lottery_color = colors$lottery_below, mirror_color = colors$mirror_below, pch_type = 21, show_labels = TRUE)
   }
   else if (position == 0 && cogload == 0 && median == 0) {
-    x <- F %>% filter(grepl('L', mplType))# %>% filter(prob != 50)
+    x <- F %>% filter(grepl('L', mplType))%>% filter(prob != 50)
     plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 21, show_labels = TRUE)
   }
   
@@ -2533,21 +2546,21 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
   }
 }
 
-dfA_plot_maker = function (type = NULL, med = NULL) {
+dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
   if (is.null(med)){
-    df <- dfA
+    df <- data
   }
   else if (med == "aboveCogLoad"){
-    df <- dfA%>%filter(aboveMedImpactCogLoad ==1)
+    df <- data%>%filter(aboveMedImpactCogLoad ==1)
   }
   else if (med == "belowCogLoad"){
-    df <- dfA %>% filter(aboveMedImpactCogLoad == 0)
+    df <- data %>% filter(aboveMedImpactCogLoad == 0)
   }
   else if (med == "aboveRt"){
-    df <- dfA%>%filter(aboveMedRtChoice ==1)
+    df <- data%>%filter(aboveMedRtChoice ==1)
   }
   else if (med == "belowRt"){
-    df <- dfA %>% filter(aboveMedRtChoice == 0)
+    df <- data %>% filter(aboveMedRtChoice == 0)
   }
 
   
@@ -2949,7 +2962,7 @@ main_tests_rounded<-function(df){
         mirror_p=wilcox.test(round(mirror_ev, 2),pred,paired=TRUE)$p.value,
         lottery5=wilcox.test(round(lottery_ev,2), pred,paired=TRUE)$p.value<0.05,
         mirror5=wilcox.test(round(mirror_ev, 2) ,pred,paired=TRUE)$p.value<0.05,
-        median_difference=median(round(lottery_ev-mirror_ev,2)),
+        median_difference=median(round(lottery_ev-mirror_ev,2), na.rm=TRUE),
         difference_test_p=wilcox.test(round(lottery_ev,2),round(mirror_ev,2),paired=TRUE)$p.value,
         difference_test_sig=wilcox.test(round(lottery_ev,2),round(mirror_ev,2),paired=TRUE)$p.value<0.05    
       )
@@ -2967,9 +2980,14 @@ main_t_tests_rounded<-function(df){
         mirror_p=t.test(round(mirror_ev, 2),pred,paired=TRUE)$p.value,
         lottery5=t.test(round(lottery_ev,2), pred,paired=TRUE)$p.value<0.05,
         mirror5=t.test(round(mirror_ev, 2) ,pred,paired=TRUE)$p.value<0.05,
-        median_difference=median(round(lottery_ev-mirror_ev,2)),
+        median_difference=median(round(lottery_ev-mirror_ev,2), na.rm=TRUE),
+        mean_difference = mean(round(lottery_ev-mirror_ev,2),na.rm=TRUE),
         difference_test_p=t.test(round(lottery_ev,2),round(mirror_ev,2),paired=TRUE)$p.value,
-        difference_test_sig=t.test(round(lottery_ev,2),round(mirror_ev,2),paired=TRUE)$p.value<0.05    
+        difference_test_sig=t.test(round(lottery_ev,2),round(mirror_ev,2),paired=TRUE)$p.value<0.05,
+        n =n(),
+        na_lottery= length(which(is.na(lottery_ev))),
+        na_mirror= length(which(is.na(mirror_ev)))
+
       )
   )
 }
@@ -2993,7 +3011,7 @@ main_tests<-function(df){
 }
 
 main_tests_df<-data.frame(main_tests(dfA))
-main_t_tests_df<-data.frame(main_tests(dfA))
+main_t_tests_rounded<-data.frame(main_t_tests_rounded(dfA))
 main_tests_df$lottery_p[[4]]
 main_tests_rounded_df<-data.frame(main_tests_rounded(dfA))
 main_tests_rounded_df$lottery_p[[4]]
@@ -3027,7 +3045,14 @@ mirror
 
 
 
+# Verify why G25 tasks are not in the PT direction:
 
+
+dataLmChoice%>%
+  group_by(mplType)%>%
+  summarise(n=n(), 
+            n_high=sum(mirror_position=="high"), 
+            n_low=sum(mirror_position=="low"), share_high=n_high/(n_low+n_high))
 
 
 
@@ -3043,12 +3068,13 @@ s_mpl<-dfA%>%
   #filter(!is.na(lottery_ev)&!is.na(mirror_ev))%>%
   group_by(isLotteryFirst, participant_id)%>%
   summarise(
-    lottery_rtChoice = mean(lottery_rtChoice[!is.na(lottery_ev)], na.rm=TRUE),
-    mirror_rtChoice = mean(mirror_rtChoice[!is.na(mirror_ev)], na.rm=TRUE),
-    mean_rtChoice = (mean(lottery_rtChoice[!is.na(lottery_ev)], na.rm=TRUE) +mean(mirror_rtChoice[!is.na(mirror_ev)], na.rm=TRUE))/2,
+    lottery_rtChoice = mean(lottery_rtChoice, na.rm=TRUE),
+    mirror_rtChoice = mean(mirror_rtChoice, na.rm=TRUE),
+    mean_rtChoice = (mean(lottery_rtChoice, na.rm=TRUE) + mean(mirror_rtChoice, na.rm=TRUE))/2,
     treatment = first(treatment),
     mirrorError=mean(abs(mirror_ev - pred), na.rm=TRUE),
     lotteryError=mean(abs(lottery_ev - pred), na.rm=TRUE),
+    mirrorAndLotteryError= (mean(abs(mirror_ev - pred), na.rm=TRUE)+ mean(abs(lottery_ev - pred), na.rm=TRUE))/2,
     wmirrorError=mean(multiplier*(mirror_ev -pred), na.rm=TRUE),
     wlotteryError=mean(multiplier*(lottery_ev -pred), na.rm=TRUE),
     wmirrorAndlotteryError= (mean(multiplier*(mirror_ev -pred), na.rm=TRUE) + mean(multiplier*(lottery_ev -pred), na.rm=TRUE))/2, # equal weight on lottery and mirror, bc else some NAs could cause imbalance
@@ -3056,7 +3082,8 @@ s_mpl<-dfA%>%
     aboveMedImpactCogLoad = unique(aboveMedImpactCogLoad)[[1]],
     #mean(multiplier*(((lottery_ev+mirror_ev)/2) - pred), na.rm=TRUE)
     mirror_accuracy = mean(mirror_accuracy, na.rm=TRUE),
-    lottery_accuracy = mean(lottery_accuracy, na.rm = TRUE)
+    lottery_accuracy = mean(lottery_accuracy, na.rm = TRUE),
+    mean_spanMplAccuracy = (mean(mirror_accuracy, na.rm=TRUE) +  mean(lottery_accuracy, na.rm = TRUE))/2 
   , .groups = "drop")%>%
   left_join(final_data_2 %>%
             group_by(subject) %>%
@@ -3074,6 +3101,7 @@ s_mpl<-dfA%>%
             summarise(
               accuracy_mean_participant_source = mean(accuracy[letterType==1], na.rm = TRUE),
               accuracy_mean_participant_target = mean(accuracy[letterType==2], na.rm = TRUE),
+              accuracy_mean_participant_overallSpanSpan = mean(c(accuracy[letterType==1],accuracy[letterType==2]), na.rm=TRUE),
               .groups = "drop"
             ) %>%
             mutate(
@@ -3085,30 +3113,33 @@ s_mpl<-dfA%>%
 print(s_mpl)
 
 
+
+
+
 makeScatter<-function(s,lab){
   
   layout(matrix(1:2,1,2,byrow=FALSE))
   
   x<-s%>%filter(isLotteryFirst==TRUE)
   cat("nrow(x) in second plot for lottery first is", nrow(x), "\n")
-  print(x$mirrorError)
-  print(x$lotteryError)
-  plot(x$mirrorError,x$lotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(0,6),ylim=c(0,6),bty='n',main=paste(lab,'Absolute  Deviations'))
+  #print(x$mirrorError)
+  #print(x$lotteryError)
+  plot(x$mirrorError,x$lotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(0,6),ylim=c(0,6),bty='n',main=paste(lab,'Absolute  Deviations'), cex.lab=1.6, cex.main=1.6, cex.axis=1.6)
   legend("topleft",legend=c("Lottery First",'Mirror First'),col=c('black','black'),pt.bg=c('gray','white'),pt.cex=1.5,pch=21,cex=1,bg=NA,box.lwd=NA)
-  points(x$mirrorError,x$lotteryError,col='black',bg='darkgray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(0,6),ylim=c(0,6),bty='n',main='Absolute Mean Error')
+  points(x$mirrorError,x$lotteryError,col='black',bg='darkgray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(0,6),ylim=c(0,6),bty='n',main='Absolute Mean Error',cex.axis=1.6, cex= 1.6)
   x<-s%>%filter(isLotteryFirst==FALSE)
   # points(x$mirrorError,x$lotteryError,col=rgb(1,0,0,0.35),pch=19,ylab='lottery Error')
-  points(x$mirrorError,x$lotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
+  points(x$mirrorError,x$lotteryError,col='black',bg='white',pch=21,ylab='lottery Error', cex= 1.6)
   abline('a'=0,'b'=1,lty=4)
   
   x<-s%>%filter(isLotteryFirst==TRUE)
-  plot(x$wmirrorError,x$wlotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(-3,3),ylim=c(-3,3),bty='n',main=paste(lab,'Normalized  Deviations'),xaxt='n',yaxt='n')
-  axis(1,at=seq(-6,6,1))
-  axis(2,at=seq(-6,6,1))
+  plot(x$wmirrorError,x$wlotteryError,type='n',col=rgb(0,0,0,0.35),pch=19,xlab='Mirror',ylab='Lottery',xlim=c(-3,3),ylim=c(-3,3),bty='n',main=paste(lab,'Normalized  Deviations'),xaxt='n',yaxt='n', cex.lab=1.6, cex.main=1.6)
+  axis(1,at=seq(-6,6,1), cex.axis= 1.6)
+  axis(2,at=seq(-6,6,1), cex.axis=1.6)
   abline('h'=0);abline('v'=0)
-  points(x$wmirrorError,x$wlotteryError,col='black',bg='gray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(-6,6),ylim=c(-6,6),bty='n',main='Normalized Mean Error',xaxt='n',yaxt='n')
+  points(x$wmirrorError,x$wlotteryError,col='black',bg='gray',pch=21,xlab='DPL Mean Error',ylab='SPL Mean Error',xlim=c(-6,6),ylim=c(-6,6),bty='n',main='Normalized Mean Error',xaxt='n',yaxt='n', cex= 1.6)
   x<-s%>%filter(isLotteryFirst==FALSE)
-  points(x$wmirrorError,x$wlotteryError,col='black',bg='white',pch=21,ylab='lottery Error')
+  points(x$wmirrorError,x$wlotteryError,col='black',bg='white',pch=21,ylab='lottery Error', cex= 1.6)
   abline('a'=0,'b'=1,lty=4)
   
   print(
@@ -3130,6 +3161,8 @@ makeScatter(s_mpl,"")
 dev.off()
 layout(matrix(1))
 
+t.test(s_mpl$wmirrorError,s_mpl$wlotteryError, paired=TRUE)
+t.test(s_mpl$mirrorError,s_mpl$lotteryError, paired=TRUE)
 
 
 
@@ -3139,12 +3172,14 @@ s_mpl_scatterCogLoadChoiceLevel<-dfA%>%
                          "AS10", "AS15", "GO10", "GO90")) %>% #
   filter(!grepl('50',mplType))%>%
   mutate(
-    mean_rtChoice = (lottery_rtChoice + mirror_rtChoice)/2,
-    mirrorError=abs(mirror_ev - pred),
-    lotteryError=abs(lottery_ev - pred),
-    wmirrorError=multiplier*(mirror_ev -pred),
-    wlotteryError=multiplier*(lottery_ev -pred),
-    wmirrorAndlotteryError= (multiplier*(mirror_ev -pred) + multiplier*(lottery_ev -pred))/2, # equal weight on lottery and mirror, bc else some NAs could cause imbalance
+    mean_spanMplAccuracy = (mirror_accuracy+ lottery_accuracy)/2,
+    mean_rtChoice = (lottery_rtChoice+ mirror_rtChoice)/2,
+    mirrorError = if_else(is.na(mirror_ev), NA, abs(mirror_ev - pred)),
+    lotteryError = if_else(is.na(mirror_ev), NA, abs(lottery_ev - pred)),
+    mirrorAndLotteryError = (abs(mirror_ev - pred) + abs(lottery_ev - pred)) / 2,
+    wmirrorError = if_else(is.na(mirror_ev), NA, multiplier*(mirror_ev -pred)),
+    wlotteryError = if_else(is.na(lottery_ev), NA, multiplier*(lottery_ev -pred)),
+    wmirrorAndlotteryError = (multiplier*(mirror_ev -pred) + multiplier*(lottery_ev -pred))/2, # equal weight on lottery and mirror, bc else some NAs could cause imbalance. So if NA no mean
     #mean(multiplier*(((lottery_ev+mirror_ev)/2) - pred), na.rm=TRUE)
     #meanAccuracy = (mirror_accuracy + lottery_accuracy)/2
     )%>%
@@ -3157,6 +3192,7 @@ s_mpl_scatterCogLoadChoiceLevel<-dfA%>%
               summarise(
                 accuracy_mean_participant_source = mean(accuracy[letterType==1], na.rm = TRUE),
                 accuracy_mean_participant_target = mean(accuracy[letterType==2], na.rm = TRUE),
+                accuracy_mean_participant_overallSpanSpan = mean(c(accuracy[letterType==1],accuracy[letterType==1]), na.rm=TRUE),
                 .groups = "drop"
               ) %>%
               mutate(
@@ -3165,17 +3201,51 @@ s_mpl_scatterCogLoadChoiceLevel<-dfA%>%
               rename(participant_id = subject),
             by = "participant_id")
 
+s_mpl_rescaled <- s_mpl%>%
+  mutate(mirror_rtChoice = mirror_rtChoice/30000,
+         lottery_rtChoice = lottery_rtChoice/30000,
+         mean_rtChoice = mean_rtChoice/30000)
+s_mpl_scatterCogLoadChoiceLevel_rescaled <- s_mpl_scatterCogLoadChoiceLevel%>%
+  mutate(mirror_rtChoice = mirror_rtChoice/30000,
+         lottery_rtChoice = lottery_rtChoice/30000,
+         mean_rtChoice = mean_rtChoice/30000)
+  
+  
+#see the impact of removing the two hard X -0.2 cognitive load participants
+s_mpl_rescaled_withoutOutliers <- s_mpl_rescaled%>%
+  filter(!(treatment=="hard" & impactCogLoad<(-0.1)))
+s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers <- s_mpl_scatterCogLoadChoiceLevel_rescaled%>%
+  filter(!(treatment=="hard" & impactCogLoad<(-0.1)))
 
-  
-  
+
 makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactCogLoad", "accuracy", "rtChoice", "maxSpan"), title){
-
-  plotFunction <- function(df, sp){
+ # additional variables "accuracy_mean_participant_overallSpanSpan","accuracy_mean_participant_target",
+  plotFunction <- function(df_plot, df_lm, sp){
 
     fillValues <- setNames(c("#00AFBB","#E7B800"), c("mirror", "lottery")) # make named vectors for scale*_manual
     fillLabels <- setNames(c("mirror","lottery"), c("mirror", "lottery"))
-
+    colourValues <- setNames(c("#00AFBB","#E7B800","chartreuse4","purple"), c("mirror", "lottery", "mindless", "middle")) # make named vectors for scale*_manual
+    colourLabels <- setNames(c("mirror","lottery"), c("mirror", "lottery"))
+  
+    # choose reference values depending on deviation type
+    if (deviation == "absolute") {
+      ref_red <- 1.32
+      ref_purple <- 0.72
+    } else if (deviation =="normalized"){
+      ref_red <- 0
+      ref_purple <- 0
+    }
+    hlines_df <- tibble::tibble(
+      label = c("Reference (full mean)", "Reference (subject mean)"),
+      y = c(ref_red, ref_purple)
+    )
     
+    # color mapping for regression lines and reference lines
+    colorValues <- c("mirror" = fillValues["mirror"], "lottery" = fillValues["lottery"],
+                     "Reference (full mean)" = "chartreuse4", "Reference (subject mean)" = "purple")
+    # Ensure consistent order
+    colorLevels <- names(colorValues)
+
     # df <- df %>%
     #   mutate(aboveMedImpactCogLoad = factor(aboveMedImpactCogLoad))
     
@@ -3187,84 +3257,127 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
     #   fillValues <- setNames(c("#00AFBB","#E7B800"), c(1, 0))
     #   fillLabels <- setNames(c("mirror","lottery"), c(1, 0))
     # }
-    types_present <- unique(as.character(df$type))
+    types_present <- unique(as.character(df_plot$type))
     p <- ggplot(
-      df, aes(x=.data[[sp]], y=value, fill = factor(type))
+      df_plot, aes(x=.data[[sp]], y=value, fill = factor(type))
       #df, aes(x= value, y=.data[[sp]], fill = factor(type))
     )+
-     geom_point(shape = 21, colour = "black", size = 3, stroke = 0.5, position = position_jitter(width = 0.02 , height = 0), alpha = 0.7) +
+     geom_point(shape = 21, size = 3, stroke = 0.5, alpha = 0.7) + #, position = position_jitter(width = 0.02 , height = 0)
+      geom_smooth(aes(x=.data[[sp]], y=value), colour="black", method = "lm", se = FALSE, size = 0.8, show.legend = FALSE, na.rm = TRUE, inherit.aes=FALSE)+
       geom_smooth(aes(colour = factor(type), group = factor(type)), method = "lm", se = FALSE, size = 0.8, show.legend = FALSE, na.rm = TRUE) +
       #geom_smooth(aes(colour = aboveMedImpactCogLoad, group = aboveMedImpactCogLoad), method = "lm", se = FALSE, size = 0.8, show.legend = FALSE, na.rm = TRUE) +
-      labs(x = sp, y = "deviation") +
-      scale_fill_manual( name = "Status", values = fillValues, 
-                         labels = fillLabels,
+      # horizontal reference lines as a data frame mapped to colour (so they get legend entries)
+      labs(x = if(sp=="accuracy"){"accuracy span mpl"}
+           else if(sp=="accuracy_mean_participant_overallSpanSpan"){"accuracy source and target span"}
+           else if(sp=="accuracy_mean_participant_target"){"accuracy target span"}
+           else if(sp=="impactCogLoad"){"accuracy source minus target span"}
+           else sp,
+           y = "deviation") +
+      scale_fill_manual( 
+        name = "Status", 
+        values = fillValues, 
+        labels = fillLabels,
+        guide_legend(
+          override.aes = list(linetype = 0)),
         na.value = "grey70",
         drop = FALSE
       )+
       scale_colour_manual(
-        name = "Type",
-        values = fillValues, # needs a named vector. left of the "=" is the name of the element
+        name = "Lines",
+        values = colourValues, # needs a named vector. left of the "=" is the name of the element
         guide = "none",
+        #breaks = colorLevels,
         na.value = "grey70",
         drop = FALSE
+      )+ guides(
+        fill = guide_legend(order = 1),
+        colour = guide_legend(
+          order = 2, 
+          override.aes = list(
+          linetype = c("solid", "solid", "dashed", "dashed"),
+          alpha = c(1, 1, 0.35, 0.35),
+          size = c(0.8, 0.8, 0.7, 0.7),
+          shape = rep(NA, 4))
+        )
       )
-
+    
+    if (deviation=="absolute"){
+      p <- p +       geom_hline(data = hlines_df, aes(yintercept = y[1], colour = "mindless"),
+                                linetype = "dashed", size = 0.7, alpha = 0.35, show.legend = TRUE, inherit.aes = FALSE) +
+        geom_hline(data = hlines_df, aes(yintercept = y[2], colour = "middle"),
+                   linetype = "dashed", size = 0.7, alpha = 0.35, show.legend = TRUE, inherit.aes = FALSE)
+    }
 
     # compute regression stats per type (R^2 from lm, p-value using robust/clustered SE when appropriate)
-    stats_list <- list()
-    types <- unique(df$type)
+    #stats_list <- list()
+    types <- unique(df_plot$type)
+    types<- append(types, "all", 0)
     labels <- list()
 
     for(t in types){
-      sub <- df[df$type == t & !is.na(df$value) & !is.na(df[[sp]]), ]
+      sub <- df_plot[df_plot$type == t & !is.na(df_plot$value) & !is.na(df_plot[[sp]]), ]
       if(nrow(sub) < 3){
-        stats_list[[t]] <- list(r2 = NA_real_, p = NA_real_)
-        labels[[t]] <- paste0(t, ": p=NA   R²=NA")
+        #stats_list[[t]] <- list(b = NA_real_, se = NA_real_, p = NA_real_)
+        labels[[t]] <- paste0(t, ": b=NA  se=NA p=NA")
         next
       }
       # avoid using .data inside formula: create temporary predictor column for lm
       sub <- sub %>% mutate(.x_for_lm = .data[[sp]])
       # lm for R2
-      lm_mod <- try(lm(value ~ .x_for_lm, data = sub), silent = FALSE)
+      if (cluster==TRUE){
+      lm_mod <- try(lm_robust(value ~ .x_for_lm, data = sub, clusters=participant_id), silent = FALSE)}
+      else if (cluster==FALSE){
+      lm_mod <- try(lm_robust(value ~ .x_for_lm, data = sub), silent = FALSE)}
+      #cat("lm_mode call is ", deparse(summary(lm_mod)$call), " r2 lm_mod for sp ", sp, " type ", t," is ", summary(lm_mod)$r.squared," beta is ", summary(lm_mod)$coeff[".x_for_lm", "Estimate"],"p-value is ", summary(lm_mod)$coeff[1,'Pr(>|t|)'], "\n")
       if(inherits(lm_mod, "try-error")){
-        stats_list[[t]] <- list(r2 = NA_real_, p = NA_real_)
-        labels[[t]] <- paste0(t, ": p=NA   R²=NA")
+        #stats_list[[t]] <- list(b = NA_real_, se = NA_real_, p = NA_real_)
+        labels[[t]] <- paste0(t, ": b=NA se= NA p=NA")
         next
       }
-      r2 <- try(summary(lm_mod)$r.squared, silent = FALSE)
-      if(inherits(r2, "try-error")) r2 <- NA_real_
+      b_val <- summary(lm_mod)$coeff[".x_for_lm", "Estimate"]
+      p_val <- summary(lm_mod)$coeff[".x_for_lm", 'Pr(>|t|)']
+      se_val <- summary(lm_mod)$coeff[".x_for_lm", "Std. Error"]
+      if(inherits(b_val, "try-error")) b_val <- NA_real_
+      if(inherits(p_val, "try-error")) p_val <- NA_real_
+      if(inherits(se_val, "try-error")) se_val <- NA_real_
       # compute p-value for slope with robust or clustered SE
-      pval <- NA_real_
-      if(cluster){
-        vc <- try(vcovCL(lm_mod, cluster = sub$participant_id), silent = FALSE)
-        if(!inherits(vc, "try-error")){
-          ct <- try(lmtest::coeftest(lm_mod, vcov. = vc), silent = FALSE)
-          if(!inherits(ct, "try-error")) pval <- as.numeric(ct[2,4])
-        }
-      } else {
-        # robust HC3 se if no clustering needed
-        vc <- try(vcovHC(lm_mod, type = "HC3"), silent = FALSE)
-        if(!inherits(vc, "try-error")){
-          ct <- try(lmtest::coeftest(lm_mod, vcov. = vc), silent = FALSE)
-          if(!inherits(ct, "try-error")) pval <- as.numeric(ct[2,4])
-        }
-      }
-      stats_list[[t]] <- list(r2 = r2, p = pval)
-      labels[[t]] <- paste0(t, ": p=", ifelse(is.na(pval), "NA", formatC(pval, digits = 3, format = "f")), "   R²=", ifelse(is.na(r2), "NA", formatC(r2, digits = 3, format = "f")))
+      #stats_list[[t]] <- list(b = b_val, p = p_val, se <- se_val)
+      labels[[t]] <- paste0(t, ": b=", ifelse(is.na(b_val), "NA", formatC(b_val, digits = 3, format = "f")), "  se=", ifelse(is.na(se_val), "NA", formatC(se_val, digits = 3, format = "f")), "  p=", ifelse(is.na(p_val), "NA", formatC(p_val, digits = 3, format = "f")))
     }
-    
+    if (cluster==FALSE){
+    cat(".data[[sp]] is ", sp, "\n")
+    lm_mod_overall <- try(lm_robust(value~.x_for_lm, data=df_lm%>%mutate(.x_for_lm =.data[[sp]])))
+    cat( "lm_mod_overall called with nobs= ", summary(lm_mod_overall)$nobs, 
+         " data has ",nrow(df_lm)," lines \n")}
+    else if (cluster==TRUE){
+      lm_mod_overall <- try(lm_robust(value~.x_for_lm, clusters= participant_id,
+                                      data=df_plot%>%mutate(.x_for_lm =.data[[sp]])))}
+    cat("cluster== ", cluster, " sp is ", sp, "beta is ", summary(lm_mod_overall)$coeff[".x_for_lm", "Estimate"]," p-value is ", summary(lm_mod_overall)$coeff['.x_for_lm','Pr(>|t|)'], " nobs= ", summary(lm_mod_overall)$nobs, "\n")
+    if(inherits(lm_mod_overall, "try-error")){
+      labels[["all"]]<- "all: b = NA_real_, se = NA_real_, p = NA_real_"
+      next }
+    else {
+      b_val <- summary(lm_mod_overall)$coeff[".x_for_lm", "Estimate"]
+      p_val <- summary(lm_mod_overall)$coeff[".x_for_lm", 'Pr(>|t|)']
+      se_val <- summary(lm_mod_overall)$coeff[".x_for_lm", "Std. Error"]
+      if(inherits(b_val, "try-error")) b_val <- NA_real_
+      if(inherits(p_val, "try-error")) p_val <- NA_real_
+      if(inherits(se_val, "try-error")) se_val <- NA_real_
+      
+      labels[["all"]] <- paste0("all: b=", ifelse(is.na(b_val), "NA", formatC(b_val, digits = 3, format = "f")), "  se=", ifelse(is.na(se_val), "NA", formatC(se_val, digits = 3, format = "f")), "  p=", ifelse(is.na(p_val), "NA", formatC(p_val, digits = 3, format = "f")))
+    }
        # build labels dataframe placed bottom-right, stacked (type1 above type2)
-     val_min <- ifelse(is.finite(suppressWarnings(min(df$value, na.rm = TRUE))), min(df$value, na.rm = TRUE), 0)
-     val_max <- ifelse(is.finite(suppressWarnings(max(df$value, na.rm = TRUE))), max(df$value, na.rm = TRUE), val_min + 1)
+     val_min <- ifelse(is.finite(suppressWarnings(min(df_plot$value, na.rm = TRUE))), min(df_plot$value, na.rm = TRUE), 0)
+     val_max <- ifelse(is.finite(suppressWarnings(max(df_plot$value, na.rm = TRUE))), max(df_plot$value, na.rm = TRUE), val_min + 1)
      y_range <- ifelse((val_max - val_min) == 0, 1, val_max - val_min)
      n_types <- length(types)
      line_h <- 0.1 * y_range
      y_positions <- val_min + 0.02 * y_range + seq(0, by = line_h, length.out = n_types) # bottom-up
-     x_pos <- if(is.numeric(df[[sp]])) max(df[[sp]], na.rm = TRUE) else Inf
+     x_pos <- if(is.numeric(df_plot[[sp]])) max(df_plot[[sp]], na.rm = TRUE) else Inf
      df_labels <- tibble::tibble(
-      type = rev(types),                    # reverse so first type is on top (above)
+      type = types,                    # reverse so first type is on top (above)
       x = x_pos,
-      y = rev(y_positions),
+      y = y_positions,
       label = rev(unlist(labels))
      )
 
@@ -3276,7 +3389,7 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
       return(p)
   }
   if (deviation == "absolute"){
-    data <- data %>%
+    data_plot <- data %>%
       pivot_longer(
       cols = c(mirrorError, lotteryError),
       names_to = "type",
@@ -3289,7 +3402,7 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
     )
   }
   else if (deviation == "normalized"){
-    data <- data%>%
+    data_plot <- data%>%
     pivot_longer(
     cols = c(wmirrorError, wlotteryError),
     names_to = "type",
@@ -3301,24 +3414,41 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
         accuracy = if_else(type == "mirror", mirror_accuracy, lottery_accuracy)
       )
   }
-  
-  dataHard <- data%>%filter(treatment=="hard")
-  dataEasy <- data%>%filter(treatment=="easy")
+  if (deviation=="absolute"){
+  data <- data%>%rename(value= mirrorAndLotteryError,
+                        accuracy= mean_spanMplAccuracy,
+                        rtChoice= mean_rtChoice)
+  }
+  else if(deviation=="normalized"){
+  data <- data%>%rename(value=wmirrorAndlotteryError,
+                        accuracy= mean_spanMplAccuracy,
+                        rtChoice= mean_rtChoice)
+  }
+  data_plotHard <- data_plot%>%filter(treatment=="hard")
+  data_lmHard <- data%>%filter(treatment=="hard")
+  data_plotEasy <- data_plot%>%filter(treatment=="easy")
+  data_lmEasy <- data%>%filter(treatment=="easy")
     
-    p1 <- plotFunction(data, span[[1]])
-    p2 <- plotFunction(data, span[[2]])
-    p3 <- plotFunction(data, span[[3]])
-    p4 <- plotFunction(data, span[[4]])
+    p1 <- plotFunction(data_plot, data, span[[1]])
+    p2 <- plotFunction(data_plot, data, span[[2]])
+    p3 <- plotFunction(data_plot, data, span[[3]])
+    p4 <- plotFunction(data_plot, data, span[[4]])
+#    p5 <- plotFunction(data_plot, data, span[[5]])
+ #   p6 <- plotFunction(data_plot, data, span[[6]])
     
-    p5 <- plotFunction(dataHard, span[[1]])
-    p6 <- plotFunction(dataHard, span[[2]])
-    p7 <- plotFunction(dataHard, span[[3]])
-    p8 <- plotFunction(dataHard, span[[4]])
+    p7 <- plotFunction(data_plotHard, data_lmHard, span[[1]])
+    p8 <- plotFunction(data_plotHard, data_lmHard, span[[2]])
+    p9 <- plotFunction(data_plotHard, data_lmHard, span[[3]])
+    p10 <- plotFunction(data_plotHard, data_lmHard, span[[4]])
+#    p11 <- plotFunction(data_plotHard, data_lmHard, span[[5]])
+#    p12 <- plotFunction(data_plotHard, data_lmHard, span[[6]])
     
-    p9 <- plotFunction(dataEasy, span[[1]])
-    p10 <- plotFunction(dataEasy, span[[2]])
-    p11 <- plotFunction(dataEasy, span[[3]])
-    p12 <- plotFunction(dataEasy, span[[4]])
+    p13 <- plotFunction(data_plotEasy, data_lmEasy, span[[1]])
+    p14 <- plotFunction(data_plotEasy, data_lmEasy, span[[2]])
+    p15 <- plotFunction(data_plotEasy, data_lmEasy, span[[3]])
+    p16 <- plotFunction(data_plotEasy, data_lmEasy, span[[4]])
+#    p17 <- plotFunction(data_plotEasy, data_lmEasy, span[[5]])
+#    p18 <- plotFunction(data_plotEasy, data_lmEasy, span[[6]])
     
     
     # small column title grobs (empty plots with centered text)
@@ -3331,8 +3461,8 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
     col_right <- ggplot() + 
       annotate("text", x = 0.5, y = 0.5, label = "Control treatment", size = 4.5, fontface = "bold") +
       theme_void()
-
-      combined <- (col_left|col_mid|col_right) / (p1|p5|p9) / (p2|p6|p10) / (p3|p7|p11) / (p4|p8|p12) + plot_layout(heights = c(0.2, 1, 1, 1, 1), guides= 'collect') + plot_annotation(
+#/ (p5|p11|p17) / (p6|p12|p18)
+      combined <- (col_left|col_mid|col_right) / (p1|p7|p13) / (p2|p8|p14) / (p3|p9|p15) / (p4|p10|p16)  + plot_layout(heights = c(0.2, 1, 1, 1, 1), guides= 'collect') + plot_annotation(
         title = title,
       ) & theme(
         plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
@@ -3343,35 +3473,93 @@ makeScatterCogLoad <- function(data, deviation, cluster = FALSE ,span=c("impactC
       
 }
 
+# regressions when cluster = FALSE: for the overall one it is based on the mean level by subject (mirrors and lotteries pooled)
+# regression when cluster = TRUE : for the overall one each particiapant has one point per task * mirror/lottery
+
+lm_robust(wmirrorError~mirror_rtChoice, data=s_mpl_rescaled%>%filter(treatment=="hard" & aboveMedRtChoice==0))
+
+
 #makeScatterCogLoad(s_mpl, deviation = "normalized", title="Normalized eviations and cognitive load, subject level")
 #makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel, deviation = "normalized", title="Normalized eviations and cognitive load, choice level")
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel, cluster=TRUE,  deviation = "normalized", title="Normalized deviations and cognitive load, choice level")
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel, cluster=TRUE, deviation = "absolute", title="Absolute deviations and cognitive load, choice level")
-scatterDeviationsCogLoadAbsoluteChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel, cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level")
-scatterDeviationsCogLoadNormalizedChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel, cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level")
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE,  deviation = "normalized", title="Normalized deviations and cognitive load, choice level")
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE, deviation = "absolute", title="Absolute deviations and cognitive load, choice level")
+scatterDeviationsCogLoadAbsoluteChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level")
+scatterDeviationsCogLoadNormalizedChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level")
 
-## looking at impactCogLoad, subsetting rt<15000
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel[s_mpl_scatterCogLoadChoiceLevel$mean_rtChoice<13500,], cluster=TRUE, deviation = "normalized", title="Normalized deviations and cognitive load, choice level, rt<13,5s (=median)")
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel[s_mpl_scatterCogLoadChoiceLevel$mean_rtChoice<13500,], cluster=TRUE,deviation = "absolute", title="Absolute deviations and cognitive load, choice level rt<13,5s (=median)")
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel[s_mpl_scatterCogLoadChoiceLevel$mean_rtChoice>13500,], cluster=TRUE,deviation = "normalized", title="Normalized deviations and cognitive load, choice level, rt>13,5s (=median)")
-makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel[s_mpl_scatterCogLoadChoiceLevel$mean_rtChoice>13500,], cluster=TRUE,deviation = "absolute", title="Absolute deviations and cognitive load, choice level rt>13,5s (=median)")
-makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==0,], cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level rt<13,5s (=median)")
-makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==0,], cluster=FALSE, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level, rt<13,5s (=median)")
-makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==1,], cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level, rt>13,5s (=median)")
-makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==1,], cluster=FALSE, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level, rt>13,5s (=median)")
+
+## looking at impactCogLoad, subsetting at the median rt
+medMeanRtChoice <- median(s_mpl_scatterCogLoadChoiceLevel_rescaled$mean_rtChoice) #0.4750408
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$mean_rtChoice<medMeanRtChoice,], cluster=TRUE, deviation = "normalized", title="Normalized deviations and cognitive load, choice level, rt<13,5s (=median)")
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$mean_rtChoice<medMeanRtChoice,], cluster=TRUE, deviation = "absolute", title="Absolute deviations and cognitive load, choice level rt<13,5s (=median)")
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$mean_rtChoice>medMeanRtChoice,], cluster=TRUE, deviation = "normalized", title="Normalized deviations and cognitive load, choice level, rt>13,5s (=median)")
+
+makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scattes_mpl_scatterCogLoadChoiceLevel_rescaledrCogLoadChoiceLevel$mean_rtChoice>medMeanRtChoice,], cluster=TRUE,deviation = "absolute", title="Absolute deviations and cognitive load, choice level rt>13,5s (=median)")
+makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==0,], cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level rt<13,5s (=median)")
+makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==1,], cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level rt>13,5s (=median)")
+makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==0,], cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level, rt<13,5s (=median)")
+makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==1,], cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level, rt>13,5s (=median)")
+makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==1,], cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level, rt>13,5s (=median)")
 ##
-scatterDeviationsCogLoadNormalizedBelowMedRtChoice <- makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level rt<13,5s (=median)")
-scatterDeviationsCogLoadAbsoluteBelowMedRtChoice <- makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level, rt<13,5s (=median)")
-scatterDeviationsCogLoadNormalizedAboveMedRtChoice <- makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level, rt>13,5s (=median)")
-scatterDeviationsCogLoadAbsoluteAboveMedRtChoice <- makeScatterCogLoad(s_mpl[s_mpl$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level, rt>13,5s (=median)")
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedBelowMedRtChoice.pdf"),
-       plot = scatterDeviationsCogLoadNormalizedBelowMedRtChoice, device = "pdf", width = 12, height = 10)
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteBelowMedRtChoice.pdf"),
-       plot = scatterDeviationsCogLoadAbsoluteBelowMedRtChoice, device = "pdf", width = 12, height = 10)
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedAboveMedRtChoice.pdf"),
-       plot = scatterDeviationsCogLoadNormalizedAboveMedRtChoice, device = "pdf", width = 12, height = 10)
-ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteAboveMedRtChoice.pdf"),
-       plot = scatterDeviationsCogLoadAbsoluteAboveMedRtChoice, device = "pdf", width = 12, height = 10)
+
+#test without outliers
+# subject level
+scatterDeviationsCogLoadNormalizedAboveMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers[s_mpl_rescaled_withoutOutliers$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level rt>13,5s (=median), without outliers")
+scatterDeviationsCogLoadNormalizedAboveMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers[s_mpl_rescaled_withoutOutliers$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level rt<13,5s (=median), without outliers")
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers[s_mpl_rescaled_withoutOutliers$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level rt>13,5s (=median), without outliers")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers[s_mpl_rescaled_withoutOutliers$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level rt<13,5s (=median), without outliers")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadNormalizedSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers, cluster=FALSE,  deviation = "normalized", title="Normalized deviations and cognitive load, subject level, without outliers")
+scatterDeviationsCogLoadNormalizedSubjectLevel
+scatterDeviationsCogLoadAbsoluteSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled_withoutOutliers, cluster=FALSE,  deviation = "absolute", title="Absolute deviations and cognitive load, subject level, without outliers")
+scatterDeviationsCogLoadAbsoluteSubjectLevel
+# choice level
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers[s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers$aboveMedRtChoice==1,],  cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level rt>13,5s (=median), without outliers")
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers[s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers$aboveMedRtChoice==0,],  cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level rt<13,5s (=median), without outliers")
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers[s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers$aboveMedRtChoice==1,],  cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level rt>13,5s (=median), without outliers")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers[s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers$aboveMedRtChoice==0,],  cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level rt<13,5s (=median), without outliers")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel
+scatterDeviationsCogLoadNormalizedChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers, cluster=TRUE,  deviation = "normalized", title="Normalized deviations and cognitive load, choice level, without outliers")
+scatterDeviationsCogLoadNormalizedChoiceLevel
+scatterDeviationsCogLoadAbsoluteChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled_withoutOutliers, cluster=TRUE,  deviation = "absolute", title="Absolute deviations and cognitive load, choice level, without outliers")
+scatterDeviationsCogLoadAbsoluteChoiceLevel
+#
+
+
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level rt<13,5s (=median)")
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==0,],  cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level, rt<13,5s (=median)")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadNormalizedAboveMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level, rt>13,5s (=median)")
+scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled[s_mpl_rescaled$aboveMedRtChoice==1,],  cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level, rt>13,5s (=median)")
+scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceSubjectLevel
+scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$aboveMedRtChoice==0,],  cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level rt<13,5s (=median)")
+scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$aboveMedRtChoice==0,],  cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level, rt<13,5s (=median)")
+scatterDeviationsCogLoadNormalizedAboveMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$aboveMedRtChoice==1,],  cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level, rt>13,5s (=median)")
+scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled[s_mpl_scatterCogLoadChoiceLevel_rescaled$aboveMedRtChoice==1,],  cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level, rt>13,5s (=median)") #
+scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceChoiceLevel
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel.pdf"),
+       plot = scatterDeviationsCogLoadNormalizedBelowMedRtChoiceSubjectLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel.pdf"),
+       plot = scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceSubjectLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedAboveMedRtChoiceSubjectLevel.pdf"),
+       plot = scatterDeviationsCogLoadNormalizedAboveMedRtChoiceSubjectLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceSubjectLevel.pdf"),
+       plot = scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceSubjectLevel, device = "pdf", width = 12, height = 10)
+scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceSubjectLevel
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel.pdf"),
+       plot = scatterDeviationsCogLoadNormalizedBelowMedRtChoiceChoiceLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel.pdf"),
+       plot = scatterDeviationsCogLoadAbsoluteBelowMedRtChoiceChoiceLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadNormalizedAboveMedRtChoiceChoiceLevel.pdf"),
+       plot = scatterDeviationsCogLoadNormalizedAboveMedRtChoiceChoiceLevel, device = "pdf", width = 12, height = 10)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceChoiceLevel.pdf"),
+       plot = scatterDeviationsCogLoadAbsoluteAboveMedRtChoiceChoiceLevel, device = "pdf", width = 12, height = 10)
 
 s_mpl%>%
    filter(aboveMedRtChoice==0)%>%
@@ -3380,11 +3568,52 @@ s_mpl%>%
     n= n()
   )
 
+#are people below medrtChoice less good ?
+tibble::tibble(rt= c("above med RT", "under med RT"),
+              mean_target = c(mean_target_aboveMedRtChoice, mean_target_belowMedRtChoice),
+              mean_source = c(mean_source_aboveMedRtChoice, mean_source_belowMedRtChoice),
+              source_minus_target =c(mean_source_minus_target_aboveMedRtChoice, mean_source_minus_target_belowMedRtChoice), 
+              mean_target_and_source = c(mean_target_and_source_aboveMedRtChoice, mean_target_and_source_belowMedRtChoice),
+              mean_absoluteDeviation = c(mean_absoluteDeviation_aboveMedRtChoice, mean_absoluteDeviation_belowMedRtChoice),
+              mean_normalizedDeviation = c(mean_normalizedDeviation_aboveMedRtChoice, mean_normalizedDeviation_belowMedRtChoice)
+)
+tibble::tibble(rt= c("above med RT", "under med RT"),
+               median_target = c(median_target_aboveMedRtChoice, median_target_belowMedRtChoice),
+               median_source = c(median_source_aboveMedRtChoice, median_source_belowMedRtChoice),
+               median_source_minus_target =c(median_source_minus_target_aboveMedRtChoice, median_source_minus_target_belowMedRtChoice), 
+               median_target_and_source = c(median_target_and_source_aboveMedRtChoice, median_target_and_source_belowMedRtChoice)
+)
+mean_target_and_source_belowMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_overallSpanSpan)
+mean_target_and_source_aboveMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_overallSpanSpan)
+mean_source_minus_target_belowMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source - s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target)
+mean_source_minus_target_aboveMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source - s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target)
+mean_target_aboveMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target) # 0.277590
+mean_target_belowMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target) # 0.2113095
+mean_source_aboveMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source) # 0.5128913
+mean_source_belowMedRtChoice <- mean(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source) # 0.4872535
+mean_absoluteDeviation_belowMedRtChoice <-  mean(c(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$mirrorError, s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$lotteryError))
+mean_absoluteDeviation_aboveMedRtChoice <-  mean(c(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$mirrorError, s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$lotteryError))
+mean_normalizedDeviation_belowMedRtChoice <-  mean(c(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$wmirrorError, s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$wlotteryError))
+mean_normalizedDeviation_aboveMedRtChoice <-  mean(c(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$wmirrorError, s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$wlotteryError))
 
-makeScatterCogLoad(s_mpl, cluster=FALSE, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level")
-makeScatterCogLoad(s_mpl, cluster=FALSE, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level")
-scatterDeviationsCogLoadNormalizedSubjectLevel <- makeScatterCogLoad(s_mpl, deviation = "normalized", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Normalized deviation and cognitive load, subject level")
-scatterDeviationsCogLoadAbsoluteSubjectLevel <- makeScatterCogLoad(s_mpl, deviation = "absolute", span=c("impactCogLoad","accuracy", "rtChoice", "maxSpan"), title="Absolute deviation and cognitive load, subject level")
+
+median_target_and_source_belowMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_overallSpanSpan)
+median_target_and_source_aboveMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_overallSpanSpan)
+median_source_minus_target_belowMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source - s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target)
+median_source_minus_target_aboveMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source - s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target)
+median_target_aboveMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target) # 0.277590
+median_target_belowMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_target) # 0.2113095
+median_source_aboveMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==1 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source) # 0.5128913
+median_source_belowMedRtChoice <- median(s_mpl[s_mpl$aboveMedRtChoice==0 & s_mpl$treatment=="hard",]$accuracy_mean_participant_source) # 0.4872535
+
+summary(lm_robust(wmirrorError ~ mirror_rtChoice, data=s_mpl_rescaled))
+makeScatterCogLoad(s_mpl_rescaled, cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level")
+makeScatterCogLoad(s_mpl_rescaled, cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level")
+scatterDeviationsCogLoadNormalizedSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled, cluster=FALSE, deviation = "normalized", title="Normalized deviation and cognitive load, subject level")
+scatterDeviationsCogLoadAbsoluteSubjectLevel <- makeScatterCogLoad(s_mpl_rescaled, cluster=FALSE, deviation = "absolute", title="Absolute deviation and cognitive load, subject level")
+scatterDeviationsCogLoadNormalizedChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE, deviation = "normalized", title="Normalized deviation and cognitive load, choice level")
+scatterDeviationsCogLoadAbsoluteChoiceLevel <- makeScatterCogLoad(s_mpl_scatterCogLoadChoiceLevel_rescaled, cluster=TRUE, deviation = "absolute", title="Absolute deviation and cognitive load, choice level")
+
 
 
 ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviationsCogLoadAbsoluteChoiceLevel.pdf"),
@@ -3397,6 +3626,15 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterDeviatio
        plot = scatterDeviationsCogLoadAbsoluteSubjectLevel, device = "pdf", width = 12, height = 10)
 
 
+#plot accuracy at target span vs impactCogLoad
+ggplot(data=s_mpl,
+       aes(x=impactCogLoad, y=accuracy_mean_participant_target, fill=treatment) )+
+  geom_point(shape = 21, colour = "black", size = 3, stroke = 0.5, alpha = 0.7)+
+  scale_fill_manual(name = "Treatment", values = c("#00AFBB","#E7B800"), 
+                    labels = c("Easy","Hard"),
+                    na.value = "grey70",
+                    drop = FALSE
+  )
 
 strengthDeviationAndCogLoadTable <- tibble(
   median_split = c("above median", "under median"),
@@ -3450,13 +3688,13 @@ dataForBarPlot <- dfA%>%
   #filter(!is.na(lottery_ev)&!is.na(mirror_ev))%>%
   group_by(isLotteryFirst, participant_id)%>%
   summarise(
-    rtChoice = mean(c(lottery_rtChoice, mirror_rtChoice), na.rm=TRUE),
+    rtChoice = (mean(lottery_rtChoice, na.rm=TRUE) + mean(mirror_rtChoice, na.rm=TRUE))/2, # equal weight on lotteries and mirrors
     treatment = first(treatment),
-    absoluteDeviation=mean(c(abs(mirror_ev - pred), abs(lottery_ev-pred)), na.rm=TRUE), # i've checked it by hand: it works
-    normalizedDeviation=mean(c(multiplier*(mirror_ev -pred), multiplier*(lottery_ev-pred)), na.rm=TRUE), # i've checked it by hand :
+    absoluteDeviation=(mean(abs(mirror_ev - pred), na.rm=TRUE) + mean(abs(lottery_ev-pred), na.rm=TRUE))/2,
+    normalizedDeviation=(mean(multiplier*(mirror_ev -pred), na.rm=TRUE)+ mean(multiplier*(lottery_ev-pred), na.rm=TRUE))/2, 
     aboveMedRtChoice = unique(aboveMedRtChoice)[[1]],
     aboveMedImpactCogLoad = unique(aboveMedImpactCogLoad)[[1]],
-    accuracy = mean(c(mirror_accuracy,lottery_accuracy), na.rm=TRUE),
+    accuracy = (mean(mirror_accuracy, na.rm=TRUE)+mean(lottery_accuracy, na.rm=TRUE))/2,
     , .groups = "drop")%>%
   left_join(final_data_2 %>%
               filter(
@@ -3474,6 +3712,41 @@ dataForBarPlot <- dfA%>%
               rename(participant_id = subject),
             by = "participant_id")
 
+dataForBarPlot_lotteries <- dfA%>%
+  filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
+                         "LS10", "LS25", "LS50", "LS75", "LS90", 
+                         "AS10", "AS15", "GO10", "GO90")) %>% # "A10", "A15"
+  filter(!grepl('50',mplType))%>% # G and L50 are not included because they aren't part of the fourfold pattern
+  #filter(!is.na(lottery_ev)&!is.na(mirror_ev))%>%
+  group_by(isLotteryFirst, participant_id)%>%
+  summarise(
+    rtChoice = mean(mirror_rtChoice, na.rm=TRUE), # equal weight on lotteries and mirrors
+    treatment = first(treatment),
+    absoluteDeviation=mean(abs(mirror_ev-pred), na.rm=TRUE),
+    normalizedDeviation=mean(multiplier*(mirror_ev-pred), na.rm=TRUE), 
+    aboveMedRtChoice = unique(aboveMedRtChoice)[[1]],
+    aboveMedImpactCogLoad = unique(aboveMedImpactCogLoad)[[1]],
+    accuracy = mean(mirror_accuracy, na.rm=TRUE),
+    , .groups = "drop")%>%
+  left_join(final_data_2 %>%
+              filter(
+                block == "spanSpan" & task == "spanTest"
+              ) %>%
+              group_by(subject) %>%
+              summarise(
+                accuracy_mean_participant_source = mean(accuracy[letterType==1], na.rm = TRUE),
+                accuracy_mean_participant_target = mean(accuracy[letterType==2], na.rm = TRUE),
+                .groups = "drop"
+              ) %>%
+              mutate(
+                impactCogLoad = accuracy_mean_participant_source-accuracy_mean_participant_target
+              )%>%
+              rename(participant_id = subject),
+            by = "participant_id")
+
+dataForBarPlotWOutliers <- dataForBarPlot%>%
+  filter(!(impactCogLoad<(-0.1)))
+length(unique(dataForBarPlotWOutliers$participant_id)) # 43
 
 
 
@@ -3618,7 +3891,7 @@ abs_tbl <- s_mpl %>%
   ) %>%
   mutate(
     type = if_else(str_detect(type, "mirror"), "mirror", "lottery"),
-    rtChoice = if_else(type == "mirror", mirror_rtChoice/1000, lottery_rtChoice/1000), # seconds
+    rtChoice = if_else(type == "mirror", mirror_rtChoice, lottery_rtChoice), # seconds
     accuracy = if_else(type == "mirror", mirror_accuracy, lottery_accuracy),
     treatment = factor(treatment),
     treatment = relevel(treatment, ref = "easy")
@@ -3632,7 +3905,7 @@ norm_tbl <- s_mpl %>%
   ) %>%
   mutate(
     type = if_else(str_detect(type, "mirror"), "mirror", "lottery"),
-    rtChoice = if_else(type == "mirror", mirror_rtChoice/1000, lottery_rtChoice/1000), # seconds
+    rtChoice = if_else(type == "mirror", mirror_rtChoice, lottery_rtChoice), # seconds
   ) %>%
   select(participant_id, type, deviation_normalized)
 
@@ -3642,6 +3915,8 @@ dataLm <- abs_tbl %>%
     absoluteDeviation = deviation_absolute,
     normalizedDeviation = deviation_normalized
   )
+dataLmWOutliers <- dataLm%>%filter(!impactCogLoad<(-0.1))
+length(unique(dataLmWOutliers$participant_id)) #43
 
 s_mpl_scatterCogLoadChoiceLevel_toPivot <- s_mpl_scatterCogLoadChoiceLevel %>%
   mutate(trial = row_number())
@@ -3654,7 +3929,7 @@ abs_tbl_choice <- s_mpl_scatterCogLoadChoiceLevel_toPivot %>%
   ) %>%
   mutate(
     type = if_else(str_detect(type, "mirror"), "mirror", "lottery"),
-    rtChoice = if_else(type == "mirror", mirror_rtChoice/1000, lottery_rtChoice/1000), # seconds
+    rtChoice = if_else(type == "mirror", mirror_rtChoice, lottery_rtChoice), # seconds
     accuracy = if_else(type == "mirror", mirror_accuracy, lottery_accuracy),
     treatment = factor(treatment),
     treatment = relevel(treatment, ref = "easy")
@@ -3668,7 +3943,7 @@ norm_tbl_choice <- s_mpl_scatterCogLoadChoiceLevel_toPivot %>%
   ) %>%
   mutate(
     type = if_else(str_detect(type, "mirror"), "mirror", "lottery"),
-    rtChoice = if_else(type == "mirror", mirror_rtChoice/1000, lottery_rtChoice/1000), # seconds
+    rtChoice = if_else(type == "mirror", mirror_rtChoice, lottery_rtChoice), # seconds
   ) %>%
   select(participant_id, type, deviation_normalized, trial)
 
@@ -3680,17 +3955,300 @@ dataLmChoice <- abs_tbl_choice %>%
   )
 head(dataLmChoice$rtChoice)
 
+dataLmChoiceWOutliers <- dataLmChoice%>%filter(!(impactCogLoad<(-0.1)))
+length(unique(dataLmChoiceWOutliers$participant_id)) #43
+length(unique(dataLmChoice$participant_id)) # 45
+
+makeScatterVariables_rt <- function(data, span = c("treatment", "accuracy", "impactCogLoad", "maxSpan"), title = NULL, cluster = FALSE) {
+  # data: dataframe containing rtChoice and the variables in `span`
+  # cluster: if TRUE and participant_id present, use clustered vcov for p-values
+  requireNamespace("lmtest")
+  requireNamespace("sandwich")
+
+  make_panel <- function(df, sp) {
+    if (!sp %in% names(df)) {
+      return(ggplot() + annotate("text", x = 0.5, y = 0.5, label = paste0("Variable '", sp, "' not found"), size = 4) + theme_void())
+    }
+    df <- df %>% filter(!is.na(rtChoice))
+    if (nrow(df) == 0) return(ggplot() + annotate("text", x = 0.5, y = 0.5, label = "No data", size = 4) + theme_void())
+
+    # Categorical -> boxplot (treatment or other factor)
+    if (is.character(df[[sp]]) || is.factor(df[[sp]]) || sp == "treatment") {
+      p <- ggplot(df, aes_string(x = paste0("factor(", sp, ")"), y = "rtChoice", fill = sp)) +
+        geom_boxplot(alpha = 0.25, outlier.shape = NA) +
+        geom_jitter(width = 0.15, height = 0, size = 0.8, aes_string(colour = sp)) +
+        labs(x = sp, y = "rtChoice") +
+        theme_pubr() + theme(legend.position = "none")
+      return(p)
+    }
+
+    # Numeric -> scatter: rtChoice (x) vs sp (y)
+    labs_y<- tibble::tibble()
+    df_num <- df %>% filter(!is.na(.data[[sp]]))
+    p <- ggplot(df_num, aes(x = rtChoice, y = .data[[sp]])) +
+      geom_point(shape = 21, colour = "black", fill = "#2c7fb8", size = 2.4, alpha = 0.8) +
+      geom_smooth(method = "lm", se = FALSE, colour = "red", na.rm = TRUE) +
+      labs(x = "rtChoice", y = paste0(ifelse(sp=="impactCogLoad", "accuracy source minus target", sp))) +
+      theme_pubr() + theme(legend.position = "none")
+
+    # compute lm stats (p-value for slope).
+    label_text <- "nana"
+    if (nrow(df_num) >= 3) {
+      cat("nrow df_num >=3)")
+      fml <- as.formula(paste0(sp, " ~ rtChoice"))
+      lm_mod <- try(lm_robust(fml, data = df_num, clusters=participant_id), silent = FALSE)
+      
+      if(inherits(lm_mod, "try-error")){
+        label_text <- "all: b = NA_real_, se = NA_real_, p = NA_real_"
+        next }
+      else {
+        b_val <- summary(lm_mod)$coeff["rtChoice", "Estimate"]
+        p_val <- summary(lm_mod)$coeff["rtChoice", 'Pr(>|t|)']
+        se_val <- summary(lm_mod)$coeff["rtChoice", "Std. Error"]
+        if(inherits(b_val, "try-error")) b_val <- NA_real_
+        if(inherits(p_val, "try-error")) p_val <- NA_real_
+        if(inherits(se_val, "try-error")) se_val <- NA_real_
+        
+        label_text <- paste0("all: b=", ifelse(is.na(b_val), "NA", formatC(b_val, digits = 3, format = "f")), "  se=", ifelse(is.na(se_val), "NA", formatC(se_val, digits = 3, format = "f")), "  p=", ifelse(is.na(p_val), "NA", formatC(p_val, digits = 3, format = "f")))
+      }
+    }
+    
+    # place annotation at bottom-right of the panel
+    x_pos <- ifelse(length(na.omit(df_num$rtChoice)) > 0, max(df_num$rtChoice, na.rm = TRUE), Inf)
+    y_pos <- ifelse(length(na.omit(df_num[[sp]])) > 0, min(df_num[[sp]], na.rm = TRUE), Inf)
+    p <- p + annotate("text", x = x_pos, y = y_pos, label = label_text, hjust = 1.02, vjust = -0.2, size = 3, colour = "black")
+    return(p)
+  }
+
+  # build panels for pooled / hard / easy for each span variable
+  rows <- lapply(span, function(sp) {
+    p_pool <- make_panel(data, sp)
+    p_hard <- make_panel(dplyr::filter(data, treatment == "hard"), sp)
+    p_easy <- make_panel(dplyr::filter(data, treatment == "easy"), sp)
+    p_pool | p_hard | p_easy
+  })
+
+  # stack rows vertically; each row is a 3-column patchwork
+  combined <- patchwork::wrap_plots(rows, ncol = 1) +
+    plot_annotation(title = title %||% "") &
+    theme(plot.title = element_text(face = "bold", size = 14, hjust = 0.5, vjust=1.5))
+
+  return(combined)
+}
+
+makeScatterVariables_icl <- function(data, span = c("treatment", "accuracy", "rtChoice", "maxSpan"), title = NULL, cluster = FALSE) {
+  # data: dataframe containing rtChoice and the variables in `span`
+  # cluster: if TRUE and participant_id present, use clustered vcov for p-values
+  requireNamespace("lmtest")
+  requireNamespace("sandwich")
+  
+  make_panel <- function(df, sp) {
+    if (!sp %in% names(df)) {
+      return(ggplot() + annotate("text", x = 0.5, y = 0.5, label = paste0("Variable '", sp, "' not found"), size = 4) + theme_void())
+    }
+    df <- df %>% filter(!is.na(rtChoice))
+    if (nrow(df) == 0) return(ggplot() + annotate("text", x = 0.5, y = 0.5, label = "No data", size = 4) + theme_void())
+    
+    # Categorical -> boxplot (treatment or other factor)
+    if (is.character(df[[sp]]) || is.factor(df[[sp]]) || sp == "treatment") {
+      p <- ggplot(df, aes_string(x = paste0("factor(", sp, ")"), y = "impactCogLoad", fill = sp)) +
+        geom_boxplot(alpha = 0.25, outlier.shape = NA) +
+        geom_jitter(width = 0.15, height = 0, size = 0.8, aes_string(colour = sp)) +
+        labs(x = sp, y = "accuracy source minus target") +
+        theme_pubr() + theme(legend.position = "none")
+      return(p)
+    }
+    
+    # Numeric -> scatter: rtChoice (x) vs sp (y)
+    df_num <- df %>% filter(!is.na(.data[[sp]]))
+    p <- ggplot(df_num, aes(x = impactCogLoad, y = .data[[sp]])) +
+      geom_point(shape = 21, colour = "black", fill = "#2c7fb8", size = 2.4, alpha = 0.8) +
+      geom_smooth(method = "lm", se = FALSE, colour = "red", na.rm = TRUE) +
+      labs(x = "accuracy source minus target", y = sp) +
+      theme_pubr() + theme(legend.position = "none")
+    
+    # compute lm stats (R2 and p-value for slope). Use clustered s.e.
+    label_text <- "p=NA b=NA s.e. = NA"
+    if (nrow(df_num) >= 3) {
+      cat("nrow df_num >=3)")
+      fml <- as.formula(paste0(sp, " ~ impactCogLoad"))
+      lm_mod <- try(lm_robust(fml, data = df_num, clusters=participant_id), silent = FALSE)
+      
+      if(inherits(lm_mod, "try-error")){
+        label_text <- "all: b = NA_real_, se = NA_real_, p = NA_real_"
+        next }
+      else {
+        b_val <- summary(lm_mod)$coeff["impactCogLoad", "Estimate"]
+        p_val <- summary(lm_mod)$coeff["impactCogLoad", 'Pr(>|t|)']
+        se_val <- summary(lm_mod)$coeff["impactCogLoad", "Std. Error"]
+        if(inherits(b_val, "try-error")) b_val <- NA_real_
+        if(inherits(p_val, "try-error")) p_val <- NA_real_
+        if(inherits(se_val, "try-error")) se_val <- NA_real_
+        
+        label_text <- paste0("all: b=", ifelse(is.na(b_val), "NA", formatC(b_val, digits = 3, format = "f")), "  se=", ifelse(is.na(se_val), "NA", formatC(se_val, digits = 3, format = "f")), "  p=", ifelse(is.na(p_val), "NA", formatC(p_val, digits = 3, format = "f")))
+      }
+    }
+    
+    # place annotation at bottom-right of the panel
+    x_pos <- ifelse(length(na.omit(df_num$impactCogLoad)) > 0, max(df_num$impactCogLoad, na.rm = TRUE), Inf)
+    y_pos <- ifelse(length(na.omit(df_num[[sp]])) > 0, min(df_num[[sp]], na.rm = TRUE), Inf)
+    p <- p + annotate("text", x = x_pos, y = y_pos, label = label_text, hjust = 1.02, vjust = -0.2, size = 3, colour = "black")
+    return(p)
+  }
+  
+  # build panels for pooled / hard / easy for each span variable
+  rows <- lapply(span, function(sp) {
+    p_pool <- make_panel(data, sp)
+    p_hard <- make_panel(dplyr::filter(data, treatment == "hard"), sp)
+    p_easy <- make_panel(dplyr::filter(data, treatment == "easy"), sp)
+    p_pool | p_hard | p_easy
+  })
+  
+  # stack rows vertically; each row is a 3-column patchwork
+  combined <- patchwork::wrap_plots(rows, ncol = 1) +
+    plot_annotation(title = title %||% "") &
+    theme(plot.title = element_text(face = "bold", size = 14, hjust = 0.5, vjust=1.5))
+  
+  return(combined)
+}
+dataLmRescaled <- dataLm%>%
+  mutate(rtChoice=rtChoice/30000)
+
+scatterVariables_rt <- makeScatterVariables_rt(data=dataLmRescaled, title= "Correlation between variables related to cognitive load and rtChoice")
+scatterVariables_rt
+scatterVariables_icl <- makeScatterVariables_icl(data=dataLmRescaled, title ="Correlation between variables related to cognitive load and cognitive load sensitivity")
+scatterVariables_icl
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterVariables_rt.pdf"),
+       plot = scatterVariables_rt, device = "pdf", width = 12, height = 11)
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterVariables_icl.pdf"),
+       plot = scatterVariables_icl, device = "pdf", width = 12, height = 11)
+
+
+
+
+# all data points
+
+makePpPlot <- function(data, choice_level=TRUE, deviation_type, treatment=NULL){
+  
+  if (is.null(treatment)){data <- data%>%mutate(rowNumber = row_number(), deviation=.data[[deviation_type]])}
+  else if(treatment=="hard"){
+    data <- data%>%filter(treatment=="hard")%>%mutate(rowNumber = row_number(), deviation=.data[[deviation_type]])}
+  else if(treatment=="easy"){
+    data <- data%>%filter(treatment=="easy")%>%mutate(rowNumber = row_number(), deviation=.data[[deviation_type]])}
+  title_text <- if(is.null(treatment)){paste0(deviation_type, " rtChoice and sensitivity to cognitive load")}
+                   else if(treatment=="hard") {paste0(deviation_type, ", rtChoice and sensitivity to cognitive load in treatment cognitive load")}
+                   else if(treatment=="easy") {paste0(deviation_type, ", rtChoice and sensitivity to cognitive load in treatment no cognitive load")}
+                   
+          
+  caption_text <- paste0(
+    "<span style='color:black;'>Black lines: </span>", deviation_type, "<br>",
+    ". <span style='color:Orange;'>orange lines: </span>rtChoice,<br>",
+    "<span style='color:red;'>Red lines: </span>impactCogLoad.<br>",
+    "<span style='color:lightblue;'>Lightblue lines: </span>span mpl accuracy.<br>",
+    if(deviation_type=="normalizedDeviation"){"Deviations and rtChoice rescaled from -5:5 and 0:30 to 0:1"}
+    else{"Deviations and rtChoice rescaled from 0:5 and 0:30 to 0:1."},
+    if(choice_level==FALSE){"<br> Each line is composed of the mirror (left-hand side) and lottery mean points of a participant"}
+  )
+
+ p<- ggplot(aes(x=rowNumber, y=deviation, group = participant_id), data=data)+ #data=dataForPpPlot_choice[dataForPpPlot_choice$treatment=="hard",]
+  geom_line(alpha=1, aes(x=rowNumber, y=rtChoice), colour="orange")+
+  geom_line(alpha=1, aes(x=rowNumber, y=impactCogLoad), colour="red")+
+  geom_line(alpha=1, aes(x=rowNumber, y=accuracy), colour="lightblue")+
+  geom_line(alpha=1, colour="black")+
+  labs(
+    y = "",
+    x = "choices",
+    title = title_text,
+    caption = caption_text
+  ) +  # adjust fonts depending on granularity: larger for choice-level, smaller for subject-level
+  {
+    caption_size <- ifelse(isTRUE(choice_level), 20, 10)
+    base_size    <- ifelse(isTRUE(choice_level), 27, 13)
+    p_tmp <- theme_pubr(base_size = base_size)
+    p_tmp <- p_tmp + theme(
+      legend.position = "none",
+      plot.caption = ggtext::element_markdown(size = caption_size, family = "sans"),
+      plot.title = element_text(size = base_size + 0, face = "bold"),
+      axis.title = element_text(size = base_size - 1),
+      axis.text = element_text(size = base_size - 2)
+    )
+  }
+ return(p)
+}
+ppPlot_p_choi_abs<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "absoluteDeviation", treatment=NULL)
+ppPlot_p_choi_abs
+ppPlot_p_choi_nor<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "normalizedDeviation", treatment=NULL)
+ppPlot_p_choi_nor
+ppPlot_p_subj_abs<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "absoluteDeviation", treatment=NULL)
+ppPlot_p_subj_abs
+ppPlot_p_subj_nor<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "normalizedDeviation", treatment=NULL)
+ppPlot_p_subj_nor
+ppPlot_h_choi_abs<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "absoluteDeviation", treatment="hard")
+ppPlot_h_choi_abs
+ppPlot_e_choi_abs<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "absoluteDeviation", treatment="easy")
+ppPlot_e_choi_abs
+ppPlot_h_subj_abs<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "absoluteDeviation", treatment="hard")
+ppPlot_h_subj_abs
+ppPlot_e_subj_abs<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "absoluteDeviation", treatment="easy")
+ppPlot_e_subj_abs
+ppPlot_h_choi_nor<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "normalizedDeviation", treatment="hard")
+ppPlot_h_choi_nor
+ppPlot_e_choi_nor<-makePpPlot(data=dataForPpPlot_choice, choice_level = TRUE, deviation_type = "normalizedDeviation", treatment="easy")
+ppPlot_e_choi_nor
+ppPlot_h_subj_nor<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "normalizedDeviation", treatment="hard")
+ppPlot_h_subj_nor
+ppPlot_e_subj_nor<-makePpPlot(data=dataForPpPlot, choice_level = FALSE, deviation_type = "normalizedDeviation", treatment="easy")
+ppPlot_e_subj_nor
+
+ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_p_choi_abs.pdf"),
+       plot = ppPlot_p_choi_abs, device = "pdf", width = 18, height = 12)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_p_choi_nor.pdf"), plot = ppPlot_p_choi_nor, device = "pdf", width = 18, height = 12)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_h_choi_abs.pdf"), plot = ppPlot_h_choi_abs, device = "pdf", width = 18, height = 12)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_e_choi_abs.pdf"), plot = ppPlot_e_choi_abs, device = "pdf", width = 18, height = 12)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_h_choi_nor.pdf"), plot = ppPlot_h_choi_nor, device = "pdf", width = 18, height = 12)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_e_choi_nor.pdf"), plot = ppPlot_e_choi_nor, device = "pdf", width = 18, height = 12)
+
+# subject-level (small: 6 x 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_p_subj_abs.pdf"), plot = ppPlot_p_subj_abs, device = "pdf", width = 9, height = 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_p_subj_nor.pdf"), plot = ppPlot_p_subj_nor, device = "pdf", width = 9, height = 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_h_subj_abs.pdf"), plot = ppPlot_h_subj_abs, device = "pdf", width = 9, height = 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_e_subj_abs.pdf"), plot = ppPlot_e_subj_abs, device = "pdf", width = 9, height = 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_h_subj_nor.pdf"), plot = ppPlot_h_subj_nor, device = "pdf", width = 9, height = 5)
+ggsave(file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_e_subj_nor.pdf"), plot = ppPlot_e_subj_nor, device = "pdf", width = 9, height = 5)
+# ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "ppPlot_e_subj_nor.pdf"),
+#        plot = ppPlot_e_subj_nor, device = "pdf", width = 6, height = 5)
+
+
+
+
+
+
+
 # Scatter plot with a regression line
-ggplot(dataLm, aes(x = rtChoice, y = treatment)) +
+scatterRtChoiceTreatment<- ggplot(dataLm, aes(x = rtChoice, y = treatment)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(title = "Correlation between variables",
        x = "rt choice ($)",
        y = "treatment ($)")
-ggplot(dataLm, aes(x = rtChoice, y = accuracy)) +
+scatterRtChoiceAccuracy <- ggplot(dataLm, aes(x = rtChoice, y = accuracy)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(title = "Correlation between variables",
+  labs(title = "Correlation between rtChoice and accuracy",
+       x = "rt choice",
+       y = "accuracy")
+scatterRtChoiceAccuracy
+scatterRtChoiceTreatment_hard<- ggplot(dataLm[dataLm$treatment=="hard",], aes(x = rtChoice, y = accuracy)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Correlation between rtChoice and accuracy",
+       x = "rt choice",
+       y = "accuracy")
+scatterRtChoiceTreatment_hard
+ggplot(dataLm, aes(x = rtChoice, y = impactCogLoad)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Correlation between rtChoice and accuracy",
        x = "rt choice",
        y = "accuracy")
 ggplot(dataLm, aes(x = accuracy, y = impactCogLoad)) +
@@ -3699,6 +4257,10 @@ ggplot(dataLm, aes(x = accuracy, y = impactCogLoad)) +
   labs(title = "Correlation between variables",
        x = "accuracy",
        y = "impactCogLoad")
+
+
+
+
 
 
 fit_hardVsEasy_absolute <- lm_robust(absoluteDeviation ~ rtChoice*treatment*type, 
@@ -3824,15 +4386,23 @@ makeBIC <- function(model) {
 }
 makeAICList<-function(models) {unlist(lapply(models, makeAIC))}
 makeBICList <- function(models) {unlist(lapply(models, makeBIC))}
-makeExtractedList <- function(models) {lapply(models, extract)}
+makeExtractedList <- function(models) {(lapply(models, extract))}
 
-makeModels<-function(treatment_value, type_value=FALSE, level_value, deviation_value){
+
+makeModels<-function(treatment_value, type_value="FALSE", level_value, deviation_value){
   
   if(level_value=="subject" && type_value=="FALSE"){dataToUse <- subset(dataForBarPlot, treatment == treatment_value)}
   else if(level_value=="subject"){dataToUse <- subset(dataLm, treatment == treatment_value)}
   else if(level_value=="choice"){dataToUse <- subset(dataLmChoice, treatment == treatment_value)}
+  
+  dataToUse <- dataToUse %>%
+    mutate(rtChoice = rtChoice/30000) # 1 is 30 seconds, 0 seconds because the TIME limit is 30 seconds ! Hard coded to change if we modify the time limit
 
-  if (type_value == FALSE) {
+  if (type_value == "FALSE" && level_value == "subject") {
+    formula_intercept <- reformulate(
+      c("1"),
+      response=deviation_value
+    )
     formula_rt <- reformulate(
       c("rtChoice"),
       response = deviation_value
@@ -3866,7 +4436,11 @@ makeModels<-function(treatment_value, type_value=FALSE, level_value, deviation_v
       response = deviation_value
     )
   } 
-  else if (type_value == TRUE) {
+  else if (type_value == "TRUE" && level_value == "subject") {
+    formula_intercept <- reformulate(
+      c("type"),
+      response = deviation_value
+    )
     formula_rt <- reformulate(
       c("type", "rtChoice", "type:rtChoice"),
       response = deviation_value
@@ -3907,8 +4481,94 @@ makeModels<-function(treatment_value, type_value=FALSE, level_value, deviation_v
                                        response = deviation_value
     )
   }
+  else if (type_value == "FALSE" && level_value == "choice") {
+    formula_intercept <- reformulate(
+      c("1","(1|participant_id)"),
+      response=deviation_value
+      )
+    formula_rt <- reformulate(
+      c("rtChoice", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_sen <- reformulate(
+      c("impactCogLoad", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_acc <- reformulate(
+      c("accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_sen <- reformulate(
+      c("rtChoice", "impactCogLoad", "rtChoice:impactCogLoad", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_acc <- reformulate(
+      c("rtChoice", "accuracy", "rtChoice:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_sen_acc <- reformulate(
+      c("impactCogLoad", "accuracy", "impactCogLoad:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_sen_acc <- reformulate(
+      c("rtChoice", "impactCogLoad", "accuracy",
+        "rtChoice:impactCogLoad",
+        "rtChoice:accuracy",
+        "impactCogLoad:accuracy",
+        "rtChoice:impactCogLoad:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+  } 
+  else if (type_value == "TRUE" && level_value == "choice") {
+    formula_intercept <- reformulate(
+      c("type","(1|participant_id)"),
+    response = deviation_value
+    )
+    formula_rt <- reformulate(
+      c("type", "rtChoice", "type:rtChoice", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_sen <- reformulate(
+      c("type", "impactCogLoad", "type:impactCogLoad", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_acc <- reformulate(
+      c("type", "accuracy", "type:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_sen <- reformulate(
+      c("type", "rtChoice", "impactCogLoad",
+        "type:rtChoice", "type:impactCogLoad", "rtChoice:impactCogLoad",
+        "type:rtChoice:impactCogLoad", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_acc <- reformulate(
+      c("type", "rtChoice", "accuracy",
+        "type:rtChoice", "type:accuracy", "rtChoice:accuracy",
+        "type:rtChoice:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_sen_acc <- reformulate(
+      c("type", "impactCogLoad", "accuracy",
+        "type:impactCogLoad", "type:accuracy", "impactCogLoad:accuracy",
+        "type:impactCogLoad:accuracy", "(1|participant_id)"),
+      response = deviation_value
+    )
+    formula_rt_sen_acc <- reformulate( c("type", "rtChoice", "impactCogLoad", "accuracy",
+                                         "type:rtChoice", "type:impactCogLoad", "type:accuracy",
+                                         "rtChoice:impactCogLoad", "rtChoice:accuracy", "impactCogLoad:accuracy",
+                                         "type:rtChoice:impactCogLoad",
+                                         "type:rtChoice:accuracy",
+                                         "type:impactCogLoad:accuracy",
+                                         "type:rtChoice:impactCogLoad:accuracy"
+                                         , "(1|participant_id)"),
+                                       response = deviation_value
+    )
+  }
   
   if(level_value=="subject" && type_value=="FALSE"){
+    fit_intercept <- lm_robust(formula_intercept, 
+                        data = dataToUse)
     fit_rt <- lm_robust(formula_rt, 
                         data = dataToUse)
     fit_sen <- lm_robust(formula_sen, 
@@ -3924,13 +4584,16 @@ makeModels<-function(treatment_value, type_value=FALSE, level_value, deviation_v
     fit_rt_sen_acc <- lm_robust(formula_rt_sen_acc, 
                                 data = dataToUse)
   }
-  else{
+  else if (level_value=="subject" && type_value=="TRUE"){
   # model comparison by treatment ---- absolute, subject level
+  fit_intercept <- lm_robust(formula_intercept, 
+                        data = dataToUse,
+                        clusters = participant_id,
+                        se_type = "CR2")
   fit_rt <- lm_robust(formula_rt, 
                       data = dataToUse,
                       clusters = participant_id,
                       se_type = "CR2")
-  
   fit_sen <- lm_robust(formula_sen, 
                        data = dataToUse,
                        clusters = participant_id,
@@ -3956,43 +4619,122 @@ makeModels<-function(treatment_value, type_value=FALSE, level_value, deviation_v
                               clusters = participant_id,
                               se_type = "CR2")
   }
+  else if (level_value=="choice"){
+    fit_intercept <- lmer(formula_intercept,
+                          data=dataToUse)
+    fit_rt <- lmer(formula_rt,
+                   data=dataToUse)
+    fit_sen <- lmer(formula_sen,
+                   data=dataToUse)
+    fit_acc <- lmer(formula_acc,
+                    data=dataToUse)
+    fit_rt_sen <- lmer(formula_rt_sen,
+                    data=dataToUse)
+    fit_rt_acc <- lmer(formula_rt_acc,
+                       data=dataToUse)
+    fit_sen_acc <- lmer(formula_sen_acc,
+                       data=dataToUse)
+    fit_rt_sen_acc <- lmer(formula_rt_sen_acc,
+                        data=dataToUse)
+  }
   
-  models_abs <- list(fit_rt, fit_sen, fit_acc, fit_rt_sen, fit_rt_acc, fit_sen_acc, fit_rt_sen_acc)
+  models_abs <- list(fit_intercept, fit_rt, fit_sen, fit_acc, fit_rt_sen, fit_rt_acc, fit_sen_acc, fit_rt_sen_acc)
   
-  models_abs_extracted <- makeExtractedList(models_abs)
+  #models_abs <- makeExtractedList(models_abs)
+  
+  
+  if (level_value=="subject"){
   AICList <- makeAICList(models_abs)
   BICList <- makeBICList(models_abs)
+  }
+  else if(level_value=="choice"){
+    AICList <- unlist(lapply(models_abs, AIC))
+    BICList <- unlist(lapply(models_abs, BIC))
+  }
   
-  texreg(models_abs_extracted,
+  texreg(models_abs,
+         include.ci=FALSE,
+         ci.force=FALSE,
+         naive=TRUE,
+         #override.se = lapply(models_abs, function(m) m$std.error),
+         #override.pvalues = lapply(models_abs, function(m) m$p.value),
          stars = c(0.001, 0.01, 0.05, 0.1),
          symbol = "\\circ",
-         custom.gof.rows=list("AIC"=AICList, "BIC"= BICList),
-         custom.note = if(level_value=="subject" && type_value=="FALSE"){"%stars. Robust standard errors clustered at the participant level (se type : HC2)."}
-           else{"%stars. Robust standard errors clustered at the participant level (se type : CR2)."},
-         caption = paste0("Treatment: ", treatment_value, ". Mirror and lotteries separated: ", type_value, ". Level: ", level_value, ". Deviations: ", deviation_value)) 
+         custom.gof.rows=
+           if(level_value=="subject"){list("AIC"=AICList, "BIC"= BICList)},
+         custom.note = if(level_value=="subject" && type_value=="FALSE"){"%stars Robust standard errors clustered at the participant level (se type : HC2)."}
+           else if(level_value=="subject" && type_value=="TRUE"){"%stars Robust standard errors clustered at the participant level (se type : CR2)."}
+          else if(level_value=="choice"){"%stars Mixed model with random intercept at the participant level. t-tests use Satterthwaite's method"},
+         caption = paste0("Treatment: ", treatment_value, ". Mirror and lotteries separated: ", type_value, ". Level: ", level_value, ". Deviations: ", deviation_value),
+         )
 }
 
 
-makeModels(treatment_value="hard", type_value="FALSE", level_value = "subject", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="hard", type_value="TRUE", level_value = "subject", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="hard", type_value="FALSE", level_value = "choice", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="hard", type_value="FALSE", level_value = "subject", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="hard", type_value="FALSE", level_value = "choice", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="hard", type_value="FALSE", level_value = "subject", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="hard", type_value="TRUE", level_value = "choice", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="hard", type_value="TRUE", level_value = "choice", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="hard", type_value="TRUE", level_value = "subject", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="hard", level_value = "subject", type_value="FALSE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="hard", level_value = "subject", type_value="FALSE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="hard", level_value = "subject", type_value="TRUE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="hard", level_value = "subject", type_value="TRUE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="hard", level_value = "choice", type_value="FALSE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="hard", level_value = "choice", type_value="FALSE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="hard", level_value = "choice", type_value="TRUE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="hard", level_value = "choice", type_value="TRUE", deviation_value = "normalizedDeviation")
+
+makeModels(treatment_value="easy", level_value = "subject", type_value="FALSE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="easy", level_value = "subject", type_value="FALSE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="easy", level_value = "subject", type_value="TRUE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="easy", level_value = "subject", type_value="TRUE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="easy", level_value = "choice", type_value="FALSE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="easy", level_value = "choice", type_value="FALSE", deviation_value = "normalizedDeviation")
+makeModels(treatment_value="easy", level_value = "choice", type_value="TRUE", deviation_value = "absoluteDeviation")
+makeModels(treatment_value="easy", level_value = "choice", type_value="TRUE", deviation_value = "normalizedDeviation")
+
+
+model_to_print<-lm_robust(absoluteDeviation ~ rtChoice*impactCogLoad, data=dataForBarPlot[dataForBarPlot$treatment=="hard",])
+extract(model_to_print)    
+texreg(extract(model_to_print),       include.ci=FALSE,)
+texreg(model_to_print,       include.ci=FALSE,)
+texreg(lm_robust(absoluteDeviation ~ rtChoice*impactCogLoad, data=dataForBarPlot[dataForBarPlot$treatment=="hard",]), 
+       include.ci=FALSE,
+       stars = c(0.001, 0.01, 0.05, 0.1),
+       custom.note = {"%stars. Robust standard errors clustered at the participant level (se type : HC2)."})
+summary(lm_robust(absoluteDeviation ~ rtChoice*impactCogLoad, data=dataForBarPlot[dataForBarPlot$treatment=="hard",]%>%mutate(rtChoice=rtChoice/30000)))
 
 
 
-makeModels(treatment_value="easy", type_value="FALSE", level_value = "subject", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="easy", type_value="TRUE", level_value = "subject", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="easy", type_value="FALSE", level_value = "choice", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="easy", type_value="FALSE", level_value = "subject", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="easy", type_value="FALSE", level_value = "choice", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="easy", type_value="TRUE", level_value = "choice", deviation_value = "absoluteDeviation")
-makeModels(treatment_value="easy", type_value="TRUE", level_value = "choice", deviation_value = "normalizedDeviation")
-makeModels(treatment_value="easy", type_value="TRUE", level_value = "subject", deviation_value = "normalizedDeviation")
+# make the models for the slides for Oprea:
+# impactCogLoad only + impactCogLoad*rtChoice
+# say that to test better cognitive laod manipulation we are going to control the response time, because there is an
+# interaction effect
+# with a hat with "normalized deviaiton
+dataForBarPlot_rescaled <- dataForBarPlot%>%
+  mutate(rtChoice = rtChoice/30000)
+
+model1_ppt <- lm_robust(
+  normalizedDeviation ~ impactCogLoad, 
+  data = dataForBarPlot_rescaled[dataForBarPlot_rescaled$treatment=="hard",], clusters = participant_id
+)
+model2_ppt <- lm_robust(
+  normalizedDeviation ~ rtChoice*impactCogLoad, 
+  data = dataForBarPlot_rescaled[dataForBarPlot_rescaled$treatment=="hard",], clusters = participant_id
+)
+summary(model1_ppt)
+AICList_ppt <- list(round(makeAIC(model1_ppt), 2), round(makeAIC(model2_ppt), 2))
+BICList_ppt <- list(round(makeBIC(model1_ppt), 2), round(makeBIC(model2_ppt), 2))
+
+texreg(list(model1_ppt, model2_ppt),
+       include.ci=FALSE,
+       ci.force=FALSE,
+       naive=TRUE,
+       #override.se = lapply(models_abs, function(m) m$std.error),
+       #override.pvalues = lapply(models_abs, function(m) m$p.value),
+       stars = c(0.001, 0.01, 0.05, 0.1),
+       symbol = "\\circ",
+       custom.header= list("DV = normalized deviations" =1:2),
+       custom.gof.rows= list("AIC"=AICList_ppt, "BIC"= BICList_ppt),
+       custom.coef.map = list( "impactCogLoad" = "sensitivity to cognitive load", "rtChoice"=NA, "rtChoice:impactCogLoad"= "rtChoice : sensitivity to cognitive load"),
+       custom.note = "%stars Robust standard errors clustered at the participant level (se type : HC2)."
+)
+
 
 
 
@@ -4017,6 +4759,8 @@ make_adjRsquared(fit_test)
 summary(fit_test)$r.squared
 summary(fit_test)
 
+
+lm_robust(absoluteDeviation ~ rtChoice*impactCogLoad, data=dataForBarPlot)
 
 # testing the main effect of cognitive load sensitivity (no interaction)
 
@@ -4052,8 +4796,6 @@ cor(dataLm$impactCogLoad, dataLm$rtChoice)
 cor(dataLm$impactCogLoad, dataLm$accuracy)
 
 
-
-
 # comparing linear, fixed effects and mixed effects models
 fit_hard_absolute_lm_robust <- lm_robust(absoluteDeviation ~ rtChoice*impactCogLoad, 
                                          data= dataLmChoice[dataLmChoice$treatment=="hard",],
@@ -4068,31 +4810,142 @@ coef_test(fit_hard_absolute, vcov="CR2", test = "Satterthwaite", cluster= dataLm
 
 
 fit_hard_absolute_FE <- feols(
-  absoluteDeviation ~ rtChoice * impactCogLoad | participant_id,
+  normalizedDeviation ~ rtChoice * accuracy | participant_id,
+  data = dataLmChoiceWOutliers[dataLmChoiceWOutliers$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_absolute_FE)
+BIC(fit_hard_absolute_FE) # 1751 # without outliers : 1605.24
+AIC(fit_hard_absolute_FE) # 1646.727 # without outliers : 1510.06
+
+fit_hard_absolute_FE_testRtCHoice <- feols(
+  normalizedDeviation ~ rtChoice | participant_id,
+  data = dataLmChoiceWOutliers[dataLmChoiceWOutliers$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_absolute_FE_testRtCHoice)
+BIC(fit_hard_absolute_FE_testRtCHoice) # 1744 # without outliers : 1596.355
+AIC(fit_hard_absolute_FE_testRtCHoice) # 1647.553 # without outliers : 1509.44
+
+fit_hard_normalized_FE_testMirrorRt <- feols(
+  normalizedDeviation ~ rtChoice*type | participant_id,
+  data = dataLmChoiceWOutliers[dataLmChoiceWOutliers$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_normalized_FE_testMirrorRt)
+BIC(fit_hard_normalized_FE_testMirrorRt) # 1743.869 #without outliers 1596.266
+AIC(fit_hard_normalized_FE_testMirrorRt) # 1638.76 # without outliers  # 1501.45
+
+fit_hard_normalized_FE_testMirrorRtAcc <- feols(
+  normalizedDeviation ~ rtChoice*type*accuracy | participant_id,
+  data = dataLmChoiceWOutliers[dataLmChoiceWOutliers$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_normalized_FE_testMirrorRtAcc)
+BIC(fit_hard_normalized_FE_testMirrorRtAcc) # 1762.174 # without outliers: 1616.39
+AIC(fit_hard_normalized_FE_testMirrorRtAcc) # 1640.895 # without outliers: 1505
+
+fit_hard_absolute_FE_testMirrorRtAcc <- feols(
+  absoluteDeviation ~ rtChoice*type*accuracy | participant_id,
   data = dataLmChoice[dataLmChoice$treatment == "hard", ],
   cluster = ~ participant_id
 )
+summary(fit_hard_absolute_FE_testMirrorRtAcc)
+BIC(fit_hard_absolute_FE_testMirrorRtAcc) # 1311.453
+AIC(fit_hard_absolute_FE_testMirrorRtAcc) # 1191.41
+
+fit_hard_absolute_FE_testMirrorRt <- feols(
+  absoluteDeviation ~ rtChoice*type | participant_id,
+  data = dataLmChoice[dataLmChoice$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_absolute_FE_testMirrorRt)
+BIC(fit_hard_absolute_FE_testMirrorRt) # 1289.199
+AIC(fit_hard_absolute_FE_testMirrorRt) # 1185.162
+
+fit_hard_absolute_FE_testRt <- feols(
+  absoluteDeviation ~ rtChoice | participant_id,
+  data = dataLmChoice[dataLmChoice$treatment == "hard", ],
+  cluster = ~ participant_id
+)
+summary(fit_hard_absolute_FE_testRt)
+BIC(fit_hard_absolute_FE_testRt) # 1287.768
+AIC(fit_hard_absolute_FE_testRt) # 1191.735
+
+
+formula_test_lmer <- reformulate(
+  c("1", "(1|participant_id)"),
+  response = "absoluteDeviation"
+)
+summary(lmer(formula_test_lmer, data=dataLmChoice[dataLmChoice$treatment=="hard",]))
+AIC(lmer(formula_test_lmer, data=dataLmChoice[dataLmChoice$treatment=="hard",]))
+makeAIC(lmer(formula_test_lmer, data=dataLmChoice[dataLmChoice$treatment=="hard",]))
 fit_hard_absolute_FE # cannot estimate impactCogLoad as it is a between participant variable
 
-fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad + (1|participant_id), data=dataLmChoice[dataLmChoice$treatment=="hard",]) # random intercept only 
+
+#look at the distribution of normalizedDeviation
+dataLmChoice$normalizedDeviation
+print(dataLmChoice %>%
+        mutate(normalizedDeviation = round(normalizedDeviation, 1)) %>%
+        group_by(normalizedDeviation) %>%
+        summarise(n_obs = n()),
+  n=113)
+view(dataLmChoice%>%
+       #select(participant_id, mplType, type, rtChoice, trial)
+       filter(normalizedDeviation==(-1.5)))
+
+
+dataLmChoiceRescaled_WOutliers <- dataLmChoice%>%
+  mutate(rtChoice=rtChoice/30000)#%>%
+  filter(!impactCogLoad<(-0.1))
+length(unique(dataLmChoiceRescaled_WOutliers$participant_id))
+  
+
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad + (1|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
 summary(fit_hard_absolute_RE)
-fit_hard_normalized_RE <- lmer(normalizedDeviation ~ rtChoice*impactCogLoad + (1|participant_id),data=dataLmChoice[dataLmChoice$treatment=="hard",]) #  random intercept only 
+fit_hard_absolute_RE_Rt <- lmer(absoluteDeviation ~ rtChoice + (1|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE_Rt)
+makeAIC(fit_hard_absolute_RE)
+texreg(fit_hard_absolute_RE)
+fit_hard_normalized_RE <- lmer(normalizedDeviation ~ rtChoice*impactCogLoad + (1|participant_id),data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) #  random intercept only 
 summary(fit_hard_normalized_RE)
-fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*accuracy + (1|participant_id), data=dataLmChoice[dataLmChoice$treatment=="hard",]) # random intercept only 
+fit_hard_normalized_RE_Rt <- lmer(normalizedDeviation ~ rtChoice + (1|participant_id),data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) #  random intercept only 
+summary(fit_hard_normalized_RE_Rt)
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*accuracy + (1|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
 summary(fit_hard_absolute_RE)
-fit_hard_normalized_RE <- lmer(normalizedDeviation ~ rtChoice*accuracy + (1|participant_id),data=dataLmChoice[dataLmChoice$treatment=="hard",]) #  random intercept only 
+
+fit_hard_normalized_RE <- lmer(normalizedDeviation ~ rtChoice*accuracy + (1|participant_id),data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) #  random intercept only 
 summary(fit_hard_normalized_RE)
 
-fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice + (1 + rtChoice|participant_id), data=dataLmChoice) # random intercept only 
-summary(fit_hard_absolute_RE)
-fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad*type + (1 + type|participant_id), data=dataLmChoice) # random intercept only 
-summary(fit_hard_absolute_RE)
-fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice+impactCogLoad + (1 + rtChoice|participant_id), data=dataLmChoice) # random intercept only 
-summary(fit_hard_absolute_RE)
-install.packages("lmerTest")
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*accuracy + (1 + rtChoice + accuracy|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE) # not singular
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad*type + (1 + type|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE) # not singular
 
-
-fit_hard_maxSpan <- lm_robust(absoluteDeviation~rtChoice*maxSpan*accuracy, data=dataLmChoice[dataLmChoice$treatment=="hard",] )
+fit_hard_absolute_RE <- lmer(normalizedDeviation ~ rtChoice*impactCogLoad + (1|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE) # not singular
+AIC(fit_hard_absolute_RE)
+dataLmChoiceRescaledCenteredRt <- dataLmChoiceRescaled %>%
+  group_by(participant_id) %>%
+  mutate(
+    rtChoice_c = rtChoice - mean(rtChoice, na.rm = TRUE)
+  ) %>%
+  ungroup()
+fit_hard_absolute_RE <- lmer(
+  normalizedDeviation ~ rtChoice_c + (1 + rtChoice_c|participant_id), 
+  data=dataLmChoiceRescaledCenteredRt[dataLmChoiceRescaledCenteredRt$treatment=="hard",])
+summary(fit_hard_absolute_RE) # singular
+fit_hard_absolute_RE_nc <- lmer(
+  normalizedDeviation ~ rtChoice_c +
+    (1 | participant_id) + (0 + rtChoice_c | participant_id),
+  data = dataLmChoiceRescaledCenteredRt[
+    dataLmChoiceRescaledCenteredRt$treatment == "hard", ]
+)
+AIC(fit_hard_absolute_RE)
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad*type + (1 + rtChoice|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE) # singular
+fit_hard_absolute_RE <- lmer(absoluteDeviation ~ rtChoice*impactCogLoad*accuracy*type + (1 + rtChoice|participant_id), data=dataLmChoiceRescaled[dataLmChoiceRescaled$treatment=="hard",]) # random intercept only 
+summary(fit_hard_absolute_RE) # not singular
 
 
 summary(fit_hard_test)
@@ -4119,7 +4972,7 @@ summary(fit_hard_test)
 
 # Look at the rts from Oprea
 
-dataOprea <- read.csv("/Users/domitilleprevost/Documents/Master Eco-psycho/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/replication_official_oprea/Data/DATA.csv")
+dataOprea <- read.csv("/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/replication_official_oprea/Data/DATA.csv")
 rts <- dataOprea %>%
   select(time_mirror, time_lottery, ID, treatment) %>%
   filter(treatment == "main")%>%

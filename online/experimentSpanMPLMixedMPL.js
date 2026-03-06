@@ -1342,12 +1342,21 @@ const mpl_trial = {
     // expose on trial object so on_finish can also read it if needed
     this._mpl_num_rows = numRows;
 
-    // Disable the submit button initially
+    // Get the submit button
     const submitButton = document.querySelector('input[type="submit"]');
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.style.opacity = '0.5';
-      submitButton.style.cursor = 'not-allowed';
+    
+    // For span_mpl blocks: hide the button entirely (participants cannot submit early, trial lasts exactly 15s)
+    // For other blocks (training, examples): disable until selection is made
+    if (block_type === "span_mpl") {
+      if (submitButton) {
+        submitButton.style.display = 'none';
+      }
+    } else {
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.5';
+        submitButton.style.cursor = 'not-allowed';
+      }
     }
 
     let hasSelections = false;
@@ -1459,7 +1468,7 @@ const mpl_trial = {
       countdownContainer.innerText = `${language.timerText} ${formatSeconds(remaining)}`;
     }, 250);
 
-    // timeout to auto-submit when time is up
+    // timeout to auto-submit when time is up (fixed duration, no early submit)
     const timeoutId = setTimeout(() => {
       // add hidden input to mark that this was a timeout
       const form = document.querySelector('form') || document.querySelector('.jspsych-survey-form');
@@ -1470,39 +1479,24 @@ const mpl_trial = {
         hidden.value = '1';
         form.appendChild(hidden);
       }
-      // enable and click submit if possible
+      // clear the interval timer
+      clearInterval(intervalId);
+      // remove countdown element
+      const countdownEl = document.getElementById('countdown');
+      if (countdownEl && countdownEl.parentNode) countdownEl.parentNode.removeChild(countdownEl);
+      // show, enable and click submit button to proceed
       if (submitButton) {
+        submitButton.style.display = '';
         submitButton.disabled = false;
         submitButton.style.opacity = '1';
         submitButton.style.cursor = 'pointer';
         submitButton.click();
-        return;
       }
-    //   // fallback: finish trial forcibly
-    //   try { jsPsych.finishTrial({ timed_out: true }); } catch(e) { /* ignore */ }
     }, mplTimeLimit);
 
-    // store timers so we can clear them later (on_finish)
+    // store timers so we can clear them in on_finish if needed
     window.mplTimers = window.mplTimers || {};
     window.mplTimers[subjectId] = { timeoutId: timeoutId, intervalId: intervalId, elementId: 'countdown' };
-
-    // Clear timers if user submits early (submit button click)
-    if (submitButton) {
-      // use capture so we clear before the form is submitted
-      submitButton.addEventListener('click', function handler(e) {
-        const t = window.mplTimers && window.mplTimers[subjectId];
-        if (t) {
-          clearTimeout(t.timeoutId);
-          clearInterval(t.intervalId);
-          // remove countdown element
-          const el = document.getElementById(t.elementId);
-          if (el && el.parentNode) el.parentNode.removeChild(el);
-          delete window.mplTimers[subjectId];
-        }
-        // remove this handler to avoid double work
-        submitButton.removeEventListener('click', handler, true);
-      }, true);
-    }
     }
 
 
@@ -1572,12 +1566,13 @@ const mpl_trial = {
         }
     }
     // Add condition for time out with no choices
-    if (timedOut == true & choicesArray.every(el => el === undefined)){
+    if (timedOut === true && choicesArray.every(el => el === undefined)){
         switchRow1 = -2;
         switchRow2 = -2;
         switchRow1Choice = "no_choice_due_to_time_limit";
         switchRow2Choice = "no_choice_due_to_time_limit";
-        choicesArray.every(el => el === "no_choice_due_to_time_limit");
+        // Mark all choices as no_choice_due_to_time_limit
+        choicesArray = choicesArray.map(() => "no_choice_due_to_time_limit");
     }
     
 
@@ -1619,6 +1614,7 @@ const mpl_trial = {
         console.log("data.position is ", data.position)
     };
     let exampleLine = getRandomInt(0, lengthSurePayments);
+    console.log("data.mplType is ", data.mplType, " and data.choices are ", data.choices, " and data.statusMPL is ", data.statusMPL)
     console.log("calculateMPLPayment with line ", exampleLine, " is", calculateMPLPayment(data.mplType, exampleLine, data.choices, data.statusMPL));
   }
 };
@@ -3059,8 +3055,8 @@ const timelineUncertainty = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( /*{type: "fullscreen", fullscreen_mode: true},*/ consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
+timeline.push( /*{type: "fullscreen", fullscreen_mode: true},  consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset,*/ experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

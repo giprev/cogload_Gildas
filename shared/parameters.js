@@ -17,7 +17,7 @@ const fds_post_trial_gap = 250; //250ms
 
 const practice_duration = 30000; //= 30000; // duration of practice flanker
 const main_duration = 15000; //= 15000; // duration of main task flanker
-const mplTimeLimit = 30000; // time limit for the MPL task in ms
+const mplTimeLimit = 15000; // time limit for the MPL task in ms (fixed 15s, no early submit)
 const betweenSpanTimeInterval = 4500; // time interval between blue (source) and red (target) letters in ms (add 500 with post trial)
 const setup_fds_trial_duration = 4500// 4500 // time interval between the answers to the span and the beginning of a new one in spanMPL + 500ms post_trial
 let total_flanker = 0;
