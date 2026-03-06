@@ -495,7 +495,11 @@ function generateShuffledArray() {
 function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
     console.log("Beginning of calculateMPLPayment with parameters: mplType is", mplType, "rowNumber is", rowNumber, "choices are", choices, "chosenStatus is", chosenStatus, "position is", mplPositionDict[mplType]);
     if(choices.every(choice => choice === undefined)) {
-        console.log("No choices due to time limit exceeded.");
+        console.log("Undefined choices : error ? choices are", choices);
+        return undefined; // or handle the error as needed
+    }
+    else if(choices.every(choice => choice === "no_choice_due_to_time_limit")) {
+        console.log("no choices made within time limit : MPL payment is 0");
         return 0; // or handle the error as needed
     }
         else {
