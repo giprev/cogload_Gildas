@@ -1275,7 +1275,7 @@ if (Math.random() < 0.5){
     mpl_html_array_lottery.splice(mpl_html_array_lottery.length, 0, mplGenerator(10, "G", "lottery"), mplGenerator(90, "G", "lottery"));}
 else {
     mpl_html_array_lottery.splice(mpl_html_array_lottery.length, 0, mplGenerator(90, "G", "lottery"), mplGenerator(10, "G", "lottery"));}
-    console.log("is mpl_html_array_lottery after adding two examples at start", mpl_html_array_lottery);
+    // console.log("is mpl_html_array_lottery after adding two examples at start", mpl_html_array_lottery);
 
 mpl_html_array_mirror = numbersArray_mirror.map(x => {
     const tableType = list_mpl_tables[x];
@@ -1289,7 +1289,7 @@ if (Math.random() < 0.5){
     mpl_html_array_mirror.splice(mpl_html_array_mirror.length, 0, mplGenerator(10, "G", "mirror"), mplGenerator(90, "G", "mirror"));}
 else {
     mpl_html_array_mirror.splice(mpl_html_array_mirror.length, 0, mplGenerator(90, "G", "mirror"), mplGenerator(10, "G", "mirror"));}
-    console.log("is mpl_html_array_mirror after adding two examples at start", mpl_html_array_mirror);
+    //console.log("is mpl_html_array_mirror after adding two examples at start", mpl_html_array_mirror);
     
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
 // console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
@@ -2675,6 +2675,106 @@ const cognitiveUncertaintyMirror = {
         }
     }
 };
+
+const trialSlidersMotivation = {
+    type: 'survey-html-form',
+    html: function() {
+        // Example parameters - adjust as needed
+        const nSliders = 50;
+        const startValue = 0;
+        const horizontalPosition = "random"; // "centered" or "random"
+        const verticalSpacing = "30px";
+        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'trialSlidersMotivation');
+    },
+    button_label: language.button.next,
+    on_load: function(){
+        var container = document.getElementById('sliders-motivation-container');
+        if (!container)
+            { console.log("no sliders-motivation-container")
+                return};
+        
+        var sliders = container.querySelectorAll('input[type="range"]');
+        
+        sliders.forEach(function(slider) {
+            var isDragging = false;
+            var hasMoved = false;
+            var startX = 0;
+            var originalValue = parseInt(slider.dataset.startValue);
+            
+            // On mousedown, store start position and current value
+            slider.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                hasMoved = false;
+                startX = e.clientX;
+                slider.dataset.valueAtMousedown = slider.value;
+            });
+            
+            slider.addEventListener('touchstart', function(e) {
+                isDragging = true;
+                hasMoved = false;
+                startX = e.touches[0].clientX;
+                slider.dataset.valueAtMousedown = slider.value;
+            });
+            
+            // On mousemove, check if actually dragging (moved more than 5px)
+            slider.addEventListener('mousemove', function(e) {
+                if (isDragging && Math.abs(e.clientX - startX) > 5) {
+                    hasMoved = true;
+                    slider.dataset.dragged = 'true';
+                }
+            });
+            
+            slider.addEventListener('touchmove', function(e) {
+                if (isDragging && Math.abs(e.touches[0].clientX - startX) > 5) {
+                    hasMoved = true;
+                    slider.dataset.dragged = 'true';
+                }
+                        });
+            
+            // On mouseup, if no drag occurred, reset to previous value
+            slider.addEventListener('mouseup', function(e) {
+                if (!hasMoved && isDragging) {
+                    slider.value = slider.dataset.valueAtMousedown || originalValue;
+                }
+                isDragging = false;
+            });
+            
+            slider.addEventListener('touchend', function(e) {
+                if (!hasMoved && isDragging) {
+                    slider.value = slider.dataset.valueAtMousedown || originalValue;
+                }
+                isDragging = false;
+            });
+            
+            // Prevent clicks on track from changing value
+            slider.addEventListener('click', function(e) {
+                if (slider.dataset.dragged !== 'true') {
+                    e.preventDefault();
+                    slider.value = originalValue;
+                }
+            });
+        });
+    },
+    on_finish: function(data) {
+        processSlidersData(data, 'trialSlidersMotivation');
+    }
+};
+const instructionsSlidersMotivation = {
+    ...trialSlidersMotivation,
+    html: function() {
+        // Example parameters - adjust as needed
+        const nSliders = 3;
+        const startValue = 0;
+        const horizontalPosition = "random"; // "centered" or "random"
+        const verticalSpacing = "30px";
+        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'instructionsSlidersMotivation');
+    },
+    button_label: language.button.next,
+    on_finish: function(data) {
+        processSlidersData(data, 'instructionsSlidersMotivation');
+    }
+};
+
 const cognitiveUncertaintyLottery = {
     type: 'survey-html-form',
     html: function(){
@@ -3006,7 +3106,6 @@ const timeline_spanMPL_mirror = {
     timeline_variables: mpl_html_array_mirror,
 };
 
-
 if (Math.random() < 0.5) {
     experimentBlocks_span_MPL = [timeline_spanMPL_lottery, timeline_spanMPL_mirror /*, timeline_spanMPL_easy_lottery, timeline_spanMPL_easy_mirror*/];
     block_order_indicator_span_MPL = "lottery_first";
@@ -3023,6 +3122,9 @@ if (Math.random() < 0.5) {
 
 const experiment_span_MPL = {
     timeline: experimentBlocks_span_MPL,
+}
+const timelineSlidersMotivation = {
+    timeline: [instructionsSlidersMotivation, trialSlidersMotivation]
 }
 
 const uncertaintyTrials = [cognitiveUncertaintyMirror, cognitiveUncertaintyLottery];
@@ -3055,8 +3157,8 @@ const timelineUncertainty = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( /*{type: "fullscreen", fullscreen_mode: true},  consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset,*/ experiment_span_MPL, timelineUncertainty, incentives_span_mpl);
+timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, */ timelineSlidersMotivation, timelineUncertainty, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/

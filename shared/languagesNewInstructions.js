@@ -1130,6 +1130,9 @@ const fr = {
         currentAnswer: "Réponse actuelle",
         clear: "Effacer",
     },
+    slidersMotiv : {
+        instructions : "",
+    },
     choicesBefore: "Ce sont les choix que vous avez faits avant que la règle de paiement n'ait changé.",
     choicesAfter: "Ce sont les choix que vous avez faits après que la règle de paiement ait changé.",
     sliderTitle: "Questions finales sur vos choix",
