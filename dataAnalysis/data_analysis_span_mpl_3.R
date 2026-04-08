@@ -206,6 +206,77 @@ createSequenceArray <- function(y, X, position) {
   return(array)
 }
 
+make_EGEmpirical <- function(mplType, switch_row1, switch_row2, switchRow1Choice, switchRow2Choice, position){
+  y_value <- as.numeric(gsub("[^0-9]", "", mplType))
+  X_value <- case_when(
+    str_starts(mplType, "G") ~ "G",
+    str_starts(mplType, "L") ~ "L",
+    str_starts(mplType, "A") ~ "A",
+    TRUE ~ NA_character_
+  )
+  endowment <- case_when(
+    X_value == "G" ~ 5,
+    X_value == "L" ~ 30,
+    (X_value == "A" & y_value == 10) ~ 15,
+    (X_value == "A" & y_value == 15) ~ 20
+  )
+  if (!(mplType == "GO10") & !(mplType == "GO90")) {
+    surePayments <- createSequenceArray(y_value, X_value, position) # CAUTION if no switch sr1 = sr2 = -1 !!! Then need to see if choices only lotteries or only mirror
+  }
+  else if ((mplType == "GO10") | (mplType == "GO90")){
+    surePayments <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
+  }
+  spLength <- length(surePayments)
+  if (switch_row1 == -1 & switch_row2 == -1) {
+    if(X_value=="G" | X_value=="L"){
+      if(switchRow1Choice == "lottery"){
+        if(X_value=="G"){EG <- 25*y_value/100 + endowment}
+        else if(X_value=="L"){EG <- -25*y_value/100 + endowment}
+      }
+      else if(switchRow1Choice == "sure"){
+        EG <-(surePayments[1] + surePayments[spLength])/2 + endowment
+      }
+      else { cat("Error in calculating EGEmpirical when no switch and X is G or L\n")}
+    }
+    else if(X_value=="A"){
+      if(switchRow1Choice == "lottery"){
+        EG <- ((((surePayments[1]-y_value)/2 + (surePayments[spLength]-y_value)/2))/2) + endowment
+      }
+      else if(switchRow1Choice=="sure"){
+        EG <- 0 + endowment
+      }
+      else { cat("Error in calculating EGEmpirical when no switch and X is A\n")}
+    }
+  }
+  else if (switch_row1==-2 & switch_row2==-2){
+    EG <- 0
+  }
+  else if (!(switch_row1==-1 & switch_row2==-1) & !(switch_row1==-2 & switch_row2==-2)){
+    if(X_value=="G"){
+      EG <- (25*y_value/100)*((switch_row1+1)/spLength) + ((surePayments[switch_row2+1]+surePayments[spLength])/2)*((spLength-switch_row1-1)/spLength) + endowment # add +1 at indices because R initializes vectors at 0
+    }
+    else if (X_value=="L"){
+      EG <- -(25*y_value/100)*((switch_row1+1)/spLength) + ((surePayments[switch_row2+1]+surePayments[spLength])/2)*((spLength-switch_row1-1)/spLength) + endowment
+    }
+    else if (X_value=="A"){
+      EG <- 0 + ((((surePayments[switch_row2+1]-y_value)/2)+((surePayments[spLength]-y_value)/2))/2)*((spLength-switch_row1-1)/spLength) + endowment
+    }
+  }
+  else {cat("error: switch_row 1 & 2 neither -1 and -1 nor -2 and -2 nor NORMAL \n")}
+  
+  if ((str_starts(mplType, "G") || str_starts(mplType, "L")) && (switchRow1Choice == "sure" && switchRow2Choice == "lottery")){
+    EG <- NA_real_
+    cat("inversion detected, NA put as EG", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
+  }
+  else if (str_starts(mplType, "A") && (switchRow1Choice == "lottery" && switchRow2Choice == "sure")){
+    EG <- NA_real_
+    cat("inversion detected, NA put as EG", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
+  }
+  
+  #cat("EG is ", EG, " with X_value=", X_value," y=", y_value, " switch_row1=",switch_row1, "all(choices == `lottery`) is ", all(choices == "lottery"), " position is ", position, "(switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength = ", (switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength, "\n")
+  return(EG)
+}
+
 extractMplDataframes <- function(dataPerParticipant) {
   
   # Filter data for the conditions you specified
@@ -341,71 +412,12 @@ extractMplDataframes <- function(dataPerParticipant) {
             cat("inversion detected, NA put as ev, subject ", subject," ", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
           }
           else if (str_starts(mplType, "A") && (switchRow1Choice == "lottery" && switchRow2Choice == "sure")){
+            cat("inversion detected, NA put as ev, subject ", subject," ", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
             ev_value <- NA_real_
           }
           ev_value
         },
-        EGEmpirical= {
-          y_value <- as.numeric(gsub("[^0-9]", "", mplType))
-          X_value <- case_when(
-            str_starts(mplType, "G") ~ "G",
-            str_starts(mplType, "L") ~ "L",
-            str_starts(mplType, "A") ~ "A",
-            TRUE ~ NA_character_
-          )
-          endowment <- case_when(
-            X_value == "G" ~ 5,
-            X_value == "L" ~ 30,
-            (X_value == "A" & y_value == 10) ~ 15,
-            (X_value == "A" & y_value == 15) ~ 20
-          )
-          if (!(mplType == "GO10") & !(mplType == "GO90")) {
-            surePayments <- createSequenceArray(y_value, X_value, position) # CAUTION if no switch sr1 = sr2 = -1 !!! Then need to see if choices only lotteries or only mirror
-            
-          }
-          else if ((mplType == "GO10") | (mplType == "GO90")){
-            surePayments <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
-          }
-          spLength <- length(surePayments)
-          if (switch_row1 == -1 & switch_row2 == -1) {
-            if(X_value=="G" | X_value=="L"){
-              if(all(choices == "lottery")){
-                if(X_value=="G"){EG <- 25*y_value/100 + endowment}
-                else if(X_value=="L"){EG <- -25*y_value/100 + endowment}
-              }
-              else if(all(choices == "sure")){
-                EG <-(surePayments[1] + surePayments[spLength])/2 + endowment
-              }
-              else { cat("Error in calculating EGEmpirical when no switch and X is G or L\n")}
-            }
-            else if(X_value=="A"){
-              if(all(choices == "lottery")){
-                EG <- ((((surePayments[1]-y_value)/2 + (surePayments[spLength]-y_value)/2))/2) + endowment
-              }
-              else if(all(choices=="sure")){
-                EG <- 0 + endowment
-              }
-              else { cat("Error in calculating EGEmpirical when no switch and X is A\n")}
-            }
-          }
-          else if (switch_row1==-2 & switch_row2==-2){
-            EG <- 0
-          }
-          else if (!(switch_row1==-1 & switch_row2==-1) & !(switch_row1==-2 & switch_row2==-2)){
-            if(X_value=="G"){
-              EG <- (25*y_value/100)*((switch_row1+1)/spLength) + ((surePayments[switch_row2+1]+surePayments[spLength])/2)*((spLength-switch_row1-1)/spLength) + endowment # add +1 at indices because R initializes vectors at 0
-            }
-            else if (X_value=="L"){
-              EG <- -(25*y_value/100)*((switch_row1+1)/spLength) + ((surePayments[switch_row2+1]+surePayments[spLength])/2)*((spLength-switch_row1-1)/spLength) + endowment
-            }
-            else if (X_value=="A"){
-              EG <- 0 + ((((surePayments[switch_row2+1]-y_value)/2)+((surePayments[spLength]-y_value)/2))/2)*((spLength-switch_row1-1)/spLength) + endowment
-            }
-          }
-          else {cat("error: switch_row 1 & 2 neither -1 and -1 nor -2 and -2 nor NORMAL \n")}
-          #cat("EG is ", EG, " with X_value=", X_value," y=", y_value, " switch_row1=",switch_row1, "all(choices == `lottery`) is ", all(choices == "lottery"), " position is ", position, "(switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength = ", (switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength, "\n")
-          EG
-        },
+        EGEmpirical = make_EGEmpirical(mplType, switch_row1, switch_row2, switchRow1Choice, switchRow2Choice, position),
         noSwitchSure = case_when(
           (switch_row1 == -1 & switch_row2 == -1 & all(choices=="sure")) ~ 1,
           TRUE ~ 0
@@ -816,7 +828,7 @@ final_data_2 <- final_data_2 %>%
     .after = switchRow1Choice
   )
 
- final_data_wide <- write.csv(final_data, "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_wide.csv", row.names = FALSE)
+final_data_wide <- write.csv(final_data, "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis/CSV pour Bastien/final_data_wide.csv", row.names = FALSE)
 final_data_2_toShare <- final_data_2[] <- lapply(final_data_2, function(x) {
   if (is.list(x)) as.character(x) else x
 })
@@ -1969,7 +1981,7 @@ ggsave(filename = file.path(PATH_TO_DATA, "Figures_pilot3&4&5", "scatterRTOnAccu
 empiricalEVMpls <- dfA %>%
   pull(mirror_EGEmpirical, lottery_EGEmpirical)%>%
   mean(., na.rm=TRUE)
-empiricalEVMpls # 18.08181
+empiricalEVMpls # 18.08181 # this is flawed because some inversions were not counted as NA !
 
 accuraciesMpls <- dfA %>%
   pull(mirror_accuracy, lottery_accuracy) %>%
@@ -4957,6 +4969,239 @@ summary(fit_hard_test)
 
 
 
+# Table of the estimated EV for each task depending on typical choices strategy
+
+# Logic of the code :
+# First produce the table with the rational switching points positionsRationalsr1 , and the dataframe with the names of the different tasks with their position task_list
+# Then create EVMax : sapply make_EGEmpirical on the tasks of task_list with the rational switching points of positionsRationalsr1. Convert it into a 1 row dataframe
+# Add the "average" columns : mean of the high and low columns, with a for loop, and order by alphabetical order the columns
+
+
+positionsRationalsr1 <-tibble::tibble(
+  position=c("high","low","PTDirection"),
+  A10 = c(7,9, 1), # loss averse : switch to late
+  A15 = c(7,9, 1),
+  G10 = c(5,11, 1), # risk seeking : switch to late
+  L10 = c(5,11, -1), # risk averse : switch to soon
+  G90 = c(5,11, -1),
+  L90 = c(5,11, 1),
+  G25 = c(4,12, 1),
+  L25 = c(4,12, -1),
+  G75 = c(4,12, -1),
+  L75 = c(4,12, 1),
+  G50 = c(3,13, -1),
+  L50 = c(3,13, 1),
+)
+positionsRationalsr1 <- as.data.frame(positionsRationalsr1)
+rownames(positionsRationalsr1)
+rownames(positionsRationalsr1) <- positionsRationalsr1$position
+positionsRationalsr1$position <- NULL
+positionsRationalsr1
+
+task_list <- data.frame(matrix(nrow = 1, ncol = length(mpl_types)))
+colnames(task_list) <- mpl_types
+task_list <- task_list[,1:12] # in square brackets rows FIRST, columns SECOND
+task_list <- task_list %>%
+  mutate(
+    across(
+      everything(),
+      list(
+        high = ~.,
+        low = ~.
+      ),
+      .names = "{.col}_{.fn}"
+    )
+    , .keep = "none"
+  )
+
+# colnamestask_list <- c()
+# for (i in colnames(task_list)){
+#   colnamestask_list <- c(colnamestask_list, paste0(i, "_low"), paste0(i, "_high"), paste0(i, "_average"))
+# }
+# colnamestask_list
+# sapply(task_list[1], )
+# task_list["maxEV",]
+
+maxEV <- sapply(colnames(task_list), function(x) {{
+      posMPL <- sub(".*_", "", x)
+      mplType <- sub("_.*", "", x)
+      cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+          "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+      if (posMPL != "average"){
+       # first line : participants choose rationally{
+       make_EGEmpirical(
+         mplType, 
+         positionsRationalsr1[posMPL, mplType],
+         positionsRationalsr1[posMPL, mplType] +1, 
+         ifelse(str_starts(mplType, "G|L"), "lottery", "sure"), ## test with inversed to see if the function puts EV = 0 !
+         ifelse(str_starts(mplType, "A"), "sure", "lottery"), 
+         posMPL)
+      }
+      else "average"}
+  })
+onlyLotteries <- sapply(colnames(task_list), function(x) {{
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+  if (posMPL != "average"){
+    # first line : participants choose rationally{
+    make_EGEmpirical(
+      mplType, 
+      -1,
+      -1, 
+      "lottery", ## test with inversed to see if the function puts EV = 0 !
+      "lottery", 
+      posMPL)
+  }
+  else "average"}
+})
+onlySure <- sapply(colnames(task_list), function(x) {{
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+  if (posMPL != "average"){
+    # first line : participants choose rationally{
+    make_EGEmpirical(
+      mplType, 
+      -1,
+      -1, 
+      "sure", ## test with inversed to see if the function puts EV = 0 !
+      "sure", 
+      posMPL)
+  }
+  else "average"}
+  })
+onlySureOrLotteries <- sapply(colnames(task_list), function(x) {
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+    # first line : participants choose rationally{
+  if(
+    ((str_starts(mplType, "G")|str_starts(mplType, "L"))&&(posMPL=="high"))
+    |((str_starts(mplType, "A")&&posMPL=="low"))){
+    make_EGEmpirical(
+      mplType, 
+      -1,
+      -1, 
+      "sure",
+      "sure", 
+      posMPL)}
+    else {
+      make_EGEmpirical(
+        mplType, 
+        -1,
+        -1, 
+        "lottery",
+        "lottery", 
+        posMPL)}
+}) # check on the full table is it equal to onlySure and onlyLotteries depending on the position
+onlyCenter <- sapply(colnames(task_list), function(x) {
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+  # first line : participants choose rationally{
+  if(str_starts(mplType, "G")|str_starts(mplType, "L")){
+    make_EGEmpirical(
+      mplType, 
+      8,
+      9, 
+      "lottery",
+      "sure", 
+      posMPL)}
+  else if (str_starts(mplType, "A")){ # in A tasks it is rational to first select sure then lotteries
+    make_EGEmpirical(
+      mplType, 
+      8,
+      9, 
+      "sure",
+      "lottery", 
+      posMPL)}
+}) # 
+random <- sapply(colnames(task_list), function(x) {
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+  # first line : participants choose rationally{
+    sum <- make_EGEmpirical(mplType, -1, -1, "lottery", "lottery", posMPL) + make_EGEmpirical(mplType, -1, -1, "sure", "sure", posMPL)
+    if(str_starts(mplType, "G")|str_starts(mplType, "L")){
+      for (sr1 in 1:16){
+        sum <- sum + make_EGEmpirical(mplType, sr1, sr1+1, "lottery", "sure", posMPL)
+      }
+    }
+    else if (str_starts(mplType, "A")){ # in A tasks it is rational to first select sure then lotteries
+      for (sr1 in 1:16){
+        sum <- sum + make_EGEmpirical(mplType, sr1, sr1+1, "sure", "lottery", posMPL)
+      }
+    }
+    sum/18
+}) # check on the full table if it is close to onlyCenter
+randomAndRandomOrder <- sapply(colnames(task_list), function(x) {
+  posMPL <- sub(".*_", "", x)
+  mplType <- sub("_.*", "", x)
+  cat("posMPL is ", posMPL, " mplType is ", mplType, "\n"," positionsRationnalsr1[posMPL, mplType] is ", positionsRationalsr1[posMPL, mplType], "\n",
+      "  ifelse(str_starts(mplType, `G|L`), `lottery`, `sure`) is, ",  ifelse(str_starts(mplType, "G|L"), "lottery", "sure") , "\n")
+  # we calculate the random EG if people select the order rationnaly (e.g. lottery then sure for G and L tasks), and then calculate if they do the inverse, and we average
+  sum <- 2*(make_EGEmpirical(mplType, -1, -1, "lottery", "lottery", posMPL) + make_EGEmpirical(mplType, -1, -1, "sure", "sure", posMPL)) # wether they inverse or not doesn't change those options so they are weighted by two
+  if(str_starts(mplType, "G")|str_starts(mplType, "L")){
+    for (sr1 in 1:16){
+      sum <- sum + make_EGEmpirical(mplType, sr1, sr1+1, "lottery", "sure", posMPL) # in the good order they get an outcome and in the other order they get €0
+    }
+  }
+  else if(str_starts(mplType, "A")){
+    for (sr1 in 1:16){
+      sum <- sum + make_EGEmpirical(mplType, sr1, sr1+1, "sure", "lottery", posMPL) # in the good order they get an outcome and in the other order they get €0
+    }
+  }
+  sum/(2*18)
+}) # check on the full table if it is close to onlyCenter
+randomAndRandomOrder
+
+#maxEV <- data.frame(maxEV)
+vec_EG <- list(maxEV = maxEV, onlyLotteries = onlyLotteries, onlySure=onlySure, onlySureOrLotteries=onlySureOrLotteries, onlyCenter=onlyCenter, random=random, randomAndRandomOrder=randomAndRandomOrder)
+prefixes <- colnames(positionsRationalsr1)
+EGSpace <- lapply(vec_EG, function(EG){
+  EG<- data.frame(t(EG))
+  #cat(str(EG),"\n")
+  
+  for (p in prefixes){
+    #cat("p is", p)
+    #cat(" rowMean is", rowMeans(EG%>%select(starts_with(p))))
+    EG[[paste0(p,"_average")]] <- rowMeans(EG%>%select(starts_with(p))) #{{p}}
+    #cat("EG[[paste0(p,'_average')]] is ", EG[[paste0(p,"_average")]], "\n")
+  }
+  EG
+  })
+
+# vec_EG[[1]]
+# data.frame(vec_EG[[1]])
+# data.frame(vec_EG[[1]])%>%select(starts_with("G"))
+# rowMeans(data.frame(vec_EG[[1]])%>%select(starts_with("G")))
+EGSpace
+
+EVPayoffSpace <- bind_rows(EGSpace)
+rownames(EVPayoffSpace) <- names(EGSpace)
+EVPayoffSpace<- EVPayoffSpace%>%
+  mutate(
+    mean_average = rowMeans(EVPayoffSpace%>%select(ends_with("average"))),
+    .before = 1
+  )
+EVPayoffSpace
+
+EVPayoffSpace_av <- EVPayoffSpace%>%
+  select(ends_with("_average"))
+
+EVPayoffSpace_av_long <- EVPayoffSpace%>%
+  select(ends_with("_average"))%>%
+  mutate(strategies=rownames(EVPayoffSpace))%>%
+  pivot_longer(cols= -all_of("strategies"),
+    names_to = "task")%>%
+  pivot_wider(names_from= "strategies", 
+              values_from = "value")
 
 
 

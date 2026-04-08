@@ -1,13 +1,15 @@
 # Load required packages
+library(tidyverse)
 library(dplyr)
 library(purrr)
 #library(lubridate)
 library(ggplot2)
 library(EnvStats)
+library(tidyr)
 
 setwd("/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis")
 PATH_TO_DATA <- "/Users/domitilleprevost/Documents/Master E&P/Stage/coding/jatos/study_assets_root/073bfc0a-f209-4ca9-9665-9f66dd9fd4ef/dataAnalysis"
-dir.create(file.path(PATH_TO_DATA, "Figures_pilot3&4&5"), showWarnings = FALSE, recursive = TRUE)
+dir.create(file.path(PATH_TO_DATA, "Figures_pilot3&4&5"), showWarnings = TRUE, recursive = TRUE)
 getwd()
 
 # helper to generate unique random ids
@@ -234,6 +236,16 @@ make_EGEmpirical <- function(mplType, switch_row1, switch_row2, switchRow1Choice
     }
   }
   else {cat("error: switch_row 1 & 2 neither -1 and -1 nor -2 and -2 nor NORMAL \n")}
+  
+  if ((str_starts(mplType, "G") || str_starts(mplType, "L")) && (switchRow1Choice == "sure" && switchRow2Choice == "lottery")){
+    EG <- NA_real_
+    cat("inversion detected, NA put as EG", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
+  }
+  else if (str_starts(mplType, "A") && (switchRow1Choice == "lottery" && switchRow2Choice == "sure")){
+    EG <- NA_real_
+    cat("inversion detected, NA put as EG", mplType, ", switchRow1Choice is ", switchRow1Choice, " position is ", position, "\n")
+  }
+  
   #cat("EG is ", EG, " with X_value=", X_value," y=", y_value, " switch_row1=",switch_row1, "all(choices == `lottery`) is ", all(choices == "lottery"), " position is ", position, "(switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength = ", (switch_row1+1)/spLength+(spLength-switch_row1-1)/spLength, "\n")
   return(EG)
 }
@@ -728,7 +740,7 @@ df_rt<-df_accuracy%>%
 
 
 # function makeSr1: 90% of rational agents, 10% of mindless
-share_rational <- 0
+share_rational <- 0.5
 participants_rational <- sample(participantsList, size = floor(share_rational * length(participantsList)))
 
 

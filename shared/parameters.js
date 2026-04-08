@@ -17,6 +17,7 @@ const fds_post_trial_gap = 250; //250ms
 
 const practice_duration = 30000; //= 30000; // duration of practice flanker
 const main_duration = 15000; //= 15000; // duration of main task flanker
+const arithmetic_duration = 60000; // duration of arithmetic task in ms
 const mplTimeLimit = 15000; // time limit for the MPL task in ms (fixed 15s, no early submit)
 const betweenSpanTimeInterval = 4500; // time interval between blue (source) and red (target) letters in ms (add 500 with post trial)
 const setup_fds_trial_duration = 4500// 4500 // time interval between the answers to the span and the beginning of a new one in spanMPL + 500ms post_trial
@@ -30,7 +31,10 @@ let block_start;
 let block_time_limit;
 let items_flanker = Array.from(Array(16).keys()); // Array from 0-15
 let blockEasy = 0;
+let nAngles = 20 ; // number of angles to generate for the angles motivation task
 
+const arithmeticPayment = 0.15; // 0.02€ per correctly solved sum in the arithmetic task, task, 
+const nRoundsArithmetic = 4; // number of rounds in the arithmetic task (each round is 1 minute long)
 
 let totalFdsSpanMplTrials = 16; // 14 of Oprea plus two originals from Oprea
 let treatment = "";

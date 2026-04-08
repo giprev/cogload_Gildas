@@ -1123,6 +1123,7 @@ const fr = {
         notSelectedForMPL: "Vous n'avez pas été sélectionné·e pour qu'un de vos choix à la tâche de prise de décision soit payé.",
         bonusSpanMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€. La décomposition est de {spanMPL}€ pour le jeu des chiffres et de {mplBonus}€ pour le choix de la tâche des choix.",
         bonusSpanWithoutMPL: "Votre bonus pour la troisième partie de l'expérience est de {spanMplBonus}€.",
+        bonusArithmetic: "Votre bonus pour la quatrièmepartie (calcul mental) est de {arithmeticBonus}€.",
         totalBonus: "Votre bonus total est donc de {totalBonus}€ et votre paiement total est de {totalPayment}€.",
         thanksAgain: "Merci encore pour votre participation ! <b>Appuyez sur Entrée pour recevoir votre paiement!.</b>",
     },
@@ -1131,7 +1132,26 @@ const fr = {
         clear: "Effacer",
     },
     slidersMotiv : {
-        instructions : "",
+        titleInstructions: "Instructions pour la Partie 4.",
+        severalBars :"Dans cette partie, vous verrez plusieurs barres avec un curseur pour chacune d'elles.",
+        objCenter:"Pour chaque barre, votre objectif est de placer le curseur le plus près possible du centre de la barre en le déplaçant avec la souris.",
+        bonus: "Calcul du bonus pour la Partie 4 :",
+        randomBar : "A la fin de la partie, une barre sera tirée au hasard.",
+        maxBonus : "Si votre curseur pour cette barre est exactement au <b>centre</b>, vous gagnez <b>0,50€</b>.",
+        linear :"Plus votre curseur est éloigné du centre, moins vous gagnez (de façon linéaire avec la distance au centre).",
+        example :"Par exemple, si pour la barre choisie votre curseur est au milieu entre le centre et une extrémité, vous gagnez <b>0,25€</b>.",
+        train :"Ci-dessous, vous pouvez vous entraîner à déplacer les curseurs.",
+        remember: "Rappel : quand vous appuirez sur <b>Suivant</b> (en bas de page), une barre sera sélectionnée au hasard pour votre bonus. Vous gagnerez <b>0,50€</b> si votre curseur pour cette barre est exactement au <b>centre</b>, et moins si votre curseur est plus éloigné du centre (<b>0€ aux extremités</b>).",
+        clickNextInstructions :"Cliquez sur <b>Suivant</b> pour commencer la Partie 4 !",
+    },
+    arithInstr : {
+        titleInstructions: "Instructions pour la Partie 4.",
+        severalAdditions :"Dans cette partie, vous allez votre but est d'effectuer correctement un <b>maximum d'additions</b> en 1 minute.",
+        nRounds : "Il y aura 4 tours de 1 minute.",
+        bonus: "Bonus pour la Partie 4 :",
+        randomRound : "Vous serez payé {paymentPerAddition}€ pour chaque addition correcte, pour un tour sélectionné au hasard.",
+        example :"Par exemple, si au tour choisi vous avez effectué 3 additions correctement, vous gagnerez 3 x {paymentPerAddition}€ = <b>{exemplePayment}€</b>.",
+        clickNextInstructions :"Cliquez sur <b>Suivant</b> pour commencer la Partie 4 !",
     },
     choicesBefore: "Ce sont les choix que vous avez faits avant que la règle de paiement n'ait changé.",
     choicesAfter: "Ce sont les choix que vous avez faits après que la règle de paiement ait changé.",
@@ -1156,6 +1176,27 @@ const fr = {
         veryCertain: "Je prenais des décisions précises",
     },
     timerText: "Temps restant: ",
+    feedback: {
+        correct: "Correct!",
+        incorrect: "Incorrect",
+        noResponse: "Vous n'avez pas répondu!",
+        accuracy: "Vous avez répondu correctement à ",
+        accuracy2: "% des essais.",
+        rt: "Votre temps de réponse moyen était de ",
+        rt2: " ms."
+    },
+    feedbackArithmetic: {
+        yourAnswer: "Votre réponse: ",
+        correctAnswer: "La réponse correcte était: "
+    },
+    arithmeticTrial:{
+        enterNumbers: "Tapez la somme des chiffres puis appuyez sur Entrée.",
+    },
+    arithmeticPresentationRound: {
+        round : "Tour {n}.",
+        incentivizedRound : "Attention ! Ce tour a <b>deux fois plus de chances</b> d'être sélectionné pour le paiement que les autres tours!",
+        pressEnter : "Appuyez sur Entrée pour commencer le tour."
+    }
 
 };
 

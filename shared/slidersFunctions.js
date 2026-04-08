@@ -54,17 +54,22 @@ function slidersMotivationGenerator(nSliders, startValue, horizontalPosition, ve
     if (taskName === 'instructionsSlidersMotivation') {
         html += `
         <div id="sliders-motivation-container" style="width: 1000px; max-width: 1000px; margin: 0 auto;">
-            <p>Instructions pour la Partie 4.</p><br>
-            <p>Dans cette partie, vous allez glisser les curseurs au milieu de leur barres. <p>
-            <p>Vous pouvez gagner 0.5 centime d'euro pour chaque curseur placé au milieu de leur barre. </p>
-            <p>Plus vous êtes loin du centre, moins vous gagnez d'argent. </p>
-            <p>Par exemple si vous êtes à mi-chemin entre le centre et une extrémité, vous gagnez 0.25 centime d'euro. </p>
-            <p>Ci-dessous vous pouvez vous entraîner à glisser les curseurs.</p>
+        <h2>${language.slidersMotiv.titleInstructions}</h2><br>
+        <p>${language.slidersMotiv.severalBars}</p>
+        <p>${language.slidersMotiv.objCenter}</p>           
+        <p><b>${language.slidersMotiv.bonus}</b></p>
+        <p>${language.slidersMotiv.randomBar}</p>
+        <p>${language.slidersMotiv.maxBonus}</p>
+        <p>${language.slidersMotiv.linear}</p>
+        <p>${language.slidersMotiv.example}</p>
+        <p>${language.slidersMotiv.train}</p>
+        <br>
+
     `;
     } else if (taskName === 'trialSlidersMotivation') {
         html += `
         <div id="sliders-motivation-container" style="width: 1000px; max-width: 1000px; margin: 0 auto;">
-        <p>Rappel des consignes</p><br>
+        <p>${language.slidersMotiv.remember}</p><br>
     `;
     }
     for (let i = 1; i <= nSliders; i++) {
@@ -93,7 +98,15 @@ function slidersMotivationGenerator(nSliders, startValue, horizontalPosition, ve
         `;
     }
 
-    html += `</div>`;
+    if (taskName === 'instructionsSlidersMotivation') {
+    html += `
+    <br>
+    <p>${language.slidersMotiv.clickNextInstructions}</p>
+    </div>`;}
+    else if (taskName === 'trialSlidersMotivation') {
+    html += `
+    <br>
+    </div>`;}
 
     // Add script to enforce drag behavior (prevent click-to-set)
     // html += `

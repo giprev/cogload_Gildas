@@ -77,8 +77,25 @@ let showExplanationsQuestionsMirrors = false;
 let showExplanationsQuestionsLotteries = false;
 
 let isPaymentRulePhase = false;
+let arithmeticInputBuffer = "";
+let arithmeticInputHandler = null;
+let arithmeticRoundTimer = null;
+let arithmeticRoundCountdownInterval = null;
+let arithmeticRoundStartTime = null;
+const arithmeticRoundTimeoutMs = 10000; // 5 seconds
+let incentivizedRound = null; // the round that will be most incentivized in the arithmetic task (2x more likely to be selected for payment than the other rounds)
 
+/*************** VARIABLES arithmetic ***************/
 
+let numberCorrectSums = 0; // counter for the number of correctly solved sums in the arithmetic task
+let numberAttemptedSums = 0; // counter for the number of attempted sums in the arithmetic task
+let arRoundIndicator = 0; // counter for the number of rounds in the arithmetic task, used for the calculation of bonuses
+
+// take milliseconds and return a string in seconds, rounded up, e.g. "12s", to display the timer in the arithmetic task and mpl task
+function formatSeconds(ms) {
+    const s = Math.ceil(ms / 1000);
+    return `${s}s`;
+}
 
 
 /*************** INSTRUCTIONS ***************/
@@ -1306,6 +1323,7 @@ mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, status
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
 example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 example_mpl_html_array_mirror = example_mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
+console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
 // console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery with generated HTML");
 // console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
 
@@ -1453,10 +1471,6 @@ const mpl_trial = {
     document.body.appendChild(countdownContainer);
 
     const startTime = Date.now();
-    function formatSeconds(ms) {
-      const s = Math.ceil(ms / 1000);
-      return `${s}s`;
-    }
 
     // update display immediately
     countdownContainer.innerText = `${language.timerText} ${formatSeconds(mplTimeLimit)}`;
@@ -1873,6 +1887,14 @@ const staircase_assess = {
     type: 'call-function',
     func: updateSpan //update currentSpan based on staircase
 };
+
+const arithmeticRound = {
+    type: 'call-function',
+    func : function(){
+        arRoundIndicator +=1;
+        console.log("arRoundIndicator is ", arRoundIndicator)
+    }
+}
 
 const setup_fds = {
     type: 'html-button-response',
@@ -2466,6 +2488,17 @@ const incentives_span_mpl = {
         "and choices are ", choices);
     }
 
+
+    // arithmetic payment
+    let selectedRoundArithmetic = getRandomInt(1, nRoundsArithmetic+1); 
+    if (selectedRoundArithmetic == 5) {selectedRoundArithmetic = incentivizedRound}; // most incentivized round has twice more chance to be selected than the others
+    console.log("selectedRoundArithmetic is ", selectedRoundArithmetic);
+    let trialsArithmetic = jsPsych.data.get().filterCustom(function(trial){
+        return trial.task=='arithmeticTrial' && trial.roundNumber == selectedRoundArithmetic && trial.correct==true;
+    });
+    console.log(trialsArithmetic, "is trialsArithmetic for payment");
+    console.log(trialsArithmetic.count(), "is trialsArithmetic count for payment");
+    let payment_arithmetic = trialsArithmetic.count()*arithmeticPayment
         
     // Use the calculated payments
     trial.data = trial.data || {};
@@ -2476,12 +2509,14 @@ const incentives_span_mpl = {
     trial.data.payment_span_mpl = actual_payment_span_mpl;
     trial.data.luckyPp = luckyPp;
     trial.data.payment_mpl = actual_payment_mpl;
+    trial.data.payment_arithmetic = payment_arithmetic;
     trial.data.helpPageCounter = helpPageCounter;
     const cCal  = actual_payment_calibration ?? 0;
     const cSpan = actual_payment_span_span ?? 0;
     const cSpanMpl = actual_payment_span_mpl ?? 0;
     const cMpl  = actual_payment_mpl ?? 0;
-    trial.data.totalBonus = Math.round(Math.min(cCal + cSpan + cSpanMpl + cMpl , ((1.03*4)+1.03+3.3+44.5))*100)/100; // cap total bonus
+    const cAri = payment_arithmetic ?? 0; 
+    trial.data.totalBonus = Math.round(Math.min(cCal + cSpan + cSpanMpl + cMpl + cAri, ((1.03*4)+1.03+3.3+44.5)+ 3)*100)/100; // cap total bonus, let's say €3 max for arithmetic, to adjust
     if (treatment == "hard") {
     trial.data.totalPayment = Math.round((basePayment_hard + trial.data.totalBonus)*100)/100;
     }
@@ -2503,6 +2538,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.selectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanMPL.replace('{spanMplBonus}', actual_payment_span_mpl + actual_payment_mpl).replace('{spanMPL}', actual_payment_span_mpl).replace('{mplBonus}', actual_payment_mpl)}</p>
+            <p>${language.debrief_incentives_span_mpl.bonusArithmetic.replace('{arithmeticBonus}', payment_arithmetic)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', trial.data.totalBonus).replace('{totalPayment}', trial.data.totalPayment)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
@@ -2513,6 +2549,7 @@ const incentives_span_mpl = {
             <p>${language.debrief_incentives_span_mpl.spanSpanPayment_hard.replace('{spanSpanBonus}', actual_payment_span_span)}</p>
             <p>${language.debrief_incentives_span_mpl.notSelectedForMPL}</p>
             <p>${language.debrief_incentives_span_mpl.bonusSpanWithoutMPL.replace('{spanMplBonus}', actual_payment_span_mpl)}</p>
+            <p>${language.debrief_incentives_span_mpl.bonusArithmetic.replace('{arithmeticBonus}', payment_arithmetic)}</p>
             <p>${language.debrief_incentives_span_mpl.totalBonus.replace('{totalBonus}', trial.data.totalBonus).replace('{totalPayment}', trial.data.totalPayment)}</p>
             <p>${language.debrief_incentives_span_mpl.thanksAgain}</p>`;
         }
@@ -2675,106 +2712,6 @@ const cognitiveUncertaintyMirror = {
         }
     }
 };
-
-const trialSlidersMotivation = {
-    type: 'survey-html-form',
-    html: function() {
-        // Example parameters - adjust as needed
-        const nSliders = 50;
-        const startValue = 0;
-        const horizontalPosition = "random"; // "centered" or "random"
-        const verticalSpacing = "30px";
-        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'trialSlidersMotivation');
-    },
-    button_label: language.button.next,
-    on_load: function(){
-        var container = document.getElementById('sliders-motivation-container');
-        if (!container)
-            { console.log("no sliders-motivation-container")
-                return};
-        
-        var sliders = container.querySelectorAll('input[type="range"]');
-        
-        sliders.forEach(function(slider) {
-            var isDragging = false;
-            var hasMoved = false;
-            var startX = 0;
-            var originalValue = parseInt(slider.dataset.startValue);
-            
-            // On mousedown, store start position and current value
-            slider.addEventListener('mousedown', function(e) {
-                isDragging = true;
-                hasMoved = false;
-                startX = e.clientX;
-                slider.dataset.valueAtMousedown = slider.value;
-            });
-            
-            slider.addEventListener('touchstart', function(e) {
-                isDragging = true;
-                hasMoved = false;
-                startX = e.touches[0].clientX;
-                slider.dataset.valueAtMousedown = slider.value;
-            });
-            
-            // On mousemove, check if actually dragging (moved more than 5px)
-            slider.addEventListener('mousemove', function(e) {
-                if (isDragging && Math.abs(e.clientX - startX) > 5) {
-                    hasMoved = true;
-                    slider.dataset.dragged = 'true';
-                }
-            });
-            
-            slider.addEventListener('touchmove', function(e) {
-                if (isDragging && Math.abs(e.touches[0].clientX - startX) > 5) {
-                    hasMoved = true;
-                    slider.dataset.dragged = 'true';
-                }
-                        });
-            
-            // On mouseup, if no drag occurred, reset to previous value
-            slider.addEventListener('mouseup', function(e) {
-                if (!hasMoved && isDragging) {
-                    slider.value = slider.dataset.valueAtMousedown || originalValue;
-                }
-                isDragging = false;
-            });
-            
-            slider.addEventListener('touchend', function(e) {
-                if (!hasMoved && isDragging) {
-                    slider.value = slider.dataset.valueAtMousedown || originalValue;
-                }
-                isDragging = false;
-            });
-            
-            // Prevent clicks on track from changing value
-            slider.addEventListener('click', function(e) {
-                if (slider.dataset.dragged !== 'true') {
-                    e.preventDefault();
-                    slider.value = originalValue;
-                }
-            });
-        });
-    },
-    on_finish: function(data) {
-        processSlidersData(data, 'trialSlidersMotivation');
-    }
-};
-const instructionsSlidersMotivation = {
-    ...trialSlidersMotivation,
-    html: function() {
-        // Example parameters - adjust as needed
-        const nSliders = 3;
-        const startValue = 0;
-        const horizontalPosition = "random"; // "centered" or "random"
-        const verticalSpacing = "30px";
-        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'instructionsSlidersMotivation');
-    },
-    button_label: language.button.next,
-    on_finish: function(data) {
-        processSlidersData(data, 'instructionsSlidersMotivation');
-    }
-};
-
 const cognitiveUncertaintyLottery = {
     type: 'survey-html-form',
     html: function(){
@@ -2900,6 +2837,457 @@ const cognitiveUncertaintyLottery = {
         data.task = 'sliderQuestionsMirror';
     }
 };
+
+/************ define the slider real effort task trials ***************/
+
+const trialSlidersMotivation = {
+    type: 'survey-html-form',
+    html: function() {
+        // Example parameters - adjust as needed
+        const nSliders = 50;
+        const startValue = 0;
+        const horizontalPosition = "random"; // "centered" or "random"
+        const verticalSpacing = "30px";
+        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'trialSlidersMotivation');
+    },
+    button_label: language.button.next,
+    on_load: function(){
+        var container = document.getElementById('sliders-motivation-container');
+        if (!container)
+            { console.log("no sliders-motivation-container")
+                return};
+        
+        var sliders = container.querySelectorAll('input[type="range"]');
+        
+        sliders.forEach(function(slider) {
+            var isDragging = false;
+            var hasMoved = false;
+            var startX = 0;
+            var originalValue = parseInt(slider.dataset.startValue);
+            
+            // On mousedown, store start position and current value
+            slider.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                hasMoved = false;
+                startX = e.clientX;
+                slider.dataset.valueAtMousedown = slider.value;
+            });
+            
+            slider.addEventListener('touchstart', function(e) {
+                isDragging = true;
+                hasMoved = false;
+                startX = e.touches[0].clientX;
+                slider.dataset.valueAtMousedown = slider.value;
+            });
+            
+            // On mousemove, check if actually dragging (moved more than 5px)
+            slider.addEventListener('mousemove', function(e) {
+                if (isDragging && Math.abs(e.clientX - startX) > 5) {
+                    hasMoved = true;
+                    slider.dataset.dragged = 'true';
+                }
+            });
+            
+            slider.addEventListener('touchmove', function(e) {
+                if (isDragging && Math.abs(e.touches[0].clientX - startX) > 5) {
+                    hasMoved = true;
+                    slider.dataset.dragged = 'true';
+                }
+                        });
+            
+            // On mouseup, if no drag occurred, reset to previous value
+            slider.addEventListener('mouseup', function(e) {
+                if (!hasMoved && isDragging) {
+                    slider.value = slider.dataset.valueAtMousedown || originalValue;
+                }
+                isDragging = false;
+            });
+            
+            slider.addEventListener('touchend', function(e) {
+                if (!hasMoved && isDragging) {
+                    slider.value = slider.dataset.valueAtMousedown || originalValue;
+                }
+                isDragging = false;
+            });
+            
+            // Prevent clicks on track from changing value
+            slider.addEventListener('click', function(e) {
+                if (slider.dataset.dragged !== 'true') {
+                    e.preventDefault();
+                    slider.value = originalValue;
+                }
+            });
+        });
+    },
+    on_finish: function(data) {
+        processSlidersData(data, 'trialSlidersMotivation');
+    }
+};
+const instructionsSlidersMotivation = {
+    ...trialSlidersMotivation,
+    html: function() {
+        // Example parameters - adjust as needed
+        const nSliders = 3;
+        const startValue = 0;
+        const horizontalPosition = "random"; // "centered" or "random"
+        const verticalSpacing = "30px";
+        return slidersMotivationGenerator(nSliders, startValue, horizontalPosition, verticalSpacing, 'instructionsSlidersMotivation');
+    },
+    button_label: language.button.next,
+    on_finish: function(data) {
+        processSlidersData(data, 'instructionsSlidersMotivation');
+    }
+};
+
+/************ define the angles motivation trials ***************/
+
+const instructionsAnglesMotivation = {
+    type: "instructions",
+    pages: ["Autre tâche de motivation possible : choisir si la ligne noire est plus horizontale ou verticale."],
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    //button_label_previous: language.button.previous,
+};
+const angleMotivationTrial = {
+    type: 'html-button-response',
+    stimulus: `
+        <canvas id="angle-motivation-canvas" width="600" height="600" style="border: 1px solid #ccc;"></canvas>
+        `,
+    choices: ["Vertical (blue)", "Horizontal (red)"],
+    data: {task: 'angleMotivation'//,
+        //angle : jsPsych.timelineVariable("angle", true)
+    },
+    on_load : function() {
+                const canvas = document.getElementById("angle-motivation-canvas");
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Line dimensions (2/3 of canvas size = 400px)
+                const lineLength = 2 * width / 3; // 400px
+                const lineWidth = 3;
+                
+                // Position: bottom of vertical line near left of horizontal line
+                // Horizontal line: centered vertically, positioned so left side is at 1/3 canvas width
+                const horizontalY = 5 * height / 6;
+                const startX = width / 6;
+                const horizontalEndX = startX + lineLength;
+                
+                // Vertical line: 
+                const verticalX = startX ;
+                const verticalBottomY = horizontalY; // Just above horizontal line
+                const verticalTopY = verticalBottomY - lineLength;
+                
+                // Draw red horizontal line
+                ctx.beginPath();
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = lineWidth;
+                ctx.moveTo(startX+ 30, horizontalY);
+                ctx.lineTo(horizontalEndX + 30, horizontalY);
+                ctx.stroke();
+                
+                // Draw blue vertical line
+                ctx.beginPath();
+                ctx.strokeStyle = 'blue';
+                ctx.lineWidth = lineWidth;
+                ctx.moveTo(verticalX, verticalTopY+ 30);
+                ctx.lineTo(verticalX, verticalBottomY + 30);
+                ctx.stroke();
+                
+                // Black line center position:
+                // x = middle of horizontal line
+                // y = middle of vertical line
+                const blackCenterX =  1/2 * width ;//(horizontalStartX + horizontalEndX) / 2;
+                const blackCenterY =  1/2 * height ;// (verticalTopY + verticalBottomY) / 2;
+                
+                // Convert angle to radians (0° = horizontal, 90° = vertical)
+                const angleRad = jsPsych.timelineVariable("angle", true) * Math.PI / 180;
+                
+                // Calculate black line endpoints
+                const halfLength = lineLength / 2;
+                const dx = halfLength * Math.cos(angleRad);
+                const dy = halfLength * Math.sin(angleRad);
+                
+                // Draw black tilted line
+                ctx.beginPath();
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = lineWidth;
+                ctx.moveTo(blackCenterX - dx, blackCenterY + dy);
+                ctx.lineTo(blackCenterX + dx, blackCenterY - dy);
+                ctx.stroke();
+
+                console.log(jsPsych.timelineVariable("angle", true), "is the angle for this trial (should be 45 or 135)");
+            },
+    on_finish: function(data) {
+        data.angle = jsPsych.timelineVariable("angle", true);
+        data.response_label = data.button_pressed == 0 ? "Vertical (blue)" : "Horizontal (red)";
+        data.correct = (data.angle <= 45 && data.response_label == "Horizontal (red)") || (data.angle >= 45 && data.response_label == "Vertical (blue)") ? "correct" : "incorrect";
+        console.log("angleMotivationTrial angle is ", data.angle);
+        console.log("angleMotivationTrial response:", data.response_label);
+        console.log("angleMotivationTrial correct:", data.correct);
+    }
+};
+const feedbackAnglesMotivation = {
+    type: 'html-button-response',
+    stimulus: "debrief performance",
+    choices: [`${language.button.next}`],
+    data: {task: 'feedbackAnglesMotivation'}
+};
+
+let anglesVariables = generateAnglesMotivationVariables(nAngles);
+anglesVariables =anglesVariables.map(angle => ({angle : angle, test : "test"}))
+console.log("anglesVariables arrays are", anglesVariables)
+
+const timelineAnglesMotivation = {
+    timeline: [ instructionsAnglesMotivation,
+    {
+        timeline : [angleMotivationTrial],
+        timeline_variables: anglesVariables
+    },
+    feedbackAnglesMotivation
+    ]
+}
+
+/************ define the arithmetic task trials ***************/
+
+const arithmeticTrial = {
+    type: 'html-keyboard-response',
+    stimulus: function() {
+        return jsPsych.timelineVariable('html', true);
+    },
+    choices: ['Enter'], // Disable default key responses
+    on_start: function() {
+        arithmeticInputBuffer = "";
+        numberAttemptedSums += 1;
+    },
+    on_load: function() {
+        console.log("Starting arithmetic trial, input buffer reset. numberAttemptedSums is now ", numberAttemptedSums);
+        // Temporarily disable 'Enter' as a valid response to block carryover keypresses
+        // const originalChoices = arithmeticTrial.choices;
+        // arithmeticTrial.choices = [];
+        // const ignoreWindowMs = 2000;
+        // setTimeout(() => {
+        //     arithmeticTrial.choices = originalChoices;
+        //     console.log("Re-enabled Enter key response after ignore window");
+        // }, ignoreWindowMs);
+        const echoedText = document.getElementById('arithmetic-response-echo');
+
+        const renderInput = function() {
+            if (!echoedText) {
+                return;
+            }
+            echoedText.textContent = arithmeticInputBuffer.length > 0 ? arithmeticInputBuffer : '\u00A0';
+        };
+
+        renderInput();
+
+
+        arithmeticInputHandler = function(e) {
+
+            if (/^[0-9]$/.test(e.key)) {
+                arithmeticInputBuffer += e.key;
+                renderInput();
+                e.preventDefault();
+            } else if (e.key === 'Backspace') {
+                arithmeticInputBuffer = arithmeticInputBuffer.slice(0, -1);
+                renderInput();
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', arithmeticInputHandler);
+
+        let countdownContainer = document.getElementById('countdown');
+        if (!countdownContainer) {
+            countdownContainer = document.createElement('div');
+            countdownContainer.id = 'countdown';
+            countdownContainer.innerText = '';
+            document.body.appendChild(countdownContainer);
+        }
+
+        if (arithmeticRoundStartTime === null) {
+            arithmeticRoundStartTime = Date.now();
+        }
+
+        const updateCountdown = function() {
+            if (arithmeticRoundStartTime === null) {
+                return;
+            }
+            const elapsed = Date.now() - arithmeticRoundStartTime;
+            const remaining = Math.max(0, arithmeticRoundTimeoutMs - elapsed);
+            const countdownEl = document.getElementById('countdown');
+            if (countdownEl) {
+                countdownEl.innerText = `${language.timerText} ${formatSeconds(remaining)}`;
+            }
+        };
+
+        updateCountdown();
+
+        if (arithmeticRoundTimer === null) {
+            arithmeticRoundTimer = setTimeout(function() {
+                if (arithmeticRoundCountdownInterval !== null) {
+                    clearInterval(arithmeticRoundCountdownInterval);
+                    arithmeticRoundCountdownInterval = null;
+                    console.log("Cleared arithmetic round countdown interval due to timeout.");
+                }
+                const countdownEl = document.getElementById('countdown');
+                if (countdownEl && countdownEl.parentNode) {
+                    countdownEl.parentNode.removeChild(countdownEl);
+                }
+                arithmeticRoundStartTime = null;
+                arithmeticRoundTimer = null;
+                console.log("Arithmetic round timed out.");
+
+                jsPsych.endCurrentTimeline();
+                jsPsych.finishTrial();
+                console.log("Ended current trial due to arithmetic round timeout.");
+            }, arithmeticRoundTimeoutMs);
+        }
+
+        if (arithmeticRoundCountdownInterval === null) {
+            arithmeticRoundCountdownInterval = setInterval(function() {
+                updateCountdown();
+                if (arithmeticRoundStartTime !== null && Date.now() - arithmeticRoundStartTime >= arithmeticRoundTimeoutMs) {
+                    clearInterval(arithmeticRoundCountdownInterval);
+                    arithmeticRoundCountdownInterval = null;
+                }
+            }, 250);
+        }
+    },
+    on_finish: function(data) {
+
+        if (arithmeticInputHandler) {
+            document.removeEventListener('keydown', arithmeticInputHandler);
+            arithmeticInputHandler = null;
+        }
+
+        const numbers = jsPsych.timelineVariable('numbers', true);
+        const expectedSum = jsPsych.timelineVariable('expectedSum', true);
+        const response = arithmeticInputBuffer;
+        const responseNumber = response === "" ? null : parseInt(response, 10);
+        const correct = responseNumber === expectedSum;
+        
+        if (correct) {
+            numberCorrectSums += 1;
+        }
+
+
+
+        //data.task = 'arithmetic';
+        data.task = 'arithmeticTrial';
+        data.numbers = numbers;
+        data.expectedSum = expectedSum;
+        data.response = response;
+        data.responseNumber = responseNumber;
+        data.correct = correct;
+        data.roundNumber = arRoundIndicator;
+        console.log("Arithmetic trial data:", data, ", numberAttemptedSums is ",numberAttemptedSums, ", numberCorrectSums is ",numberCorrectSums);
+    }
+};
+
+const arithmeticFeedback = { // select the trial from the same round ! Maybe using the jsPsych.data.getDataByTimelineNode(current_node_id)
+    type: 'html-button-response',
+    choices: [language.button.next],
+    stimulus: function() {
+        // const last = jsPsych.data.get().filterCustom(function(trial){task = 'arithmeticTrial'}).last(1).values()[0];
+        const last = jsPsych.data.get().last(1).values()[0];
+        const statusText = last.correct ? `${language.feedback.correct}` : `${language.feedback.incorrect}`;
+        const statusColor = last.correct ? '#1B7F3A' : '#B00020';
+        const answerText = last.response === '' ? '-' : last.response;
+
+        return `<div style="max-width: 900px; margin: 0 auto; text-align: center;">
+                    <p style="font-size: 42px; font-weight: 700; color: ${statusColor}; margin-bottom: 18px;">${statusText}</p>
+                    <p style="font-size: 24px; margin-bottom: 8px;">${language.feedbackArithmetic.yourAnswer} <b>${answerText}</b></p>
+                    <p style="font-size: 24px;">${language.feedbackArithmetic.correctAnswer} <b>${last.expectedSum}</b></p>
+                </div>`;
+    },
+    data: { task: 'arithmeticFeedback' }
+};
+
+
+
+// const arithmeticTimeline = {
+//     timeline: [arithmeticTrial, arithmeticFeedback],
+//     timeline_variables: arithmeticAdditions
+// };
+const instructionsArithmetic = {
+    type: "instructions",
+    pages: function(){
+        return [`<h2>${language.arithInstr.titleInstructions}</h2>
+            <p>${language.arithInstr.severalAdditions}</p>
+            <p>${language.arithInstr.nRounds}</p>
+            <br>
+            <p><b>${language.arithInstr.bonus}</b></p>
+            <p>${language.arithInstr.randomRound.replace('{paymentPerAddition}', arithmeticPayment)}</p>
+            <p>${language.arithInstr.example.replace('{paymentPerAddition}', arithmeticPayment).replace('{exemplePayment}', Math.round(100*3*arithmeticPayment)/100)}</p>
+            <p>${language.arithInstr.clickNextInstructions}</p>`];
+    },
+    show_clickable_nav: true,
+    button_label_next: language.button.next,
+    button_label_previous: language.button.previous,
+    allow_backward: true,
+}
+
+let arithmeticRounds = [];
+
+makeArithmeticRounds= function(n) {
+
+    incentivizedRound = getRandomInt(3, n);
+
+    for (let i = 0; i < n; i++) {
+        let presentationRound= {
+            type: "html-keyboard-response",
+            stimulus : function () {
+                if (i == incentivizedRound -1) {
+                    return `<h2>${language.arithmeticPresentationRound.round.replace('{n}', i+1)}</h2>
+                    <p><b>${language.arithmeticPresentationRound.incentivizedRound}</b></p>
+                    <p>${language.arithmeticPresentationRound.pressEnter}</p>`;
+                } 
+                else {
+                return `<h2>${language.arithmeticPresentationRound.round.replace('{n}', i+1)}</h2>
+                    <p>${language.arithmeticPresentationRound.pressEnter}</p>`;
+                }
+            },
+            choices : ['Enter'],
+            post_trial_gap: 500,
+        }
+        //let core_round = []
+        arithmeticRounds.push(
+            arithmeticRound, presentationRound
+        )
+        arithmeticRounds.push({
+            timeline: [
+            arithmeticTrial, 
+            arithmeticFeedback],
+            timeline_variables: additionGenerator(arithmetic_duration),
+            conditional_function: function() {
+                console.log('This conditional function will execute first.')
+                return true;
+            }
+        });
+
+        //arithmeticRounds.push(core_round);
+        console.log("arithmeticRounds after push is ", arithmeticRounds);
+    }
+    arithmeticRounds.splice(0, 0, instructionsArithmetic);
+    
+}
+
+makeArithmeticRounds(nRoundsArithmetic)
+     //       { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [presentationRound]}, 
+
+
+const arithmeticTimeline = {
+    timeline: arithmeticRounds
+}
+
+
+
 
 
 
@@ -3158,7 +3546,7 @@ const timelineUncertainty = {
 jsPsych.data.addProperties({subject: subjectId});
 
 timeline.push( /*{type: "fullscreen", fullscreen_mode: true}, consentForm, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
-    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, */ timelineSlidersMotivation, timelineUncertainty, incentives_span_mpl);
+    instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, timelineSlidersMotivation, timelineAnglesMotivation, */ arithmeticTimeline, incentives_span_mpl);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
