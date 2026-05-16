@@ -674,6 +674,14 @@ ggplot(dataExIllustration%>%pivot_longer(colnames(dataExIllustration))%>%as.data
            fill = name)) +
   geom_density(alpha = 0.25)
 
+## plot the incentive function of arithmetic trial
+inFunc <- function (x) {
+  0.5* (1-((x/25)))^2
+}
+ggplot(data.frame(x =c(0,25)), aes(x=x))+ stat_function(fun=inFunc)
+
+##
+
 # view mean accuracy span mpl and sd
 s_mplChoice_ex <- s_mpl_scatterCogLoadChoiceLevel%>%
   pivot_longer(

@@ -101,13 +101,11 @@ function formatSeconds(ms) {
 /************* Variables MPLIncentives ****************/
 let numberTrialsMPLIncentives = 14;
 let numberSuperIncentivizedMPLs = 4; // number of MPLs that are more incentivized than the others in the MPL incentives task
-let superArray_ineq = generateIndexSuperMPLs(numberTrialsMPLIncentives) // indicates which MPLs are "super" (i.e. with higher incentives) in the MPL incentives task
-console.log("superArray_ineq is ", superArray_ineq)
-let superArray_mirr = generateIndexSuperMPLs(numberTrialsMPLIncentives) // indicates which MPLs are "super" (i.e. with higher incentives) in the MPL incentives task
-console.log("superArray_mirr is ", superArray_mirr)
-const luckyPpIncentives = getRandomInt(1, propSelecForMPLIncentives); // determine if the participant is selected to be paid a random draw of an MPL
+let superArray = generateIndexSuperMPLs(numberTrialsMPLIncentives) // indicates which MPLs are "super" (i.e. with higher incentives) in the MPL incentives task
+console.log("superArray is ", superArray)
+const luckyPpIncentives = 1 //getRandomInt(1, propSelecForMPLIncentives); // determine if the participant is selected to be paid a random draw of an MPL
 console.log("luckyPpIncentives is ", luckyPpIncentives)
-let treatHasChanged = false; // to indicate whether the treatment has changed (from mirror to inequalities or the inverse). It is used to shorten the instructions of the MPLs when participants see them a second time.
+
 /*************** INSTRUCTIONS ***************/
 
 const consentForm = {
@@ -355,93 +353,60 @@ const instructionsSpanMPLMirrorIncentives = {
     pages: function(){
         // change the goal of the task in the instructions if it is the incentives block or not
         let decisionTableSubtitle = "";
-        if (treatIs == "ineq") 
+        if (treatmentGoal == "ineq") 
             {decisionTableSubtitle = language.instructionsDecisionTable.subTitleInequalities 
             exemple1Explanation = language.instructionsDecisionTable.example1ExplanationMirrorIncentivesIneq;
             exemple2Explanation = language.instructionsDecisionTable.example2ExplanationMirrorIncentivesIneq;
 
             }
-        else if (treatIs == "mirr") {
+        else if (treatmentGoal == "mirr") {
             decisionTableSubtitle = language.instructionsDecisionTable.subTitle;
             exemple1Explanation = language.instructionsDecisionTable.example1ExplanationMirrorIncentivesMirr;
             exemple2Explanation = language.instructionsDecisionTable.example2ExplanationMirrorIncentivesMirr;
         }
 
-        if (treatHasChanged==false){
-            return [
-                ` <h2>${language.descriptionExperimentSpanMPL.title}</h2>
-                    <p>${language.descriptionExperimentSpanMPL.twoPartsIncentives}</p>
-                    <p>${language.descriptionExperimentSpanMPL.payment.replace("{basePaymentMPLIncentives}", Math.round(basePaymentMPLIncentives * 100)/100)}</p>
-                    <p>${language.descriptionExperimentSpanMPL.clickNext}</p>`,
-                // `<h2>${language.instructionsThirdPart.title}</h2>
-                // <p>${language.instructionsThirdPart.description}</p>
-                // <!--<p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p> --> 
-                // <p>${language.instructionsThirdPart.clickNext}</p>`,
+        return [
+          ` <h2>${language.descriptionExperimentSpanMPL.title}</h2>
+            <p>${language.descriptionExperimentSpanMPL.twoPartsIncentives}</p>
+            <p>${language.descriptionExperimentSpanMPL.payment.replace("{basePaymentMPLIncentives}", Math.round(basePaymentMPLIncentives * 100)/100)}</p>
+            <p>${language.descriptionExperimentSpanMPL.clickNext}</p>`,
+        // `<h2>${language.instructionsThirdPart.title}</h2>
+        // <p>${language.instructionsThirdPart.description}</p>
+        // <!--<p>${language.instructionsThirdPart.freqMPL.replace('{frequency}', propSelecForMPL)}</p> --> 
+        // <p>${language.instructionsThirdPart.clickNext}</p>`,
 
-                ` <h2>${language.instructionsDecisionTable.titleIncentives}</h2>
-                <p>${language.instructionsDecisionTable.descriptionIncentives}</p>
-                <h3>${decisionTableSubtitle}</h3>
-                <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
-                <p>${language.instructionsDecisionTable.descriptionMoney}</p>
-                <p>${language.instructionsDecisionTable.optionsDiffer}</p>
-                <p>${language.instructionsDecisionTable.bonusAverageBoxIncentives}</p>
-                <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
-                <br>
-                <!-- Example 1 (separate box) -->
-                <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
-                    <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
-                    ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                    <br><p style="margin:8px 0 0 0; color:#333;">${exemple1Explanation}</p>
-                </div></div>
+        ` <h2>${language.instructionsDecisionTable.titleIncentives}</h2>
+        <p>${language.instructionsDecisionTable.descriptionIncentives}</p>
+        <h3>${decisionTableSubtitle}</h3>
+        <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
+        <p>${language.instructionsDecisionTable.descriptionMoney}</p>
+        <p>${language.instructionsDecisionTable.optionsDiffer}</p>
+        <p>${language.instructionsDecisionTable.bonusAverageBoxIncentives}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${exemple1Explanation}</p>
+        </div></div>
 
-                <!-- Example 2 (separate box, same style) -->
-                <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
-                    <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
-                    ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                    <br><p style="margin:8px 0 0 0; color:#333;">${exemple2Explanation}</p>
-                </div></div><br>
-                <p>${language.instructionsDecisionTable.clickNext}</p>`,
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${exemple2Explanation}</p>
+        </div></div><br>
+        <p>${language.instructionsDecisionTable.clickNext}</p>`,
 
-                `<p>${language.instructionsClickToChoose.clickToChoose}</p>
-                ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
-                <!-- <p>${language.instructionsClickToChoose.comprehensionQuestionsFirstAfter}</p> -->
-                <p>${language.instructionsClickToChoose.clickNext}</p>`
-            ];
-    }
-    else if (treatHasChanged==true){
-            return [ // when participants see the second treatment of MPL, shorten some instructions
-                ` <h2>${language.instructionsDecisionTable.titleIncentives}</h2>
-                <!-- <p>${language.instructionsDecisionTable.descriptionIncentives}</p>-->
-                <h3>${decisionTableSubtitle}</h3>
-                <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
-                <p>${language.instructionsDecisionTable.descriptionMoney}</p>
-                <p>${language.instructionsDecisionTable.optionsDiffer}</p>
-                <p>${language.instructionsDecisionTable.bonusAverageBoxIncentives}</p>
-                <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
-                <br>
-                <!-- Example 1 (separate box) -->
-                <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
-                    <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
-                    ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                    <br><p style="margin:8px 0 0 0; color:#333;">${exemple1Explanation}</p>
-                </div></div>
+        `<!-- <h2>${language.instructionsClickToChoose.title}</h2> --> 
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
+        <!-- <p>${language.instructionsClickToChoose.comprehensionQuestionsFirstAfter}</p> -->
+        <p>${language.instructionsClickToChoose.clickNext}</p>`
 
-                <!-- Example 2 (separate box, same style) -->
-                <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
-                    <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
-                    ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                    <br><p style="margin:8px 0 0 0; color:#333;">${exemple2Explanation}</p>
-                </div></div><br>
-                <p>${language.instructionsDecisionTable.clickNext}</p>`,
-
-                `<p>${language.instructionsClickToChoose.clickToChoose}</p>
-                ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
-                <p>${language.instructionsClickToChoose.clickToChooseExample}</p>
-                <!-- <p>${language.instructionsClickToChoose.comprehensionQuestionsFirstAfter}</p> -->
-                <p>${language.instructionsClickToChoose.clickNext}</p>`
-            ];
-    }
+    ];
     },
     show_clickable_nav: true,
     button_label_next: language.button.next,
@@ -780,7 +745,7 @@ const comprehensionQuestionsMPLLottery = {
         let detailed_results = {}; // Object to store detailed results for each question
 
         let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
-        this.questions.forEach((q, i) => {
+        comprehensionQuestionsMPLLottery.questions.forEach((q, i) => {
             // normalize given_answer to an array of strings (may be undefined/null or a string/array)
             const raw_given = responses["Q" + i];
             const givenArr = Array.isArray(raw_given) ? raw_given.map(String) : (raw_given == null ? [] : [String(raw_given)]);
@@ -963,7 +928,7 @@ const comprehensionQuestionsMPLMirror = {
         let missing = 0;
 
         let totalIncorrectResponses = 0; // RESET FOR EACH COMPREHENSION QUESTION PAGE!
-        this.questions.forEach((q, i) => {
+        comprehensionQuestionsMPLMirror.questions.forEach((q, i) => {
             // normalize given_answer to an array of strings (may be undefined/null or a string/array)
             const raw_given = responses["Q" + i];
             const givenArr = Array.isArray(raw_given) ? raw_given.map(String) : (raw_given == null ? [] : [String(raw_given)]);
@@ -1121,15 +1086,6 @@ const comprehensionQuestionsMPLMirrorIncentives = {
             required: true,
             correct_response: 1,
         },
-        {
-            prompt: ` <br><br><p>${language.comprehensionQMPLMirror.q3.promptIncentives}</p>`,
-            options: [
-                language.comprehensionQMPLMirror.q3.optionsMain[0],
-                language.comprehensionQMPLMirror.q3.optionsMain[1],
-            ],
-            required: true,
-            correct_response: 1 , // will be set dynamically in on_start based on treatIs
-        },
 
     ],
 
@@ -1147,11 +1103,6 @@ const comprehensionQuestionsMPLMirrorIncentives = {
     <h2>${language.comprehensionMPLIntro.titleMain}</h2>
     <h3>${language.comprehensionMPLExplanationIncentives.replace('{basePaymentMPLIncentives}', Math.round(basePaymentMPLIncentives*100)/100).replace('{buttonHelp}', language.button.help)}</h3>
     <br><br>`
-    },
-    on_start: function() {
-        // Set correct_response for question 3 based on current treatIs value at trial launch
-        this.questions[2].correct_response = treatIs == "mirr" ? 1 : 0;
-        console.log("treatIs is", treatIs, "so question 3 correct_response is set to", this.questions[2].correct_response);
     },
         on_load: function() {
         // Add click handler for help button
@@ -1311,7 +1262,7 @@ const instructionsChoosingASetOfBoxesIncentives = {
     ...instructionsChoosingASetOfBoxes,
     pages: function(){
         let chooseSet = ``;
-        if (treatIs=="ineq"){chooseSet = language.instructionsChoosingASetOfBoxes.chooseSetInequalities}
+        if (treatmentGoal=="ineq"){chooseSet = language.instructionsChoosingASetOfBoxes.chooseSetInequalities}
         else{chooseSet = language.instructionsChoosingASetOfBoxes.chooseSet}
         return [`<!-- <h2>${language.instructionsChoosingASetOfBoxes.title}</h2>-->
         <br>
@@ -1517,17 +1468,13 @@ const prolific_id_loop = {
 // Data setup
 
 
-let numbersArray_lottery = generateShuffledArray(); // for the experiment 2, lottery treatment
-let numbersArray_mirror = generateShuffledArray(); // for the experiment 2, mirror treatment
-let numbersArray_mirror_incentives_ineq = generateShuffledArray(); //for the experiment 1, inequalities treatment
-let numbersArray_mirror_incentives_mirr = generateShuffledArray(); // for the experiment 1, mirror treatment
-
+let numbersArray_lottery = generateShuffledArray();
+let numbersArray_mirror = generateShuffledArray();
 let mpl_html_array_lottery = [];
 let mpl_html_array_mirror = [];
 let example_mpl_html_array_lottery = [];
 let example_mpl_html_array_mirror = [];
-let example_mpl_html_array_mirrorIncentives_mirr = []; // for the example in experiment 1, mirror treatment
-let example_mpl_html_array_mirrorIncentives_ineq = []; // for the example in experiment 1, inequalities treatment
+let example_mpl_html_array_mirrorIncentives = [];
 let training_mpl_html_array1 = [];
 let training_mpl_html_array2 = [];
 let list_mpl_tables = {
@@ -1574,31 +1521,21 @@ else {
     mpl_html_array_mirror.splice(mpl_html_array_mirror.length, 0, mplGenerator(90, "G", "mirror"), mplGenerator(10, "G", "mirror"));}
     //console.log("is mpl_html_array_mirror after adding two examples at start", mpl_html_array_mirror);
 
-mplIncentives_html_array_ineq = numbersArray_mirror_incentives_ineq.map((x, idx) => {
+mplIncentives_html_array = numbersArray_mirror.map((x, idx) => {
     const tableType = list_mpl_tables[x];
     // Extract the probability and type from the table identifier
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     //const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
     console.log("index is ", idx)
-    return mplGenerator(probability, type, "mirror", superArray_ineq[idx], "ineq");
+    return mplGenerator(probability, type, "mirror", superArray[idx]);
 });
-mplIncentives_html_array_mirr = numbersArray_mirror_incentives_mirr.map((x, idx) => {
-    const tableType = list_mpl_tables[x];
-    // Extract the probability and type from the table identifier
-    const probability = parseInt(tableType.substring(1)); // Extract number part
-    const type = tableType.charAt(0); // Extract letter part (G, L, or A)
-    //const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
-    console.log("index is ", idx)
-    return mplGenerator(probability, type, "mirror", superArray_mirr[idx], "mirr");
-});
-console.log("mplIncentives_html_array_mirr is ", mplIncentives_html_array_mirr);
-
+console.log("mplIncentives_html_array is ", mplIncentives_html_array);
+    
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
 // console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
 example_mpl_html_array_mirror = [mplGenerator2(50, "G", "mirror", mplPositionDict["G50"])];
-example_mpl_html_array_mirrorIncentives_mirr = [mplGenerator(50, "G", "mirror", isSuper=0, treat="mirr", example=true)]; // generate an example super (incentivized) Oprea's MPL table with 50% probability and "G" type
-example_mpl_html_array_mirrorIncentives_ineq = [mplGenerator(50, "G", "mirror", isSuper=0, treat="ineq", example=true)]; // generate an example super (incentivized) Oprea's MPL table with 50% probability and "G" type
+example_mpl_html_array_mirrorIncentives = [mplGenerator(50, "G", "mirror", 0)] // generate an example non-super (incentivized) Oprea's MPL table with 50% probability and "G" type
 // console.log(example_mpl_html_array_mirror, "is example_mpl_html_array_mirror");
 training_mpl_html_array1 = [mplGenerator3(1)];
 training_mpl_html_array2 = [mplGenerator3(2)];
@@ -1609,15 +1546,20 @@ training_mpl_html_array = training_mpl_html_array.map(html => ({html: html, stat
 // console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
 mpl_html_array_lottery = mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 mpl_html_array_mirror = mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
-mplIncentives_html_array_ineq = mplIncentives_html_array_ineq.map((html , idx) => ({html: html, statusMPL: "mirror", isSuper: superArray_ineq[idx]})); // html of the MPLs for experiment 2, inequalities treatment (+ wether they are super or not)
-console.log("mplIncentives_html_array_ineq is ", mplIncentives_html_array_ineq);
-mplIncentives_html_array_mirr = mplIncentives_html_array_mirr.map((html , idx) => ({html: html, statusMPL: "mirror", isSuper: superArray_mirr[idx]})); // html of the MPLs for experiment 2, mirror treatment (+ wether they are super or not)
-console.log("mplIncentives_html_array_mirr is ", mplIncentives_html_array_mirr);
+mplIncentives_html_array = mplIncentives_html_array.map((html , idx) => ({html: html, statusMPL: "mirror", isSuper: superArray[idx]}));
+console.log("mplIncentives_html_array is ", mplIncentives_html_array);
 example_mpl_html_array_lottery = example_mpl_html_array_lottery.map(html => ({html: html, statusMPL: "lottery"}));
 example_mpl_html_array_mirror = example_mpl_html_array_mirror.map(html => ({html: html, statusMPL: "mirror"}));
-example_mpl_html_array_mirrorIncentives_mirr = example_mpl_html_array_mirrorIncentives_mirr.map(html => ({html: html, statusMPL: "mirror"})); // exemple for wither mirror or inequalities treatment in experiment 2
-example_mpl_html_array_mirrorIncentives_ineq = example_mpl_html_array_mirrorIncentives_ineq.map(html => ({html: html, statusMPL: "mirror"})); // exemple for wither mirror or inequalities treatment in experiment 2
+example_mpl_html_array_mirrorIncentives = example_mpl_html_array_mirrorIncentives.map(html => ({html: html, statusMPL: "mirror"}));
+console.log(training_mpl_html_array, "is training_mpl_html_array with generated HTML");
+// console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery with generated HTML");
+// console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
 
+
+//console.log(mpl_html_array_lottery, "is mpl_html_array_lottery with generated HTML");
+console.log(`Generated ${mpl_html_array_lottery.length} MPL tables in randomized order`);
+console.log(`Generated ${mpl_html_array_mirror.length} MPL tables in randomized order`);
+// console.log( "is mpl_html_array_mirror with generated HTML", mpl_html_array_mirror);
 
 
 
@@ -1628,7 +1570,7 @@ const setup_MPLIncentives = {
     type: 'html-button-response',
     stimulus: function(){
         if (jsPsych.timelineVariable("isSuper", true)) {
-            isSuper = `<div class="mpl-incentive-badge-super">${language.fds.incentivizedRound}</div>`;
+            isSuper = `<div class="mpl-incentive-badge">${language.fds.incentivizedRound}</div>`;
         } else {            isSuper = `<p>${language.fds.notIncentivizedRound}</p>`
         }
         
@@ -1690,7 +1632,6 @@ const mpl_trial = {
 
     // Get the submit button
     const submitButton = document.querySelector('input[type="submit"]');
-        const cuSlider = expIsIncentives === true ? document.querySelector('input[name="CU"]') : null;
     
     // For span_mpl blocks: hide the button entirely (participants cannot submit early, trial lasts exactly 15s)
     // For other blocks (training, examples): disable until selection is made
@@ -1706,45 +1647,19 @@ const mpl_trial = {
       }
     }
 
-        if (cuSlider) {
-            cuSlider.dataset.changed = 'false';
-            cuSlider.disabled = true;
-        }
-
     let hasSelections = false;
 
     function checkSelections() {
       // Check if at least one choice has been made
       const anySelected = document.querySelector('.choice.selected');
       hasSelections = !!anySelected;
-
-            if (cuSlider) {
-                if (!hasSelections) {
-                    cuSlider.value = '0';
-                    cuSlider.dataset.changed = 'false';
-                    cuSlider.disabled = true;
-                } else {
-                    cuSlider.disabled = false;
-                }
-            }
       
       if (submitButton) {
-                const cuReady = !cuSlider || cuSlider.dataset.changed === 'true';
-                const canProceed = hasSelections && cuReady;
-                submitButton.disabled = !canProceed;
-                submitButton.style.opacity = canProceed ? '1' : '0.5';
-                submitButton.style.cursor = canProceed ? 'pointer' : 'not-allowed';
+        submitButton.disabled = !hasSelections;
+        submitButton.style.opacity = hasSelections ? '1' : '0.5';
+        submitButton.style.cursor = hasSelections ? 'pointer' : 'not-allowed';
       }
     }
-
-        if (cuSlider) {
-            const markCuChanged = function() {
-                cuSlider.dataset.changed = 'true';
-                checkSelections();
-            };
-            cuSlider.addEventListener('input', markCuChanged);
-            cuSlider.addEventListener('change', markCuChanged);
-        }
 
     function selectRow(row, choice) {
         document.querySelectorAll(`.choice[data-row="${row}"]`)
@@ -1752,11 +1667,6 @@ const mpl_trial = {
         let cell = document.querySelector(`.choice[data-row="${row}"][data-choice="${choice}"]`);
         cell.classList.add('selected');
         cell.querySelector('input').checked = true;
-
-                if (cuSlider) {
-                    cuSlider.value = '0';
-                    cuSlider.dataset.changed = 'false';
-                }
 
         // Check if we can enable submit button
         checkSelections();
@@ -1846,14 +1756,6 @@ const mpl_trial = {
     const timeoutId = setTimeout(() => {
       // add hidden input to mark that this was a timeout
       const form = document.querySelector('form') || document.querySelector('.jspsych-survey-form');
-            if (cuSlider && cuSlider.dataset.changed !== 'true' && form) {
-                cuSlider.disabled = true;
-                const hiddenCU = document.createElement('input');
-                hiddenCU.type = 'hidden';
-                hiddenCU.name = 'CU';
-                hiddenCU.value = 'NA';
-                form.appendChild(hiddenCU);
-            }
       if (form) {
         const hidden = document.createElement('input');
         hidden.type = 'hidden';
@@ -1983,14 +1885,6 @@ const mpl_trial = {
         data.isSuper = jsPsych.timelineVariable("isSuper", true);    
         console.log("data.isSuper is ", data.isSuper)
     };
-    data.treatIs = treatIs;
-    console.log("data.treatIs is ", data.treatIs)
-    if (expIsIncentives === true) {
-        const cuRaw = responses_mpl.CU;
-        const cuParsed = parseInt(cuRaw, 10);
-        data.CU = (cuRaw === "NA" || cuRaw === undefined || cuRaw === null || cuRaw === "" || Number.isNaN(cuParsed)) ? "NA" : cuParsed;
-        console.log("data.CU is ", data.CU);
-    }
     data.switch_row2 = switchRow2; // null means no switch
     data.switch_row1 = switchRow1; // null means no switch
     console.log("data.switch_row1 is ", data.switch_row1, "and data.switch_row2 is ", data.switch_row2)
@@ -2837,8 +2731,6 @@ const feedbackExampleSpanMPLIncentives = {
     let selectedTrial = jsPsych.data.get().filterCustom(function(trial){
         return trial.task == 'mpl' && trial.block == 'example_span_mpl';
     });
-    let rigthSet = selectedRow <= 11 ? "<span style='color: red'>lot A</span>" : "<span style='color: blue'>lot B</span>"; // the row to select to maximize EV is the lottery/mirror under €12 and certain amount above, in G50 
-    let rightSetWas = language.feedbackExampleSpanMPL.rightChoiceWas.replace('{rightLot}', rigthSet); // in the example, we present the row but not the choice, so we just say that the right choice was the one that would maximize EV
     console.log(selectedTrial, "is the selectedTrial for mpl payment");
     console.log(selectedTrial.count(), "is the selectedTrial count for mpl payment (should be one)");
     let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
@@ -2849,11 +2741,11 @@ const feedbackExampleSpanMPLIncentives = {
     actual_payment_mpl_example = calculateMPLPayment(mplType, selectedRow, choices, chosenStatusExample); 
     actual_payment_mpl_example = Math.min(actual_payment_mpl_example, 30);
     console.log(actual_payment_mpl_example)
-    let chosenSet = "";
-    if (choices[selectedRow] == "sure") { chosenSet = "<span style='color: blue'>lot B</span>"; }
-    else if (choices[selectedRow] == "lottery") { chosenSet = "<span style='color: red'>lot A</span>"; }
+    let chosenLot = "";
+    if (choices[selectedRow] == "sure") { chosenLot = "<span style='color: blue'>lot B</span>"; }
+    else if (choices[selectedRow] == "lottery") { chosenLot = "<span style='color: red'>lot A</span>"; }
     console.log("choices[selectedRow]", choices[selectedRow]);
-    console.log("chosenSet is ", chosenSet);
+    console.log("chosenLot is ", chosenLot);
 
     // Use the calculated payments
     trial.data = trial.data || {};
@@ -2862,34 +2754,18 @@ const feedbackExampleSpanMPLIncentives = {
     let html;
     let theDigit = (treatment == "hard") ? "les chiffres" : "le chiffre";
     let thePresentedDigitWas = (treatment == "hard") ? "les chiffres présentés étaient" : "le chiffre présenté était";
-    if (treatIs == "mirr"){ // no indication of which set had to be selected 
     html = 
     `<!--<h2>${language.feedbackExampleSpanMPL.title}</h2>-->
     <p>${language.feedbackExampleSpanMPL.description}</p>
-    <p>${language.feedbackExampleSpanMPL.youSelected.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenSet)}<p>
-    <p>${language.feedbackExampleSpanMPL.yourPayment.replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}<p>
-    <!--<p>${language.feedbackExampleSpanMPL.instructionReminder}</p>-->
-     <p>${language.feedbackExampleSpanMPL.clickNext}</p>
-    `}
-    else if (treatIs == "ineq") { // indication of which set had to be selected 
-        html = 
-    `<!--<h2>${language.feedbackExampleSpanMPL.title}</h2>-->
-    <p>${language.feedbackExampleSpanMPL.description}</p>
-    <p>${language.feedbackExampleSpanMPL.youSelected.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenSet).concat(" ", rightSetWas)}<p>
-    <p>${language.feedbackExampleSpanMPL.yourPayment.replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}<p>
+    <p>${language.feedbackExampleSpanMPL.paymentMPLIncentives.replace('{selectedRow}', selectedRow + 1).replace('{chosenLot}', chosenLot).replace('{paymentMPL}', actual_payment_mpl_example).replace('{selectedRow}', selectedRow + 1)}<p>
     <!--<p>${language.feedbackExampleSpanMPL.instructionReminder}</p>-->
      <p>${language.feedbackExampleSpanMPL.clickNext}</p>
     `
-    }
     trial.stimulus = html; // set final display
     },
 };
 
 let actual_payment_span_span = 0;
-
-
-/************ define the incentive calculation trials ***************/
-
 
 const incentives_span_mpl = {
     type: "html-keyboard-response",
@@ -3041,7 +2917,8 @@ const incentives_mplIncentives = {
     on_start: function(trial) {
 
     /******* mpl payment *********/
-    let actual_payment_mplIncentives = 0;
+    let actual_payment_mplIncentives;
+    let actual_payment_arithmeticTest = 0; // payment for the arithmetic test (calculating % of $25)
     const subBlockIntegerMplIncentives = getRandomInt(1, numberTrialsMPLIncentives + numberSuperIncentivizedMPLs) // round number + more incentivized rounds.
     console.log("numberTrialsMPLIncentives + numberSuperIncentivizedMPLs is ", numberTrialsMPLIncentives + numberSuperIncentivizedMPLs);
     console.log("subBlockIntegerMplIncentives is ", subBlockIntegerMplIncentives);
@@ -3050,27 +2927,34 @@ const incentives_mplIncentives = {
     let chosenStatus = "mirror" // always mirror in this experiment
 
     if (luckyPpIncentives == 1) { // 1 in propSelecForMPLIncentives chance of being selected for MPL payment
-        
         let selectedRow; 
         let selectedTrial;
-        console.log("subBlockIntegerMplIncentives > numberTrialsMPLIncentives");
-        const superTrials = jsPsych.data.get().filterCustom(function(trial){
-            return trial.task == 'mpl' &&
-                trial.block == 'mpl_incentives' &&
-                trial.isSuper == 1;
-        })
-        console.log("superTrials for mpl incentives payment are ", superTrials);
-        const selectedTrialCount = superTrials.count();
-        console.log("selectedTrialCount for mpl incentives payment is ", selectedTrialCount);
-        if (selectedTrialCount === 0) {
-            selectedTrial = jsPsych.data.get().filterCustom(function(){ return false; }); // empty DataCollection
-        } else {
-            const randomIdx = getRandomInt(1, selectedTrialCount);
-            console.log("randomIdx for selecting super trial for mpl incentives payment is ", randomIdx);
-            selectedTrial = superTrials.first(randomIdx).last(1); // still a DataCollection (1 trial)
+        if (subBlockIntegerMplIncentives <= numberTrialsMPLIncentives) {
+            selectedTrial = jsPsych.data.get().filterCustom(function(trial){
+                return trial.task == 'mpl' && trial.block == 'mpl_incentives' && trial.subBlock == subBlockIntegerMplIncentives && trial.statusMPL == chosenStatus;
+            });
         }
+        else if (subBlockIntegerMplIncentives > numberTrialsMPLIncentives) {
+            console.log("subBlockIntegerMplIncentives > numberTrialsMPLIncentives");
+            const superTrials = jsPsych.data.get().filterCustom(function(trial){
+                return trial.task == 'mpl' &&
+                    trial.block == 'mpl_incentives' &&
+                    trial.statusMPL == chosenStatus &&
+                    trial.isSuper == 1;
+            });
+            console.log("superTrials for mpl incentives payment are ", superTrials);
+            const selectedTrialCount = superTrials.count();
+            console.log("selectedTrialCount for mpl incentives payment is ", selectedTrialCount);
+            if (selectedTrialCount === 0) {
+                selectedTrial = jsPsych.data.get().filterCustom(function(){ return false; }); // empty DataCollection
+            } else {
+                const randomIdx = getRandomInt(1, selectedTrialCount);
+                console.log("randomIdx for selecting super trial for mpl incentives payment is ", randomIdx);
+                selectedTrial = superTrials.first(randomIdx).last(1); // still a DataCollection (1 trial)
+            }
+        }
+        console.log(selectedTrial, "is the selectedTrial for mpl payment");
         console.log(selectedTrial.count(), "is selectedTrial count for mpl payment");
-
         let mplType = selectedTrial.select('mplType').values[0]; // should be the same for all trials in the subBlock
         console.log(mplType, "is the mplType for the selected trial");
         if (/^.O\d{2}$/.test(mplType)) { // is always the case except if we include other types of MPLs than Oprea's ones
@@ -3081,14 +2965,13 @@ const incentives_mplIncentives = {
         let choices = selectedTrial.select('choices').values[0];
         console.log(choices, "is the choices for the selected trial");
         actual_payment_mplIncentives = Math.round(calculateMPLPayment(mplType, selectedRow, choices, chosenStatus)*100)/100;
-        actual_payment_mplIncentives = Math.min(actual_payment_mplIncentives, 32.5); // maximum payment for the MPL part (A15 mirror)
+        actual_payment_mplIncentives = Math.min(actual_payment_mplIncentives, 30);
         console.log("actual_payment_mplIncentives is", actual_payment_mplIncentives)
         console.log("selectedRow is ", selectedRow, "and actual_payment_mplIncentives is", actual_payment_mplIncentives, "and luckyPp is ", luckyPp, "and chosenStatus is ", chosenStatus,
         "and choices are ", choices);
     }
 
     /******* arithmetic test payment (Part 2) *********/
-    let actual_payment_arithmeticTest = 0; // payment for the arithmetic test (calculating % of $25)
     const arTestValues = [10, 25, 50, 75, 90];
     const selectedArTestValue = arTestValues[getRandomInt(0, arTestValues.length - 1)];
     const selectedArTestKey = `sliderArTest${selectedArTestValue}`;
@@ -3111,7 +2994,7 @@ const incentives_mplIncentives = {
         
     // Use the calculated payments
     trial.data = trial.data || {};
-    //trial.data.treatmentGoal = treatmentGoal; each participant does the two treatment so no need to indicate what is the treatment (mirror or inequalities)
+    trial.data.treatmentGoal = treatmentGoal;
     trial.data.payment_mplIncentives = actual_payment_mplIncentives;
     trial.data.payment_arithmeticTest = actual_payment_arithmeticTest;
     trial.data.arithmeticTestSelectedValue = selectedArTestValue;
@@ -3125,7 +3008,7 @@ const incentives_mplIncentives = {
     const cMpl  = actual_payment_mplIncentives ?? 0;
     const cArTest = actual_payment_arithmeticTest ?? 0;
 
-    trial.data.totalBonus = Math.round((Math.min(cMpl, 32.50) + cArTest) * 100) / 100;
+    trial.data.totalBonus = Math.round((Math.min(cMpl, 30) + cArTest) * 100) / 100;
     trial.data.totalPayment = Math.round((basePaymentMPLIncentives + trial.data.totalBonus)*100)/100; //30.5€
     trial.data.propSelecForMPLIncentives = propSelecForMPLIncentives;
     trial.data.fds_post_trial_gap = fds_post_trial_gap;
@@ -3178,34 +3061,6 @@ const changePaymentRule = {
     on_finish: function() {
         isPaymentRulePhase = true;
         console.log("isPaymentRulePhase is now ", isPaymentRulePhase);
-        treatHasChanged =  true;
-        console.log("treatHasChanged is now ", treatHasChanged);
-    }
-};
-
-const changeTreatment = { // change from inequalities to mirror or the inverse
-    type: "html-keyboard-response",
-    stimulus: function() {
-        let instr;
-        if (treatIs == "mirr"){ instr = language.changeTreatment.treatmentMirr
-    console.log("instructions are defined as ", instr);}
-        else if (treatIs == "ineq"){ instr = language.changeTreatment.treatmentIneq
-    console.log("instructions are defined as ", instr);}
-        return `<div style="max-width: 1200px">
-            <div style="border: 3px solid #FF6B35; background-color: #FFF3E0; padding: 20px; margin: 20px auto; border-radius: 8px;">
-                <h2 style="color: #FF6B35; text-align: center; margin-top: 0;">⚠️ ${language.changeTreatment.title} ⚠️</h2>
-                <div style="background-color: white; padding: 15px; border-radius: 4px; border-left: 4px solid #FF6B35;">
-                    <p style="font-size: 1.1em; margin: 0;"> ${instr} </p> 
-                </div>
-            </div>
-        </div>
-        <p>${language.changeRules.pressKey}</p>`;
-    },
-    on_finish: function() {
-        isPaymentRulePhase = true;
-        console.log("isPaymentRulePhase is now ", isPaymentRulePhase);
-        treatHasChanged =  true;
-        console.log("treatHasChanged is now ", treatHasChanged);
     }
 };
 
@@ -3466,36 +3321,26 @@ const cognitiveUncertaintyLottery = {
         data.task = 'sliderQuestionsMirror';
     }
 };
-const cognitiveUncertaintyMirrorIncentives_mirr = {
+const cognitiveUncertaintyMirrorIncentives = {
     ...cognitiveUncertaintyMirror,
     type: 'survey-html-form',
     html: function(){
 
         return `
             <div style="max-width: 800px; margin: 0 auto;">
-                <h2>${language.sliderTitleIncentives_mirr}</h2><br>
+                <h2>${language.sliderTitleIncentives}</h2><br>
                 <!-- <p>${language.sliderMirrorIncentives}</p><br> -->
                 <p>${language.sliderHonest}</p><br>
                 
+                <div style="margin: 30px 0;">
+                    <p>${language.sliderCognitiveUncertainty.questionIncentives}</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${language.sliderCognitiveUncertainty.veryUncertain}</span>
+                        <input type="range" name="cognitiveUncertainty" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderCognitiveUncertainty.veryCertain}</span>
+                    </div>
+                </div><br>
                 
-                <div style="margin: 30px 0;">
-                    <p>${language.sliderAttentionToIncentives.questionIncentivesSuper}</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderAttentionToIncentives.veryUncertain}</span>
-                        <input type="range" name="incentivesSuper" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderAttentionToIncentives.veryCertain}</span>
-                    </div>
-                </div><br>
-
-                <div style="margin: 30px 0;">
-                    <p>${language.sliderAttentionToIncentives.questionIncentivesClassic}</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderAttentionToIncentives.veryUncertain}</span>
-                        <input type="range" name="incentivesClassic" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderAttentionToIncentives.veryCertain}</span>
-                    </div>
-                </div><br>
-
                 <div style="margin: 30px 0;">
                     <p>${language.sliderInattention.questionBoxesIncentives}</p>
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -3513,90 +3358,17 @@ const cognitiveUncertaintyMirrorIncentives_mirr = {
                         <span>${language.sliderInattention.veryCertain}</span>
                     </div>
                 </div><br>
-
-            </div>
-        `},
-    on_finish: function(data) {
-        // Parse the responses JSON
-        const responses = JSON.parse(data.responses);
-        
-        // Store each slider value with your desired naming convention
-        data.sliderCUIncentiveSuper = parseInt(responses.incentivesSuper);
-        console.log(data.sliderCUIncentiveSuper, "is data.sliderCUIncentiveSuper");
-        data.sliderCUIncentiveClassic = parseInt(responses.incentivesClassic);
-        console.log(data.sliderCUIncentiveClassic, "is data.sliderCUIncentiveClassic");
-        data.sliderInattentionPayoffs = parseInt(responses.inattentionPayoffs);
-        console.log(data.sliderInattentionPayoffs, "is data.sliderCUInattentionPayoffs");
-        data.sliderInattentionBoxes = parseInt(responses.inattentionBoxes);
-        console.log(data.sliderInattentionBoxes = data.sliderInattentionBoxes)
-        data.task = 'sliderQuestions_mirror';
-    }
-};
-const cognitiveUncertaintyMirrorIncentives_ineq = { // questions concerning the inequalities treatment (mirror because all MPLs are mirrors in Oprea's sense)
-    ...cognitiveUncertaintyMirror,
-    type: 'survey-html-form',
-    html: function(){
-
-        return `
-            <div style="max-width: 800px; margin: 0 auto;">
-                <h2>${language.sliderTitleIncentives_ineq}</h2><br>
-                <!-- <p>${language.sliderMirrorIncentives}</p><br> -->
-                <p>${language.sliderHonest}</p><br>
-                
                 
                 <div style="margin: 30px 0;">
-                    <p>${language.sliderAttentionToIncentives.questionIncentivesSuper}</p>
+                    <p>${language.sliderImprecision.question}</p>
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderAttentionToIncentives.veryUncertain}</span>
-                        <input type="range" name="incentivesSuper" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderAttentionToIncentives.veryCertain}</span>
+                        <span>${language.sliderImprecision.veryUncertain}</span>
+                        <input type="range" name="imprecision" min="0" max="100" value="50" style="flex-grow: 1;" required>
+                        <span>${language.sliderImprecision.veryCertain}</span>
                     </div>
-                </div><br>
-
-                <div style="margin: 30px 0;">
-                    <p>${language.sliderAttentionToIncentives.questionIncentivesClassic}</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderAttentionToIncentives.veryUncertain}</span>
-                        <input type="range" name="incentivesClassic" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderAttentionToIncentives.veryCertain}</span>
-                    </div>
-                </div><br>
-
-                <div style="margin: 30px 0;">
-                    <p>${language.sliderInattention.questionBoxesIncentives}</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderInattention.veryUncertain}</span>
-                        <input type="range" name="inattentionBoxes" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderInattention.veryCertain}</span>
-                    </div>
-                </div><br>
-
-                <div style="margin: 30px 0;">
-                    <p>${language.sliderInattention.questionPayoffsIncentives}</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>${language.sliderInattention.veryUncertain}</span>
-                        <input type="range" name="inattentionPayoffs" min="0" max="100" value="50" style="flex-grow: 1;" required>
-                        <span>${language.sliderInattention.veryCertain}</span>
-                    </div>
-                </div><br>
-
+                </div>
             </div>
         `},
-    on_finish: function(data) {
-        // Parse the responses JSON
-        const responses = JSON.parse(data.responses);
-        
-        // Store each slider value with your desired naming convention
-        data.sliderCUIncentiveSuper = parseInt(responses.incentivesSuper);
-        console.log(data.sliderCUIncentiveSuper, "is data.sliderCUIncentiveSuper");
-        data.sliderCUIncentiveClassic = parseInt(responses.incentivesClassic);
-        console.log(data.sliderCUIncentiveClassic, "is data.sliderCUIncentiveClassic");
-        data.sliderInattentionPayoffs = parseInt(responses.inattentionPayoffs);
-        console.log(data.sliderInattentionPayoffs, "is data.sliderCUInattentionPayoffs");
-        data.sliderInattentionBoxes = parseInt(responses.inattentionBoxes);
-        console.log(data.sliderInattentionBoxes, "is data.sliderInattentionBoxes");
-        data.task = 'sliderQuestions_inequalities';
-    }
 };
 
 const instructionArTest = {
@@ -4307,7 +4079,7 @@ const comprehensionQuestionsMPLMirrorWithCheckIncentives = {
                 console.log("last.questions_correct.length is ", last.questions_correct.length);
                 // Check if fewer than 4 questions were correct
                 // return last && last.questions_correct.length == 4;
-                return last && last.questions_correct.length < 3 && failedQMirror < maxQTrials; // 3 bc there are 3 questions
+                return last && last.questions_correct.length < 2 && failedQMirror < maxQTrials;
             }
         },
         {
@@ -4324,7 +4096,7 @@ const comprehensionQuestionsMPLMirrorWithCheckIncentives = {
     ],
         loop_function: function() {
         const last = jsPsych.data.get().filter({task: 'comprehensionSurveyMPLIncentives'}).last(1).values()[0];
-        return !(last && last.questions_correct.length === 3);
+        return !(last && last.questions_correct.length === 2);
     }
 };
 
@@ -4336,13 +4108,9 @@ const timelineExampleSpanMPLTrialMirror= {
     timeline : [blockIsExample, introductionFinalExampleSpanMPL, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
     timeline_variables: example_mpl_html_array_mirror,
 }
-const timelineExampleSpanMPLTrialMirrorIncentives_mirr= {
+const timelineExampleSpanMPLTrialMirrorIncentives= {
     timeline : [blockIsExample, mpl_trial, feedbackExampleSpanMPLIncentives, blockIsspan_mPLAndFdsTrialNumReset],
-    timeline_variables: example_mpl_html_array_mirrorIncentives_mirr,
-}
-const timelineExampleSpanMPLTrialMirrorIncentives_ineq= {
-    timeline : [blockIsExample, mpl_trial, feedbackExampleSpanMPLIncentives, blockIsspan_mPLAndFdsTrialNumReset],
-    timeline_variables: example_mpl_html_array_mirrorIncentives_ineq,
+    timeline_variables: example_mpl_html_array_mirrorIncentives,
 }
 const timelineExampleSpanMPLTrialLottery= {
     timeline : [blockIsExample, introductionFinalExampleSpanMPL, setup_fds, letter_proc, mpl_trial, fds_response_screen, feedbackExampleSpanMPL, blockIsspan_mPLAndFdsTrialNumReset],
@@ -4356,27 +4124,10 @@ const timelineFirstInstructionsMirror = {
     timeline: [instructionsSpanMPLMirror, comprehensionQuestionsMPLMirrorWithCheck, instructionsChoosingASetOfBoxes, timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPL, timelineExampleSpanMPLTrialMirror],
     conditional_function: function() { return fdsTrialNum == 1; }
 }
-let treatIs;
-const treatisIneq ={
-    type: "call-function",
-    func: function() {
-        treatIs = "ineq"
-        console.log("treatIs is ", treatIs);
-    }
-}
-const treatisMirr ={
-    type: "call-function",
-    func: function() {
-        treatIs = "mirr"
-        console.log("treatIs is ", treatIs);
-    }
-}
 const timelineInstructionsMPLIncentives = { // the timeline for the experiment about incentives on mirrors only
     timeline: [instructionsSpanMPLMirrorIncentives, comprehensionQuestionsMPLMirrorWithCheckIncentives, instructionsChoosingASetOfBoxesIncentives, 
-        timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPLIncentives, 
-        { conditional_function: function() { return treatIs == "mirr"; }, timeline: [timelineExampleSpanMPLTrialMirrorIncentives_mirr] }, 
-        { conditional_function: function() { return treatIs == "ineq"; }, timeline: [timelineExampleSpanMPLTrialMirrorIncentives_ineq] }],
-    //conditional_function: function() { return fdsTrialNum == 1; }
+        timelineTrainingSpanMPLTrial, instructionsIncentivesSpanMPLIncentives, timelineExampleSpanMPLTrialMirrorIncentives],
+    conditional_function: function() { return fdsTrialNum == 1; }
 }
 const timelineSecondInstructionsLottery = {
     timeline: [changePaymentRule, secondInstructionsPaymentRuleLottery, comprehensionQuestionsMPLLotteryWithCheck],
@@ -4386,37 +4137,19 @@ const timelineSecondInstructionsMirror = {
     timeline: [changePaymentRule, secondInstructionsPaymentRuleMirror, comprehensionQuestionsMPLMirrorWithCheck],
     conditional_function: function() { return fdsTrialNum == 1; }
 };
-const timelineSecondInstructionsMPLIncentives = {
-    timeline: [changePaymentRule, secondInstructionsPaymentRuleMirror, comprehensionQuestionsMPLMirrorWithCheckIncentives],
-    conditional_function: function() { return fdsTrialNum == 1; }
-};
 const timeline_spanMPL_lottery = {
     timeline: [fdsBlockToSpanMplAndSubBlockIncrementLottery, setup_fds, letter_proc, mpl_trial, fds_response_screen, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]}],
     timeline_variables: mpl_html_array_lottery,
     // conditional_function: function() { return treatment == "hard"; }
 };
 
-const timeline_ineq_MPLIncentives = {
+const timeline_MPLIncentives = {
     timeline: [setup_MPLIncentives, mpl_trial /*, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]} */],
-    timeline_variables: mplIncentives_html_array_ineq, 
+    timeline_variables: mplIncentives_html_array,
 }
-const timeline_mirr_MPLIncentives = {
-    timeline: [setup_MPLIncentives, mpl_trial /*, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]} */],
-    timeline_variables: mplIncentives_html_array_mirr,
+const experiment_MPLIncentives = {
+    timeline: [blockIs_mpl_incentives, timelineInstructionsMPLIncentives, timeline_MPLIncentives]
 }
-
-let experiment_MPLIncentives;
-if (Math.random() < 0.5) { 
-    experiment_MPLIncentives = {
-    timeline :  [blockIs_mpl_incentives, treatisIneq, timelineInstructionsMPLIncentives, timeline_ineq_MPLIncentives, treatisMirr, changeTreatment, timelineInstructionsMPLIncentives, timeline_mirr_MPLIncentives]
-    }
-}
-else { experiment_MPLIncentives =  {
-    timeline : [blockIs_mpl_incentives, treatisMirr, timelineInstructionsMPLIncentives, timeline_mirr_MPLIncentives, treatisIneq, changeTreatment, timelineInstructionsMPLIncentives, timeline_ineq_MPLIncentives]
-    }
-}
-
-
 const timelineTESTLotteryMixedMpl={
     timeline: [fdsBlockToSpanMplAndSubBlockIncrementLottery, mpl_trial, { conditional_function: function() { return fdsTrialNum == totalFdsSpanMplTrials + 1; }, timeline: [fdsTrialNumResetAndSubBlockReset]}],
     timeline_variables: mpl_html_array_lottery,
@@ -4455,14 +4188,6 @@ const timelineUncertainty = {
     timeline: uncertaintyTrials
 };
 
-let uncertaintyTrialsIncentives = [cognitiveUncertaintyMirrorIncentives_mirr, cognitiveUncertaintyMirrorIncentives_ineq];
-if (Math.random() < 0.5) {
-    uncertaintyTrialsIncentives.reverse();
-}
-const timelineUncertaintyIncentives = {
-    timeline: uncertaintyTrialsIncentives
-};
-
 const arithmeticTestTimeline = {
     timeline: [instructionArTest, arTestTrial]
 };
@@ -4489,9 +4214,9 @@ const prolific_redirect = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( {type: "fullscreen", fullscreen_mode: false},  consentForm, demographics,/* instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push( {type: "fullscreen", fullscreen_mode: false}, /*consentForm, prolific_id_loop, demographics, instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, timelineSlidersMotivation,
-    timelineAnglesMotivation, arithmeticTimeline,  incentives_span_mpl, */experiment_MPLIncentives, timelineUncertaintyIncentives, arithmeticTestTimeline, incentives_mplIncentives);
+    timelineAnglesMotivation, arithmeticTimeline, incentives_span_mpl, */ experiment_MPLIncentives, /*cognitiveUncertaintyMirrorIncentives, arithmeticTestTimeline, incentives_mplIncentives, prolific_redirect */);
 
 
 /*************** EXPERIMENT START AND DATA UPDATE ***************/
@@ -4502,7 +4227,7 @@ jatos.onLoad(() => {
         on_finish: function() {
             submitToJatos(jsPsych.data.get().json());
             // jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            // jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });

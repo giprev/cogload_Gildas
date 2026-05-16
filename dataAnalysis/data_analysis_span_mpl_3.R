@@ -2390,8 +2390,11 @@ mean(dataRTCalibrateChoice<30000)
 
 
 # MAIN : deviation from expected value plots
-
-mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST TITRE', ylim=c(-2,2), position = 0, cogload = 0, median = 0){
+# isLottery : in case of order plotting, do we plot lotteries or mirrors ?
+# lotteryFirst : have the subjects completed mirrors or lotteries first ?
+mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, F_mirror, F_lottery, F_lotteryFirst_lottery, F_lotteryFirst_mirror, F_mirrorFirst_lottery, F_mirrorFirst_mirror,
+                   lab='TEST TITRE', ylim=c(-2,2), position = 0, cogload = 0, median = 0, lotteryFirst = FALSE, isLottery = FALSE){
+  
   
   cex<-1.7
   pt.cex<-0.8
@@ -2406,7 +2409,10 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
       lottery_above = "darkred", mirror_above = "lightcoral",
       lottery_below = "darkblue", mirror_below = "lightblue"
     )
-  } else {
+  } else if (lotteryFirst == TRUE){
+    list (lotteryFirst = "gray", mirrorFirst = "white")
+  }
+  else {
     list(lottery = "gray", mirror = "white")
   }
   if (position == 1) {
@@ -2417,6 +2423,14 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
   }
   else if (median == 1) {
     x<-F_above %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+  }
+  else if (lotteryFirst == TRUE) {
+    if (isLottery == TRUE){
+    x<-F_lotteryFirst_lottery %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+    }
+    else if (isLottery == FALSE){
+      x<-F_lotteryFirst_mirror %>%filter(grepl('G',mplType))%>%filter(prob!=50)
+    }
   }
   else {
     x<-F %>%filter(grepl('G',mplType))%>%filter(prob!=50)
@@ -2443,6 +2457,11 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
            pt.bg=c(colors$lottery_above, colors$mirror_above, colors$lottery_below, colors$mirror_below),
            pch=c(21,21,21,21), lty=c(1,1,1,1), cex=0.9, pt.cex=1.5, bg=NA, box.lwd=NA)
   }
+  else if (lotteryFirst == TRUE) {
+    legend("top", legend=c("Lottery first", 'Mirror first'),
+           col=c('black','black'), pt.bg=c(colors$lotteryFirst, colors$mirrorFirst), pch=c(21,21), 
+           lty=c(1,1), cex=0.9, pt.cex=1.5, bg=NA, box.lwd=NA)
+  }
   else {
     legend("top", legend=c("Lottery (Certainty Equivalents)", 'Mirror (Simplicity Equivalents)'),
            col=c('black','black'), pt.bg=c(colors$lottery, colors$mirror), pch=c(21,21), 
@@ -2461,9 +2480,12 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
   abline('h'=0,lty=1)
   
   # Helper function to plot points for a given dataset and position
-  plot_points <- function(data, lottery_color, mirror_color, pch_type=21, show_labels=TRUE) {
+
+  
+  plot_points <- function(data, lottery_color, mirror_color, colorWhenLotteryFirstTrue, pch_type=21, show_labels=TRUE) {
     if (nrow(data) == 0) return()
     
+    if (lotteryFirst == FALSE){ # plot lotteries and mirrors 
     # Lottery points
     y_val <- if (pch_type == 25) data$lottery else data$lottery-data$pred # because the values from A types are already calculated for the plot in dfA and final_data
     arrows(x0=data$prob-0.5, y0=y_val-2*data$ceLotteryse, 
@@ -2475,13 +2497,37 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
     }
     
     # Mirror points
-    y_val <- if (pch_type == 25) data$mirror else data$mirror-data$pred # # because the values from A types are already calculated for the plot in dfA and final_data
+    y_val <- if (pch_type == 25) data$mirror else data$mirror-data$pred # because the values from A types are already calculated for the plot in dfA and final_data
     arrows(x0=data$prob+0.5, y0=y_val-2*data$ceMirrorse, 
            x1=data$prob+0.5, y1=y_val+2*data$ceMirrorse, 
            code=3, angle=90, length=0.05, col="black", lwd=0.5, lty=1)
     points(data$prob+0.5, y_val, bg=mirror_color, col='black', pch=pch_type, cex=cex)
     if (show_labels) {
       text(data$prob, y_val, pos=4, labels=data$mplType, cex=pt.cex, col='black', offset=offset)
+    }
+    }
+    
+    else if (lotteryFirst==TRUE){ # plot only lotteries or only mirrors
+      if (isLottery ==TRUE){ # plot only lotteries
+        y_val <- if (pch_type == 25) data$lottery else data$lottery-data$pred # because the values from A types are already calculated for the plot in dfA and final_data
+        arrows(x0=data$prob-0.5, y0=y_val-2*data$ceLotteryse, 
+               x1=data$prob-0.5, y1=y_val+2*data$ceLotteryse, 
+               code=3, angle=90, length=0.05, col="black", lwd=0.5)
+        points(data$prob-0.5, y_val, bg=colorWhenLotteryFirstTrue, col='black', pch=pch_type, cex=cex)
+        if (show_labels) {
+          text(data$prob, y_val, pos=2, labels=data$mplType, cex=pt.cex, col='black', offset=offset)
+        }
+      }
+      else if (isLottery ==FALSE){ # plot only mirrors
+        y_val <- if (pch_type == 25) data$mirror else data$mirror-data$pred # because the values from A types are already calculated for the plot in dfA and final_data
+        arrows(x0=data$prob+0.5, y0=y_val-2*data$ceMirrorse, 
+               x1=data$prob+0.5, y1=y_val+2*data$ceMirrorse, 
+               code=3, angle=90, length=0.05, col="black", lwd=0.5, lty=1)
+        points(data$prob+0.5, y_val, bg=colorWhenLotteryFirstTrue, col='black', pch=pch_type, cex=cex)
+        if (show_labels) {
+          text(data$prob, y_val, pos=4, labels=data$mplType, cex=pt.cex, col='black', offset=offset)
+        }
+      }
     }
   }
   
@@ -2504,6 +2550,19 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
     plot_points(x_above, lottery_color = colors$lottery_above, mirror_color = colors$mirror_above, pch_type = 21, show_labels = TRUE)
     plot_points(x_below, lottery_color = colors$lottery_below, mirror_color = colors$mirror_below, pch_type = 21, show_labels = TRUE)
   }
+  else if (lotteryFirst == TRUE) {
+    if (isLottery == TRUE){
+      x_lotteryFirst <- F_lotteryFirst_lottery %>% filter(grepl('G', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_lottery %>% filter(grepl('G', mplType))%>%filter(prob != 50)
+    }
+    else if (isLottery == FALSE){
+      x_lotteryFirst <- F_lotteryFirst_mirror %>% filter(grepl('G', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_mirror %>% filter(grepl('G', mplType))%>%filter(prob != 50)
+    }
+    # when we plot x_lotteryFirst there are only lotteries that are plotted 
+    plot_points(x_lotteryFirst, colorWhenLotteryFirstTrue = colors$lotteryFirst, pch_type = 21, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
+    plot_points(x_mirrorFirst, colorWhenLotteryFirstTrue = colors$mirrorFirst, pch_type = 21, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
+    }
   else if (position == 0 && cogload == 0 && median == 0) {
     x <- F %>% filter(grepl('G', mplType))%>% filter(prob != 50)
     plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 21, show_labels = TRUE)
@@ -2527,6 +2586,19 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
     x_below <- F_below %>% filter(grepl('L', mplType))%>% filter(prob != 50)
     plot_points(x_above, lottery_color = colors$lottery_above, mirror_color = colors$mirror_above, pch_type = 21, show_labels = TRUE)
     plot_points(x_below, lottery_color = colors$lottery_below, mirror_color = colors$mirror_below, pch_type = 21, show_labels = TRUE)
+  }
+  else if (lotteryFirst == TRUE) {
+    if (isLottery == TRUE){
+      x_lotteryFirst <- F_lotteryFirst_lottery %>% filter(grepl('L', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_lottery %>% filter(grepl('L', mplType))%>%filter(prob != 50)
+    }
+    else if (isLottery == FALSE){
+      x_lotteryFirst <- F_lotteryFirst_mirror %>% filter(grepl('L', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_mirror %>% filter(grepl('L', mplType))%>%filter(prob != 50)
+    }
+    # when we plot x_lotteryFirst there are only lotteries that are plotted 
+    plot_points(x_lotteryFirst, colorWhenLotteryFirstTrue = colors$lotteryFirst, pch_type = 21, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
+    plot_points(x_mirrorFirst, colorWhenLotteryFirstTrue = colors$mirrorFirst, pch_type = 21, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
   }
   else if (position == 0 && cogload == 0 && median == 0) {
     x <- F %>% filter(grepl('L', mplType))%>% filter(prob != 50)
@@ -2552,13 +2624,28 @@ mainPlot<-function(F, F_high, F_low, F_hard, F_easy, F_above, F_below, lab='TEST
     plot_points(x_above, lottery_color = colors$lottery_above, mirror_color = colors$mirror_above, pch_type = 25, show_labels = TRUE)
     plot_points(x_below, lottery_color = colors$lottery_below, mirror_color = colors$mirror_below, pch_type = 25, show_labels = TRUE)
   } 
+  else if (lotteryFirst == TRUE) {
+    if (isLottery == TRUE){
+      x_lotteryFirst <- F_lotteryFirst_lottery %>% filter(grepl('A', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_lottery %>% filter(grepl('A', mplType))%>%filter(prob != 50)
+    }
+    else if (isLottery == FALSE){
+      x_lotteryFirst <- F_lotteryFirst_mirror %>% filter(grepl('A', mplType))%>%filter(prob != 50)
+      x_mirrorFirst <- F_mirrorFirst_mirror %>% filter(grepl('A', mplType))%>%filter(prob != 50)
+    }
+    # when we plot x_lotteryFirst there are only lotteries that are plotted 
+    plot_points(x_lotteryFirst, colorWhenLotteryFirstTrue = colors$lotteryFirst, pch_type = 25, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
+    plot_points(x_mirrorFirst, colorWhenLotteryFirstTrue = colors$mirrorFirst, pch_type = 25, show_labels = TRUE) # lottery_color and mirror_color are convenient names but both are lotteries or mirrors (I just don't change them from the other conditions)
+  }
   else if (position == 0 && cogload == 0 && median == 0) {
     x <- F %>% filter(grepl('A', mplType) | grepl('M', mplType))
     plot_points(x, lottery_color = colors$lottery, mirror_color = colors$mirror, pch_type = 25, show_labels = TRUE)
   }
 }
 
-dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
+
+# dfA_plot_maker takes data on input and calculates the mean and standard deviation of the deviation of the group asked in the argument, for each mpl type
+dfA_plot_maker = function (type = NULL, med = NULL, order = NULL, data = dfA) {
   if (is.null(med)){
     df <- data
   }
@@ -2575,6 +2662,7 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
     df <- data %>% filter(aboveMedRtChoice == 0)
   }
 
+
   
   dfA_plot <- df %>%
     filter(!mplType %in% c("GS10", "GS25", "GS50", "GS75", "GS90", 
@@ -2586,6 +2674,10 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
              "easy" = filter(., treatment == "easy"), 
              "high" = filter(., mirror_position == "high" & lottery_position == "high"),
              "low" = filter(., mirror_position == "low" & lottery_position == "low"),
+             "lotteryFirst_mirror" = filter(., isLotteryFirst == TRUE),
+             "lotteryFirst_lottery" = filter(., isLotteryFirst == TRUE),
+             "mirrorFirst_mirror" = filter(., isLotteryFirst == FALSE),
+             "mirrorFirst_lottery" = filter(., isLotteryFirst == FALSE),
              .  
       )
     } else .} %>%
@@ -2605,6 +2697,12 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
       n_valid_mirror_hard_low = sum(!is.na(mirror_ev) & treatment == "hard" & mirror_position == "low"),
       n_valid_mirror_easy_high = sum(!is.na(mirror_ev) & treatment == "easy" & mirror_position == "high"),
       n_valid_mirror_easy_low = sum(!is.na(mirror_ev) & treatment == "easy" & mirror_position == "low"),
+      ## to implement order
+      #n_valid_mirrorFirst_mirror = sum(!is.na(mirror_ev) & isLotteryFirst==FALSE),
+      #n_valid_lotteryFirst_mirror = sum(!is.na(mirror_ev) & isLotteryFirst==TRUE),
+      #n_valid_lotteryFirst_lottery = sum(!is.na(lottery_ev) & isLotteryFirst==TRUE),
+      #n_valid_mirrorFirst_lottery = sum(!is.na(lottery_ev) & isLotteryFirst==FALSE),
+      
       
       medDiff=median(lottery_ev-mirror_ev),
       meanEVLoss1=mean(abs(pred-((lottery_ev+mirror_ev)/2))),
@@ -2618,6 +2716,18 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
                n_valid_lottery_hard_low*var(lottery_ev[lottery_position == "low" & treatment == "hard"], na.rm = TRUE) + 
                n_valid_lottery_easy_low*var(lottery_ev[lottery_position == "low" & treatment == "easy"], na.rm = TRUE) +
                n_valid_lottery_easy_high*var(lottery_ev[lottery_position == "high" & treatment == "easy"], na.rm = TRUE)))
+      }
+      ##
+      else if (type == "lotteryFirst_lottery" || type == "mirrorFirst_lottery"){
+        (1/n_valid_lottery)*
+          sqrt((n_valid_lottery_hard_high*var(lottery_ev[lottery_position == "high" & treatment == "hard"], na.rm = TRUE) + 
+                  n_valid_lottery_hard_low*var(lottery_ev[lottery_position == "low" & treatment == "hard"], na.rm = TRUE) + 
+                  n_valid_lottery_easy_low*var(lottery_ev[lottery_position == "low" & treatment == "easy"], na.rm = TRUE) +
+                  n_valid_lottery_easy_high*var(lottery_ev[lottery_position == "high" & treatment == "easy"], na.rm = TRUE)))
+      }
+      ##
+      else if (type == "lotteryFirst_mirror" || type == "mirrorFirst_mirror"){
+        NA
       }
       else if (type == "hard")
         {
@@ -2645,13 +2755,26 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
       }
       else {
         cat("type is no low or high and not null but", type, "\n")
-        NA_real_},
+        NA_real_
+      },
+      
       ceMirrorse = if ((is.null(type)) && n_valid_mirror > 0) 
-      {(1/n_valid_mirror)*
+      {
+        (1/n_valid_mirror)*
           sqrt((n_valid_mirror_hard_high*var(mirror_ev[mirror_position == "high" & treatment == "hard"], na.rm = TRUE) + 
                   n_valid_mirror_hard_low*var(mirror_ev[mirror_position == "low" & treatment == "hard"], na.rm = TRUE) + 
                   n_valid_mirror_easy_low*var(mirror_ev[mirror_position == "low" & treatment == "easy"], na.rm = TRUE) +
                   n_valid_mirror_easy_high*var(mirror_ev[mirror_position == "high" & treatment == "easy"], na.rm = TRUE)))}
+      else if (type == "lotteryFirst_mirror" || type == "mirrorFirst_mirror"){
+        (1/n_valid_mirror)*
+          sqrt((n_valid_lottery_hard_high*var(lottery_ev[lottery_position == "high" & treatment == "hard"], na.rm = TRUE) + 
+                  n_valid_lottery_hard_low*var(lottery_ev[lottery_position == "low" & treatment == "hard"], na.rm = TRUE) + 
+                  n_valid_lottery_easy_low*var(lottery_ev[lottery_position == "low" & treatment == "easy"], na.rm = TRUE) +
+                  n_valid_lottery_easy_high*var(lottery_ev[lottery_position == "high" & treatment == "easy"], na.rm = TRUE)))
+      }
+      else if (type == "lotteryFirst_lottery" || type == "mirrorFirst_lottery"){
+        NA
+      }
       else if (type == "hard")
       {
         (1/(n_valid_mirror_hard_low+ n_valid_mirror_hard_high))*
@@ -2684,6 +2807,7 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
       lottery=mean(lottery_ev, na.rm = TRUE),
       mirror=mean(mirror_ev, na.rm = TRUE),
       
+      
       # position-conditioned means (NA-safe)
       #lottery_high = mean(ifelse(lottery_position == "high", lottery_ev, NA_real_), na.rm = TRUE),
       #lottery_low  = mean(ifelse(lottery_position == "low",  lottery_ev, NA_real_), na.rm = TRUE),
@@ -2695,6 +2819,22 @@ dfA_plot_maker = function (type = NULL, med = NULL, data = dfA) {
       meanEVLoss2=abs(abs(pred)-abs(lottery+mirror)/2)
     )
 }
+
+dfA_plot_lotteryFirst_lottery <- dfA_plot_maker("lotteryFirst_lottery")
+dfA_plot_mirrorFirst_lottery <- dfA_plot_maker("mirrorFirst_lottery")
+mainPlot(F_lotteryFirst_lottery = dfA_plot_lotteryFirst_lottery,
+         F_mirrorFirst_lottery = dfA_plot_mirrorFirst_lottery,
+         isLottery = TRUE,
+         lotteryFirst = TRUE,
+         lab= "exemple of graph of lotteries in first round vs second round")
+
+dfA_plot_lotteryFirst_mirror <- dfA_plot_maker("lotteryFirst_mirror")
+dfA_plot_mirrorFirst_mirror <- dfA_plot_maker("mirrorFirst_mirror")
+mainPlot(F_lotteryFirst_mirror = dfA_plot_lotteryFirst_mirror,
+         F_mirrorFirst_mirror = dfA_plot_mirrorFirst_mirror,
+         isLottery = FALSE,
+         lotteryFirst = TRUE,
+         lab= "exemple of graph of mirrors in first round vs second round")
 
 
 dfA_plot <- dfA_plot_maker()  # No filtering
@@ -2714,6 +2854,11 @@ dfA_plot_aboveRt_hard <- dfA_plot_maker(med = "aboveRt", type = "hard")
 dfA_plot_belowRt_hard <- dfA_plot_maker(med = "belowRt", type = "hard")
 dfA_plot_aboveRt_easy <- dfA_plot_maker(med = "aboveRt", type = "easy")
 dfA_plot_belowRt_easy <- dfA_plot_maker(med = "belowRt", type = "easy")
+## for order effect
+dfA_plot_lotteryFirst_mirror <- dfA_plot_maker(type = "lotteryFirst_mirror")
+dfA_plot_lotteryFirst_mirror
+dfA_plot_mirrorFirst_mirror <- dfA_plot_maker(type = "mirrorFirst_mirror")
+dfA_plot_mirrorFirst_mirror
 
 
 mainPlot(F = dfA_plot, lab = '') # plot of all data, pooled
@@ -5204,7 +5349,25 @@ EVPayoffSpace_av_long <- EVPayoffSpace%>%
               values_from = "value")
 
 
-
+# EG with Oprea's grid
+compute_EG_random <- function(p) {
+  EG <- 0
+  
+  for (i in 0:25) {
+    term <- (p * 25 * i + (25 - i) * ((25 + i + 1) / 2)) / 25
+    EG <- EG + term
+  }
+  
+  return(EG/25)
+}
+compute_EG_middle <- function(p) {
+  
+  term <- (p * 25 * 12 + (25 - 12) * ((25 + 12 + 1) / 2)) / 25
+  
+  return(term)
+}
+compute_EG_random(0.25)
+compute_EG_middle(0.25)
 
 
 

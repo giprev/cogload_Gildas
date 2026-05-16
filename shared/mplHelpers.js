@@ -28,7 +28,10 @@ function createMPLPositionDictionaryFromList() {
     return mplPositions;
 }
 
-function mplGenerator(y, X, condition) {
+function mplGenerator(y, X, condition, isSuper=0, treat, example=false) {
+    // when example == true , no indication on wether it is a classic or a super round
+    console.log("Generating MPL with parameters: y =", y, ", X =", X, ", condition =", condition, ", isSuper =", isSuper, ", treat =", treat, ", example =", example);
+    const tableClass = isSuper ? 'mpl mpl-incentivized' : 'mpl';
     let sign = "";
     if (X == "G") {
         sign = "";
@@ -47,8 +50,11 @@ function mplGenerator(y, X, condition) {
     let Xy = X + y; // e.g., "G75" or "L75"
     // let endowmentsMPL = language.endowmentsMPL[Xy];
     let endowmentsMPL = "";
-    if (condition == "mirror") {
+    if (condition == "mirror" && isSuper==1) {
         endowmentsMPL = language.endowmentsMPL.mirror[Xy];
+    }
+    else if (condition == "mirror" && isSuper==0) {
+        endowmentsMPL = language.endowmentsMPL.mirrorNotIncentivized[Xy];
     } else if (condition == "lottery") {
         endowmentsMPL = language.endowmentsMPL.lottery[Xy];
     }
@@ -58,9 +64,40 @@ function mplGenerator(y, X, condition) {
     else if (X == "A" && y == 10) { endowmentValue = 15;}
     else if (X == "A" && y == 15) { endowmentValue = 20;}
 
+    const showCognitiveUncertainty = expIsIncentives === true && (treat === "ineq" || treat === "mirr") && typeof language !== "undefined" && language.cogUncertainty;
+    const cognitiveUncertaintyHtml = showCognitiveUncertainty ? `
+        <div class="mpl-cognitive-uncertainty" style="max-width: 50vw; margin: 30px auto 0 auto;">
+            <p>${treat === "ineq" ? language.cogUncertainty.questionIneq : language.cogUncertainty.questionMirr}</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span>${language.cogUncertainty.veryUncertain}</span>
+                <input type="range" name="CU" min="0" max="100" value="0" disabled style="flex-grow: 1;">
+                <span>${language.cogUncertainty.veryCertain}</span>
+            </div>
+        </div>` : "";
+
   // Generate sure payment values
     let rows = ``;
     let mpl_html = ``;
+    if (treat== "ineq" & expIsIncentives) {
+        makeChoice = language.instructionsMPL.makeChoiceIncentives;
+    }
+    else {makeChoice = language.instructionsMPL.makeChoice;}
+    if (isSuper==1){
+        instructionTop = `<div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <p>${makeChoice}</p>
+        <p>${language.instructionsMPL.computerChooses}</p>
+        <p><span style="color: green">${endowmentsMPL}</span></p>
+        </div>`
+    }
+    else if (isSuper==0){
+        instructionTop = `<div style="width: 50vw; margin: auto;">
+        <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <p>${makeChoice}</p>
+        <p><span style="color: green">${endowmentsMPL}</span></p>
+        </div>`
+    }
+
     if (X == "L") {
         // HTML generation
         rows = sure_payments.map((amt, i) => `
@@ -78,16 +115,24 @@ function mplGenerator(y, X, condition) {
         </tr>
         `).join('');
 
-        mpl_html = `
+        mpl_html =  `
+        ${instructionTop}
+
+                <!--
         <div style="width: 50vw; margin: auto;">
         <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <p>${makeChoice}</p>
+        <p>${language.instructionsMPL.computerChooses}</p>
+        <p><span style="color: green">${endowmentsMPL}</span></p>
+
         <ul>
-        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${makeChoice}</li><br>
         <li>${language.instructionsMPL.computerChooses}</li><br>
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
-        </ul></div>
+        </ul> -->
+        </div>
 
-        <table class="mpl" data-mpl-type="${X}O${y}">
+        <table class="${tableClass}" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -122,15 +167,21 @@ function mplGenerator(y, X, condition) {
         `).join('');
 
         mpl_html = `
-        <div style="width: 50vw; margin: auto;">
+        ${instructionTop}
+        
+         <!--
         <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <p>${makeChoice}</p>
+        <p>${language.instructionsMPL.computerChooses}</p>
+        <p><span style="color: green">${endowmentsMPL}</span></p>
         <ul>
-        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li>${makeChoice}</li><br>
         <li>${language.instructionsMPL.computerChooses}</li><br>
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
-        </ul></div>
+        </ul> -->
+        </div>
 
-        <table class="mpl" data-mpl-type="${X}O${y}">
+        <table class="${tableClass}" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -163,16 +214,21 @@ function mplGenerator(y, X, condition) {
         `).join('');
 
         mpl_html = `
-
-        <div style="width: 50vw; margin: auto;">
+        ${instructionTop}
+        
+                <!--
         <h2> <span style="color: green">Somme initiale: ${endowmentValue}€ </span></h2>
+        <p>${makeChoice}</p>
+        <p>${language.instructionsMPL.computerChooses}</p>
+        <p><span style="color: green">${endowmentsMPL}</span></p>
         <ul>
-        <li>${language.instructionsMPL.makeChoice}</li><br>
+        <li></li><br>
         <li>${language.instructionsMPL.computerChooses}</li><br>
         <li><span style="color: green">${endowmentsMPL}</span></li><br>
-        </ul></div>
+        </ul> -->
+        </div>
 
-        <table class="mpl" data-mpl-type="${X}O${y}">
+        <table class="${tableClass}" data-mpl-type="${X}O${y}">
             <tr>
             <th></th>
             <th colspan="2" style="color: red">Lot A</th>
@@ -188,8 +244,32 @@ function mplGenerator(y, X, condition) {
         </table>
         `;
     }
+    if (cognitiveUncertaintyHtml) {
+        mpl_html = `${mpl_html}<br>
+        ${cognitiveUncertaintyHtml}`;
+    }
+  
+  if (isSuper==1 && example==false) {
+    mpl_html = `
+      <div class="mpl-container">
+        <div class="mpl-incentive-badge-super">${language.incentiveBadge.super}</div>
+        ${mpl_html}
+      </div>
+    `;
+  }
+  else if (isSuper==0 && example==false){
+    mpl_html = `
+        <div class="mpl-container">
+        <div class="mpl-incentive-badge-classic">${language.incentiveBadge.classic}</div>
+        ${mpl_html}
+        </div>
+        `
+  }
+    
+  
   return mpl_html;
 }
+
 function roundToDownToFifth(number) {
     return Math.floor(number * 5) / 5;
 }
@@ -248,6 +328,10 @@ function createSequenceArray(y, X, position) {
     };
     return array;
 }
+console.log("Example of sure payments for L75 with high position (probaly negative amount):", createSequenceArray(75, "L", "high"));
+console.log("Example of sure payments for LO75 with low position (probably positive amount):", sure_payments.slice());
+console.log("Example of sure payments fixed for LO75 with low position (probably negative amount):", sure_payments.slice().map(x => -x));
+
 
 function mplGenerator2(y, X, condition, position) {
     let sign = "";
@@ -468,7 +552,7 @@ function mplGenerator3(number) {
   return mpl_html;
 }
 
-function generateShuffledArray() {
+function generateShuffledArray() { // generate an array with numbers 1-12, with 2 of them duplicated, and the order shuffled. Each number is then mapped to a MPL type
     // Create base array 1-12
     let arr = Array.from({length: 12}, (_, i) => i + 1);
     
@@ -492,6 +576,20 @@ function generateShuffledArray() {
     return arr;
 }
 
+function generateIndexSuperMPLs(l) {
+    let moreIncentivized =  Array(numberSuperIncentivizedMPLs).fill(1); // 4 more incentivized MPLs
+    let others = new Array(l - moreIncentivized.length).fill(0);
+    let combined = moreIncentivized.concat(others);
+    
+    // Shuffle the combined array to randomize the positions of the super MPLs
+    for (let i = combined.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [combined[i], combined[j]] = [combined[j], combined[i]];
+    }
+    console.log("Generated index for super MPLs (1 = super MPL, 0 = regular MPL):", combined);
+    return combined;
+}
+
 function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
     console.log("Beginning of calculateMPLPayment with parameters: mplType is", mplType, "rowNumber is", rowNumber, "choices are", choices, "chosenStatus is", chosenStatus, "position is", mplPositionDict[mplType]);
     if(choices.every(choice => choice === undefined)) {
@@ -506,15 +604,24 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
         let type = "";
         let probability = 0;
         let surePayments=[];
-        if (mplType == "GO90" || mplType == "GO10") {
-        type = "G";
-        probability = parseInt(mplType.substring(2, 4));
-         surePayments = sure_payments.slice().reverse();
-        } else {
-        type = mplType.charAt(0);
-        probability = parseInt(mplType.substring(1));
-        let position = mplPositionDict[mplType];
-        surePayments = createSequenceArray(probability, type, position);
+        if (/^.O\d{2}$/.test(mplType)) { // if the MPL type an original form Oprea (G0, LO, AO)
+            type = mplType.charAt(0);
+            probability = parseInt(mplType.substring(2));
+            if (type == "G") {
+                surePayments = sure_payments.slice().reverse(); // reverse to get them in ascending order
+            }
+            else if (type == "L") {
+                surePayments = sure_payments.slice().map(x => -x); // take their opposite to get negative values, already in ascending order (from -25 to -1)
+            }
+            else if (type == "A") {
+                surePayments = Y_valuesMPL.slice(); // they are different ($2 increments for A)
+            } 
+        }   
+        else {
+            type = mplType.charAt(0);
+            probability = parseInt(mplType.substring(1));
+            let position = mplPositionDict[mplType];
+            surePayments = createSequenceArray(probability, type, position);
         }
         let sure = choices[rowNumber]; // either "sure" or "lottery"
         console.log("Parsed values: type is", type, "probability is", probability, "sure (choice[rowNumber]) is", sure ,"\n surePayments is ", surePayments);
@@ -522,7 +629,8 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
             if (type == "G") {
                 return surePayments[rowNumber] + 5;
             } else if (type == "L") {
-                return surePayments[rowNumber] + 30;
+                console.log("Calculating payment for L type with sure payment of", surePayments[rowNumber]);
+                return surePayments[rowNumber] + 30; //surePayments array is positive but in losses it represents a negative amount
             }
             else if (type == "A") {
                 return probability + 5;
@@ -539,7 +647,7 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
                     }
                 } else if (type == "L") {
                     if (randomDraw <= (probability / 100)) {
-                        return -25 + 30;
+                        return 30 -25;
                     } 
                     else if (randomDraw > (probability / 100)) {
                         return 0 + 30;
@@ -556,7 +664,7 @@ function calculateMPLPayment(mplType, rowNumber, choices, chosenStatus) {
                 if (type == "G") {
                     return (probability/100) * 25 + 5;
                 } else if (type == "L") {
-                    return - (probability/100) * 25 + 30;
+                    return 30 - (probability/100) * 25;
                 } else if (type == "A") {
                     let endow = 0;
                     if (probability == 10) { endow  = 15;}
@@ -1008,6 +1116,48 @@ function showInstructionModalForQuestions(instructionType, isPaymentRulePhase) {
         `
         ;
     }
+    else if (instructionType === "mplIncentives") {
+    let decisionTableSubtitle = "";
+        if (treatIs == "ineq") 
+            {decisionTableSubtitle = language.instructionsDecisionTable.subTitleInequalities 
+            exemple1Explanation = language.instructionsDecisionTable.example1ExplanationMirrorIncentivesIneq;
+            exemple2Explanation = language.instructionsDecisionTable.example2ExplanationMirrorIncentivesIneq;
+
+            }
+        else if (treatIs == "mirr") {
+            decisionTableSubtitle = language.instructionsDecisionTable.subTitle;
+            exemple1Explanation = language.instructionsDecisionTable.example1ExplanationMirrorIncentivesMirr;
+            exemple2Explanation = language.instructionsDecisionTable.example2ExplanationMirrorIncentivesMirr;
+        }
+    helpContent = 
+        ` <h2>${language.instructionsDecisionTable.titleIncentives}</h2>
+        <p>${language.instructionsDecisionTable.descriptionIncentives}</p>
+        <h3>${decisionTableSubtitle}</h3>
+        <p>${language.instructionsDecisionTable.descriptionBoxes}</p>
+        <p>${language.instructionsDecisionTable.descriptionMoney}</p>
+        <p>${language.instructionsDecisionTable.optionsDiffer}</p>
+        <p>${language.instructionsDecisionTable.bonusAverageBoxIncentives}</p>
+        <p>${language.instructionsDecisionTable.breakDownWithExamples}</p>
+         <br>
+        <!-- Example 1 (separate box) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example1}</p>
+            ${example1MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${exemple1Explanation}</p>
+        </div></div>
+
+        <!-- Example 2 (separate box, same style) -->
+        <div style="border:1px solid #9f9f9f; background: #fffaf0; padding:18px; border-radius:8px; margin:12px 0; box-shadow: 0 10px 24px rgba(0,0,0,0.10);">
+            <p style="font-weight:600; margin:0 0 8px 0; color:#222;">${language.instructionsDecisionTable.example2}</p>
+            ${example2MPL.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+            <br><p style="margin:8px 0 0 0; color:#333;">${exemple2Explanation}</p>
+        </div></div><br>
+
+        <!-- <h2>${language.instructionsClickToChoose.title}</h2> --> 
+        <p>${language.instructionsClickToChoose.clickToChoose}</p>
+        ${example1MPLSelected.replace('width: 50vw; margin: auto;', 'width: 100%; margin: 0;')}
+        <p>${language.instructionsClickToChoose.clickToChooseExample}</p>`
+    }
     
     modalContent.innerHTML = `
         ${helpContent}
@@ -1379,7 +1529,6 @@ const example5MPL = `
             </tr>
         </table>
         `; 
-
 
 const example5MPLSelected = `
         <div style="width: 50vw; margin: auto;">
