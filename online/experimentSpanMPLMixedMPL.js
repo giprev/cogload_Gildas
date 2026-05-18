@@ -1369,21 +1369,41 @@ const instructionsIncentivesSpanMPL= {
 const instructionsIncentivesSpanMPLIncentives= {
     ...instructionsIncentivesSpanMPL,
     pages: function(){
-        return [
-        `<!--<h2>${language.instructionsSpanInMPL.titleIncentives}</h2>--!>
-        <!--<h3>${language.instructionsSpanInMPL.subTitle}</h3>-->
-        <h2>${language.instructionsSpanInMPL.severalTablesDescriptionIncentives}</h2>
-        <p>${language.instructionsSpanInMPL.MPLInSpanIncentives}</p>
-        <p>${language.instructionsSpanInMPL.incentivesMPL1Incentives.replace("{propSelecForMPLIncentives}", propSelecForMPLIncentives)}</p>
-        <p>${language.instructionsSpanInMPL.roundIncentivized}</p>
-        <p>${language.instructionsSpanInMPL.incentivesMPL2}</p>
-        <!-- <p>${language.instructionsSpanInMPL.instructionsMoreIncentivizedRound}</p> -->
-        <!--<p>${language.instructionsSpanInMPL.incentivesMPL3}</p>-->
-        <!-- <p>${language.instructionsSpanInMPL.priority}</p> -->
-        <p>${language.instructionsSpanInMPL.clickNext}</p> `
-        ]
-    },
+        if (treatIs=="ineq"){
+            return [
+            `<!--<h2>${language.instructionsSpanInMPL.titleIncentives}</h2>--!>
+            <!--<h3>${language.instructionsSpanInMPL.subTitle}</h3>-->
+            <h2>${language.instructionsSpanInMPL.severalTablesDescriptionIncentives}</h2>
+            <p>${language.instructionsSpanInMPL.MPLInSpanIncentives}</p>
+            <p>${language.instructionsSpanInMPL.incentivesMPL1Incentives.replace("{propSelecForMPLIncentives}", propSelecForMPLIncentives)}</p>
+            <p>${language.instructionsSpanInMPL.roundIncentivized}</p>
+            <p>${language.instructionsSpanInMPL.incentivesMPL2}</p>
+            <p>${language.instructionsSpanInMPL.CU_ineq}</p>
+            <!-- <p>${language.instructionsSpanInMPL.instructionsMoreIncentivizedRound}</p> -->
+            <!--<p>${language.instructionsSpanInMPL.incentivesMPL3}</p>-->
+            <!-- <p>${language.instructionsSpanInMPL.priority}</p> -->
+            <p>${language.instructionsSpanInMPL.clickNext}</p> `
+            ]
+        }
+    else if (treatIs=="mirr"){
+            return [
+            `<!--<h2>${language.instructionsSpanInMPL.titleIncentives}</h2>--!>
+            <!--<h3>${language.instructionsSpanInMPL.subTitle}</h3>-->
+            <h2>${language.instructionsSpanInMPL.severalTablesDescriptionIncentives}</h2>
+            <p>${language.instructionsSpanInMPL.MPLInSpanIncentives}</p>
+            <p>${language.instructionsSpanInMPL.incentivesMPL1Incentives.replace("{propSelecForMPLIncentives}", propSelecForMPLIncentives)}</p>
+            <p>${language.instructionsSpanInMPL.roundIncentivized}</p>
+            <p>${language.instructionsSpanInMPL.incentivesMPL2}</p>
+            <p>${language.instructionsSpanInMPL.CU_mirr}</p>
+            <!-- <p>${language.instructionsSpanInMPL.instructionsMoreIncentivizedRound}</p> -->
+            <!--<p>${language.instructionsSpanInMPL.incentivesMPL3}</p>-->
+            <!-- <p>${language.instructionsSpanInMPL.priority}</p> -->
+            <p>${language.instructionsSpanInMPL.clickNext}</p> `
+            ]
+        }
+    }
 }
+
 const introductionFinalExampleSpanMPL = {
     type: "instructions",
     pages: function(){
@@ -1580,7 +1600,7 @@ mplIncentives_html_array_ineq = numbersArray_mirror_incentives_ineq.map((x, idx)
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     //const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
-    console.log("index is ", idx)
+    //console.log("index is ", idx)
     return mplGenerator(probability, type, "mirror", superArray_ineq[idx], "ineq");
 });
 mplIncentives_html_array_mirr = numbersArray_mirror_incentives_mirr.map((x, idx) => {
@@ -1589,10 +1609,10 @@ mplIncentives_html_array_mirr = numbersArray_mirror_incentives_mirr.map((x, idx)
     const probability = parseInt(tableType.substring(1)); // Extract number part
     const type = tableType.charAt(0); // Extract letter part (G, L, or A)
     //const position = mplPositionDict[tableType]; // Get the position from dictionary ("high" or "low")
-    console.log("index is ", idx)
+    //console.log("index is ", idx)
     return mplGenerator(probability, type, "mirror", superArray_mirr[idx], "mirr");
 });
-console.log("mplIncentives_html_array_mirr is ", mplIncentives_html_array_mirr);
+//console.log("mplIncentives_html_array_mirr is ", mplIncentives_html_array_mirr);
 
 example_mpl_html_array_lottery = [mplGenerator2(50, "G", "lottery", mplPositionDict["G50"])];
 // console.log(example_mpl_html_array_lottery, "is example_mpl_html_array_lottery");
@@ -4489,7 +4509,7 @@ const prolific_redirect = {
 
 jsPsych.data.addProperties({subject: subjectId});
 
-timeline.push( {type: "fullscreen", fullscreen_mode: false},  consentForm, demographics,/* instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
+timeline.push( /* {type: "fullscreen", fullscreen_mode: true},*/  consentForm, demographics,/*  instructionsBeforeCalibration, fds_calibration, calibrationDebrief,
     instructionsSpanSpan, fds_span_span_proc, spanSpanDebrief, fdsTrialNumReset, experiment_span_MPL, timelineUncertainty, timelineSlidersMotivation,
     timelineAnglesMotivation, arithmeticTimeline,  incentives_span_mpl, */experiment_MPLIncentives, timelineUncertaintyIncentives, arithmeticTestTimeline, incentives_mplIncentives);
 
@@ -4502,7 +4522,7 @@ jatos.onLoad(() => {
         on_finish: function() {
             submitToJatos(jsPsych.data.get().json());
             // jatos.endStudy(jsPsych.data.get().json());
-            jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
+            // jsPsych.data.get().localSave("csv", `span_Subject_${subjectId}_${level}back_output.csv`);
         }
     });
 });

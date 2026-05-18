@@ -826,9 +826,9 @@ const fr = {
         descriptionIncentives: `Durant l'expérience, vous allez choisir entre différentes lignes ("versions") du <span style='color:red'>lot A</span> et du <span style='color:blue'>lot B</span>.`,
         example1: ` 
         Dans l'exemple ci-dessous, le <span style='color:red'>lot A</span> est le même pour toutes les lignes ("versions") du tableau. Cependant le <span style='color:blue'>lot B</span> change : à chaque version, l'argent dans chacune de ses boîtes augmente de 1€.`,
-        chooseSet: `Vous choisirez le lot qui vous <b>plaît</b> le plus à chaque ligne. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
+        chooseSet: `Vous devez choisir le lot qui vous <b>plaît</b> le plus à chaque ligne. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
         Dans l'exemple ci-dessous, vous sélectionnez le <span style='color:red'>lot A</span> dans les lignes ("versions") 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les lignes ("versions") 8, 9 et 10.`,
-        chooseSetInequalities: `Vous choisirez le lot qui <b>rapporte</b> le plus à chaque ligne. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
+        chooseSetInequalities: `Vous devez choisir le lot qui <b>rapporte</b> le plus à chaque ligne. Le lot sélectionné à chaque ligne est surligné en <span style='background-color: rgba(239, 243, 4, 1)'>jaune</span>.
         Dans l'exemple ci-dessous, vous sélectionnez le <span style='color:red'>lot A</span> dans les lignes ("versions") 1, 2, 3, 4, 5, 6 et 7, et vous sélectionnez le <span style='color:blue'>lot B</span> dans les lignes ("versions") 8, 9 et 10.`,
         pickOneRow: `À la fin de l'expérience, si vous êtes sélectionné·e (vous avez en moyenne une chance sur 22), l'ordinateur sélectionnera au hasard une ligne du tableau
         (une lignes("version") des <span style='color:red'>lot A</span> et <span style='color:blue'>lot B</span>) et vous serez payé·e en fonction du lot que vous aurez sélectionné pour cette ligne. Chaque ligne a la même chance d'être sélectionnée.
@@ -862,8 +862,10 @@ const fr = {
         Si c'est le cas l'ordinateur sélectionnera <b>au hasard un <span style='color: #D4AF37'>💰 Super Tour 💰</span> puis une ligne (version) du tableau que vous avez vu à ce tour là</b>, 
         puis vous payera ce que rapporte le lot que vous avez choisi à cette ligne.`,
         roundIncentivized: `Les autres tours (<span style='color: #275293df'><b>Tours Classiques</b></span>) ne seront <b>pas payés</b>. Avant chaque tour vous serez prévenu·e s’il s’agit d’un <span style='color: #D4AF37'><b>💰 Super tour 💰</b></span> ou d’un <span style='color: #275293df'><b>Tour Classique</b></span>.`,
-        instructionsMoreIncentivizedRound: `Certains tours sont des <b>"super tours"</b>: ils ont <b>deux fois plus de chance</b> d'être sélectionnés pour le <b>bonus</b> que les autres tours. Avant chaque tour, vous serez prévenu·e s’il s’agit d’un "Super tour" ou d’un <span style='color: #275293df'><b>Tour Classique</b></span>.`,
+        instructionsMoreIncentivizedRound: `Certains tours sont des <b>"super tours"</b>: ils ont <b>deux fois plus de chance</b> d'être sélectionnés pour le <b>bonus</b> que les autres tours. Avant chaque tour, vous serez prévenu·e s’il s’agit d’un "Super tour" ou d’un <span style='color: #275293df'><b>Tour Classique</b></span>.`,   
         incentivesMPL2: `L'ordinateur rajoutera une somme initiale d'argent au bonus du choix (si il y en a un). Cette somme dépend du tableau sélectionné. Elle est indiquée en <span style='color:green'>vert</span> en haut de chaque tableau.`,
+        CU_ineq: "Après avoir fait votre choix, vous devez indiquer à quel point vous pensez qu'à chaque ligne, vous avez choisi le lot qui rapporte le plus. <b>Répondez honnêtement, votre réponse ne changera pas votre paiement.</b>",
+        CU_mirr: "Après avoir fait votre choix, vous devez indiquer à quel point vous pensez qu'à chaque ligne, vous avez choisi le lot qui vous plaît le plus. <b>Répondez honnêtement, votre réponse ne changera pas votre paiement.</b>",
         timeLimit: "Vous aurez {mplTimeLimit} secondes pour faire vos choix à chaque tableau (même sans cliquer sur le bouton Suivant ils seront pris en compte). Cependant si vous êtes sélectionné·e mais qu'au tour choisi au hasard vous n'avez pas fait de choix dans le temps imparti, vous n'obtiendrez pas de bonus.",
         incentivesMPL3: `Faites donc chaque choix comme si c'était celui qui allait être payé !`,
         priority: "Retenez les chiffres même pendant la tâche des choix, le bonus du jeu des chiffres est en moyenne supérieur à celui de la tâche des choix !",
@@ -1209,7 +1211,7 @@ const fr = {
         questionIneq: "À quel point êtes-vous certain·e que les options ques vous avez choisies sont celles qui rapportent le plus (à chaque ligne)?",
         questionMirr: "À quel point êtes-vous certain·e que les options que vous avez choisies sont vos options préférées (à chaque ligne) ?",
         veryUncertain: "0% (Je ne sais pas)",
-        veryCertain: "100% (Je suis sûr·e)",
+        veryCertain: "100% (Je suis certain·e)",
     },
     sliderHonest: "Vos réponses aux questions suivantes sont anonymes et ne sont pas liées à votre paiement. Veuillez répondre honnêtement.",
     sliderCognitiveUncertainty:{

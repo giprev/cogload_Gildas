@@ -30,7 +30,7 @@ function createMPLPositionDictionaryFromList() {
 
 function mplGenerator(y, X, condition, isSuper=0, treat, example=false) {
     // when example == true , no indication on wether it is a classic or a super round
-    console.log("Generating MPL with parameters: y =", y, ", X =", X, ", condition =", condition, ", isSuper =", isSuper, ", treat =", treat, ", example =", example);
+    //console.log("Generating MPL with parameters: y =", y, ", X =", X, ", condition =", condition, ", isSuper =", isSuper, ", treat =", treat, ", example =", example);
     const tableClass = isSuper ? 'mpl mpl-incentivized' : 'mpl';
     let sign = "";
     if (X == "G") {
