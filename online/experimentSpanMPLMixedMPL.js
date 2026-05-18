@@ -4426,12 +4426,13 @@ const timeline_mirr_MPLIncentives = {
 }
 
 let experiment_MPLIncentives;
-if (Math.random() < 0.5) { 
+if (treatment == "hard") { // 1 chance out of two that treatment is easy or high, and in the lab it is determined by the desk of the participant, so the pilot is counterbalanced
     experiment_MPLIncentives = {
     timeline :  [blockIs_mpl_incentives, treatisIneq, timelineInstructionsMPLIncentives, timeline_ineq_MPLIncentives, treatisMirr, changeTreatment, timelineInstructionsMPLIncentives, timeline_mirr_MPLIncentives]
     }
 }
-else { experiment_MPLIncentives =  {
+else if (treatment == "easy") {
+    experiment_MPLIncentives =  {
     timeline : [blockIs_mpl_incentives, treatisMirr, timelineInstructionsMPLIncentives, timeline_mirr_MPLIncentives, treatisIneq, changeTreatment, timelineInstructionsMPLIncentives, timeline_ineq_MPLIncentives]
     }
 }
