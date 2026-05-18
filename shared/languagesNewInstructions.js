@@ -1208,8 +1208,8 @@ const fr = {
     sliderLottery: `Les questions ci-dessous concernent vos choix dans les tâches de prise de décision, quand la règle de paiement était <b>"une boîte au hasard"</b>. {order}`,
     sliderMirrorIncentives: `Dernières questions.`,
     cogUncertainty: {
-        questionIneq: "À quel point êtes-vous certain·e que les options ques vous avez choisies sont celles qui rapportent le plus (à chaque ligne)?",
-        questionMirr: "À quel point êtes-vous certain·e que les options que vous avez choisies sont vos options préférées (à chaque ligne) ?",
+        questionIneq: "À quel point êtes-vous certain·e que les lots ques vous avez choisis sont ceux qui rapportent le plus (à chaque ligne)?",
+        questionMirr: "À quel point êtes-vous certain·e que les lots que vous avez choisis sont vos lots préférés (à chaque ligne) ?",
         veryUncertain: "0% (Je ne sais pas)",
         veryCertain: "100% (Je suis certain·e)",
     },
